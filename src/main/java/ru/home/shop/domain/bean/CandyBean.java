@@ -4,18 +4,18 @@ import java.math.BigDecimal;
 
 public class CandyBean {
 
-    private int id;
+    private Integer id;
     private String name;
     private String firm;
     private double order;
     private BigDecimal price;
     private int count;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -19,10 +19,9 @@ import ru.home.shop.domain.repo.PresentRepository;
 
 import java.math.BigDecimal;
 
-import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
-import static ru.home.shop.db.tables.CandyPresent.CANDY_PRESENT;
-import static ru.home.shop.db.tables.Present.PRESENT;
+import static ru.home.db.tables.CandyPresent.CANDY_PRESENT;
+import static ru.home.db.tables.Present.PRESENT;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {PresentsApplication.class})
@@ -144,7 +143,7 @@ public class JOOQPresentRepositoryTest {
     @Test
     @FlywayTest
     public void findAll_shouldNotReturnEmptySet() {
-        assertThat(repository.findAll().isEmpty(), is(false));
+        assertFalse(repository.findAll().isEmpty());
     }
 
     @Test
@@ -160,7 +159,7 @@ public class JOOQPresentRepositoryTest {
         CandyBean candy1FromDB = fromDB.getCandies().iterator().next();
         assertEquals(6, candy1FromDB.getCount());
 
-        assertEquals(3, candy1FromDB.getId());
+        assertEquals(Integer.valueOf(3), candy1FromDB.getId());
         assertEquals("someName3", candy1FromDB.getName());
         assertEquals("someFirm3", candy1FromDB.getFirm());
         assertEquals(BigDecimal.valueOf(13213.11), candy1FromDB.getPrice());

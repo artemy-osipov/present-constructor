@@ -1,6 +1,6 @@
 package ru.home.shop.domain.transformer;
 
-import ru.home.shop.db.tables.records.PresentRecord;
+import ru.home.db.tables.records.PresentRecord;
 import ru.home.shop.domain.bean.PresentBean;
 
 public class PresentTransformer {

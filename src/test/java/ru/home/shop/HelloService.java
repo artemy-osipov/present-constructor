@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
-import static ru.home.shop.db.tables.Candy.CANDY;
+import static ru.home.db.tables.Candy.CANDY;
 
 @Service
 public class HelloService {

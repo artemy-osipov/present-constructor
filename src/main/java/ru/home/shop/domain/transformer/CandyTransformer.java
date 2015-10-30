@@ -1,6 +1,6 @@
 package ru.home.shop.domain.transformer;
 
-import ru.home.shop.db.tables.records.CandyRecord;
+import ru.home.db.tables.records.CandyRecord;
 import ru.home.shop.domain.bean.CandyBean;
 
 public class CandyTransformer {

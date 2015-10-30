@@ -1,7 +1,7 @@
 package ru.home.shop.domain.transformer;
 
 import org.junit.Test;
-import ru.home.shop.db.tables.records.CandyRecord;
+import ru.home.db.tables.records.CandyRecord;
 import ru.home.shop.domain.bean.CandyBean;
 
 import java.math.BigDecimal;
@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 
 public class CandyTransformerTest {
 
-    private static final int ID = 1;
+    private static final Integer ID = 1;
     private static final String NAME = "name";
     private static final String FIRM = "firm";
     private static final BigDecimal PRICE = BigDecimal.valueOf(2.3);

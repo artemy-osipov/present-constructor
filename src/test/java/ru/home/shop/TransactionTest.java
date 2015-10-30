@@ -7,13 +7,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import static ru.home.shop.db.tables.Candy.CANDY;
+import static ru.home.db.tables.Candy.CANDY;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {PresentsApplication.class})
@@ -30,7 +31,6 @@ public class TransactionTest {
     @FlywayTest
     public void transactionTest() {
         int before = dsl.fetchCount(CANDY);
-        System.out.println("count-1-1 " + before);
 
         service.create(5, "someName", "some", 1);
         assertEquals(++before, dsl.fetchCount(CANDY));
@@ -38,12 +38,9 @@ public class TransactionTest {
         try {
             service.create(6, "someName", "some", 2);
             fail();
-        } catch (Exception e) {
-            System.out.println("error " + e);
+        } catch (DuplicateKeyException ignored) {
         }
 
         assertEquals(before, dsl.fetchCount(CANDY));
-
-        System.out.println("count-1-2 " + before);
     }
 }

@@ -11,9 +11,9 @@ import ru.home.shop.domain.transformer.PresentTransformer;
 
 import java.util.Collection;
 
-import static ru.home.shop.db.tables.Candy.CANDY;
-import static ru.home.shop.db.tables.CandyPresent.CANDY_PRESENT;
-import static ru.home.shop.db.tables.Present.PRESENT;
+import static ru.home.db.tables.Candy.CANDY;
+import static ru.home.db.tables.CandyPresent.CANDY_PRESENT;
+import static ru.home.db.tables.Present.PRESENT;
 
 @Repository
 public class JOOQPresentRepository implements PresentRepository {

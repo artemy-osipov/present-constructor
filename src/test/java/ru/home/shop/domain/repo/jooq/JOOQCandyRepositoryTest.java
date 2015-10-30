@@ -17,9 +17,8 @@ import ru.home.shop.domain.repo.CandyRepository;
 
 import java.math.BigDecimal;
 
-import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
-import static ru.home.shop.db.tables.Candy.CANDY;
+import static ru.home.db.tables.Candy.CANDY;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {PresentsApplication.class})
@@ -109,7 +108,7 @@ public class JOOQCandyRepositoryTest {
     @Test
     @FlywayTest
     public void findAll_shouldNotReturnEmptySet() {
-        assertThat(repository.findAll().isEmpty(), is(false));
+        assertFalse(repository.findAll().isEmpty());
     }
 
     @Test

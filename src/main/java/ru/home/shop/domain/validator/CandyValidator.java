@@ -11,20 +11,24 @@ public class CandyValidator {
     public static Map<String, String> validateAdd(CandyBean candy) {
         Map<String, String> errors = new HashMap<>();
 
+        if (candy == null) {
+            throw new IllegalArgumentException("argument is null");
+        }
+
         if (StringUtils.isEmpty(candy.getName())) {
-            errors.put("name", "empty name");
+            errors.put("name", "empty");
         } else if (candy.getName().length() > 50) {
             errors.put("name", "length exceeded (50)");
         }
 
         if (StringUtils.isEmpty(candy.getFirm())) {
-            errors.put("firm", "empty firm");
+            errors.put("firm", "empty");
         } else if (candy.getFirm().length() > 50) {
             errors.put("firm", "length exceeded (50)");
         }
 
         if (candy.getPrice() == null) {
-            errors.put("price", "empty price");
+            errors.put("price", "empty");
         } else if (candy.getPrice().doubleValue() <= 0 || candy.getPrice().scale() > 2) {
             errors.put("price", "incorrect");
         }
@@ -39,7 +43,9 @@ public class CandyValidator {
     public static Map<String, String> validateUpdate(CandyBean candy) {
         Map<String, String> errors = validateAdd(candy);
 
-        if (candy.getId() <= 0) {
+        if (candy.getId() == null) {
+            errors.put("id", "empty");
+        } else if (candy.getId() <= 0) {
             errors.put("id", "incorrect");
         }
 

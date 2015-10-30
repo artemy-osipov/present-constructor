@@ -3,7 +3,7 @@ package ru.home.shop.domain.repo.jooq;
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import ru.home.shop.db.tables.records.CandyRecord;
+import ru.home.db.tables.records.CandyRecord;
 import ru.home.shop.domain.bean.CandyBean;
 import ru.home.shop.domain.repo.CandyRepository;
 import ru.home.shop.domain.transformer.CandyTransformer;
@@ -11,7 +11,7 @@ import ru.home.shop.domain.transformer.CandyTransformer;
 import java.math.BigDecimal;
 import java.util.Collection;
 
-import static ru.home.shop.db.tables.Candy.CANDY;
+import static ru.home.db.tables.Candy.CANDY;
 
 @Repository
 public class JOOQCandyRepository implements CandyRepository {
