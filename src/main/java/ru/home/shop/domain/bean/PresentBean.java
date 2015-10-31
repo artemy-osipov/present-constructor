@@ -42,4 +42,8 @@ public class PresentBean {
     public void setCandies(Collection<CandyBean> candies) {
         this.candies = candies;
     }
+
+    public BigDecimal getTruePrice() {
+        return candies.stream().map(CandyBean::getPrice).reduce(BigDecimal.ZERO, (p1, p2) -> p1.add(p2));
+    }
 }
