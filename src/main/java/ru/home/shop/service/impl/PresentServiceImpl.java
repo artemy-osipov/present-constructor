@@ -2,48 +2,47 @@ package ru.home.shop.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.home.shop.domain.bean.CandyBean;
-import ru.home.shop.domain.repo.CandyRepository;
-import ru.home.shop.domain.validator.CandyValidator;
+import ru.home.shop.domain.bean.PresentBean;
+import ru.home.shop.domain.repo.PresentRepository;
+import ru.home.shop.domain.validator.PresentValidator;
 import ru.home.shop.exception.ConcurrentException;
 import ru.home.shop.exception.ValidationException;
-import ru.home.shop.service.CandyService;
+import ru.home.shop.service.PresentService;
 
 import java.util.Collection;
 import java.util.Map;
 
 @Service
-public class CandyServiceImpl implements CandyService {
+public class PresentServiceImpl implements PresentService {
 
-    private CandyRepository repository;
+    private PresentRepository repository;
 
     @Autowired
-    public CandyServiceImpl(CandyRepository repository) {
+    public PresentServiceImpl(PresentRepository repository) {
         this.repository = repository;
     }
 
-
     @Override
-    public void add(CandyBean candy) throws ValidationException {
-        Map<String, String> errors = CandyValidator.validateAdd(candy);
+    public void add(PresentBean present) {
+        Map<String, String> errors = PresentValidator.validateAdd(present);
 
         if (!errors.isEmpty()) {
             throw new ValidationException(errors);
         }
 
-        Integer newId = repository.add(candy);
-        candy.setId(newId);
+        Integer newId = repository.addFull(present);
+        present.setId(newId);
     }
 
     @Override
-    public void edit(CandyBean candy) throws ValidationException {
-        Map<String, String> errors = CandyValidator.validateUpdate(candy);
+    public void edit(PresentBean present) {
+        Map<String, String> errors = PresentValidator.validateUpdate(present);
 
         if (!errors.isEmpty()) {
             throw new ValidationException(errors);
         }
 
-        int updated = repository.edit(candy);
+        int updated = repository.editFull(present);
 
         if (updated != 1) {
             throw new ConcurrentException();
@@ -51,8 +50,8 @@ public class CandyServiceImpl implements CandyService {
     }
 
     @Override
-    public void remove(int id) throws ValidationException {
-        if (id < 1) {
+    public void remove(int id) {
+        if (id <= 0) {
             throw new ValidationException("id", "incorrect");
         }
 
@@ -64,16 +63,16 @@ public class CandyServiceImpl implements CandyService {
     }
 
     @Override
-    public Collection<CandyBean> list() {
+    public Collection<PresentBean> listView() {
         return repository.findAll();
     }
 
     @Override
-    public CandyBean find(int id) throws ValidationException {
+    public PresentBean find(int id) {
         if (id < 1) {
             throw new ValidationException("id", "incorrect");
         }
 
-        return repository.find(id);
+        return repository.findFull(id);
     }
 }

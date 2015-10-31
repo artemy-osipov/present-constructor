@@ -9,7 +9,7 @@ public class CandyBean {
     private String firm;
     private double order;
     private BigDecimal price;
-    private int count;
+    private int count = 1;
 
     public Integer getId() {
         return id;

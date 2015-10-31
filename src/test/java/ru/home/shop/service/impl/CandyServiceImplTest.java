@@ -2,7 +2,8 @@ package ru.home.shop.service.impl;
 
 import org.junit.Test;
 import ru.home.shop.domain.bean.CandyBean;
-import ru.home.shop.domain.repo.jooq.JOOQCandyRepository;
+import ru.home.shop.domain.repo.CandyRepository;
+import ru.home.shop.exception.ConcurrentException;
 import ru.home.shop.exception.ValidationException;
 
 import java.math.BigDecimal;
@@ -25,17 +26,22 @@ public class CandyServiceImplTest {
     }
 
     @Test
-    public void add_validEntry_shouldInvokeRepository() {
-        JOOQCandyRepository mock = mock(JOOQCandyRepository.class);
+    public void add_validEntry_shouldSetNewId() {
+        CandyRepository mock = mock(CandyRepository.class);
         CandyBean candy = getValidAddCandy();
+
+        Integer newId = 2;
+
+        when(mock.add(candy)).thenReturn(newId);
 
         new CandyServiceImpl(mock).add(candy);
         verify(mock).add(candy);
+        assertEquals(newId, candy.getId());
     }
 
     @Test
     public void add_nullEntry_shouldThrowException() {
-        JOOQCandyRepository mock = mock(JOOQCandyRepository.class);
+        CandyRepository mock = mock(CandyRepository.class);
 
         try {
             new CandyServiceImpl(mock).add(null);
@@ -46,7 +52,7 @@ public class CandyServiceImplTest {
 
     @Test
     public void add_notValidEntry_shouldThrowException() {
-        JOOQCandyRepository mock = mock(JOOQCandyRepository.class);
+        CandyRepository mock = mock(CandyRepository.class);
 
         try {
             new CandyServiceImpl(mock).add(new CandyBean());
@@ -58,9 +64,12 @@ public class CandyServiceImplTest {
 
     @Test
     public void edit_validEntry_shouldInvokeRepository() {
-        JOOQCandyRepository mock = mock(JOOQCandyRepository.class);
         CandyBean candy = getValidAddCandy();
         candy.setId(1);
+
+        CandyRepository mock = mock(CandyRepository.class);
+        when(mock.edit(candy)).thenReturn(1);
+
 
         new CandyServiceImpl(mock).edit(candy);
         verify(mock).edit(candy);
@@ -68,7 +77,7 @@ public class CandyServiceImplTest {
 
     @Test
     public void edit_nullEntry_shouldThrowException() {
-        JOOQCandyRepository mock = mock(JOOQCandyRepository.class);
+        CandyRepository mock = mock(CandyRepository.class);
 
         try {
             new CandyServiceImpl(mock).edit(null);
@@ -79,7 +88,7 @@ public class CandyServiceImplTest {
 
     @Test
     public void edit_notValidEntry_shouldThrowException() {
-        JOOQCandyRepository mock = mock(JOOQCandyRepository.class);
+        CandyRepository mock = mock(CandyRepository.class);
 
         try {
             new CandyServiceImpl(mock).edit(new CandyBean());
@@ -90,9 +99,25 @@ public class CandyServiceImplTest {
     }
 
     @Test
+    public void edit_nonexistentId_shouldThrowException() {
+        CandyRepository mock = mock(CandyRepository.class);
+        CandyBean candy = getValidAddCandy();
+        candy.setId(1);
+
+        when(mock.edit(candy)).thenReturn(0);
+
+        try {
+            new CandyServiceImpl(mock).edit(candy);
+            fail();
+        } catch (ConcurrentException ignored) {
+        }
+    }
+
+    @Test
     public void remove_validId_shouldInvokeRepository() {
-        JOOQCandyRepository mock = mock(JOOQCandyRepository.class);
         int id = 1;
+        CandyRepository mock = mock(CandyRepository.class);
+        when(mock.remove(id)).thenReturn(1);
 
         new CandyServiceImpl(mock).remove(id);
         verify(mock).remove(id);
@@ -100,7 +125,7 @@ public class CandyServiceImplTest {
 
     @Test
     public void remove_notValidId_shouldThrowException() {
-        JOOQCandyRepository mock = mock(JOOQCandyRepository.class);
+        CandyRepository mock = mock(CandyRepository.class);
 
         try {
             new CandyServiceImpl(mock).remove(-1);
@@ -112,8 +137,20 @@ public class CandyServiceImplTest {
     }
 
     @Test
+    public void remove_nonexistentId_shouldThrowException() {
+        CandyRepository mock = mock(CandyRepository.class);
+        when(mock.remove(1)).thenReturn(0);
+
+        try {
+            new CandyServiceImpl(mock).remove(1);
+            fail();
+        } catch (ConcurrentException ignored) {
+        }
+    }
+
+    @Test
     public void list_shouldReturnSameAsRepository() {
-        JOOQCandyRepository mock = mock(JOOQCandyRepository.class);
+        CandyRepository mock = mock(CandyRepository.class);
         Collection<CandyBean> res = Collections.singletonList(getValidAddCandy());
 
         when(mock.findAll()).thenReturn(res);
@@ -124,7 +161,7 @@ public class CandyServiceImplTest {
 
     @Test
     public void find_validId_shouldInvokeRepository() {
-        JOOQCandyRepository mock = mock(JOOQCandyRepository.class);
+        CandyRepository mock = mock(CandyRepository.class);
         CandyBean candy = getValidAddCandy();
         int id = 1;
 
@@ -136,7 +173,7 @@ public class CandyServiceImplTest {
 
     @Test
     public void find_notValidId_shouldThrowException() {
-        JOOQCandyRepository mock = mock(JOOQCandyRepository.class);
+        CandyRepository mock = mock(CandyRepository.class);
 
         try {
             new CandyServiceImpl(mock).find(0);

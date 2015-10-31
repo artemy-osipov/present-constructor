@@ -9,11 +9,11 @@ import java.util.Map;
 public class CandyValidator {
 
     public static Map<String, String> validateAdd(CandyBean candy) {
-        Map<String, String> errors = new HashMap<>();
-
         if (candy == null) {
             throw new IllegalArgumentException("argument is null");
         }
+
+        Map<String, String> errors = new HashMap<>();
 
         if (StringUtils.isEmpty(candy.getName())) {
             errors.put("name", "empty");
@@ -45,7 +45,7 @@ public class CandyValidator {
 
         if (candy.getId() == null) {
             errors.put("id", "empty");
-        } else if (candy.getId() <= 0) {
+        } else if (candy.getId() < 1) {
             errors.put("id", "incorrect");
         }
 

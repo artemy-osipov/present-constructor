@@ -26,7 +26,7 @@ CREATE TABLE "candy_present" (
     "id"      INT AUTO_INCREMENT NOT NULL,
     "present" INT NOT NULL,
     "candy"   INT NOT NULL,
-    "count"   INT DEFAULT 1 NOT NULL,
+    "count"   INT NOT NULL,
     PRIMARY KEY ("id"),
     FOREIGN KEY ("present") REFERENCES "present"("id") ON DELETE CASCADE,
     FOREIGN KEY ("candy") REFERENCES "candy"("id")
