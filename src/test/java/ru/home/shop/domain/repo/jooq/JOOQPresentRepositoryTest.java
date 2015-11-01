@@ -29,10 +29,10 @@ import static ru.home.db.tables.Present.PRESENT;
 public class JOOQPresentRepositoryTest {
 
     @Autowired
-    PresentRepository repository;
+    private PresentRepository repository;
 
     @Autowired
-    DSLContext dsl;
+    private DSLContext dsl;
 
     private PresentBean getPresent() {
         PresentBean bean = new PresentBean();

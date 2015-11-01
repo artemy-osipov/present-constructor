@@ -8,6 +8,7 @@ import fr.opensagres.xdocreport.template.TemplateEngineKind;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.home.shop.domain.bean.PresentBean;
+import ru.home.shop.exception.ResourceNotFoundException;
 import ru.home.shop.service.PresentService;
 import ru.home.shop.service.ReportService;
 
@@ -18,7 +19,7 @@ import java.io.InputStream;
 @Service
 public class ReportServiceImpl implements ReportService {
 
-    private PresentService presentService;
+    private final PresentService presentService;
 
     @Autowired
     public ReportServiceImpl(PresentService presentService) {
@@ -36,13 +37,17 @@ public class ReportServiceImpl implements ReportService {
     }
 
     private byte[] generatePresentReport(int presentId, String reportName) throws IOException {
+        PresentBean present = presentService.find(presentId);
+
+        if (present == null) {
+            throw new ResourceNotFoundException();
+        }
+
+        return generatePresentReport(present, reportName);
+    }
+
+    private byte[] generatePresentReport(PresentBean present, String reportName) throws IOException {
         try {
-            PresentBean present = presentService.find(presentId);
-
-            if (present == null) {
-                throw new IllegalArgumentException("unknown id");
-            }
-
             InputStream in = getClass().getClassLoader().getResourceAsStream(reportName);
             IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in, TemplateEngineKind.Freemarker);
 

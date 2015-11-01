@@ -3,6 +3,7 @@ package ru.home.shop.service.impl;
 import org.junit.Test;
 import ru.home.shop.domain.bean.CandyBean;
 import ru.home.shop.domain.bean.PresentBean;
+import ru.home.shop.exception.ResourceNotFoundException;
 import ru.home.shop.service.PresentService;
 
 import java.io.IOException;
@@ -58,7 +59,7 @@ public class ReportServiceImplTest {
         try {
             new ReportServiceImpl(mock).publicReport(id);
             fail();
-        } catch (IllegalArgumentException ignored) {
+        } catch (ResourceNotFoundException ignored) {
         }
     }
 
@@ -80,7 +81,7 @@ public class ReportServiceImplTest {
         try {
             new ReportServiceImpl(mock).privateReport(id);
             fail();
-        } catch (IllegalArgumentException ignored) {
+        } catch (ResourceNotFoundException ignored) {
         }
     }
 }

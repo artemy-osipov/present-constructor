@@ -18,7 +18,7 @@ import static ru.home.db.tables.Present.PRESENT;
 @Repository
 public class JOOQPresentRepository implements PresentRepository {
 
-    private DSLContext dsl;
+    private final DSLContext dsl;
 
     @Autowired
     public JOOQPresentRepository(DSLContext dsl) {

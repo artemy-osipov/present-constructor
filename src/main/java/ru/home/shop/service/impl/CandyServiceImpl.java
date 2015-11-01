@@ -15,7 +15,7 @@ import java.util.Map;
 @Service
 public class CandyServiceImpl implements CandyService {
 
-    private CandyRepository repository;
+    private final CandyRepository repository;
 
     @Autowired
     public CandyServiceImpl(CandyRepository repository) {

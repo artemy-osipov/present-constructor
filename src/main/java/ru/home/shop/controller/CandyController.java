@@ -11,7 +11,7 @@ import java.util.Collection;
 @RestController
 public class CandyController {
 
-    private CandyService candyService;
+    private final CandyService candyService;
 
     @Autowired
     public CandyController(CandyService candyService) {

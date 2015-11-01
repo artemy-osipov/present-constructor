@@ -5,7 +5,6 @@ import ru.home.shop.domain.bean.CandyBean;
 import ru.home.shop.domain.bean.PresentBean;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 

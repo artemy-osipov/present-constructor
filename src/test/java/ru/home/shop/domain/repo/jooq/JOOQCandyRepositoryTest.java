@@ -26,10 +26,10 @@ import static ru.home.db.tables.Candy.CANDY;
 public class JOOQCandyRepositoryTest {
 
     @Autowired
-    CandyRepository repository;
+    private CandyRepository repository;
 
     @Autowired
-    DSLContext dsl;
+    private DSLContext dsl;
 
     private CandyBean getCandy() {
         CandyBean bean = new CandyBean();

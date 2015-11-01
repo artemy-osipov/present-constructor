@@ -15,7 +15,7 @@ import java.util.Map;
 @Service
 public class PresentServiceImpl implements PresentService {
 
-    private PresentRepository repository;
+    private final PresentRepository repository;
 
     @Autowired
     public PresentServiceImpl(PresentRepository repository) {
