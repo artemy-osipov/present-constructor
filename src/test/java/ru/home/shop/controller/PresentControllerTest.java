@@ -75,7 +75,7 @@ public class PresentControllerTest {
         doThrow(ValidationException.class).when(mock).add(present);
         getMockMvc(mock).perform(put("/present")
                 .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(toJson(present)))
-                .andExpect(status().is(400));
+                .andExpect(status().isBadRequest());
         verify(mock).add(present);
     }
 
@@ -96,7 +96,7 @@ public class PresentControllerTest {
         doThrow(ValidationException.class).when(mock).edit(present);
         getMockMvc(mock).perform(post("/present/{id}", present.getId())
                 .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(toJson(present)))
-                .andExpect(status().is(400));
+                .andExpect(status().isBadRequest());
         verify(mock).edit(present);
     }
 
@@ -107,7 +107,7 @@ public class PresentControllerTest {
         doThrow(ResourceNotFoundException.class).when(mock).edit(present);
         getMockMvc(mock).perform(post("/present/{id}", present.getId())
                 .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(toJson(present)))
-                .andExpect(status().is(404));
+                .andExpect(status().isNotFound());
         verify(mock).edit(present);
     }
 
@@ -126,7 +126,7 @@ public class PresentControllerTest {
         PresentService mock = mock(PresentService.class);
         doThrow(ValidationException.class).when(mock).remove(id);
         getMockMvc(mock).perform(delete("/present/{id}", id).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(400));
+                .andExpect(status().isBadRequest());
         verify(mock).remove(id);
     }
 
@@ -136,7 +136,7 @@ public class PresentControllerTest {
         PresentService mock = mock(PresentService.class);
         doThrow(ResourceNotFoundException.class).when(mock).remove(id);
         getMockMvc(mock).perform(delete("/present/{id}", id).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(404));
+                .andExpect(status().isNotFound());
         verify(mock).remove(id);
     }
 
@@ -161,7 +161,7 @@ public class PresentControllerTest {
         PresentService mock = mock(PresentService.class);
         doThrow(ValidationException.class).when(mock).find(present.getId());
         getMockMvc(mock).perform(get("/present/{id}", present.getId()).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(400));
+                .andExpect(status().isBadRequest());
         verify(mock).find(present.getId());
     }
 
@@ -171,7 +171,7 @@ public class PresentControllerTest {
         PresentService mock = mock(PresentService.class);
         when(mock.find(present.getId())).thenReturn(null);
         getMockMvc(mock).perform(get("/present/{id}", present.getId()).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(404));
+                .andExpect(status().isNotFound());
         verify(mock).find(present.getId());
     }
 

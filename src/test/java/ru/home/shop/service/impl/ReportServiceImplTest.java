@@ -3,7 +3,6 @@ package ru.home.shop.service.impl;
 import org.junit.Test;
 import ru.home.shop.domain.bean.CandyBean;
 import ru.home.shop.domain.bean.PresentBean;
-import ru.home.shop.exception.ResourceNotFoundException;
 import ru.home.shop.service.PresentService;
 
 import java.io.IOException;
@@ -16,7 +15,7 @@ import static org.mockito.Mockito.when;
 
 public class ReportServiceImplTest {
 
-    private PresentBean getValidAddPresent() {
+    private PresentBean getPresent() {
         PresentBean present = new PresentBean();
         present.setName("name");
         present.setPrice(BigDecimal.valueOf(4.2));
@@ -43,11 +42,7 @@ public class ReportServiceImplTest {
 
     @Test
     public void publicReport_validId_shouldGenerateSomeReport() throws IOException {
-        PresentService mock = mock(PresentService.class);
-        int id = 1;
-        when(mock.find(id)).thenReturn(getValidAddPresent());
-
-        assertNotNull(new ReportServiceImpl(mock).publicReport(id));
+        assertNotNull(new ReportServiceImpl().publicReport(getPresent()));
     }
 
     @Test
@@ -57,31 +52,23 @@ public class ReportServiceImplTest {
         when(mock.find(id)).thenReturn(null);
 
         try {
-            new ReportServiceImpl(mock).publicReport(id);
+            new ReportServiceImpl().publicReport(null);
             fail();
-        } catch (ResourceNotFoundException ignored) {
+        } catch (IllegalArgumentException ignored) {
         }
     }
 
     @Test
     public void privateReport_validId_shouldGenerateSomeReport() throws IOException {
-        PresentService mock = mock(PresentService.class);
-        int id = 1;
-        when(mock.find(id)).thenReturn(getValidAddPresent());
-
-        assertNotNull(new ReportServiceImpl(mock).privateReport(id));
+        assertNotNull(new ReportServiceImpl().privateReport(getPresent()));
     }
 
     @Test
     public void private_notValidId_shouldThrowException() throws IOException {
-        PresentService mock = mock(PresentService.class);
-        int id = 1;
-        when(mock.find(id)).thenReturn(null);
-
         try {
-            new ReportServiceImpl(mock).privateReport(id);
+            new ReportServiceImpl().privateReport(null);
             fail();
-        } catch (ResourceNotFoundException ignored) {
+        } catch (IllegalArgumentException ignored) {
         }
     }
 }

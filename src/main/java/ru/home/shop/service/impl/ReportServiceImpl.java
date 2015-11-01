@@ -5,11 +5,8 @@ import fr.opensagres.xdocreport.document.IXDocReport;
 import fr.opensagres.xdocreport.document.registry.XDocReportRegistry;
 import fr.opensagres.xdocreport.template.IContext;
 import fr.opensagres.xdocreport.template.TemplateEngineKind;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.home.shop.domain.bean.PresentBean;
-import ru.home.shop.exception.ResourceNotFoundException;
-import ru.home.shop.service.PresentService;
 import ru.home.shop.service.ReportService;
 
 import java.io.ByteArrayOutputStream;
@@ -19,34 +16,21 @@ import java.io.InputStream;
 @Service
 public class ReportServiceImpl implements ReportService {
 
-    private final PresentService presentService;
-
-    @Autowired
-    public ReportServiceImpl(PresentService presentService) {
-        this.presentService = presentService;
+    @Override
+    public byte[] publicReport(PresentBean present) {
+        return generatePresentReport(present, "templates/publicReport.docx");
     }
 
     @Override
-    public byte[] publicReport(int presentId) throws IOException {
-        return generatePresentReport(presentId, "templates/publicReport.docx");
+    public byte[] privateReport(PresentBean present) {
+        return generatePresentReport(present, "templates/privateReport.docx");
     }
 
-    @Override
-    public byte[] privateReport(int presentId) throws IOException {
-        return generatePresentReport(presentId, "templates/privateReport.docx");
-    }
-
-    private byte[] generatePresentReport(int presentId, String reportName) throws IOException {
-        PresentBean present = presentService.find(presentId);
-
+    private byte[] generatePresentReport(PresentBean present, String reportName) {
         if (present == null) {
-            throw new ResourceNotFoundException();
+            throw new IllegalArgumentException();
         }
 
-        return generatePresentReport(present, reportName);
-    }
-
-    private byte[] generatePresentReport(PresentBean present, String reportName) throws IOException {
         try {
             InputStream in = getClass().getClassLoader().getResourceAsStream(reportName);
             IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in, TemplateEngineKind.Freemarker);
@@ -59,8 +43,8 @@ public class ReportServiceImpl implements ReportService {
             report.process(context, bout);
 
             return bout.toByteArray();
-        } catch (XDocReportException e) {
-            throw new IOException(e);
+        } catch (XDocReportException | IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

@@ -1,9 +1,9 @@
 package ru.home.shop.service;
 
-import java.io.IOException;
+import ru.home.shop.domain.bean.PresentBean;
 
 public interface ReportService {
 
-    byte[] publicReport(int present) throws IOException;
-    byte[] privateReport(int present) throws IOException;
+    byte[] publicReport(PresentBean present);
+    byte[] privateReport(PresentBean present);
 }
