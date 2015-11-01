@@ -78,7 +78,7 @@ public class PresentValidatorTest {
     public void validateAdd_notValidEntry_shouldReturnFewErrors() {
         PresentBean present = getValidAddPresent();
         present.setName(LONG_STRING);
-        present.setPrice(BigDecimal.valueOf(0));
+        present.setPrice(BigDecimal.valueOf(12.414));
 
         CandyBean candy = new CandyBean();
         candy.setId(-1);

@@ -170,4 +170,33 @@ public class JOOQPresentRepositoryTest {
     public void find_nonexistentId_shouldReturnNull() {
         assertNull(repository.findFull(-1));
     }
+
+    @Test
+    @FlywayTest
+    public void transactionTest() {
+        PresentBean present = getPresent();
+
+        CandyBean candy = new CandyBean();
+        candy.setId(1);
+        candy.setCount(2);
+
+        present.getCandies().add(candy);
+
+        int before = dsl.fetchCount(PRESENT);
+
+        repository.addFull(present);
+        assertEquals(++before, dsl.fetchCount(PRESENT));
+
+        try {
+            CandyBean incorrectCandy = new CandyBean();
+            incorrectCandy.setId(-11);
+            incorrectCandy.setCount(2);
+            present.getCandies().add(incorrectCandy);
+            repository.addFull(present);
+            fail();
+        } catch (DataIntegrityViolationException ignored) {
+        }
+
+        assertEquals(before, dsl.fetchCount(PRESENT));
+    }
 }

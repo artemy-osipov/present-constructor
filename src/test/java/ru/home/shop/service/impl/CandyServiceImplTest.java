@@ -3,7 +3,7 @@ package ru.home.shop.service.impl;
 import org.junit.Test;
 import ru.home.shop.domain.bean.CandyBean;
 import ru.home.shop.domain.repo.CandyRepository;
-import ru.home.shop.exception.ConcurrentException;
+import ru.home.shop.exception.ResourceNotFoundException;
 import ru.home.shop.exception.ValidationException;
 
 import java.math.BigDecimal;
@@ -109,7 +109,7 @@ public class CandyServiceImplTest {
         try {
             new CandyServiceImpl(mock).edit(candy);
             fail();
-        } catch (ConcurrentException ignored) {
+        } catch (ResourceNotFoundException ignored) {
         }
     }
 
@@ -144,7 +144,7 @@ public class CandyServiceImplTest {
         try {
             new CandyServiceImpl(mock).remove(1);
             fail();
-        } catch (ConcurrentException ignored) {
+        } catch (ResourceNotFoundException ignored) {
         }
     }
 

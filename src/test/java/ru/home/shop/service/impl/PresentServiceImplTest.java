@@ -4,9 +4,8 @@ import org.junit.Test;
 import ru.home.shop.domain.bean.CandyBean;
 import ru.home.shop.domain.bean.PresentBean;
 import ru.home.shop.domain.repo.PresentRepository;
-import ru.home.shop.exception.ConcurrentException;
+import ru.home.shop.exception.ResourceNotFoundException;
 import ru.home.shop.exception.ValidationException;
-import ru.home.shop.service.PresentService;
 
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -120,7 +119,7 @@ public class PresentServiceImplTest {
         try {
             new PresentServiceImpl(mock).edit(present);
             fail();
-        } catch (ConcurrentException ignored) {
+        } catch (ResourceNotFoundException ignored) {
         }
     }
 
@@ -155,7 +154,7 @@ public class PresentServiceImplTest {
         try {
             new PresentServiceImpl(mock).remove(1);
             fail();
-        } catch (ConcurrentException ignored) {
+        } catch (ResourceNotFoundException ignored) {
         }
     }
 

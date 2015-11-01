@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.home.shop.domain.bean.CandyBean;
 import ru.home.shop.domain.repo.CandyRepository;
 import ru.home.shop.domain.validator.CandyValidator;
-import ru.home.shop.exception.ConcurrentException;
+import ru.home.shop.exception.ResourceNotFoundException;
 import ru.home.shop.exception.ValidationException;
 import ru.home.shop.service.CandyService;
 
@@ -46,7 +46,7 @@ public class CandyServiceImpl implements CandyService {
         int updated = repository.edit(candy);
 
         if (updated != 1) {
-            throw new ConcurrentException();
+            throw new ResourceNotFoundException();
         }
     }
 
@@ -59,7 +59,7 @@ public class CandyServiceImpl implements CandyService {
         int removed = repository.remove(id);
 
         if (removed != 1) {
-            throw new ConcurrentException();
+            throw new ResourceNotFoundException();
         }
     }
 

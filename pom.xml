@@ -28,6 +28,8 @@
         <apache.dbcp2.version>2.1.1</apache.dbcp2.version>
         <flywaydb.version>3.2.1</flywaydb.version>
         <jooq.version>3.7.0</jooq.version>
+
+        <jsonpath.version>2.0.0</jsonpath.version>
     </properties>
 
     <profiles>
@@ -37,6 +39,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
+                <db.driver>org.h2.Driver</db.driver>
                 <db.url>jdbc:h2:~/db/presents</db.url>
                 <db.username>sa</db.username>
                 <db.password>as</db.password>
@@ -97,6 +100,12 @@
             <groupId>org.flywaydb.flyway-test-extensions</groupId>
             <artifactId>flyway-spring-test</artifactId>
             <version>${flywaydb.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <version>${jsonpath.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

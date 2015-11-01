@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.home.shop.domain.bean.PresentBean;
 import ru.home.shop.domain.repo.PresentRepository;
 import ru.home.shop.domain.validator.PresentValidator;
-import ru.home.shop.exception.ConcurrentException;
+import ru.home.shop.exception.ResourceNotFoundException;
 import ru.home.shop.exception.ValidationException;
 import ru.home.shop.service.PresentService;
 
@@ -45,7 +45,7 @@ public class PresentServiceImpl implements PresentService {
         int updated = repository.editFull(present);
 
         if (updated != 1) {
-            throw new ConcurrentException();
+            throw new ResourceNotFoundException();
         }
     }
 
@@ -58,7 +58,7 @@ public class PresentServiceImpl implements PresentService {
         int removed = repository.remove(id);
 
         if (removed != 1) {
-            throw new ConcurrentException();
+            throw new ResourceNotFoundException();
         }
     }
 
