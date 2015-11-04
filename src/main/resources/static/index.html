@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ru" ng-app="presentApp">
+<head>
+  <meta charset="utf-8" />
+  <title>Подарки</title>
+  <link rel="stylesheet" href="css/app.css">
+  <script src="components/angular/angular.js"></script>
+  <script src="components/angular-route/angular-route.js"></script>
+  <script src="components/jquery/dist/jquery.js"></script>
+  <script src="components/jquery-sticky/jquery.sticky.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/controllers.js"></script>
+</head>
+    
+<body>
+  <header>
+    <div class="content-wrapper">
+      <div class="float-right">
+        <nav>
+          <ul id="menu">
+            <li>
+              <a href="#/index.html">Справка</a>
+            </li>
+            <li>
+              <a href="#/listCandies.html">Конфеты</a>
+            </li>
+            <li>
+              <a href="#/addPresent.html">Конфеты</a>
+            </li>
+            <li>
+              <a href="#/listPresents.html">Список подарков</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <div id="body" ng-view></div>
+
+  <footer>
+    <div class="content-wrapper">
+      <div class="float-left"></div>
+    </div>
+  </footer>
+</body>
+</html>
+
