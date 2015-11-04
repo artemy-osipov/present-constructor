@@ -1,0 +1,172 @@
+<script>
+  $(document).ready(function () {
+    $("tr.maySelected").click(function (e) {
+      if ($(e.target).closest('input[type="number"]').length > 0) {
+        //Editbox clicked
+        return;
+      } else if ($(e.target).closest('input[type="checkbox"]').length > 0) {
+        //Chechbox clicked
+      } else {
+        //Clicked somewhere else
+        var checkbox = $(this).find("input[type='checkbox']");
+        checkbox.attr('checked', !checkbox.attr('checked'));
+      }
+
+      if ($(this).hasClass("selectedRow")) {
+        uncheckRow(this);
+      } else {
+        checkRow(this);
+      }
+    });
+    
+    $("table.entity td.num input").change(function (e) {
+      var newCount = parseCount(e.target.value);
+      var rowId = $(e.target).closest('tr').attr('id');
+      $("#selected_" + rowId).find("td.num").html(newCount);
+      updateSelectedTableInfo();
+    });
+
+    $("#sticky").sticky({ topSpacing: 0 });
+    $("#Name").val("");
+    $("#Price").val("");
+  });
+
+  function checkRow(row) {
+    $(row).addClass("selectedRow");
+    
+    //add selected row
+    var newRow = $(row).clone();
+    newRow.attr('id', "selected_" + $(newRow).attr('id'));
+    newRow.removeClass("maySelected");
+    newRow.find("td:eq(0)").remove();
+
+    var candyCount = parseCount($(row).find("input[type=number]").val());
+
+    newRow.find("td:eq(3)").html(candyCount);
+
+    $('#selectedCandies tr:last').after(newRow);
+    
+    updateSelectedTableInfo();
+  }
+  
+  function uncheckRow(row) {
+    $(row).removeClass("selectedRow");
+    
+    //delete selected row
+    $("#selected_" + $(row).attr('id')).remove();
+    
+    updateSelectedTableInfo();
+  }
+  
+  function parsePrice(num) {
+    return +(num.replace(",", "."));
+  }
+  
+  function toString(num) {
+    return ("" + num.toFixed(2)).replace(".", ",");
+  }
+  
+  function parseCount(str) {
+    var candyCount = +str;
+    
+    if (candyCount === 0 || isNaN(candyCount)) {
+      candyCount = 1;
+    }
+
+    return candyCount;
+  }
+  
+  function updateSelectedTableInfo() {
+    var totalPrice = 0.0;
+    var totalCount = 0;
+    $("table#selectedCandies tr[data-type='candy']").each(function() {
+      var count = parseCount($(this).find("td.num").html());
+      var price = parsePrice($(this).find("td.price").html());
+      totalPrice += count * price;
+      totalCount++;
+    });
+    
+    $("#priceSelected").text(toString(totalPrice));
+    $("#numSelected").text(totalCount);
+  }
+</script>
+
+<h2>Добавление подарка</h2>
+<div id="top"></div>
+  
+<div id="sticky">
+  <a ng-click="scrollTo('bottom')">Вниз</a>
+  <a ng-click="scrollTo('top')">Наверх</a>
+</div>
+  
+<fieldset>
+  <legend>Подарок</legend>
+  <div>
+    <label for="name">Название</label>
+  </div>
+  <div>
+    <input name="name" type="text" value="">
+  </div>
+
+  <div>
+    <label for="price">Цена</label>
+  </div>
+  <div>
+    <input name="price" type="text" value="">
+  </div>
+
+  <p>
+    <input type="submit" value="Добавить" />
+  </p>
+</fieldset>
+
+<table class="entity">
+  <tr>
+    <th></th>
+    <th>Название</th>
+    <th>Производитель</th>
+    <th>Цена</th>
+    <th>Количество</th>
+  </tr>
+
+  <tr ng-repeat="candy in candies" id="{{candy.id}}" ng-class="$candy.checked ? 'selectedRow' : ''" class="maySelected">
+    <td>
+      <input type="checkbox" name="candyId" ng-value="{{candy.checked}}">
+    </td>
+    <td>{{candy.name}}</td>
+    <td>{{candy.firm}}</td>
+    <td class = "price">{{candy.price}}</td>
+    <td class = "num">
+      <input name="count" type="number" ng-value="1">
+    </td>
+  </tr>
+</table>
+
+<hr/>
+<hr/>
+<hr/>
+<hr/>
+<div id="bottom"></div>
+<table id="selectedCandies" class="selectedRow entity">
+  <tr>
+    <td colspan="3">Выбрано :</td>
+    <td id="numSelected">{{selectedCandies.length}}</td>
+  </tr>
+  <tr>
+    <td colspan="3">Сумма :</td>
+    <td id="priceSelected">{{getSum()}}</td>
+  </tr>
+  <tr>
+    <th>Название</th>
+    <th>Производитель</th>
+    <th>Цена</th>
+    <th>Количество</th>
+  </tr>
+
+  <tr ng-repeat="candy in selectedCandies" id="{{candy.id}}">
+    <td>{{candy.name}}</td>
+    <td>{{candy.firm}}</td>
+    <td class = "price">{{candy.price}}</td>
+    <td class = "num">{{candy.count}}</td>
+  </tr> 
+</table>

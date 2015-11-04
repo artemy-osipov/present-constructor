@@ -1,0 +1,34 @@
+<h2>Список подарков</h2>
+
+<div id="top"></div>
+
+<div id="sticky">
+  <a ng-click="scrollTo('bottom')">Вниз</a>
+  <a ng-click="scrollTo('top')">Наверх</a>
+</div>
+
+<table class="entity">
+  <tr>
+    <th>Название</th>
+    <th>Цена</th>
+    <th>Оригинальная цена</th>
+    <th colspan="3"></th>
+  </tr>
+
+  <tr ng-repeat="present in presents">
+    <td>{{present.name}}</td>
+    <td>{{present.price}}</td>
+    <td>{{present.truePrice}}</td>
+    <td>
+      <a href="#/present/{{present.id}}">Просмотр</a>
+    </td>
+    <td>
+      <a href="#/present/{{present.id}}/add">Создать на основе</a>
+    </td>
+    <td>
+      <a href="#/present/{{present.id}}/remove" ng-confirm-click="Точно удалить?">Удалить</a>
+    </td>
+  </tr>
+</table>
+
+<div id="bottom"></div>

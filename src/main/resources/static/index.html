@@ -19,16 +19,16 @@
         <nav>
           <ul id="menu">
             <li>
-              <a href="#/index.html">Справка</a>
+              <a href="#/index">Справка</a>
             </li>
             <li>
-              <a href="#/listCandies.html">Конфеты</a>
+              <a href="#/candy-list">Конфеты</a>
             </li>
             <li>
-              <a href="#/addPresent.html">Конфеты</a>
+              <a href="#/present-add">Добавление подарка</a>
             </li>
             <li>
-              <a href="#/listPresents.html">Список подарков</a>
+              <a href="#/present-list">Список подарков</a>
             </li>
           </ul>
         </nav>
@@ -36,7 +36,9 @@
     </div>
   </header>
 
-  <div id="body" ng-view></div>
+  <div id="body">
+    <section class="content-wrapper main-content clear-fix" ng-view></section>
+  </div>
 
   <footer>
     <div class="content-wrapper">

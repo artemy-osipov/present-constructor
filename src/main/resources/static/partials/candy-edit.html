@@ -1,0 +1,41 @@
+<h2>Конфета</h2>
+
+  <fieldset>
+    <legend>Конфета</legend>
+
+    <div>
+      <label for="name">Название</label>
+    </div>
+    <div>
+      <input name="name" type="text" ng-value="{{candy.name}}">
+    </div>
+
+    <div>
+      <label for="firm">Производитель</label>
+    </div>
+    <div>
+      <input name="firm" type="text" ng-value="{{candy.firm}}">
+    </div>
+
+    <div>
+      <label for="price">Цена</label>
+    </div>
+    <div>
+      <input name="price" type="text" ng-value="{{candy.price}}">
+    </div>
+    
+    <div>
+      <label for="order">Порядок</label>
+    </div>
+    <div>
+      <input name="order" type="text" ng-value="{{candy.order}}">
+    </div>
+
+    <p>
+      <input type="submit" value="Сохранить" />
+    </p>
+  </fieldset>
+
+<div>
+  <a href="#/candy-list">Назад к списку</a>
+</div>

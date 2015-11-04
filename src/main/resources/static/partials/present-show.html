@@ -1,0 +1,43 @@
+<h2>Подарок</h2>
+
+<fieldset>
+  <legend>Подарок</legend>
+
+  <div>
+  <label for="name">Название</label>
+  </div>
+  <div>{{present.name}}</div>
+
+  <div>
+  <label for="price">Цена</label>
+  </div>
+  <div>{{present.price}}</div>
+  
+  <div>
+  <label for="truePrice">Оригинальная цена</label>
+  </div>
+  <div>{{present.truePrice}}</div>
+</fieldset>
+
+<div>
+  <a href="#/present/publicReport/{{present.id}}">Скачать без цены</a>
+</div>
+<div>
+  <a href="#/present/privateReport/{{present.id}}">Скачать с ценой</a>
+</div>
+
+<table class="entity">
+  <tr>
+    <th>Название</th>
+    <th>Производитель</th>
+    <th>Цена</th>
+    <th>Количество</th>
+  </tr>
+
+  <tr ng-repeat="candy in present.candies">
+    <td>{{candy.name}}</td>
+    <td>{{candy.firm}}</td>
+    <td class = "price">{{candy.price}}</td>
+    <td class = "num">{{candy.count}}</td>
+  </tr> 
+</table>
