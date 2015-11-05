@@ -2,12 +2,13 @@
 
 /* App Module */
 
-var phonecatApp = angular.module('presentApp', [
+var presentApp = angular.module('presentApp', [
   'ngRoute',
-  'presentControllers'
+  'presentControllers',
+  'presentServices'
 ]);
 
-phonecatApp.config(['$routeProvider',
+presentApp.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
       when('/index', {
