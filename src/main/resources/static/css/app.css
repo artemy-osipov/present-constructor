@@ -775,3 +775,7 @@ tr.selectedRow {
 #sticky a {
     color: #fff;
 }
+
+a[ng-click]{
+    cursor: pointer;
+}

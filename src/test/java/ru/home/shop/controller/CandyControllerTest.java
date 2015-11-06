@@ -51,7 +51,7 @@ public class CandyControllerTest {
         CandyBean candy = getCandy();
         Integer id = candy.getId();
         CandyService mock = mock(CandyService.class);
-        getMockMvc(mock).perform(put("/candy")
+        getMockMvc(mock).perform(post("/candy")
                 .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(toJson(candy)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", is(id)));
@@ -63,7 +63,7 @@ public class CandyControllerTest {
         CandyBean candy = getCandy();
         CandyService mock = mock(CandyService.class);
         doThrow(ValidationException.class).when(mock).add(candy);
-        getMockMvc(mock).perform(put("/candy")
+        getMockMvc(mock).perform(post("/candy")
                 .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(toJson(candy)))
                 .andExpect(status().isBadRequest());
         verify(mock).add(candy);
@@ -73,7 +73,7 @@ public class CandyControllerTest {
     public void editCandy_validEntity_shouldReturn200() throws Exception {
         CandyBean candy = getCandy();
         CandyService mock = mock(CandyService.class);
-        getMockMvc(mock).perform(post("/candy/{id}", candy.getId())
+        getMockMvc(mock).perform(put("/candy/{id}", candy.getId())
                 .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(toJson(candy)))
                 .andExpect(status().isOk());
         verify(mock).edit(candy);
@@ -84,7 +84,7 @@ public class CandyControllerTest {
         CandyBean candy = getCandy();
         CandyService mock = mock(CandyService.class);
         doThrow(ValidationException.class).when(mock).edit(candy);
-        getMockMvc(mock).perform(post("/candy/{id}", candy.getId())
+        getMockMvc(mock).perform(put("/candy/{id}", candy.getId())
                 .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(toJson(candy)))
                 .andExpect(status().isBadRequest());
         verify(mock).edit(candy);
@@ -95,7 +95,7 @@ public class CandyControllerTest {
         CandyBean candy = getCandy();
         CandyService mock = mock(CandyService.class);
         doThrow(ResourceNotFoundException.class).when(mock).edit(candy);
-        getMockMvc(mock).perform(post("/candy/{id}", candy.getId())
+        getMockMvc(mock).perform(put("/candy/{id}", candy.getId())
                 .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(toJson(candy)))
                 .andExpect(status().isNotFound());
         verify(mock).edit(candy);

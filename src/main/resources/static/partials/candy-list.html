@@ -28,7 +28,7 @@
       <a href="#/candy/{{candy.id}}/edit">Редактировать</a>
     </td>
     <td>
-      <a href="#/candy/{{candy.id}}/remove" ng-confirm-click="Точно удалить?">Удалить</a>
+      <a ng-click="remove(candy.id)">Удалить</a>
     </td>
   </tr>
 </table>

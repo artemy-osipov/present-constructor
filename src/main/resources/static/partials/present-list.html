@@ -24,7 +24,7 @@
       <a href="#/present/{{present.id}}/add">Создать на основе</a>
     </td>
     <td>
-      <a href="#/present/{{present.id}}/remove" ng-confirm-click="Точно удалить?">Удалить</a>
+      <a ng-click="remove(present.id)">Удалить</a>
     </td>
   </tr>
 </table>

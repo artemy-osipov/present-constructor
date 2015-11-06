@@ -1,0 +1,40 @@
+[ng\:cloak], [ng-cloak], .ng-cloak {
+	display: none;
+}
+
+/* AngularJS Form validation styling */
+.validation.help-block {
+    color: #E07676;
+    font-style: italic;
+}
+
+/* invalid & (dirty or touched) => red -- CSS3 only */
+.ng-invalid.ng-dirty:not(:focus),
+.ng-invalid.ng-touched:not(:focus) {
+    border-color: #e74c3c;
+}
+
+/* valid & dirty => green */
+.ng-valid.ng-dirty.ng-touched {
+    border-color: #2ecc71;
+}
+
+/* error display font italic, text-danger is red in BS */
+.validation.text-danger {
+    font-style: italic;
+}
+
+.glyphicon.spinning {
+    animation: spin 1s infinite linear;
+    -webkit-animation: spin2 1s infinite linear;
+}
+
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg);}
+    to { transform: scale(1) rotate(360deg);}
+}
+
+@-webkit-keyframes spin2 {
+    from { -webkit-transform: rotate(0deg);}
+    to { -webkit-transform: rotate(360deg);}
+}

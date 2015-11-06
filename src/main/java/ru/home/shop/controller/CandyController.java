@@ -18,14 +18,14 @@ public class CandyController {
         this.candyService = candyService;
     }
 
-    @RequestMapping(value = "/candy", method = RequestMethod.PUT)
+    @RequestMapping(value = "/candy", method = RequestMethod.POST)
     public int addCandy(@RequestBody CandyBean candy) {
         candyService.add(candy);
 
         return candy.getId();
     }
 
-    @RequestMapping(value = "/candy/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/candy/{id}", method = RequestMethod.PUT)
     public void editCandy(@PathVariable("id") int id, @RequestBody CandyBean candy) {
         candy.setId(id);
         candyService.edit(candy);

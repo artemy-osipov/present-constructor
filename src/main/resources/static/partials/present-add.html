@@ -75,8 +75,8 @@
     </td>
     <td>{{candy.name}}</td>
     <td>{{candy.firm}}</td>
-    <td class = "price">{{candy.price}}</td>
-    <td class = "num">
+    <td>{{candy.price}}</td>
+    <td>
       <input name="count" type="number" ng-value="1">
     </td>
   </tr>
@@ -106,7 +106,7 @@
   <tr ng-repeat="candy in selectedCandies" id="selected_{{candy.id}}">
     <td>{{candy.name}}</td>
     <td>{{candy.firm}}</td>
-    <td class = "price">{{candy.price}}</td>
-    <td class = "num">{{candy.count}}</td>
+    <td>{{candy.price}}</td>
+    <td>{{candy.count}}</td>
   </tr> 
 </table>
