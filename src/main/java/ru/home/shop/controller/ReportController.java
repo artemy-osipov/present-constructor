@@ -15,6 +15,8 @@ import ru.home.shop.service.ReportService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.function.Function;
 
 @RestController
@@ -46,11 +48,18 @@ public class ReportController {
             throw new ResourceNotFoundException();
         }
 
+        String fileName;
+        try {
+            fileName = URLEncoder.encode(String.format("%s %s RUB.docx", present.getName(), present.getPrice()), "UTF-8").replace("+", "%20");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+
         byte[] report = mapReport.apply(present);
 
         final HttpHeaders headers = new HttpHeaders();
-        headers.set("ContentType", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-        headers.set("Content-Disposition", String.format("attachment; filename=%s %s RUB.docx", present.getName(), present.getPrice()));
+        headers.set("Content-Type", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        headers.set("Content-Disposition", "attachment; filename*=UTF-8''" + fileName);
 
         return new ResponseEntity<>(report, headers, HttpStatus.OK);
     }
