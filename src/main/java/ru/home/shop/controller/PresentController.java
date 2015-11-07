@@ -18,14 +18,14 @@ public class PresentController {
         this.presentService = presentService;
     }
 
-    @RequestMapping(value = "/present", method = RequestMethod.PUT)
+    @RequestMapping(value = "/present", method = RequestMethod.POST)
     public int addPresent(@RequestBody PresentBean present) {
         presentService.add(present);
 
         return present.getId();
     }
 
-    @RequestMapping(value = "/present/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/present/{id}", method = RequestMethod.PUT)
     public void editPresent(@PathVariable("id") int id, @RequestBody PresentBean present) {
         present.setId(id);
         presentService.edit(present);

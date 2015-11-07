@@ -1,36 +1,3 @@
-<script>
-  $(document).ready(function () {
-    $("tr.maySelected").click(function (e) {
-      if ($(e.target).closest('input[type="number"]').length > 0) {
-        //Editbox clicked
-        return;
-      } else if ($(e.target).closest('input[type="checkbox"]').length > 0) {
-        //Chechbox clicked
-      } else {
-        //Clicked somewhere else
-        var checkbox = $(this).find("input[type='checkbox']");
-        checkbox.attr('checked', !checkbox.attr('checked'));
-      }
-
-      updateRow(this);
-    });
-  });
-
-  function updateRow(row) {
-    if ($(this).hasClass("selectedRow")) {
-      $(row).removeClass("selectedRow");
-
-      //delete selected row
-      //TODO
-    } else {
-      $(row).addClass("selectedRow");
-
-      //add selected row
-      //TODO
-    }
-  }
-</script>
-
 <h2>Добавление подарка</h2>
 <a id="top"></a>
   
@@ -38,46 +5,44 @@
   <a href ng-click="scrollTo('bottom')">Вниз</a>
   <a href ng-click="scrollTo('top')">Наверх</a>
 </div>
-  
-<fieldset>
-  <legend>Подарок</legend>
-  <div>
-    <label for="name">Название</label>
-  </div>
-  <div>
-    <input id="name" name="name" type="text" value="">
-  </div>
 
-  <div>
-    <label for="price">Цена</label>
-  </div>
-  <div>
-    <input id="price" name="price" type="text" value="">
-  </div>
+<form name="addPresentForm" ng-submit="submitForm()">
+  <fieldset>
+    <legend>Подарок</legend>
+    <div>
+      <label for="name">Название</label>
+    </div>
+    <div>
+      <input id="name" name="name" ng-model="present.name" type="text" validation="required" required>
+    </div>
 
-  <p>
-    <input type="submit" value="Добавить" />
-  </p>
-</fieldset>
+    <div>
+      <label for="price">Цена</label>
+    </div>
+    <div>
+      <input id="price" name="price" ng-model="present.price" type="number" step="0.01" validation="numeric|required" required>
+    </div>
+
+    <p>
+      <input type="submit" value="Добавить" />
+    </p>
+  </fieldset>
+</form>
 
 <table class="entity">
   <tr>
-    <th></th>
     <th>Название</th>
     <th>Производитель</th>
     <th>Цена</th>
     <th>Количество</th>
   </tr>
 
-  <tr ng-repeat="candy in candies" id="{{candy.id}}" ng-class="$candy.checked ? 'selectedRow' : ''" class="maySelected">
-    <td>
-      <input type="checkbox" name="candyId" ng-value="{{candy.checked}}">
-    </td>
+  <tr ng-repeat="candy in candies" ng-click="checkCandy(candy.id, $event)" ng-class="candy.checked ? 'selectedRow' : ''">
     <td>{{candy.name}}</td>
     <td>{{candy.firm}}</td>
     <td>{{candy.price}}</td>
     <td>
-      <input name="count" type="number" ng-value="1">
+      <input name="count" type="number" ng-disabled="!candy.checked" min="1" step="1" ng-model="candy.count" ng-change="computeStatistics()">
     </td>
   </tr>
 </table>
@@ -87,14 +52,14 @@
 <hr/>
 <hr/>
 <a id="bottom"></a>
-<table id="selectedCandies" class="entity">
+<table class="entity">
   <tr>
     <td colspan="3">Выбрано :</td>
-    <td id="numSelected">{{selectedCandies.length}}</td>
+    <td id="numSelected">{{totalCount}}</td>
   </tr>
   <tr>
     <td colspan="3">Сумма :</td>
-    <td id="priceSelected">{{getSum()}}</td>
+    <td id="priceSelected">{{totalPrice}}</td>
   </tr>
   <tr>
     <th>Название</th>
@@ -103,7 +68,7 @@
     <th>Количество</th>
   </tr>
 
-  <tr ng-repeat="candy in selectedCandies" id="selected_{{candy.id}}">
+  <tr ng-repeat="candy in selectedCandies">
     <td>{{candy.name}}</td>
     <td>{{candy.firm}}</td>
     <td>{{candy.price}}</td>

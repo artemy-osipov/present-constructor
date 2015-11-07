@@ -754,7 +754,7 @@ tr.pager td {
         }
 }
 
-table.entity td, table.entity th, td.maySelected {
+table.entity td, table.entity th {
     border: solid black 1px;
     padding: 10px;
 }
@@ -765,17 +765,21 @@ tr.selectedRow {
     background-color: lightcyan;
 }
 
-#sticky {
+div#sticky {
     padding: 0.5ex;
     background-color: #333;
     color: #fff;
     border-radius: 0.5ex;
 }
 
-#sticky a {
+div#sticky a {
     color: #fff;
 }
 
-a[ng-click]{
+a[ng-click] {
     cursor: pointer;
+}
+
+input:disabled {
+    background-color: LightGray;
 }

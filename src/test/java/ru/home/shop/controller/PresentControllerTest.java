@@ -61,7 +61,7 @@ public class PresentControllerTest {
         PresentBean present = getPresent();
         Integer id = present.getId();
         PresentService mock = mock(PresentService.class);
-        getMockMvc(mock).perform(put("/present")
+        getMockMvc(mock).perform(post("/present")
                 .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(toJson(present)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", is(id)));
@@ -73,7 +73,7 @@ public class PresentControllerTest {
         PresentBean present = getPresent();
         PresentService mock = mock(PresentService.class);
         doThrow(ValidationException.class).when(mock).add(present);
-        getMockMvc(mock).perform(put("/present")
+        getMockMvc(mock).perform(post("/present")
                 .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(toJson(present)))
                 .andExpect(status().isBadRequest());
         verify(mock).add(present);
@@ -83,7 +83,7 @@ public class PresentControllerTest {
     public void editPresent_validEntity_shouldReturn200() throws Exception {
         PresentBean present = getPresent();
         PresentService mock = mock(PresentService.class);
-        getMockMvc(mock).perform(post("/present/{id}", present.getId())
+        getMockMvc(mock).perform(put("/present/{id}", present.getId())
                 .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(toJson(present)))
                 .andExpect(status().isOk());
         verify(mock).edit(present);
@@ -94,7 +94,7 @@ public class PresentControllerTest {
         PresentBean present = getPresent();
         PresentService mock = mock(PresentService.class);
         doThrow(ValidationException.class).when(mock).edit(present);
-        getMockMvc(mock).perform(post("/present/{id}", present.getId())
+        getMockMvc(mock).perform(put("/present/{id}", present.getId())
                 .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(toJson(present)))
                 .andExpect(status().isBadRequest());
         verify(mock).edit(present);
@@ -105,7 +105,7 @@ public class PresentControllerTest {
         PresentBean present = getPresent();
         PresentService mock = mock(PresentService.class);
         doThrow(ResourceNotFoundException.class).when(mock).edit(present);
-        getMockMvc(mock).perform(post("/present/{id}", present.getId())
+        getMockMvc(mock).perform(put("/present/{id}", present.getId())
                 .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(toJson(present)))
                 .andExpect(status().isNotFound());
         verify(mock).edit(present);
