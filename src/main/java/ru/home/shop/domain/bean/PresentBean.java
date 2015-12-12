@@ -50,7 +50,11 @@ public class PresentBean {
         if (candies == null) {
             return BigDecimal.ZERO;
         } else {
-            return candies.stream().map(c -> c.getPrice() == null ? BigDecimal.ZERO : c.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add);
+            return candies.stream()
+                    .map(c ->
+                            (c.getPrice() == null ? BigDecimal.ZERO : c.getPrice())
+                            .multiply(BigDecimal.valueOf(c.getCount())))
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
         }
     }
 
