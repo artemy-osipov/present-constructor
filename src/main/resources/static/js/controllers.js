@@ -98,12 +98,12 @@ presentControllers.controller('PresentAddCtrl', function($scope, $location, $anc
           if (selected) {
             candy.checked = true;
             candy.count = selected.count;
+            $scope.selectedCandies.push(candy);
           } else {
             candy.checked = false;
           }
         });
 
-        $scope.selectedCandies = present.candies;
         $scope.computeStatistics();
       }
     );
