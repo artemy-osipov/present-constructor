@@ -19,13 +19,15 @@ public class PresentBeanTest {
 
         CandyBean candy1 = new CandyBean();
         candy1.setPrice(BigDecimal.valueOf(1.1));
+        candy1.setCount(1);
 
         CandyBean candy2 = new CandyBean();
         candy2.setPrice(BigDecimal.valueOf(2.2));
+        candy2.setCount(2);
 
         present.getCandies().add(candy1);
         present.getCandies().add(candy2);
 
-        assertEquals(BigDecimal.valueOf(3.3), present.getTruePrice());
+        assertEquals(BigDecimal.valueOf(5.5), present.getTruePrice());
     }
 }

@@ -49,7 +49,7 @@ public class ReportControllerTest {
 
         byte[] response = getMockMvc(mockPresent, mockReport).perform(get("/present/publicReport/{id}", presentId))
                 .andExpect(status().isOk())
-                .andExpect(header().string("Content-Disposition", is(String.format("attachment; filename=%s %s RUB.docx", present.getName(), present.getPrice()))))
+                .andExpect(header().string("Content-Disposition", is(String.format("attachment; filename*=UTF-8''%s%%20%s%%20RUB.docx", present.getName(), present.getPrice()))))
                 .andReturn().getResponse().getContentAsByteArray();
 
         verify(mockPresent).find(presentId);
@@ -87,7 +87,7 @@ public class ReportControllerTest {
 
         byte[] response = getMockMvc(mockPresent, mockReport).perform(get("/present/privateReport/{id}", presentId))
                 .andExpect(status().isOk())
-                .andExpect(header().string("Content-Disposition", is(String.format("attachment; filename=%s %s RUB.docx", present.getName(), present.getPrice()))))
+                .andExpect(header().string("Content-Disposition", is(String.format("attachment; filename*=UTF-8''%s%%20%s%%20RUB.docx", present.getName(), present.getPrice()))))
                 .andReturn().getResponse().getContentAsByteArray();
 
         verify(mockPresent).find(presentId);
