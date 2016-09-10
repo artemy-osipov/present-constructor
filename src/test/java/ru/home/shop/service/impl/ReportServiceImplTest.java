@@ -8,12 +8,14 @@ import ru.home.shop.service.PresentService;
 import java.io.IOException;
 import java.math.BigDecimal;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class ReportServiceImplTest {
+
+    private ReportServiceImpl reportService = new ReportServiceImpl();
 
     private PresentBean getPresent() {
         PresentBean present = new PresentBean();
@@ -41,34 +43,36 @@ public class ReportServiceImplTest {
     }
 
     @Test
-    public void publicReport_validId_shouldGenerateSomeReport() throws IOException {
-        assertNotNull(new ReportServiceImpl().publicReport(getPresent()));
+    public void publicReportWithValidIdShouldGenerateSomeReport() throws IOException {
+        assertNotNull(reportService.publicReport(getPresent()));
     }
 
-    @Test
-    public void publicReport_notValidId_shouldThrowException() throws IOException {
+    @Test(expected = IllegalArgumentException.class)
+    public void publicReportWithNotValidIdShouldThrowException() throws IOException {
         PresentService mock = mock(PresentService.class);
         int id = 1;
         when(mock.find(id)).thenReturn(null);
 
-        try {
-            new ReportServiceImpl().publicReport(null);
-            fail();
-        } catch (IllegalArgumentException ignored) {
-        }
+        reportService.publicReport(null);
     }
 
     @Test
-    public void privateReport_validId_shouldGenerateSomeReport() throws IOException {
-        assertNotNull(new ReportServiceImpl().privateReport(getPresent()));
+    public void privateReportWithVlidIdShouldGenerateSomeReport() throws IOException {
+        assertNotNull(reportService.privateReport(getPresent()));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void privateWithNotValidIdShouldThrowException() throws IOException {
+        reportService.privateReport(null);
     }
 
     @Test
-    public void private_notValidId_shouldThrowException() throws IOException {
-        try {
-            new ReportServiceImpl().privateReport(null);
-            fail();
-        } catch (IllegalArgumentException ignored) {
-        }
+    public void presentWithoutCandiesHasZeroCostPrice() {
+        assertEquals(BigDecimal.ZERO, reportService.computeCostPrice(new PresentBean()));
+    }
+
+    @Test
+    public void testComputeCostPrice() {
+        assertEquals(new BigDecimal("15.4"), reportService.computeCostPrice(getPresent()));
     }
 }

@@ -50,7 +50,7 @@ public class ReportServiceImpl implements ReportService {
         }
     }
 
-    public BigDecimal computeCostPrice(PresentBean present) {
+    BigDecimal computeCostPrice(PresentBean present) {
         if (present.getCandies() == null) {
             return BigDecimal.ZERO;
         } else {
