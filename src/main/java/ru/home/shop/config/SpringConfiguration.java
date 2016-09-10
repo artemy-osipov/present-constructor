@@ -64,7 +64,6 @@ public class SpringConfiguration {
 
     @Bean
     public org.jooq.Configuration jooqConfig(ConnectionProvider connectionProvider, ExecuteListenerProvider executeListenerProvider) {
-
         return new DefaultConfiguration()
                 .derive(connectionProvider)
                 .derive(executeListenerProvider)

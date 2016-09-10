@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.home.shop.domain.bean.CandyBean;
 import ru.home.shop.domain.bean.PresentBean;
 import ru.home.shop.domain.repo.PresentRepository;
-import ru.home.shop.domain.transformer.PresentTransformer;
+import ru.home.shop.domain.repo.mapper.PresentMapper;
 
 import java.util.Collection;
 
@@ -76,7 +76,7 @@ public class JOOQPresentRepository implements PresentRepository {
     @Override
     public Collection<PresentBean> findAll() {
         return dsl.selectFrom(PRESENT)
-                .fetch().map(PresentTransformer::transform);
+                .fetch(new PresentMapper());
     }
 
     @Override
@@ -84,7 +84,7 @@ public class JOOQPresentRepository implements PresentRepository {
     public PresentBean findFull(int id) {
         PresentBean present = dsl.selectFrom(PRESENT)
                 .where(PRESENT.ID.eq(id))
-                .fetchOne(PresentTransformer::transform);
+                .fetchOne(new PresentMapper());
 
         if (present != null) {
             present.setCandies(listCandiesByPresent(id));

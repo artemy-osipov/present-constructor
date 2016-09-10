@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import ru.home.db.tables.records.CandyRecord;
 import ru.home.shop.domain.bean.CandyBean;
 import ru.home.shop.domain.repo.CandyRepository;
-import ru.home.shop.domain.transformer.CandyTransformer;
+import ru.home.shop.domain.repo.mapper.CandyMapper;
 
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -60,13 +60,13 @@ public class JOOQCandyRepository implements CandyRepository {
     public Collection<CandyBean> findAll() {
         return dsl.selectFrom(CANDY)
                 .orderBy(CANDY.CANDY_ORDER)
-                .fetch().map(CandyTransformer::transform);
+                .fetch(new CandyMapper());
     }
 
     @Override
     public CandyBean find(int id) {
         return dsl.selectFrom(CANDY)
                 .where(CANDY.ID.eq(id))
-                .fetchOne(CandyTransformer::transform);
+                .fetchOne(new CandyMapper());
     }
 }

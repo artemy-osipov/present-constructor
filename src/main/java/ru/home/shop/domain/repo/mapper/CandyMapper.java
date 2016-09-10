@@ -1,11 +1,14 @@
-package ru.home.shop.domain.transformer;
+package ru.home.shop.domain.repo.mapper;
 
+import org.jooq.RecordMapper;
+import ru.home.db.tables.Candy;
 import ru.home.db.tables.records.CandyRecord;
 import ru.home.shop.domain.bean.CandyBean;
 
-public class CandyTransformer {
+public class CandyMapper implements RecordMapper<CandyRecord, CandyBean>{
 
-    public static CandyBean transform(CandyRecord record) {
+    @Override
+    public CandyBean map(CandyRecord record) {
         if (record == null) {
             return null;
         }

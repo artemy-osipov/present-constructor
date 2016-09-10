@@ -1,4 +1,4 @@
-package ru.home.shop.domain.transformer;
+package ru.home.shop.domain.repo.mapper;
 
 import org.junit.Test;
 import ru.home.db.tables.records.PresentRecord;
@@ -8,11 +8,13 @@ import java.math.BigDecimal;
 
 import static org.junit.Assert.*;
 
-public class PresentTransformerTest {
+public class PresentMapperTest {
 
     private static final Integer ID = 1;
     private static final String NAME = "name";
     private static final BigDecimal PRICE = BigDecimal.valueOf(2.3);
+
+    private PresentMapper mapper = new PresentMapper();
 
     private PresentRecord getRecord() {
         PresentRecord record = new PresentRecord();
@@ -24,17 +26,17 @@ public class PresentTransformerTest {
     }
 
     @Test
-    public void transform_valid_shouldTransformEntry() {
-        PresentBean present = PresentTransformer.transform(getRecord());
+    public void nullShouldMapToNull() {
+        assertNull(mapper.map(null));
+    }
+
+    @Test
+    public void testFullInfoMap() {
+        PresentBean present = mapper.map(getRecord());
 
         assertEquals(ID, present.getId());
         assertEquals(NAME, present.getName());
         assertNotNull(present.getPrice());
         assertEquals(PRICE, present.getPrice());
-    }
-
-    @Test
-    public void transform_nullEntry_shouldReturnNull() {
-        assertNull(PresentTransformer.transform(null));
     }
 }

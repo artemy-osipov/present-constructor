@@ -1,4 +1,4 @@
-package ru.home.shop.domain.transformer;
+package ru.home.shop.domain.repo.mapper;
 
 import org.junit.Test;
 import ru.home.db.tables.records.CandyRecord;
@@ -8,13 +8,15 @@ import java.math.BigDecimal;
 
 import static org.junit.Assert.*;
 
-public class CandyTransformerTest {
+public class CandyMapperTest {
 
     private static final Integer ID = 1;
     private static final String NAME = "name";
     private static final String FIRM = "firm";
     private static final BigDecimal PRICE = BigDecimal.valueOf(2.3);
     private static final double ORDER = 1.1;
+
+    private CandyMapper mapper = new CandyMapper();
 
     private CandyRecord getRecord() {
         CandyRecord record = new CandyRecord();
@@ -28,8 +30,13 @@ public class CandyTransformerTest {
     }
 
     @Test
-    public void transform_valid_shouldTransformEntry() {
-        CandyBean candy = CandyTransformer.transform(getRecord());
+    public void nullShouldMapToNull() {
+        assertNull(mapper.map(null));
+    }
+
+    @Test
+    public void testFullInfoMap() {
+        CandyBean candy = mapper.map(getRecord());
 
         assertEquals(ID, candy.getId());
         assertEquals(NAME, candy.getName());
@@ -40,15 +47,10 @@ public class CandyTransformerTest {
     }
 
     @Test
-    public void transform_nullEntry_shouldReturnNull() {
-        assertNull(CandyTransformer.transform(null));
-    }
-
-    @Test
-    public void transform_nullOrder_shouldNotTransformOrder() {
+    public void nullOrderShouldMapToZero() {
         CandyRecord record = getRecord();
         record.setCandyOrder(null);
 
-        assertEquals(0, CandyTransformer.transform(record).getOrder(), 0.001);
+        assertEquals(0, mapper.map(record).getOrder(), 0.001);
     }
 }

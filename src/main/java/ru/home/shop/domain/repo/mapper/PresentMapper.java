@@ -1,11 +1,13 @@
-package ru.home.shop.domain.transformer;
+package ru.home.shop.domain.repo.mapper;
 
+import org.jooq.RecordMapper;
 import ru.home.db.tables.records.PresentRecord;
 import ru.home.shop.domain.bean.PresentBean;
 
-public class PresentTransformer {
+public class PresentMapper implements RecordMapper<PresentRecord, PresentBean>{
 
-    public static PresentBean transform(PresentRecord record) {
+    @Override
+    public PresentBean map(PresentRecord record) {
         if (record == null) {
             return null;
         }
