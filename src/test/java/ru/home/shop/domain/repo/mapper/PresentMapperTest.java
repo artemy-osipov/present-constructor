@@ -36,7 +36,6 @@ public class PresentMapperTest {
 
         assertEquals(ID, present.getId());
         assertEquals(NAME, present.getName());
-        assertNotNull(present.getPrice());
         assertEquals(PRICE, present.getPrice());
     }
 }

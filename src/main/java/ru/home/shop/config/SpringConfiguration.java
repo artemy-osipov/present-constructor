@@ -8,6 +8,7 @@ import org.jooq.impl.DefaultDSLContext;
 import org.jooq.impl.DefaultExecuteListenerProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -19,6 +20,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableTransactionManagement
+@ComponentScan("ru.home.shop")
 @PropertySource("classpath:application.properties")
 public class SpringConfiguration {
 

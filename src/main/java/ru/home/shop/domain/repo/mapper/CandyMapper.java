@@ -1,7 +1,6 @@
 package ru.home.shop.domain.repo.mapper;
 
 import org.jooq.RecordMapper;
-import ru.home.db.tables.Candy;
 import ru.home.db.tables.records.CandyRecord;
 import ru.home.shop.domain.bean.CandyBean;
 

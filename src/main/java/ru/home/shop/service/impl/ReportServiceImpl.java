@@ -12,6 +12,7 @@ import ru.home.shop.service.ReportService;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 
 @Service
 public class ReportServiceImpl implements ReportService {
@@ -38,6 +39,7 @@ public class ReportServiceImpl implements ReportService {
 
             IContext context = report.createContext();
             context.put("present", present);
+            context.put("costPrice", computeCostPrice(present));
 
             ByteArrayOutputStream bout = new ByteArrayOutputStream();
             report.process(context, bout);
@@ -45,6 +47,18 @@ public class ReportServiceImpl implements ReportService {
             return bout.toByteArray();
         } catch (XDocReportException | IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public BigDecimal computeCostPrice(PresentBean present) {
+        if (present.getCandies() == null) {
+            return BigDecimal.ZERO;
+        } else {
+            return present.getCandies().stream()
+                    .map(c ->
+                            (c.getPrice() == null ? BigDecimal.ZERO : c.getPrice())
+                                    .multiply(BigDecimal.valueOf(c.getCount())))
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
         }
     }
 }
