@@ -8,6 +8,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ru.home.shop.PresentsApplication;
 import ru.home.shop.domain.bean.PresentBean;
+import ru.home.shop.domain.bean.Report;
 import ru.home.shop.service.PresentService;
 import ru.home.shop.service.ReportService;
 
@@ -36,11 +37,15 @@ public class ReportControllerTest {
         return present;
     }
 
+    private Report getReport() {
+        return new Report("name 2.4 RUB.docx", new byte[] {1, 2, 3});
+    }
+
     @Test
-    public void publicReport_existentId_shouldReturnReport() throws Exception {
+    public void publicReportWithExistentIdShouldReturnReport() throws Exception {
         int presentId = 1;
         PresentBean present = getPresent();
-        byte[] report = {1, 2, 3};
+        Report report = getReport();
         PresentService mockPresent = mock(PresentService.class);
         ReportService mockReport = mock(ReportService.class);
 
@@ -52,21 +57,16 @@ public class ReportControllerTest {
                 .andExpect(header().string("Content-Disposition", is(String.format("attachment; filename*=UTF-8''%s%%20%s%%20RUB.docx", present.getName(), present.getPrice()))))
                 .andReturn().getResponse().getContentAsByteArray();
 
-        verify(mockPresent).find(presentId);
-        verify(mockReport).publicReport(present);
-        assertArrayEquals(report, response);
+        assertArrayEquals(report.getContent(), response);
     }
 
     @Test
-    public void publicReport_nonexistentId_shouldReturn404() throws Exception {
+    public void publicReportWithNonExistentIdShouldReturn404() throws Exception {
         int presentId = 1;
-        PresentBean present = getPresent();
-        byte[] report = {1, 2, 3};
         PresentService mockPresent = mock(PresentService.class);
         ReportService mockReport = mock(ReportService.class);
 
         doReturn(null).when(mockPresent).find(presentId);
-        doReturn(report).when(mockReport).publicReport(present);
 
         getMockMvc(mockPresent, mockReport).perform(get("/present/publicReport/{id}", presentId))
                 .andExpect(status().isNotFound());
@@ -75,10 +75,10 @@ public class ReportControllerTest {
     }
 
     @Test
-    public void privateReport_existentId_shouldReturnReport() throws Exception {
+    public void privateReportWithExistentIdShouldReturnReport() throws Exception {
         int presentId = 1;
         PresentBean present = getPresent();
-        byte[] report = {1, 2, 3};
+        Report report = getReport();
         PresentService mockPresent = mock(PresentService.class);
         ReportService mockReport = mock(ReportService.class);
 
@@ -90,25 +90,18 @@ public class ReportControllerTest {
                 .andExpect(header().string("Content-Disposition", is(String.format("attachment; filename*=UTF-8''%s%%20%s%%20RUB.docx", present.getName(), present.getPrice()))))
                 .andReturn().getResponse().getContentAsByteArray();
 
-        verify(mockPresent).find(presentId);
-        verify(mockReport).privateReport(present);
-        assertArrayEquals(report, response);
+        assertArrayEquals(report.getContent(), response);
     }
 
     @Test
-    public void privateReport_nonexistentId_shouldReturn404() throws Exception {
+    public void privateReportWithNonExistentIdShouldReturn404() throws Exception {
         int presentId = 1;
-        PresentBean present = getPresent();
-        byte[] report = {1, 2, 3};
         PresentService mockPresent = mock(PresentService.class);
         ReportService mockReport = mock(ReportService.class);
 
         doReturn(null).when(mockPresent).find(presentId);
-        doReturn(report).when(mockReport).publicReport(present);
 
         getMockMvc(mockPresent, mockReport).perform(get("/present/privateReport/{id}", presentId))
                 .andExpect(status().isNotFound());
-
-        verify(mockPresent).find(presentId);
     }
 }

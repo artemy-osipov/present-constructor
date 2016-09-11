@@ -3,13 +3,13 @@ package ru.home.shop.service.impl;
 import org.junit.Test;
 import ru.home.shop.domain.bean.CandyBean;
 import ru.home.shop.domain.bean.PresentBean;
+import ru.home.shop.domain.bean.Report;
 import ru.home.shop.service.PresentService;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -44,7 +44,10 @@ public class ReportServiceImplTest {
 
     @Test
     public void publicReportWithValidIdShouldGenerateSomeReport() throws IOException {
-        assertNotNull(reportService.publicReport(getPresent()));
+        Report report = reportService.publicReport(getPresent());
+
+        assertEquals("name 4.2 RUB.docx", report.getName());
+        assertEquals(11632, report.getContent().length);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -57,8 +60,11 @@ public class ReportServiceImplTest {
     }
 
     @Test
-    public void privateReportWithVlidIdShouldGenerateSomeReport() throws IOException {
-        assertNotNull(reportService.privateReport(getPresent()));
+    public void privateReportWithValidIdShouldGenerateSomeReport() throws IOException {
+        Report report = reportService.privateReport(getPresent());
+
+        assertEquals("name 4.2 RUB.docx", report.getName());
+        assertEquals(14572, report.getContent().length);
     }
 
     @Test(expected = IllegalArgumentException.class)
