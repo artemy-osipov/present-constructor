@@ -6,9 +6,9 @@ import java.util.Collection;
 
 public interface PresentRepository {
 
-    int addFull(PresentBean present);
+    int add(PresentBean present);
     int remove(int id);
-    int editFull(PresentBean present);
+    int edit(PresentBean present);
     Collection<PresentBean> findAll();
     PresentBean findFull(int id);
 }

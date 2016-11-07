@@ -2,22 +2,13 @@ package ru.home.shop.domain.bean;
 
 import java.math.BigDecimal;
 
-public class CandyBean {
+public class CandyBean extends VersionBean {
 
-    private Integer id;
     private String name;
     private String firm;
     private double order;
     private BigDecimal price;
     private int count = 1;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

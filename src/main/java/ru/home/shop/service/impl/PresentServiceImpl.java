@@ -30,7 +30,7 @@ public class PresentServiceImpl implements PresentService {
             throw new ValidationException(errors);
         }
 
-        Integer newId = repository.addFull(present);
+        Integer newId = repository.add(present);
         present.setId(newId);
     }
 
@@ -42,7 +42,7 @@ public class PresentServiceImpl implements PresentService {
             throw new ValidationException(errors);
         }
 
-        int updated = repository.editFull(present);
+        int updated = repository.edit(present);
 
         if (updated != 1) {
             throw new ResourceNotFoundException();

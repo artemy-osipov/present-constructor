@@ -23,10 +23,12 @@ public class PresentServiceImplTest {
 
         CandyBean candy1 = new CandyBean();
         candy1.setId(1);
+        candy1.setVid(11);
         candy1.setCount(2);
 
         CandyBean candy2 = new CandyBean();
         candy2.setId(3);
+        candy2.setVid(33);
         candy2.setCount(6);
 
         present.getCandies().add(candy1);
@@ -42,10 +44,10 @@ public class PresentServiceImplTest {
 
         Integer newId = 2;
 
-        when(mock.addFull(present)).thenReturn(newId);
+        when(mock.add(present)).thenReturn(newId);
 
         new PresentServiceImpl(mock).add(present);
-        verify(mock).addFull(present);
+        verify(mock).add(present);
         assertEquals(newId, present.getId());
     }
 
@@ -78,11 +80,11 @@ public class PresentServiceImplTest {
         present.setId(1);
 
         PresentRepository mock = mock(PresentRepository.class);
-        when(mock.editFull(present)).thenReturn(1);
+        when(mock.edit(present)).thenReturn(1);
 
 
         new PresentServiceImpl(mock).edit(present);
-        verify(mock).editFull(present);
+        verify(mock).edit(present);
     }
 
     @Test
@@ -108,19 +110,15 @@ public class PresentServiceImplTest {
         }
     }
 
-    @Test
+    @Test(expected = ResourceNotFoundException.class)
     public void edit_nonexistentId_shouldThrowException() {
         PresentRepository mock = mock(PresentRepository.class);
         PresentBean present = getValidAddPresent();
         present.setId(1);
 
-        when(mock.editFull(present)).thenReturn(0);
+        when(mock.edit(present)).thenReturn(0);
 
-        try {
-            new PresentServiceImpl(mock).edit(present);
-            fail();
-        } catch (ResourceNotFoundException ignored) {
-        }
+        new PresentServiceImpl(mock).edit(present);
     }
 
     @Test

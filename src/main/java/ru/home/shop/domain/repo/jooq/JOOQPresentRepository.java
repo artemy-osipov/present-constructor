@@ -11,6 +11,7 @@ import ru.home.shop.domain.repo.mapper.PresentMapper;
 
 import java.util.Collection;
 
+import static ru.home.db.Tables.CANDY_HISTORY;
 import static ru.home.db.tables.Candy.CANDY;
 import static ru.home.db.tables.CandyPresent.CANDY_PRESENT;
 import static ru.home.db.tables.Present.PRESENT;
@@ -27,7 +28,7 @@ public class JOOQPresentRepository implements PresentRepository {
 
     @Override
     @Transactional
-    public int addFull(PresentBean present) {
+    public int add(PresentBean present) {
         int id = dsl.insertInto(PRESENT)
                 .set(PRESENT.NAME, present.getName())
                 .set(PRESENT.PRICE, present.getPrice())
@@ -43,7 +44,7 @@ public class JOOQPresentRepository implements PresentRepository {
         candies.forEach(
                 candy -> dsl.insertInto(CANDY_PRESENT)
                         .set(CANDY_PRESENT.PRESENT, present)
-                        .set(CANDY_PRESENT.CANDY, candy.getId())
+                        .set(CANDY_PRESENT.CANDY_HISTORY, candy.getVid())
                         .set(CANDY_PRESENT.COUNT, candy.getCount())
                         .execute()
         );
@@ -58,7 +59,7 @@ public class JOOQPresentRepository implements PresentRepository {
 
     @Override
     @Transactional
-    public int editFull(PresentBean present) {
+    public int edit(PresentBean present) {
         int updated = dsl.update(PRESENT)
                 .set(PRESENT.NAME, present.getName())
                 .set(PRESENT.PRICE, present.getPrice())
@@ -96,17 +97,19 @@ public class JOOQPresentRepository implements PresentRepository {
     private Collection<CandyBean> listCandiesByPresent(int present) {
         return dsl.select()
                 .from(CANDY_PRESENT)
-                .leftJoin(CANDY).on(CANDY_PRESENT.CANDY.eq(CANDY.ID))
+                .leftJoin(CANDY_HISTORY).on(CANDY_PRESENT.CANDY_HISTORY.eq(CANDY_HISTORY.ID))
+                .leftJoin(CANDY).on(CANDY_HISTORY.CANDY.eq(CANDY.ID))
                 .where(CANDY_PRESENT.PRESENT.eq(present))
-                .orderBy(CANDY.CANDY_ORDER)
+                .orderBy(CANDY.ORDER)
                 .fetch()
                 .map(r -> {
                     CandyBean candy = new CandyBean();
-                    candy.setId(r.getValue(CANDY.ID));
-                    candy.setName(r.getValue(CANDY.NAME));
-                    candy.setFirm(r.getValue(CANDY.FIRM));
-                    candy.setPrice(r.getValue(CANDY.PRICE));
-                    candy.setOrder(r.getValue(CANDY.CANDY_ORDER).doubleValue());
+                    candy.setId(r.getValue(CANDY_HISTORY.CANDY));
+                    candy.setVid(r.getValue(CANDY_HISTORY.ID));
+                    candy.setName(r.getValue(CANDY_HISTORY.NAME));
+                    candy.setFirm(r.getValue(CANDY_HISTORY.FIRM));
+                    candy.setPrice(r.getValue(CANDY_HISTORY.PRICE));
+                    candy.setOrder(r.getValue(CANDY.ORDER));
                     candy.setCount(r.getValue(CANDY_PRESENT.COUNT));
 
                     return candy;

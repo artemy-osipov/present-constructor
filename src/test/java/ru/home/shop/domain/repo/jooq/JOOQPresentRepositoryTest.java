@@ -43,98 +43,90 @@ public class JOOQPresentRepositoryTest {
     }
 
     @Test
-    public void add_shouldAddNewEntry() {
+    public void addShouldAddNewEntry() {
         int before = dsl.fetchCount(PRESENT);
 
-        repository.addFull(getPresent());
+        repository.add(getPresent());
 
         assertEquals(++before, dsl.fetchCount(PRESENT));
     }
 
     @Test
-    public void add_withCandies_shouldAddCandies() {
+    public void addWithCandiesShouldAddCandies() {
         PresentBean present = getPresent();
 
         CandyBean candy = new CandyBean();
-        candy.setId(1);
+        candy.setVid(1);
         candy.setCount(2);
 
         present.getCandies().add(candy);
 
-        int presentID = repository.addFull(present);
-        Select count = dsl.selectCount().from(CANDY_PRESENT).where(CANDY_PRESENT.PRESENT.eq(presentID));
+        int presentID = repository.add(present);
 
+        Select count = dsl.selectCount().from(CANDY_PRESENT).where(CANDY_PRESENT.PRESENT.eq(presentID));
         assertEquals(1, dsl.fetchCount(count));
     }
 
-    @Test
+    @Test(expected = DataIntegrityViolationException.class)
     public void add_emptyPrice_shouldThrowException() {
         PresentBean present = getPresent();
         present.setPrice(null);
 
-        try {
-            repository.addFull(present);
-            fail();
-        } catch (DataIntegrityViolationException ignored) {
-        }
+        repository.add(present);
     }
 
     @Test
     @FlywayTest
-    public void remove_existentId_shouldRemoveOneEntry() {
+    public void removeByExistentIdShouldRemoveOneEntry() {
         assertEquals(1, repository.remove(1));
     }
 
     @Test
-    public void remove_nonexistentId_shouldRemoveNoneEntry() {
+    public void removeByNonexistentIdShouldRemoveNoneEntry() {
         assertEquals(0, repository.remove(-1));
     }
 
     @Test
     @FlywayTest
-    public void edit_validEntry_shouldUpdateOneEntry() {
+    public void editValidEntryShouldUpdateOneEntry() {
         PresentBean present = getPresent();
         present.setId(1);
 
-        assertEquals(1, repository.editFull(present));
+        assertEquals(1, repository.edit(present));
     }
 
     @Test
     @FlywayTest
-    public void edit_nonexistentId_shouldUpdateNoneEntry() {
+    public void editByNonexistentIdShouldUpdateNoneEntry() {
         PresentBean present = getPresent();
         present.setId(-1);
 
-        assertEquals(0, repository.editFull(present));
+        assertEquals(0, repository.edit(present));
     }
 
-    @Test
+    @Test(expected = DataIntegrityViolationException.class)
     @FlywayTest
-    public void edit_notValidEntry_shouldThrowException() {
+    public void editNotValidEntryShouldThrowException() {
         PresentBean present = getPresent();
         present.setId(1);
         present.setPrice(null);
 
-        try {
-            repository.editFull(present);
-            fail();
-        } catch (DataIntegrityViolationException ignored) {
-        }
+        repository.edit(present);
     }
 
     @Test
     @FlywayTest
-    public void edit_withCandies_shouldUpdateCandies() {
+    public void editWithCandiesShouldUpdateCandies() {
         PresentBean present = getPresent();
         present.setId(1);
 
         CandyBean candy = new CandyBean();
-        candy.setId(1);
+        candy.setVid(1);
         candy.setCount(2);
 
         present.getCandies().add(candy);
 
-        int presentID = repository.addFull(present);
+        int presentID = repository.add(present);
         Select count = dsl.selectCount().from(CANDY_PRESENT).where(CANDY_PRESENT.PRESENT.eq(presentID));
 
         assertEquals(1, dsl.fetchCount(count));
@@ -142,13 +134,13 @@ public class JOOQPresentRepositoryTest {
 
     @Test
     @FlywayTest
-    public void findAll_shouldNotReturnEmptySet() {
+    public void findAllShouldNotReturnEmptySet() {
         assertFalse(repository.findAll().isEmpty());
     }
 
     @Test
     @FlywayTest
-    public void find_existentId_shouldReturnValidEntry() {
+    public void findByExistentIdShouldReturnValidEntry() {
         PresentBean fromDB = repository.findFull(1);
 
         assertEquals("someName", fromDB.getName());
@@ -167,36 +159,7 @@ public class JOOQPresentRepositoryTest {
     }
 
     @Test
-    public void find_nonexistentId_shouldReturnNull() {
+    public void findByNonexistentIdShouldReturnNull() {
         assertNull(repository.findFull(-1));
-    }
-
-    @Test
-    @FlywayTest
-    public void transactionTest() {
-        PresentBean present = getPresent();
-
-        CandyBean candy = new CandyBean();
-        candy.setId(1);
-        candy.setCount(2);
-
-        present.getCandies().add(candy);
-
-        int before = dsl.fetchCount(PRESENT);
-
-        repository.addFull(present);
-        assertEquals(++before, dsl.fetchCount(PRESENT));
-
-        try {
-            CandyBean incorrectCandy = new CandyBean();
-            incorrectCandy.setId(-11);
-            incorrectCandy.setCount(2);
-            present.getCandies().add(incorrectCandy);
-            repository.addFull(present);
-            fail();
-        } catch (DataIntegrityViolationException ignored) {
-        }
-
-        assertEquals(before, dsl.fetchCount(PRESENT));
     }
 }

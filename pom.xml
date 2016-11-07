@@ -35,12 +35,21 @@
     <profiles>
         <profile>
             <id>local</id>
+            <properties>
+                <db.driver>org.h2.Driver</db.driver>
+                <db.url>jdbc:h2:~/db/presents;AUTO_SERVER=TRUE</db.url>
+                <db.username>sa</db.username>
+                <db.password>as</db.password>
+            </properties>
+        </profile>
+        <profile>
+            <id>dev</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
                 <db.driver>org.h2.Driver</db.driver>
-                <db.url>jdbc:h2:~/db/presents;AUTO_SERVER=TRUE</db.url>
+                <db.url>jdbc:h2:~/db-dev/presents;AUTO_SERVER=TRUE</db.url>
                 <db.username>sa</db.username>
                 <db.password>as</db.password>
             </properties>
