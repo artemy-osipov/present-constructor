@@ -19,7 +19,7 @@
     <th colspan="2"></th>
   </tr>
 
-  <tr ng-repeat="candy in candies">
+  <tr ng-repeat="candy in candies" id="candy{{candy.id}}" on-finish-render="ngRepeatFinished">
     <td>{{candy.name}}</td>
     <td>{{candy.firm}}</td>
     <td>{{candy.price}}</td>

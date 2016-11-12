@@ -7,6 +7,7 @@ var presentApp = angular.module('presentApp', [
   'presentControllers',
   'presentServices',
   'presentRoutes',
+  'presentDirectives',
   'ghiscoding.validation', 'pascalprecht.translate'
 ]);
 

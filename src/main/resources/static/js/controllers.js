@@ -9,11 +9,18 @@ var initSticky = function ($scope, $location, $anchorScroll) {
     $("div#sticky").sticky({ topSpacing: 0 });
   });
 
-  $scope.scrollTo = function(id) {
-    var old = $location.hash();
-    $location.hash(id);
+  $scope.scrollTo = function(anchor, offset) {
+    offset = offset || 0;
+    var oldAnchor = $location.hash();
+    var oldOffset = $anchorScroll.yOffset;
+
+    $anchorScroll.yOffset = offset;
+    $location.hash(anchor);
+
     $anchorScroll();
-    $location.hash(old);
+
+    $anchorScroll.yOffset = oldOffset;
+    $location.hash(oldAnchor);
   }
 }
 
@@ -22,6 +29,12 @@ presentControllers.controller('IndexCtrl', function() {
 
 presentControllers.controller('CandyListCtrl', function($scope, $location, $anchorScroll, $route, Candy) {
   initSticky($scope, $location, $anchorScroll);
+
+  $scope.$on('ngRepeatFinished', function() {
+    if ($location.hash()) {
+      $scope.scrollTo($location.hash(), 150);
+    }
+  });
 
   $scope.candies = Candy.query();
 
@@ -58,6 +71,7 @@ presentControllers.controller('CandyEditCtrl', function($scope, $routeParams, $l
   $scope.submitForm = function() {
     if (new validationService().checkFormValidity($scope.modifyCandyForm)) {
       Candy.update($scope.candy).$promise.then(function() {
+        $location.hash("candy" + $scope.candy.id);
         $location.path("/candy-list");
       }, function(error) {
         console.log(error);
