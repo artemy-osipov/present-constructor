@@ -2,7 +2,7 @@ package ru.home.shop.controller;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -10,6 +10,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ru.home.shop.PresentsApplication;
 import ru.home.shop.domain.bean.CandyBean;
 import ru.home.shop.domain.bean.PresentBean;
+import ru.home.shop.domain.bean.VersionBean;
 import ru.home.shop.exception.ResourceNotFoundException;
 import ru.home.shop.exception.ValidationException;
 import ru.home.shop.service.PresentService;
@@ -31,7 +32,7 @@ import static ru.home.shop.util.JsonUtils.fromJson;
 import static ru.home.shop.util.JsonUtils.toJson;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = PresentsApplication.class)
+@SpringBootTest(classes = PresentsApplication.class)
 public class PresentControllerTest {
 
     private MockMvc getMockMvc(PresentService mockService) {
@@ -70,7 +71,7 @@ public class PresentControllerTest {
         List<CandyBean> expected = new ArrayList<>(expectedCol);
         List<CandyBean> actual = new ArrayList<>(actualCol);
 
-        Comparator<CandyBean> comparator = (CandyBean o1, CandyBean o2) -> o1.getId().compareTo(o2.getId());
+        Comparator<CandyBean> comparator = Comparator.comparing(VersionBean::getId);
         expected.sort(comparator);
         actual.sort(comparator);
 

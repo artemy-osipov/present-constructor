@@ -15,21 +15,13 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.2.7.RELEASE</version>
+        <version>1.5.4.RELEASE</version>
         <relativePath/>
     </parent>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
-        <spring.boot.version>1.2.7.RELEASE</spring.boot.version>
-
-        <h2.version>1.4.190</h2.version>
-        <apache.dbcp2.version>2.1.1</apache.dbcp2.version>
-        <flywaydb.version>3.2.1</flywaydb.version>
-        <jooq.version>3.7.0</jooq.version>
-
-        <jsonpath.version>2.0.0</jsonpath.version>
     </properties>
 
     <profiles>
@@ -61,12 +53,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
-            <version>${spring.boot.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>${spring.boot.version}</version>
         </dependency>
 
         <!-- db access -->
@@ -78,7 +68,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-dbcp2</artifactId>
-            <version>${apache.dbcp2.version}</version>
+            <version>${commons-dbcp2.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jooq</groupId>
@@ -102,19 +92,18 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <version>${spring.boot.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.flywaydb.flyway-test-extensions</groupId>
             <artifactId>flyway-spring-test</artifactId>
-            <version>${flywaydb.version}</version>
+            <version>${flyway.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
-            <version>${jsonpath.version}</version>
+            <version>${json-path.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -137,7 +126,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring.boot.version}</version>
                 <configuration>
                     <addResources>false</addResources>
                 </configuration>
@@ -146,7 +134,7 @@
             <plugin>
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
-                <version>${flywaydb.version}</version>
+                <version>${flyway.version}</version>
                 <executions>
                     <execution>
                         <phase>generate-sources</phase>
