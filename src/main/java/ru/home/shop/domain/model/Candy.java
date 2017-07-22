@@ -1,8 +1,8 @@
-package ru.home.shop.domain.bean;
+package ru.home.shop.domain.model;
 
 import java.math.BigDecimal;
 
-public class CandyBean extends VersionBean {
+public class Candy extends VersionedEntity {
 
     private String name;
     private String firm;

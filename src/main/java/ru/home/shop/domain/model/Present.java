@@ -1,23 +1,14 @@
-package ru.home.shop.domain.bean;
+package ru.home.shop.domain.model;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class PresentBean {
+public class Present extends Entity {
 
-    private Integer id;
     private String name;
     private BigDecimal price;
-    private Collection<CandyBean> candies = new ArrayList<>();
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    private Collection<Candy> candies = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -35,11 +26,11 @@ public class PresentBean {
         this.price = price;
     }
 
-    public Collection<CandyBean> getCandies() {
+    public Collection<Candy> getCandies() {
         return candies;
     }
 
-    public void setCandies(Collection<CandyBean> candies) {
+    public void setCandies(Collection<Candy> candies) {
         this.candies = candies;
     }
 }

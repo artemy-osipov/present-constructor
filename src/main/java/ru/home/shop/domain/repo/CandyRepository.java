@@ -1,14 +1,14 @@
 package ru.home.shop.domain.repo;
 
-import ru.home.shop.domain.bean.CandyBean;
+import ru.home.shop.domain.model.Candy;
 
 import java.util.Collection;
 
 public interface CandyRepository {
 
-    int add(CandyBean candy);
+    int add(Candy candy);
     int remove(int id);
-    int edit(CandyBean candy);
-    Collection<CandyBean> findAll();
-    CandyBean find(int id);
+    int edit(Candy candy);
+    Collection<Candy> findAll();
+    Candy find(int id);
 }

@@ -3,7 +3,7 @@ package ru.home.shop.domain.repo.jooq;
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import ru.home.shop.domain.bean.CandyBean;
+import ru.home.shop.domain.model.Candy;
 import ru.home.shop.domain.repo.CandyRepository;
 import ru.home.shop.domain.repo.mapper.CandyMapper;
 
@@ -23,7 +23,7 @@ public class JOOQCandyRepository implements CandyRepository {
     }
 
     @Override
-    public int add(CandyBean candy) {
+    public int add(Candy candy) {
         int candyId = addCandy(candy);
         candy.setId(candyId);
 
@@ -33,7 +33,7 @@ public class JOOQCandyRepository implements CandyRepository {
         return candyId;
     }
 
-    private int addCandy(CandyBean candy) {
+    private int addCandy(Candy candy) {
         return dsl.insertInto(CANDY)
                 .set(CANDY.NAME, candy.getName())
                 .set(CANDY.FIRM, candy.getFirm())
@@ -44,7 +44,7 @@ public class JOOQCandyRepository implements CandyRepository {
                 .getId();
     }
 
-    private int addVersion(CandyBean candy) {
+    private int addVersion(Candy candy) {
         dsl.update(CANDY_HISTORY)
                 .set(CANDY_HISTORY.LAST, false)
                 .where(CANDY_HISTORY.CANDY.eq(candy.getId()));
@@ -69,7 +69,7 @@ public class JOOQCandyRepository implements CandyRepository {
     }
 
     @Override
-    public int edit(CandyBean candy) {
+    public int edit(Candy candy) {
         int updated = dsl.update(CANDY)
                 .set(CANDY.NAME, candy.getName())
                 .set(CANDY.FIRM, candy.getFirm())
@@ -92,7 +92,7 @@ public class JOOQCandyRepository implements CandyRepository {
     }
 
     @Override
-    public Collection<CandyBean> findAll() {
+    public Collection<Candy> findAll() {
         return dsl.select()
                 .from(CANDY)
                 .leftJoin(CANDY_HISTORY).on(CANDY_HISTORY.CANDY.eq(CANDY.ID).and(CANDY_HISTORY.LAST.eq(true)))
@@ -102,7 +102,7 @@ public class JOOQCandyRepository implements CandyRepository {
     }
 
     @Override
-    public CandyBean find(int id) {
+    public Candy find(int id) {
         return dsl.select()
                 .from(CANDY)
                 .leftJoin(CANDY_HISTORY).on(CANDY_HISTORY.CANDY.eq(CANDY.ID).and(CANDY_HISTORY.LAST.eq(true)))

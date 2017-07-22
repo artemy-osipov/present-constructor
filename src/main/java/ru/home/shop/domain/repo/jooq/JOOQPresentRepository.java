@@ -4,8 +4,8 @@ import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import ru.home.shop.domain.bean.CandyBean;
-import ru.home.shop.domain.bean.PresentBean;
+import ru.home.shop.domain.model.Candy;
+import ru.home.shop.domain.model.Present;
 import ru.home.shop.domain.repo.PresentRepository;
 import ru.home.shop.domain.repo.mapper.PresentMapper;
 
@@ -28,7 +28,7 @@ public class JOOQPresentRepository implements PresentRepository {
 
     @Override
     @Transactional
-    public int add(PresentBean present) {
+    public int add(Present present) {
         int id = dsl.insertInto(PRESENT)
                 .set(PRESENT.NAME, present.getName())
                 .set(PRESENT.PRICE, present.getPrice())
@@ -40,7 +40,7 @@ public class JOOQPresentRepository implements PresentRepository {
         return id;
     }
 
-    private void addCandiesToPresent(int present, Collection<CandyBean> candies) {
+    private void addCandiesToPresent(int present, Collection<Candy> candies) {
         candies.forEach(
                 candy -> dsl.insertInto(CANDY_PRESENT)
                         .set(CANDY_PRESENT.PRESENT, present)
@@ -59,7 +59,7 @@ public class JOOQPresentRepository implements PresentRepository {
 
     @Override
     @Transactional
-    public int edit(PresentBean present) {
+    public int edit(Present present) {
         int updated = dsl.update(PRESENT)
                 .set(PRESENT.NAME, present.getName())
                 .set(PRESENT.PRICE, present.getPrice())
@@ -75,15 +75,15 @@ public class JOOQPresentRepository implements PresentRepository {
     }
 
     @Override
-    public Collection<PresentBean> findAll() {
+    public Collection<Present> findAll() {
         return dsl.selectFrom(PRESENT)
                 .fetch(new PresentMapper());
     }
 
     @Override
     @Transactional
-    public PresentBean findFull(int id) {
-        PresentBean present = dsl.selectFrom(PRESENT)
+    public Present findFull(int id) {
+        Present present = dsl.selectFrom(PRESENT)
                 .where(PRESENT.ID.eq(id))
                 .fetchOne(new PresentMapper());
 
@@ -94,7 +94,7 @@ public class JOOQPresentRepository implements PresentRepository {
         return present;
     }
 
-    private Collection<CandyBean> listCandiesByPresent(int present) {
+    private Collection<Candy> listCandiesByPresent(int present) {
         return dsl.select()
                 .from(CANDY_PRESENT)
                 .leftJoin(CANDY_HISTORY).on(CANDY_PRESENT.CANDY_HISTORY.eq(CANDY_HISTORY.ID))
@@ -103,7 +103,7 @@ public class JOOQPresentRepository implements PresentRepository {
                 .orderBy(CANDY.ORDER)
                 .fetch()
                 .map(r -> {
-                    CandyBean candy = new CandyBean();
+                    Candy candy = new Candy();
                     candy.setId(r.getValue(CANDY_HISTORY.CANDY));
                     candy.setVid(r.getValue(CANDY_HISTORY.ID));
                     candy.setName(r.getValue(CANDY_HISTORY.NAME));

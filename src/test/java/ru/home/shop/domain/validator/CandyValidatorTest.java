@@ -1,7 +1,7 @@
 package ru.home.shop.domain.validator;
 
 import org.junit.Test;
-import ru.home.shop.domain.bean.CandyBean;
+import ru.home.shop.domain.model.Candy;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -13,8 +13,8 @@ public class CandyValidatorTest {
 
     private static final String LONG_STRING = "1234567890abcdefghijklmnopqrstuvwxyz_!@#$%^&*()+|,/";
 
-    private CandyBean getValidAddCandy() {
-        CandyBean candy = new CandyBean();
+    private Candy getValidAddCandy() {
+        Candy candy = new Candy();
         candy.setName("name");
         candy.setFirm("firm");
         candy.setPrice(BigDecimal.valueOf(4.2));
@@ -60,12 +60,12 @@ public class CandyValidatorTest {
 
     @Test
     public void validateAdd_emptyEntry_shouldReturnFewErrors() {
-        assertEquals(getEmptyErrorsForAdding(), CandyValidator.validateAdd(new CandyBean()));
+        assertEquals(getEmptyErrorsForAdding(), CandyValidator.validateAdd(new Candy()));
     }
 
     @Test
     public void validateAdd_notValidEntry_shouldReturnFewErrors() {
-        CandyBean candy = getValidAddCandy();
+        Candy candy = getValidAddCandy();
         candy.setName(LONG_STRING);
         candy.setFirm(LONG_STRING);
         candy.setPrice(BigDecimal.valueOf(0));
@@ -76,7 +76,7 @@ public class CandyValidatorTest {
 
     @Test
     public void validateUpdate_validEntry_shouldReturnNoErrors() {
-        CandyBean candy = getValidAddCandy();
+        Candy candy = getValidAddCandy();
         candy.setId(1);
 
         Map<String, String> errors = CandyValidator.validateUpdate(candy);
@@ -98,12 +98,12 @@ public class CandyValidatorTest {
         Map<String, String> errors = getEmptyErrorsForAdding();
         errors.put("id", "empty");
 
-        assertEquals(errors, CandyValidator.validateUpdate(new CandyBean()));
+        assertEquals(errors, CandyValidator.validateUpdate(new Candy()));
     }
 
     @Test
     public void validateUpdate_notValidEntry_shouldReturnFewErrors() {
-        CandyBean candy = getValidAddCandy();
+        Candy candy = getValidAddCandy();
         candy.setId(-1);
         candy.setName(LONG_STRING);
         candy.setFirm(LONG_STRING);

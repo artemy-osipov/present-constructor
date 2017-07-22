@@ -2,8 +2,8 @@ package ru.home.shop.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.home.shop.domain.bean.PresentBean;
-import ru.home.shop.exception.ResourceNotFoundException;
+import ru.home.shop.domain.model.Present;
+import ru.home.shop.exception.EntityNotFoundException;
 import ru.home.shop.service.PresentService;
 
 import java.util.Collection;
@@ -19,14 +19,14 @@ public class PresentController {
     }
 
     @RequestMapping(value = "/present", method = RequestMethod.POST)
-    public int addPresent(@RequestBody PresentBean present) {
+    public int addPresent(@RequestBody Present present) {
         presentService.add(present);
 
         return present.getId();
     }
 
     @RequestMapping(value = "/present/{id}", method = RequestMethod.PUT)
-    public void editPresent(@PathVariable("id") int id, @RequestBody PresentBean present) {
+    public void editPresent(@PathVariable("id") int id, @RequestBody Present present) {
         present.setId(id);
         presentService.edit(present);
     }
@@ -37,18 +37,18 @@ public class PresentController {
     }
 
     @RequestMapping(value = "/present/{id}", method = RequestMethod.GET)
-    public PresentBean findPresent(@PathVariable("id") int id) {
-        PresentBean present = presentService.find(id);
+    public Present findPresent(@PathVariable("id") int id) {
+        Present present = presentService.find(id);
 
         if (present != null) {
             return present;
         } else {
-            throw new ResourceNotFoundException();
+            throw new EntityNotFoundException();
         }
     }
 
     @RequestMapping(value = "/present", method = RequestMethod.GET)
-    public Collection<PresentBean> listPresent() {
+    public Collection<Present> listPresent() {
         return presentService.listView();
     }
 }

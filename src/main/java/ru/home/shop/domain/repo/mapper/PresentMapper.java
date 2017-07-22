@@ -2,17 +2,17 @@ package ru.home.shop.domain.repo.mapper;
 
 import org.jooq.RecordMapper;
 import ru.home.db.tables.records.PresentRecord;
-import ru.home.shop.domain.bean.PresentBean;
+import ru.home.shop.domain.model.Present;
 
-public class PresentMapper implements RecordMapper<PresentRecord, PresentBean>{
+public class PresentMapper implements RecordMapper<PresentRecord, Present>{
 
     @Override
-    public PresentBean map(PresentRecord record) {
+    public Present map(PresentRecord record) {
         if (record == null) {
             return null;
         }
 
-        PresentBean bean = new PresentBean();
+        Present bean = new Present();
         bean.setId(record.getId());
         bean.setName(record.getName());
         bean.setPrice(record.getPrice());

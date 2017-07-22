@@ -1,23 +1,13 @@
-package ru.home.shop.domain.bean;
+package ru.home.shop.domain.model;
 
-public class VersionBean {
+public class VersionedEntity extends Entity {
 
-    /*Идентификатор сущности*/
-    private Integer id;
     /*Идентификатор версии*/
     private Integer vid;
     /*Является ли версия последней*/
     private Boolean last;
     /*Является ли сущность действующей*/
     private Boolean active;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public Integer getVid() {
         return vid;

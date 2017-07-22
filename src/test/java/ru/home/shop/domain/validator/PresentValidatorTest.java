@@ -1,8 +1,8 @@
 package ru.home.shop.domain.validator;
 
 import org.junit.Test;
-import ru.home.shop.domain.bean.CandyBean;
-import ru.home.shop.domain.bean.PresentBean;
+import ru.home.shop.domain.model.Candy;
+import ru.home.shop.domain.model.Present;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -14,16 +14,16 @@ public class PresentValidatorTest {
 
     private static final String LONG_STRING = "1234567890abcdefghijklmnopqrstuvwxyz_!@#$%^&*()+|,/";
 
-    private PresentBean getValidAddPresent() {
-        PresentBean present = new PresentBean();
+    private Present getValidAddPresent() {
+        Present present = new Present();
         present.setName("name");
         present.setPrice(BigDecimal.valueOf(4.2));
 
-        CandyBean candy1 = new CandyBean();
+        Candy candy1 = new Candy();
         candy1.setVid(1);
         candy1.setCount(2);
 
-        CandyBean candy2 = new CandyBean();
+        Candy candy2 = new Candy();
         candy2.setVid(3);
         candy2.setCount(6);
 
@@ -70,16 +70,16 @@ public class PresentValidatorTest {
 
     @Test
     public void validateAdd_emptyEntry_shouldReturnFewErrors() {
-        assertEquals(getEmptyErrorsForAdding(), PresentValidator.validateAdd(new PresentBean()));
+        assertEquals(getEmptyErrorsForAdding(), PresentValidator.validateAdd(new Present()));
     }
 
     @Test
     public void validateAdd_notValidEntry_shouldReturnFewErrors() {
-        PresentBean present = getValidAddPresent();
+        Present present = getValidAddPresent();
         present.setName(LONG_STRING);
         present.setPrice(BigDecimal.valueOf(12.414));
 
-        CandyBean candy = new CandyBean();
+        Candy candy = new Candy();
         candy.setId(-1);
         candy.setCount(0);
         present.getCandies().add(candy);
@@ -89,7 +89,7 @@ public class PresentValidatorTest {
 
     @Test
     public void validateUpdate_validEntry_shouldReturnNoErrors() {
-        PresentBean present = getValidAddPresent();
+        Present present = getValidAddPresent();
         present.setId(1);
 
         Map<String, String> errors = PresentValidator.validateUpdate(present);
@@ -111,17 +111,17 @@ public class PresentValidatorTest {
         Map<String, String> errors = getEmptyErrorsForAdding();
         errors.put("id", "empty");
 
-        assertEquals(errors, PresentValidator.validateUpdate(new PresentBean()));
+        assertEquals(errors, PresentValidator.validateUpdate(new Present()));
     }
 
     @Test
     public void validateUpdate_notValidEntry_shouldReturnFewErrors() {
-        PresentBean present = getValidAddPresent();
+        Present present = getValidAddPresent();
         present.setId(-1);
         present.setName(LONG_STRING);
         present.setPrice(BigDecimal.valueOf(0));
 
-        CandyBean candy = new CandyBean();
+        Candy candy = new Candy();
         candy.setVid(-1);
         candy.setCount(0);
         present.getCandies().add(candy);

@@ -1,15 +1,15 @@
 package ru.home.shop.domain.validator;
 
 import org.springframework.util.StringUtils;
-import ru.home.shop.domain.bean.CandyBean;
-import ru.home.shop.domain.bean.PresentBean;
+import ru.home.shop.domain.model.Candy;
+import ru.home.shop.domain.model.Present;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class PresentValidator {
 
-    public static Map<String, String> validateAdd(PresentBean present) {
+    public static Map<String, String> validateAdd(Present present) {
         if (present == null) {
             throw new IllegalArgumentException("argument is null");
         }
@@ -37,7 +37,7 @@ public class PresentValidator {
         return errors;
     }
 
-    private static void validateCandy(CandyBean candy, Map<String, String> errors) {
+    private static void validateCandy(Candy candy, Map<String, String> errors) {
         if (candy.getVid() == null || candy.getVid() < 1) {
             errors.put("candies.vid", "incorrect");
         }
@@ -47,7 +47,7 @@ public class PresentValidator {
         }
     }
 
-    public static Map<String, String> validateUpdate(PresentBean present) {
+    public static Map<String, String> validateUpdate(Present present) {
         Map<String, String> errors = validateAdd(present);
 
         if (present.getId() == null) {

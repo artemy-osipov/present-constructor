@@ -6,8 +6,8 @@ import fr.opensagres.xdocreport.document.registry.XDocReportRegistry;
 import fr.opensagres.xdocreport.template.IContext;
 import fr.opensagres.xdocreport.template.TemplateEngineKind;
 import org.springframework.stereotype.Service;
-import ru.home.shop.domain.bean.PresentBean;
-import ru.home.shop.domain.bean.Report;
+import ru.home.shop.domain.model.Present;
+import ru.home.shop.domain.model.Report;
 import ru.home.shop.service.ReportService;
 
 import java.io.ByteArrayOutputStream;
@@ -19,16 +19,16 @@ import java.math.BigDecimal;
 public class ReportServiceImpl implements ReportService {
 
     @Override
-    public Report publicReport(PresentBean present) {
+    public Report publicReport(Present present) {
         return generateReport(present, "templates/publicReport.docx");
     }
 
     @Override
-    public Report privateReport(PresentBean present) {
+    public Report privateReport(Present present) {
         return generateReport(present, "templates/privateReport.docx");
     }
 
-    private Report generateReport(PresentBean present, String templateName) {
+    private Report generateReport(Present present, String templateName) {
         if (present == null) {
             throw new IllegalArgumentException();
         }
@@ -39,11 +39,11 @@ public class ReportServiceImpl implements ReportService {
         return new Report(name, content);
     }
 
-    private String formatReportName(PresentBean present) {
+    private String formatReportName(Present present) {
         return String.format("%s %s RUB.docx", present.getName(), present.getPrice());
     }
 
-    private byte[] generateReportContent(PresentBean present, String templateName) {
+    private byte[] generateReportContent(Present present, String templateName) {
         try {
             InputStream in = getClass().getClassLoader().getResourceAsStream(templateName);
             IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in, TemplateEngineKind.Freemarker);
@@ -62,7 +62,7 @@ public class ReportServiceImpl implements ReportService {
         }
     }
 
-    BigDecimal computeCostPrice(PresentBean present) {
+    BigDecimal computeCostPrice(Present present) {
         if (present.getCandies() == null) {
             return BigDecimal.ZERO;
         } else {

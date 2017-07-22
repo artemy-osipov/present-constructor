@@ -1,9 +1,9 @@
 package ru.home.shop.service.impl;
 
 import org.junit.Test;
-import ru.home.shop.domain.bean.CandyBean;
-import ru.home.shop.domain.bean.PresentBean;
-import ru.home.shop.domain.bean.Report;
+import ru.home.shop.domain.model.Candy;
+import ru.home.shop.domain.model.Present;
+import ru.home.shop.domain.model.Report;
 import ru.home.shop.service.PresentService;
 
 import java.io.IOException;
@@ -17,19 +17,19 @@ public class ReportServiceImplTest {
 
     private ReportServiceImpl reportService = new ReportServiceImpl();
 
-    private PresentBean getPresent() {
-        PresentBean present = new PresentBean();
+    private Present getPresent() {
+        Present present = new Present();
         present.setName("name");
         present.setPrice(BigDecimal.valueOf(4.2));
 
-        CandyBean candy1 = new CandyBean();
+        Candy candy1 = new Candy();
         candy1.setId(1);
         candy1.setName("name1");
         candy1.setFirm("firm1");
         candy1.setPrice(BigDecimal.valueOf(1.1));
         candy1.setCount(2);
 
-        CandyBean candy2 = new CandyBean();
+        Candy candy2 = new Candy();
         candy2.setId(3);
         candy2.setName("name2");
         candy2.setFirm("firm2");
@@ -74,7 +74,7 @@ public class ReportServiceImplTest {
 
     @Test
     public void presentWithoutCandiesHasZeroCostPrice() {
-        assertEquals(BigDecimal.ZERO, reportService.computeCostPrice(new PresentBean()));
+        assertEquals(BigDecimal.ZERO, reportService.computeCostPrice(new Present()));
     }
 
     @Test

@@ -2,10 +2,10 @@ package ru.home.shop.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.home.shop.domain.bean.CandyBean;
+import ru.home.shop.domain.model.Candy;
 import ru.home.shop.domain.repo.CandyRepository;
 import ru.home.shop.domain.validator.CandyValidator;
-import ru.home.shop.exception.ResourceNotFoundException;
+import ru.home.shop.exception.EntityNotFoundException;
 import ru.home.shop.exception.ValidationException;
 import ru.home.shop.service.CandyService;
 
@@ -24,7 +24,7 @@ public class CandyServiceImpl implements CandyService {
 
 
     @Override
-    public void add(CandyBean candy) throws ValidationException {
+    public void add(Candy candy) throws ValidationException {
         Map<String, String> errors = CandyValidator.validateAdd(candy);
 
         if (!errors.isEmpty()) {
@@ -36,7 +36,7 @@ public class CandyServiceImpl implements CandyService {
     }
 
     @Override
-    public void edit(CandyBean candy) throws ValidationException {
+    public void edit(Candy candy) throws ValidationException {
         Map<String, String> errors = CandyValidator.validateUpdate(candy);
 
         if (!errors.isEmpty()) {
@@ -46,7 +46,7 @@ public class CandyServiceImpl implements CandyService {
         int updated = repository.edit(candy);
 
         if (updated != 1) {
-            throw new ResourceNotFoundException();
+            throw new EntityNotFoundException();
         }
     }
 
@@ -59,17 +59,17 @@ public class CandyServiceImpl implements CandyService {
         int removed = repository.remove(id);
 
         if (removed != 1) {
-            throw new ResourceNotFoundException();
+            throw new EntityNotFoundException();
         }
     }
 
     @Override
-    public Collection<CandyBean> list() {
+    public Collection<Candy> list() {
         return repository.findAll();
     }
 
     @Override
-    public CandyBean find(int id) throws ValidationException {
+    public Candy find(int id) throws ValidationException {
         if (id < 1) {
             throw new ValidationException("id", "incorrect");
         }

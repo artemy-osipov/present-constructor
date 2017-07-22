@@ -13,8 +13,8 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import ru.home.shop.PresentsApplication;
-import ru.home.shop.domain.bean.CandyBean;
-import ru.home.shop.domain.bean.PresentBean;
+import ru.home.shop.domain.model.Candy;
+import ru.home.shop.domain.model.Present;
 import ru.home.shop.domain.repo.PresentRepository;
 
 import java.math.BigDecimal;
@@ -34,8 +34,8 @@ public class JOOQPresentRepositoryTest {
     @Autowired
     private DSLContext dsl;
 
-    private PresentBean getPresent() {
-        PresentBean bean = new PresentBean();
+    private Present getPresent() {
+        Present bean = new Present();
         bean.setName("name");
         bean.setPrice(BigDecimal.valueOf(2.6));
 
@@ -53,9 +53,9 @@ public class JOOQPresentRepositoryTest {
 
     @Test
     public void addWithCandiesShouldAddCandies() {
-        PresentBean present = getPresent();
+        Present present = getPresent();
 
-        CandyBean candy = new CandyBean();
+        Candy candy = new Candy();
         candy.setVid(1);
         candy.setCount(2);
 
@@ -69,7 +69,7 @@ public class JOOQPresentRepositoryTest {
 
     @Test(expected = DataIntegrityViolationException.class)
     public void add_emptyPrice_shouldThrowException() {
-        PresentBean present = getPresent();
+        Present present = getPresent();
         present.setPrice(null);
 
         repository.add(present);
@@ -89,7 +89,7 @@ public class JOOQPresentRepositoryTest {
     @Test
     @FlywayTest
     public void editValidEntryShouldUpdateOneEntry() {
-        PresentBean present = getPresent();
+        Present present = getPresent();
         present.setId(1);
 
         assertEquals(1, repository.edit(present));
@@ -98,7 +98,7 @@ public class JOOQPresentRepositoryTest {
     @Test
     @FlywayTest
     public void editByNonexistentIdShouldUpdateNoneEntry() {
-        PresentBean present = getPresent();
+        Present present = getPresent();
         present.setId(-1);
 
         assertEquals(0, repository.edit(present));
@@ -107,7 +107,7 @@ public class JOOQPresentRepositoryTest {
     @Test(expected = DataIntegrityViolationException.class)
     @FlywayTest
     public void editNotValidEntryShouldThrowException() {
-        PresentBean present = getPresent();
+        Present present = getPresent();
         present.setId(1);
         present.setPrice(null);
 
@@ -117,10 +117,10 @@ public class JOOQPresentRepositoryTest {
     @Test
     @FlywayTest
     public void editWithCandiesShouldUpdateCandies() {
-        PresentBean present = getPresent();
+        Present present = getPresent();
         present.setId(1);
 
-        CandyBean candy = new CandyBean();
+        Candy candy = new Candy();
         candy.setVid(1);
         candy.setCount(2);
 
@@ -141,14 +141,14 @@ public class JOOQPresentRepositoryTest {
     @Test
     @FlywayTest
     public void findByExistentIdShouldReturnValidEntry() {
-        PresentBean fromDB = repository.findFull(1);
+        Present fromDB = repository.findFull(1);
 
         assertEquals("someName", fromDB.getName());
         assertEquals(BigDecimal.valueOf(12.35).doubleValue(), fromDB.getPrice().doubleValue(), 0);
 
         assertEquals(2, fromDB.getCandies().size());
 
-        CandyBean candy1FromDB = fromDB.getCandies().iterator().next();
+        Candy candy1FromDB = fromDB.getCandies().iterator().next();
         assertEquals(6, candy1FromDB.getCount());
 
         assertEquals(Integer.valueOf(3), candy1FromDB.getId());

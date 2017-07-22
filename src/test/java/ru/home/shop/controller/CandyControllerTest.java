@@ -8,8 +8,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ru.home.shop.PresentsApplication;
-import ru.home.shop.domain.bean.CandyBean;
-import ru.home.shop.exception.ResourceNotFoundException;
+import ru.home.shop.domain.model.Candy;
+import ru.home.shop.exception.EntityNotFoundException;
 import ru.home.shop.exception.ValidationException;
 import ru.home.shop.service.CandyService;
 
@@ -35,8 +35,8 @@ public class CandyControllerTest {
         return MockMvcBuilders.standaloneSetup(new CandyController(mockService)).build();
     }
 
-    private CandyBean getCandy() {
-        CandyBean candy = new CandyBean();
+    private Candy getCandy() {
+        Candy candy = new Candy();
         candy.setId(1);
         candy.setName("name");
         candy.setFirm("firm");
@@ -46,7 +46,7 @@ public class CandyControllerTest {
         return candy;
     }
 
-    private void assertCandyEqual(CandyBean expected, CandyBean actual) {
+    private void assertCandyEqual(Candy expected, Candy actual) {
         assertEquals(expected.getId(), actual.getId());
         assertEquals(expected.getName(), actual.getName());
         assertEquals(expected.getFirm(), actual.getFirm());
@@ -56,7 +56,7 @@ public class CandyControllerTest {
 
     @Test
     public void addCandyWithValidEntityShouldReturn200() throws Exception {
-        CandyBean candy = getCandy();
+        Candy candy = getCandy();
         Integer id = candy.getId();
         CandyService mock = mock(CandyService.class);
 
@@ -68,9 +68,9 @@ public class CandyControllerTest {
 
     @Test
     public void addCandyWithNotValidEntityShouldReturn400() throws Exception {
-        CandyBean candy = getCandy();
+        Candy candy = getCandy();
         CandyService mock = mock(CandyService.class);
-        doThrow(ValidationException.class).when(mock).add(any(CandyBean.class));
+        doThrow(ValidationException.class).when(mock).add(any(Candy.class));
 
         getMockMvc(mock).perform(post("/candy")
                 .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(toJson(candy)))
@@ -79,7 +79,7 @@ public class CandyControllerTest {
 
     @Test
     public void editCandyWithValidEntityShouldReturn200() throws Exception {
-        CandyBean candy = getCandy();
+        Candy candy = getCandy();
         CandyService mock = mock(CandyService.class);
 
         getMockMvc(mock).perform(put("/candy/{id}", candy.getId())
@@ -89,9 +89,9 @@ public class CandyControllerTest {
 
     @Test
     public void editCandyWithNotValidEntityShouldReturn400() throws Exception {
-        CandyBean candy = getCandy();
+        Candy candy = getCandy();
         CandyService mock = mock(CandyService.class);
-        doThrow(ValidationException.class).when(mock).edit(any(CandyBean.class));
+        doThrow(ValidationException.class).when(mock).edit(any(Candy.class));
 
         getMockMvc(mock).perform(put("/candy/{id}", candy.getId())
                 .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(toJson(candy)))
@@ -100,9 +100,9 @@ public class CandyControllerTest {
 
     @Test
     public void editCandyWithNonExistentIdShouldReturn404() throws Exception {
-        CandyBean candy = getCandy();
+        Candy candy = getCandy();
         CandyService mock = mock(CandyService.class);
-        doThrow(ResourceNotFoundException.class).when(mock).edit(any(CandyBean.class));
+        doThrow(EntityNotFoundException.class).when(mock).edit(any(Candy.class));
 
         getMockMvc(mock).perform(put("/candy/{id}", candy.getId())
                 .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(toJson(candy)))
@@ -132,7 +132,7 @@ public class CandyControllerTest {
     public void removeCandyWithNonExistentIdShouldReturn404() throws Exception {
         int id = 1;
         CandyService mock = mock(CandyService.class);
-        doThrow(ResourceNotFoundException.class).when(mock).remove(id);
+        doThrow(EntityNotFoundException.class).when(mock).remove(id);
 
         getMockMvc(mock).perform(delete("/candy/{id}", id).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
@@ -140,7 +140,7 @@ public class CandyControllerTest {
 
     @Test
     public void findCandyWithValidIdShouldReturnEntity() throws Exception {
-        CandyBean candy = getCandy();
+        Candy candy = getCandy();
         CandyService mock = mock(CandyService.class);
         when(mock.find(candy.getId())).thenReturn(candy);
 
@@ -149,14 +149,14 @@ public class CandyControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse().getContentAsString();
 
-        CandyBean response = fromJson(responseJson, CandyBean.class);
+        Candy response = fromJson(responseJson, Candy.class);
 
         assertCandyEqual(candy, response);
     }
 
     @Test
     public void findCandyWithNotValidIdShouldReturn400() throws Exception {
-        CandyBean candy = getCandy();
+        Candy candy = getCandy();
         CandyService mock = mock(CandyService.class);
         doThrow(ValidationException.class).when(mock).find(candy.getId());
 
@@ -166,7 +166,7 @@ public class CandyControllerTest {
 
     @Test
     public void findCandyWithNonExistentIdShouldReturn404() throws Exception {
-        CandyBean candy = getCandy();
+        Candy candy = getCandy();
         CandyService mock = mock(CandyService.class);
         when(mock.find(candy.getId())).thenReturn(null);
 
@@ -176,14 +176,14 @@ public class CandyControllerTest {
 
     @Test
     public void listCandyWithNotEmptyDBShouldReturnArray() throws Exception {
-        CandyBean candy1 = getCandy();
-        CandyBean candy2 = new CandyBean();
+        Candy candy1 = getCandy();
+        Candy candy2 = new Candy();
         candy2.setId(2);
         candy2.setName("name2");
         candy2.setFirm("firm2");
         candy2.setPrice(BigDecimal.valueOf(-1.441));
         candy2.setOrder(0.01);
-        CandyBean[] origin = {candy1, candy2};
+        Candy[] origin = {candy1, candy2};
 
         CandyService mock = mock(CandyService.class);
         when(mock.list()).thenReturn(asList(origin));
@@ -193,7 +193,7 @@ public class CandyControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse().getContentAsString();
 
-        CandyBean[] response = fromJson(responseJson, CandyBean[].class);
+        Candy[] response = fromJson(responseJson, Candy[].class);
 
         assertEquals(origin.length, response.length);
 

@@ -1,10 +1,10 @@
 package ru.home.shop.service;
 
-import ru.home.shop.domain.bean.PresentBean;
-import ru.home.shop.domain.bean.Report;
+import ru.home.shop.domain.model.Present;
+import ru.home.shop.domain.model.Report;
 
 public interface ReportService {
 
-    Report publicReport(PresentBean present);
-    Report privateReport(PresentBean present);
+    Report publicReport(Present present);
+    Report privateReport(Present present);
 }

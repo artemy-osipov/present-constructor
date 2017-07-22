@@ -22,7 +22,7 @@ import javax.sql.DataSource;
 @EnableTransactionManagement
 @ComponentScan("ru.home.shop")
 @PropertySource("classpath:application.properties")
-public class SpringConfiguration {
+public class DataSourceConfig {
 
     @Autowired
     private Environment env;

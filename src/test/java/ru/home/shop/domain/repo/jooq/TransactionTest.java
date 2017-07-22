@@ -12,8 +12,8 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import ru.home.shop.PresentsApplication;
-import ru.home.shop.domain.bean.CandyBean;
-import ru.home.shop.domain.bean.PresentBean;
+import ru.home.shop.domain.model.Candy;
+import ru.home.shop.domain.model.Present;
 import ru.home.shop.domain.repo.PresentRepository;
 
 import java.math.BigDecimal;
@@ -33,8 +33,8 @@ public class TransactionTest {
     @Autowired
     private DSLContext dsl;
 
-    private PresentBean getPresent() {
-        PresentBean bean = new PresentBean();
+    private Present getPresent() {
+        Present bean = new Present();
         bean.setName("name");
         bean.setPrice(BigDecimal.valueOf(2.6));
 
@@ -44,9 +44,9 @@ public class TransactionTest {
     @Test
     @FlywayTest
     public void transactionTest() {
-        PresentBean present = getPresent();
+        Present present = getPresent();
 
-        CandyBean candy = new CandyBean();
+        Candy candy = new Candy();
         candy.setVid(1);
         candy.setCount(2);
 
@@ -58,7 +58,7 @@ public class TransactionTest {
         assertEquals(++before, dsl.fetchCount(PRESENT));
 
         try {
-            CandyBean incorrectCandy = new CandyBean();
+            Candy incorrectCandy = new Candy();
             incorrectCandy.setVid(-11);
             incorrectCandy.setCount(2);
             present.getCandies().add(incorrectCandy);

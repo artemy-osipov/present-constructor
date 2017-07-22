@@ -1,10 +1,10 @@
 package ru.home.shop.service.impl;
 
 import org.junit.Test;
-import ru.home.shop.domain.bean.CandyBean;
-import ru.home.shop.domain.bean.PresentBean;
+import ru.home.shop.domain.model.Candy;
+import ru.home.shop.domain.model.Present;
 import ru.home.shop.domain.repo.PresentRepository;
-import ru.home.shop.exception.ResourceNotFoundException;
+import ru.home.shop.exception.EntityNotFoundException;
 import ru.home.shop.exception.ValidationException;
 
 import java.math.BigDecimal;
@@ -16,17 +16,17 @@ import static org.mockito.Mockito.*;
 
 public class PresentServiceImplTest {
 
-    private PresentBean getValidAddPresent() {
-        PresentBean present = new PresentBean();
+    private Present getValidAddPresent() {
+        Present present = new Present();
         present.setName("name");
         present.setPrice(BigDecimal.valueOf(4.2));
 
-        CandyBean candy1 = new CandyBean();
+        Candy candy1 = new Candy();
         candy1.setId(1);
         candy1.setVid(11);
         candy1.setCount(2);
 
-        CandyBean candy2 = new CandyBean();
+        Candy candy2 = new Candy();
         candy2.setId(3);
         candy2.setVid(33);
         candy2.setCount(6);
@@ -40,7 +40,7 @@ public class PresentServiceImplTest {
     @Test
     public void add_validEntry_shouldSetNewId() {
         PresentRepository mock = mock(PresentRepository.class);
-        PresentBean present = getValidAddPresent();
+        Present present = getValidAddPresent();
 
         Integer newId = 2;
 
@@ -67,7 +67,7 @@ public class PresentServiceImplTest {
         PresentRepository mock = mock(PresentRepository.class);
 
         try {
-            new PresentServiceImpl(mock).add(new PresentBean());
+            new PresentServiceImpl(mock).add(new Present());
             fail();
         } catch (ValidationException e) {
             assertFalse(e.getErrors().isEmpty());
@@ -76,7 +76,7 @@ public class PresentServiceImplTest {
 
     @Test
     public void edit_validEntry_shouldInvokeRepository() {
-        PresentBean present = getValidAddPresent();
+        Present present = getValidAddPresent();
         present.setId(1);
 
         PresentRepository mock = mock(PresentRepository.class);
@@ -103,17 +103,17 @@ public class PresentServiceImplTest {
         PresentRepository mock = mock(PresentRepository.class);
 
         try {
-            new PresentServiceImpl(mock).edit(new PresentBean());
+            new PresentServiceImpl(mock).edit(new Present());
             fail();
         } catch (ValidationException e) {
             assertFalse(e.getErrors().isEmpty());
         }
     }
 
-    @Test(expected = ResourceNotFoundException.class)
+    @Test(expected = EntityNotFoundException.class)
     public void edit_nonexistentId_shouldThrowException() {
         PresentRepository mock = mock(PresentRepository.class);
-        PresentBean present = getValidAddPresent();
+        Present present = getValidAddPresent();
         present.setId(1);
 
         when(mock.edit(present)).thenReturn(0);
@@ -152,14 +152,14 @@ public class PresentServiceImplTest {
         try {
             new PresentServiceImpl(mock).remove(1);
             fail();
-        } catch (ResourceNotFoundException ignored) {
+        } catch (EntityNotFoundException ignored) {
         }
     }
 
     @Test
     public void list_shouldReturnSameAsRepository() {
         PresentRepository mock = mock(PresentRepository.class);
-        Collection<PresentBean> res = Collections.singletonList(getValidAddPresent());
+        Collection<Present> res = Collections.singletonList(getValidAddPresent());
 
         when(mock.findAll()).thenReturn(res);
 
@@ -170,7 +170,7 @@ public class PresentServiceImplTest {
     @Test
     public void find_validId_shouldInvokeRepository() {
         PresentRepository mock = mock(PresentRepository.class);
-        PresentBean present = getValidAddPresent();
+        Present present = getValidAddPresent();
         int id = 1;
 
         when(mock.findFull(id)).thenReturn(present);

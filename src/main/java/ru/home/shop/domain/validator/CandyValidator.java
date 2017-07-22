@@ -1,14 +1,14 @@
 package ru.home.shop.domain.validator;
 
 import org.springframework.util.StringUtils;
-import ru.home.shop.domain.bean.CandyBean;
+import ru.home.shop.domain.model.Candy;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class CandyValidator {
 
-    public static Map<String, String> validateAdd(CandyBean candy) {
+    public static Map<String, String> validateAdd(Candy candy) {
         if (candy == null) {
             throw new IllegalArgumentException("argument is null");
         }
@@ -40,7 +40,7 @@ public class CandyValidator {
         return errors;
     }
 
-    public static Map<String, String> validateUpdate(CandyBean candy) {
+    public static Map<String, String> validateUpdate(Candy candy) {
         Map<String, String> errors = validateAdd(candy);
 
         if (candy.getId() == null) {

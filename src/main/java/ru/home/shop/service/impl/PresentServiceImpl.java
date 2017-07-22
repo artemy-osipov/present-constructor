@@ -2,10 +2,10 @@ package ru.home.shop.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.home.shop.domain.bean.PresentBean;
+import ru.home.shop.domain.model.Present;
 import ru.home.shop.domain.repo.PresentRepository;
 import ru.home.shop.domain.validator.PresentValidator;
-import ru.home.shop.exception.ResourceNotFoundException;
+import ru.home.shop.exception.EntityNotFoundException;
 import ru.home.shop.exception.ValidationException;
 import ru.home.shop.service.PresentService;
 
@@ -23,7 +23,7 @@ public class PresentServiceImpl implements PresentService {
     }
 
     @Override
-    public void add(PresentBean present) {
+    public void add(Present present) {
         Map<String, String> errors = PresentValidator.validateAdd(present);
 
         if (!errors.isEmpty()) {
@@ -35,7 +35,7 @@ public class PresentServiceImpl implements PresentService {
     }
 
     @Override
-    public void edit(PresentBean present) {
+    public void edit(Present present) {
         Map<String, String> errors = PresentValidator.validateUpdate(present);
 
         if (!errors.isEmpty()) {
@@ -45,7 +45,7 @@ public class PresentServiceImpl implements PresentService {
         int updated = repository.edit(present);
 
         if (updated != 1) {
-            throw new ResourceNotFoundException();
+            throw new EntityNotFoundException();
         }
     }
 
@@ -58,17 +58,17 @@ public class PresentServiceImpl implements PresentService {
         int removed = repository.remove(id);
 
         if (removed != 1) {
-            throw new ResourceNotFoundException();
+            throw new EntityNotFoundException();
         }
     }
 
     @Override
-    public Collection<PresentBean> listView() {
+    public Collection<Present> listView() {
         return repository.findAll();
     }
 
     @Override
-    public PresentBean find(int id) {
+    public Present find(int id) {
         if (id < 1) {
             throw new ValidationException("id", "incorrect");
         }

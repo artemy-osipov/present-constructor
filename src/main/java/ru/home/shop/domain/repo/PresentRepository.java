@@ -1,14 +1,14 @@
 package ru.home.shop.domain.repo;
 
-import ru.home.shop.domain.bean.PresentBean;
+import ru.home.shop.domain.model.Present;
 
 import java.util.Collection;
 
 public interface PresentRepository {
 
-    int add(PresentBean present);
+    int add(Present present);
     int remove(int id);
-    int edit(PresentBean present);
-    Collection<PresentBean> findAll();
-    PresentBean findFull(int id);
+    int edit(Present present);
+    Collection<Present> findAll();
+    Present findFull(int id);
 }

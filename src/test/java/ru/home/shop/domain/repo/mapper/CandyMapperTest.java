@@ -2,7 +2,7 @@ package ru.home.shop.domain.repo.mapper;
 
 import org.jooq.Record;
 import org.junit.Test;
-import ru.home.shop.domain.bean.CandyBean;
+import ru.home.shop.domain.model.Candy;
 
 import java.math.BigDecimal;
 
@@ -44,7 +44,7 @@ public class CandyMapperTest {
 
     @Test
     public void testFullInfoMap() {
-        CandyBean candy = mapper.map(getRecord());
+        Candy candy = mapper.map(getRecord());
 
         assertEquals(ID, candy.getId());
         assertEquals(VID, candy.getVid());

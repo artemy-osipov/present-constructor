@@ -1,4 +1,4 @@
-package ru.home.shop.domain.bean;
+package ru.home.shop.domain.model;
 
 public class Report {
 

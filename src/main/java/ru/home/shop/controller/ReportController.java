@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import ru.home.shop.domain.bean.PresentBean;
-import ru.home.shop.domain.bean.Report;
-import ru.home.shop.exception.ResourceNotFoundException;
+import ru.home.shop.domain.model.Present;
+import ru.home.shop.domain.model.Report;
+import ru.home.shop.exception.EntityNotFoundException;
 import ru.home.shop.service.PresentService;
 import ru.home.shop.service.ReportService;
 
@@ -33,10 +33,10 @@ public class ReportController {
 
     @RequestMapping(value = "/present/publicReport/{id}", method = RequestMethod.GET)
     public ResponseEntity<byte[]> publicReport(@PathVariable("id") int presentId, HttpServletResponse response) {
-        PresentBean present = presentService.find(presentId);
+        Present present = presentService.find(presentId);
 
         if (present == null) {
-            throw new ResourceNotFoundException();
+            throw new EntityNotFoundException();
         }
 
         Report report = reportService.publicReport(present);
@@ -46,10 +46,10 @@ public class ReportController {
 
     @RequestMapping(value = "/present/privateReport/{id}", method = RequestMethod.GET)
     public ResponseEntity<byte[]> privateReport(@PathVariable("id") int presentId) throws IOException {
-        PresentBean present = presentService.find(presentId);
+        Present present = presentService.find(presentId);
 
         if (present == null) {
-            throw new ResourceNotFoundException();
+            throw new EntityNotFoundException();
         }
 
         Report report = reportService.privateReport(present);

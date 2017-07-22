@@ -2,7 +2,7 @@ package ru.home.shop.domain.repo.mapper;
 
 import org.junit.Test;
 import ru.home.db.tables.records.PresentRecord;
-import ru.home.shop.domain.bean.PresentBean;
+import ru.home.shop.domain.model.Present;
 
 import java.math.BigDecimal;
 
@@ -32,7 +32,7 @@ public class PresentMapperTest {
 
     @Test
     public void testFullInfoMap() {
-        PresentBean present = mapper.map(getRecord());
+        Present present = mapper.map(getRecord());
 
         assertEquals(ID, present.getId());
         assertEquals(NAME, present.getName());

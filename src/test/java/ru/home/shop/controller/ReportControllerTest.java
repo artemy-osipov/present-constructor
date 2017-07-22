@@ -7,8 +7,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ru.home.shop.PresentsApplication;
-import ru.home.shop.domain.bean.PresentBean;
-import ru.home.shop.domain.bean.Report;
+import ru.home.shop.domain.model.Present;
+import ru.home.shop.domain.model.Report;
 import ru.home.shop.service.PresentService;
 import ru.home.shop.service.ReportService;
 
@@ -29,8 +29,8 @@ public class ReportControllerTest {
         return MockMvcBuilders.standaloneSetup(new ReportController(presentService, reportService)).build();
     }
 
-    private PresentBean getPresent() {
-        PresentBean present = new PresentBean();
+    private Present getPresent() {
+        Present present = new Present();
         present.setName("name");
         present.setPrice(BigDecimal.valueOf(2.4));
 
@@ -44,7 +44,7 @@ public class ReportControllerTest {
     @Test
     public void publicReportWithExistentIdShouldReturnReport() throws Exception {
         int presentId = 1;
-        PresentBean present = getPresent();
+        Present present = getPresent();
         Report report = getReport();
         PresentService mockPresent = mock(PresentService.class);
         ReportService mockReport = mock(ReportService.class);
@@ -77,7 +77,7 @@ public class ReportControllerTest {
     @Test
     public void privateReportWithExistentIdShouldReturnReport() throws Exception {
         int presentId = 1;
-        PresentBean present = getPresent();
+        Present present = getPresent();
         Report report = getReport();
         PresentService mockPresent = mock(PresentService.class);
         ReportService mockReport = mock(ReportService.class);

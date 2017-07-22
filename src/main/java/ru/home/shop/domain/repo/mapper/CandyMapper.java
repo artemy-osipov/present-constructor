@@ -2,20 +2,20 @@ package ru.home.shop.domain.repo.mapper;
 
 import org.jooq.Record;
 import org.jooq.RecordMapper;
-import ru.home.shop.domain.bean.CandyBean;
+import ru.home.shop.domain.model.Candy;
 
 import static ru.home.db.Tables.CANDY;
 import static ru.home.db.Tables.CANDY_HISTORY;
 
-public class CandyMapper implements RecordMapper<Record, CandyBean>{
+public class CandyMapper implements RecordMapper<Record, Candy>{
 
     @Override
-    public CandyBean map(Record record) {
+    public Candy map(Record record) {
         if (record == null) {
             return null;
         }
 
-        CandyBean bean = new CandyBean();
+        Candy bean = new Candy();
         bean.setId(record.getValue(CANDY.ID));
         bean.setVid(record.getValue(CANDY_HISTORY.ID));
         bean.setName(record.getValue(CANDY.NAME));

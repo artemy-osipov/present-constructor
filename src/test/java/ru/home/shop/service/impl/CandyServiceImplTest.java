@@ -1,9 +1,9 @@
 package ru.home.shop.service.impl;
 
 import org.junit.Test;
-import ru.home.shop.domain.bean.CandyBean;
+import ru.home.shop.domain.model.Candy;
 import ru.home.shop.domain.repo.CandyRepository;
-import ru.home.shop.exception.ResourceNotFoundException;
+import ru.home.shop.exception.EntityNotFoundException;
 import ru.home.shop.exception.ValidationException;
 
 import java.math.BigDecimal;
@@ -15,8 +15,8 @@ import static org.mockito.Mockito.*;
 
 public class CandyServiceImplTest {
 
-    private CandyBean getValidAddCandy() {
-        CandyBean candy = new CandyBean();
+    private Candy getValidAddCandy() {
+        Candy candy = new Candy();
         candy.setName("name");
         candy.setFirm("firm");
         candy.setPrice(BigDecimal.valueOf(4.2));
@@ -28,7 +28,7 @@ public class CandyServiceImplTest {
     @Test
     public void add_validEntry_shouldSetNewId() {
         CandyRepository mock = mock(CandyRepository.class);
-        CandyBean candy = getValidAddCandy();
+        Candy candy = getValidAddCandy();
 
         Integer newId = 2;
 
@@ -55,7 +55,7 @@ public class CandyServiceImplTest {
         CandyRepository mock = mock(CandyRepository.class);
 
         try {
-            new CandyServiceImpl(mock).add(new CandyBean());
+            new CandyServiceImpl(mock).add(new Candy());
             fail();
         } catch (ValidationException e) {
             assertFalse(e.getErrors().isEmpty());
@@ -64,7 +64,7 @@ public class CandyServiceImplTest {
 
     @Test
     public void edit_validEntry_shouldInvokeRepository() {
-        CandyBean candy = getValidAddCandy();
+        Candy candy = getValidAddCandy();
         candy.setId(1);
 
         CandyRepository mock = mock(CandyRepository.class);
@@ -91,7 +91,7 @@ public class CandyServiceImplTest {
         CandyRepository mock = mock(CandyRepository.class);
 
         try {
-            new CandyServiceImpl(mock).edit(new CandyBean());
+            new CandyServiceImpl(mock).edit(new Candy());
             fail();
         } catch (ValidationException e) {
             assertFalse(e.getErrors().isEmpty());
@@ -101,7 +101,7 @@ public class CandyServiceImplTest {
     @Test
     public void edit_nonexistentId_shouldThrowException() {
         CandyRepository mock = mock(CandyRepository.class);
-        CandyBean candy = getValidAddCandy();
+        Candy candy = getValidAddCandy();
         candy.setId(1);
 
         when(mock.edit(candy)).thenReturn(0);
@@ -109,7 +109,7 @@ public class CandyServiceImplTest {
         try {
             new CandyServiceImpl(mock).edit(candy);
             fail();
-        } catch (ResourceNotFoundException ignored) {
+        } catch (EntityNotFoundException ignored) {
         }
     }
 
@@ -144,14 +144,14 @@ public class CandyServiceImplTest {
         try {
             new CandyServiceImpl(mock).remove(1);
             fail();
-        } catch (ResourceNotFoundException ignored) {
+        } catch (EntityNotFoundException ignored) {
         }
     }
 
     @Test
     public void list_shouldReturnSameAsRepository() {
         CandyRepository mock = mock(CandyRepository.class);
-        Collection<CandyBean> res = Collections.singletonList(getValidAddCandy());
+        Collection<Candy> res = Collections.singletonList(getValidAddCandy());
 
         when(mock.findAll()).thenReturn(res);
 
@@ -162,7 +162,7 @@ public class CandyServiceImplTest {
     @Test
     public void find_validId_shouldInvokeRepository() {
         CandyRepository mock = mock(CandyRepository.class);
-        CandyBean candy = getValidAddCandy();
+        Candy candy = getValidAddCandy();
         int id = 1;
 
         when(mock.find(id)).thenReturn(candy);
