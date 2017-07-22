@@ -43,76 +43,34 @@ public class CandyValidatorTest {
     }
 
     @Test
-    public void validateAdd_validEntry_shouldReturnNoErrors() {
-        Map<String, String> errors = CandyValidator.validateAdd(getValidAddCandy());
+    public void validate_validEntry_shouldReturnNoErrors() {
+        Map<String, String> errors = CandyValidator.validate(getValidAddCandy());
 
         assertTrue(errors.isEmpty());
     }
 
     @Test
-    public void validateAdd_nullEntry_shouldThrowException() {
+    public void validate_nullEntry_shouldThrowException() {
         try {
-            CandyValidator.validateAdd(null);
+            CandyValidator.validate(null);
             fail();
         } catch (IllegalArgumentException ignored) {
         }
     }
 
     @Test
-    public void validateAdd_emptyEntry_shouldReturnFewErrors() {
-        assertEquals(getEmptyErrorsForAdding(), CandyValidator.validateAdd(new Candy()));
+    public void validate_emptyEntry_shouldReturnFewErrors() {
+        assertEquals(getEmptyErrorsForAdding(), CandyValidator.validate(new Candy()));
     }
 
     @Test
-    public void validateAdd_notValidEntry_shouldReturnFewErrors() {
+    public void validate_notValidEntry_shouldReturnFewErrors() {
         Candy candy = getValidAddCandy();
         candy.setName(LONG_STRING);
         candy.setFirm(LONG_STRING);
         candy.setPrice(BigDecimal.valueOf(0));
         candy.setOrder(-24);
 
-        assertEquals(getIncorrectEmptyErrorsForAdding(), CandyValidator.validateAdd(candy));
-    }
-
-    @Test
-    public void validateUpdate_validEntry_shouldReturnNoErrors() {
-        Candy candy = getValidAddCandy();
-        candy.setId(1);
-
-        Map<String, String> errors = CandyValidator.validateUpdate(candy);
-
-        assertTrue(errors.isEmpty());
-    }
-
-    @Test
-    public void validateUpdate_nullEntry_shouldThrowException() {
-        try {
-            CandyValidator.validateUpdate(null);
-            fail();
-        } catch (IllegalArgumentException ignored) {
-        }
-    }
-
-    @Test
-    public void validateUpdate_emptyEntry_shouldReturnFewErrors() {
-        Map<String, String> errors = getEmptyErrorsForAdding();
-        errors.put("id", "empty");
-
-        assertEquals(errors, CandyValidator.validateUpdate(new Candy()));
-    }
-
-    @Test
-    public void validateUpdate_notValidEntry_shouldReturnFewErrors() {
-        Candy candy = getValidAddCandy();
-        candy.setId(-1);
-        candy.setName(LONG_STRING);
-        candy.setFirm(LONG_STRING);
-        candy.setPrice(BigDecimal.valueOf(0));
-        candy.setOrder(-24);
-
-        Map<String, String> errors = getIncorrectEmptyErrorsForAdding();
-        errors.put("id", "incorrect");
-
-        assertEquals(errors, CandyValidator.validateUpdate(candy));
+        assertEquals(getIncorrectEmptyErrorsForAdding(), CandyValidator.validate(candy));
     }
 }

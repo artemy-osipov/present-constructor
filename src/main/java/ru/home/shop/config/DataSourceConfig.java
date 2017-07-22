@@ -1,14 +1,16 @@
 package ru.home.shop.config;
 
 import org.apache.commons.dbcp2.BasicDataSource;
-import org.jooq.*;
+import org.jooq.ConnectionProvider;
+import org.jooq.DSLContext;
+import org.jooq.ExecuteListenerProvider;
+import org.jooq.SQLDialect;
 import org.jooq.impl.DataSourceConnectionProvider;
 import org.jooq.impl.DefaultConfiguration;
 import org.jooq.impl.DefaultDSLContext;
 import org.jooq.impl.DefaultExecuteListenerProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -20,7 +22,6 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan("ru.home.shop")
 @PropertySource("classpath:application.properties")
 public class DataSourceConfig {
 
@@ -45,11 +46,6 @@ public class DataSourceConfig {
     }
 
     @Bean
-    public DSLContext dsl(org.jooq.Configuration config) {
-        return new DefaultDSLContext(config);
-    }
-
-    @Bean
     public ConnectionProvider connectionProvider(DataSource dataSource) {
         return new DataSourceConnectionProvider(new TransactionAwareDataSourceProxy(dataSource));
     }
@@ -62,6 +58,11 @@ public class DataSourceConfig {
     @Bean
     public ExecuteListenerProvider executeListenerProvider(ExceptionTranslator exceptionTranslator) {
         return new DefaultExecuteListenerProvider(exceptionTranslator);
+    }
+
+    @Bean
+    public DSLContext dsl(org.jooq.Configuration config) {
+        return new DefaultDSLContext(config);
     }
 
     @Bean

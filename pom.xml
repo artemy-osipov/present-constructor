@@ -22,6 +22,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
+
         <xdocreport.version>1.0.5</xdocreport.version>
         <maven-compiler-plugin>3.3</maven-compiler-plugin>
     </properties>
@@ -177,7 +178,8 @@
                         <database>
                             <includes>.*</includes>
                             <inputSchema>presents</inputSchema>
-                            <schemaVersionProvider>SELECT :schema_name || '_' || MAX("version") FROM "schema_version"</schemaVersionProvider>
+                            <schemaVersionProvider>SELECT :schema_name || '_' || MAX("version") FROM "schema_version"
+                            </schemaVersionProvider>
                         </database>
                         <target>
                             <packageName>ru.home.db</packageName>

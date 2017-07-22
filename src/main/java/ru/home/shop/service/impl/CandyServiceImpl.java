@@ -25,7 +25,7 @@ public class CandyServiceImpl implements CandyService {
 
     @Override
     public void add(Candy candy) throws ValidationException {
-        Map<String, String> errors = CandyValidator.validateAdd(candy);
+        Map<String, String> errors = CandyValidator.validate(candy);
 
         if (!errors.isEmpty()) {
             throw new ValidationException(errors);
@@ -37,7 +37,7 @@ public class CandyServiceImpl implements CandyService {
 
     @Override
     public void edit(Candy candy) throws ValidationException {
-        Map<String, String> errors = CandyValidator.validateUpdate(candy);
+        Map<String, String> errors = CandyValidator.validate(candy);
 
         if (!errors.isEmpty()) {
             throw new ValidationException(errors);
@@ -52,10 +52,6 @@ public class CandyServiceImpl implements CandyService {
 
     @Override
     public void remove(int id) throws ValidationException {
-        if (id < 1) {
-            throw new ValidationException("id", "incorrect");
-        }
-
         int removed = repository.remove(id);
 
         if (removed != 1) {
@@ -70,10 +66,6 @@ public class CandyServiceImpl implements CandyService {
 
     @Override
     public Candy find(int id) throws ValidationException {
-        if (id < 1) {
-            throw new ValidationException("id", "incorrect");
-        }
-
         return repository.find(id);
     }
 }

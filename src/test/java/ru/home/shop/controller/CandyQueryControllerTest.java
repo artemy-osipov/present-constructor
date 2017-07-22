@@ -9,7 +9,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ru.home.shop.PresentsApplication;
 import ru.home.shop.domain.model.Candy;
-import ru.home.shop.exception.EntityNotFoundException;
 import ru.home.shop.exception.ValidationException;
 import ru.home.shop.service.CandyService;
 
@@ -17,22 +16,19 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import static java.util.Arrays.asList;
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.home.shop.util.JsonUtils.fromJson;
-import static ru.home.shop.util.JsonUtils.toJson;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = PresentsApplication.class)
-public class CandyControllerTest {
+public class CandyQueryControllerTest {
 
     private MockMvc getMockMvc(CandyService mockService) {
-        return MockMvcBuilders.standaloneSetup(new CandyController(mockService)).build();
+        return MockMvcBuilders.standaloneSetup(new CandyQueryController(mockService)).build();
     }
 
     private Candy getCandy() {
@@ -52,90 +48,6 @@ public class CandyControllerTest {
         assertEquals(expected.getFirm(), actual.getFirm());
         assertEquals(expected.getOrder(), actual.getOrder(), 0.001);
         assertEquals(expected.getPrice(), actual.getPrice());
-    }
-
-    @Test
-    public void addCandyWithValidEntityShouldReturn200() throws Exception {
-        Candy candy = getCandy();
-        Integer id = candy.getId();
-        CandyService mock = mock(CandyService.class);
-
-        getMockMvc(mock).perform(post("/candy")
-                .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(toJson(candy)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", is(id)));
-    }
-
-    @Test
-    public void addCandyWithNotValidEntityShouldReturn400() throws Exception {
-        Candy candy = getCandy();
-        CandyService mock = mock(CandyService.class);
-        doThrow(ValidationException.class).when(mock).add(any(Candy.class));
-
-        getMockMvc(mock).perform(post("/candy")
-                .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(toJson(candy)))
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    public void editCandyWithValidEntityShouldReturn200() throws Exception {
-        Candy candy = getCandy();
-        CandyService mock = mock(CandyService.class);
-
-        getMockMvc(mock).perform(put("/candy/{id}", candy.getId())
-                .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(toJson(candy)))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void editCandyWithNotValidEntityShouldReturn400() throws Exception {
-        Candy candy = getCandy();
-        CandyService mock = mock(CandyService.class);
-        doThrow(ValidationException.class).when(mock).edit(any(Candy.class));
-
-        getMockMvc(mock).perform(put("/candy/{id}", candy.getId())
-                .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(toJson(candy)))
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    public void editCandyWithNonExistentIdShouldReturn404() throws Exception {
-        Candy candy = getCandy();
-        CandyService mock = mock(CandyService.class);
-        doThrow(EntityNotFoundException.class).when(mock).edit(any(Candy.class));
-
-        getMockMvc(mock).perform(put("/candy/{id}", candy.getId())
-                .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(toJson(candy)))
-                .andExpect(status().isNotFound());
-    }
-
-    @Test
-    public void removeCandyWithValidIdShouldReturn200() throws Exception {
-        int id = 1;
-        CandyService mock = mock(CandyService.class);
-
-        getMockMvc(mock).perform(delete("/candy/{id}", id).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void removeCandyWithNotValidIdShouldReturn400() throws Exception {
-        int id = 1;
-        CandyService mock = mock(CandyService.class);
-        doThrow(ValidationException.class).when(mock).remove(id);
-
-        getMockMvc(mock).perform(delete("/candy/{id}", id).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    public void removeCandyWithNonExistentIdShouldReturn404() throws Exception {
-        int id = 1;
-        CandyService mock = mock(CandyService.class);
-        doThrow(EntityNotFoundException.class).when(mock).remove(id);
-
-        getMockMvc(mock).perform(delete("/candy/{id}", id).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
     }
 
     @Test

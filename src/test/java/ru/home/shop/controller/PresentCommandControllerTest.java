@@ -21,22 +21,20 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
-import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static ru.home.shop.util.JsonUtils.fromJson;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.home.shop.util.JsonUtils.toJson;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = PresentsApplication.class)
-public class PresentControllerTest {
+public class PresentCommandControllerTest {
 
     private MockMvc getMockMvc(PresentService mockService) {
-        return MockMvcBuilders.standaloneSetup(new PresentController(mockService)).build();
+        return MockMvcBuilders.standaloneSetup(new PresentCommandController(mockService)).build();
     }
 
     private Present getPresent() {
@@ -57,14 +55,6 @@ public class PresentControllerTest {
         present.getCandies().add(candy2);
 
         return present;
-    }
-
-    private void assertPresentEquals(Present expected, Present actual) {
-        assertEquals(expected.getId(), actual.getId());
-        assertEquals(expected.getName(), actual.getName());
-        assertEquals(expected.getPrice(), actual.getPrice());
-
-        assertCandiesEquals(expected.getCandies(), actual.getCandies());
     }
 
     private void assertCandiesEquals(Collection<Candy> expectedCol, Collection<Candy> actualCol) {
@@ -163,77 +153,5 @@ public class PresentControllerTest {
 
         getMockMvc(mock).perform(delete("/present/{id}", id).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
-    }
-
-    @Test
-    public void findPresentWithValidIdShouldReturnEntity() throws Exception {
-        Present origin = getPresent();
-        PresentService mock = mock(PresentService.class);
-        when(mock.find(origin.getId())).thenReturn(origin);
-
-        String responseJson = getMockMvc(mock).perform(get("/present/{id}", origin.getId()).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andReturn().getResponse().getContentAsString();
-        Present response = fromJson(responseJson, Present.class);
-
-        assertPresentEquals(response, origin);
-    }
-
-    @Test
-    public void findPresentWithNotValidIdShouldReturn400() throws Exception {
-        Present present = getPresent();
-        PresentService mock = mock(PresentService.class);
-        doThrow(ValidationException.class).when(mock).find(present.getId());
-
-        getMockMvc(mock).perform(get("/present/{id}", present.getId()).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    public void findPresentWithNonexistentIdShouldReturn404() throws Exception {
-        Present present = getPresent();
-        PresentService mock = mock(PresentService.class);
-        when(mock.find(present.getId())).thenReturn(null);
-
-        getMockMvc(mock).perform(get("/present/{id}", present.getId()).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
-    }
-
-    @Test
-    public void listPresentWithNotEmptyDBShouldReturnArray() throws Exception {
-        Present present1 = getPresent();
-        Present present2 = new Present();
-        present2.setId(2);
-        present2.setName("name2");
-        present2.setPrice(BigDecimal.valueOf(-1.441));
-        present2.setCandies(present1.getCandies());
-        Present[] origin = {present1, present2};
-
-        PresentService mock = mock(PresentService.class);
-        when(mock.listView()).thenReturn(asList(origin));
-
-        String responseJson = getMockMvc(mock).perform(get("/present").accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andReturn().getResponse().getContentAsString();
-        Present[] response = fromJson(responseJson, Present[].class);
-
-        assertEquals(origin.length, response.length);
-
-        for (int i = 0; i < origin.length; i++) {
-            assertPresentEquals(origin[i], response[i]);
-        }
-    }
-
-    @Test
-    public void listPresentWithEmptyDBShouldReturnEmptyArray() throws Exception {
-        PresentService mock = mock(PresentService.class);
-        when(mock.listView()).thenReturn(new ArrayList<>());
-
-        getMockMvc(mock).perform(get("/present").accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$", hasSize(0)));
     }
 }

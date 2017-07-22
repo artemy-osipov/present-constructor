@@ -24,7 +24,7 @@ public class PresentServiceImpl implements PresentService {
 
     @Override
     public void add(Present present) {
-        Map<String, String> errors = PresentValidator.validateAdd(present);
+        Map<String, String> errors = PresentValidator.validate(present);
 
         if (!errors.isEmpty()) {
             throw new ValidationException(errors);
@@ -36,7 +36,7 @@ public class PresentServiceImpl implements PresentService {
 
     @Override
     public void edit(Present present) {
-        Map<String, String> errors = PresentValidator.validateUpdate(present);
+        Map<String, String> errors = PresentValidator.validate(present);
 
         if (!errors.isEmpty()) {
             throw new ValidationException(errors);
@@ -51,10 +51,6 @@ public class PresentServiceImpl implements PresentService {
 
     @Override
     public void remove(int id) {
-        if (id <= 0) {
-            throw new ValidationException("id", "incorrect");
-        }
-
         int removed = repository.remove(id);
 
         if (removed != 1) {
@@ -69,10 +65,6 @@ public class PresentServiceImpl implements PresentService {
 
     @Override
     public Present find(int id) {
-        if (id < 1) {
-            throw new ValidationException("id", "incorrect");
-        }
-
         return repository.findFull(id);
     }
 }

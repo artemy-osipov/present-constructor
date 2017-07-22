@@ -124,19 +124,6 @@ public class CandyServiceImplTest {
     }
 
     @Test
-    public void remove_notValidId_shouldThrowException() {
-        CandyRepository mock = mock(CandyRepository.class);
-
-        try {
-            new CandyServiceImpl(mock).remove(-1);
-            fail();
-        } catch (ValidationException e) {
-            assertEquals(1, e.getErrors().size());
-            assertEquals("incorrect", e.getErrors().get("id"));
-        }
-    }
-
-    @Test
     public void remove_nonexistentId_shouldThrowException() {
         CandyRepository mock = mock(CandyRepository.class);
         when(mock.remove(1)).thenReturn(0);
@@ -169,18 +156,5 @@ public class CandyServiceImplTest {
 
         assertEquals(candy, new CandyServiceImpl(mock).find(id));
         verify(mock).find(id);
-    }
-
-    @Test
-    public void find_notValidId_shouldThrowException() {
-        CandyRepository mock = mock(CandyRepository.class);
-
-        try {
-            new CandyServiceImpl(mock).find(0);
-            fail();
-        } catch (ValidationException e) {
-            assertEquals(1, e.getErrors().size());
-            assertEquals("incorrect", e.getErrors().get("id"));
-        }
     }
 }

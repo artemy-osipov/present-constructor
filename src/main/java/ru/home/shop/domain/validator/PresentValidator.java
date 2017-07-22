@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class PresentValidator {
 
-    public static Map<String, String> validateAdd(Present present) {
+    public static Map<String, String> validate(Present present) {
         if (present == null) {
             throw new IllegalArgumentException("argument is null");
         }
@@ -45,17 +45,5 @@ public class PresentValidator {
         if (candy.getCount() < 1) {
             errors.put("candies.count", "incorrect");
         }
-    }
-
-    public static Map<String, String> validateUpdate(Present present) {
-        Map<String, String> errors = validateAdd(present);
-
-        if (present.getId() == null) {
-            errors.put("id", "empty");
-        } else if (present.getId() < 1) {
-            errors.put("id", "incorrect");
-        }
-
-        return errors;
     }
 }

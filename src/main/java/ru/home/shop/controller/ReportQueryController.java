@@ -20,13 +20,13 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 @RestController
-public class ReportController {
+public class ReportQueryController {
 
     private final PresentService presentService;
     private final ReportService reportService;
 
     @Autowired
-    public ReportController(PresentService presentService, ReportService reportService) {
+    public ReportQueryController(PresentService presentService, ReportService reportService) {
         this.presentService = presentService;
         this.reportService = reportService;
     }

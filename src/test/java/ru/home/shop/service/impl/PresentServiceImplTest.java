@@ -132,19 +132,6 @@ public class PresentServiceImplTest {
     }
 
     @Test
-    public void remove_notValidId_shouldThrowException() {
-        PresentRepository mock = mock(PresentRepository.class);
-
-        try {
-            new PresentServiceImpl(mock).remove(-1);
-            fail();
-        } catch (ValidationException e) {
-            assertEquals(1, e.getErrors().size());
-            assertEquals("incorrect", e.getErrors().get("id"));
-        }
-    }
-
-    @Test
     public void remove_nonexistentId_shouldThrowException() {
         PresentRepository mock = mock(PresentRepository.class);
         when(mock.remove(1)).thenReturn(0);
@@ -177,18 +164,5 @@ public class PresentServiceImplTest {
 
         assertEquals(present, new PresentServiceImpl(mock).find(id));
         verify(mock).findFull(id);
-    }
-
-    @Test
-    public void find_notValidId_shouldThrowException() {
-        PresentRepository mock = mock(PresentRepository.class);
-
-        try {
-            new PresentServiceImpl(mock).find(0);
-            fail();
-        } catch (ValidationException e) {
-            assertEquals(1, e.getErrors().size());
-            assertEquals("incorrect", e.getErrors().get("id"));
-        }
     }
 }

@@ -23,10 +23,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = PresentsApplication.class)
-public class ReportControllerTest {
+public class ReportQueryControllerTest {
 
     private MockMvc getMockMvc(PresentService presentService, ReportService reportService) {
-        return MockMvcBuilders.standaloneSetup(new ReportController(presentService, reportService)).build();
+        return MockMvcBuilders.standaloneSetup(new ReportQueryController(presentService, reportService)).build();
     }
 
     private Present getPresent() {

@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class CandyValidator {
 
-    public static Map<String, String> validateAdd(Candy candy) {
+    public static Map<String, String> validate(Candy candy) {
         if (candy == null) {
             throw new IllegalArgumentException("argument is null");
         }
@@ -35,18 +35,6 @@ public class CandyValidator {
 
         if (candy.getOrder() < 0) {
             errors.put("order", "incorrect");
-        }
-
-        return errors;
-    }
-
-    public static Map<String, String> validateUpdate(Candy candy) {
-        Map<String, String> errors = validateAdd(candy);
-
-        if (candy.getId() == null) {
-            errors.put("id", "empty");
-        } else if (candy.getId() < 1) {
-            errors.put("id", "incorrect");
         }
 
         return errors;

@@ -53,28 +53,28 @@ public class PresentValidatorTest {
     }
 
     @Test
-    public void validateAdd_validEntry_shouldReturnNoErrors() {
-        Map<String, String> errors = PresentValidator.validateAdd(getValidAddPresent());
+    public void validate_validEntry_shouldReturnNoErrors() {
+        Map<String, String> errors = PresentValidator.validate(getValidAddPresent());
 
         assertTrue(errors.isEmpty());
     }
 
     @Test
-    public void validateAdd_nullEntry_shouldThrowException() {
+    public void validate_nullEntry_shouldThrowException() {
         try {
-            PresentValidator.validateAdd(null);
+            PresentValidator.validate(null);
             fail();
         } catch (IllegalArgumentException ignored) {
         }
     }
 
     @Test
-    public void validateAdd_emptyEntry_shouldReturnFewErrors() {
-        assertEquals(getEmptyErrorsForAdding(), PresentValidator.validateAdd(new Present()));
+    public void validate_emptyEntry_shouldReturnFewErrors() {
+        assertEquals(getEmptyErrorsForAdding(), PresentValidator.validate(new Present()));
     }
 
     @Test
-    public void validateAdd_notValidEntry_shouldReturnFewErrors() {
+    public void validate_notValidEntry_shouldReturnFewErrors() {
         Present present = getValidAddPresent();
         present.setName(LONG_STRING);
         present.setPrice(BigDecimal.valueOf(12.414));
@@ -84,51 +84,6 @@ public class PresentValidatorTest {
         candy.setCount(0);
         present.getCandies().add(candy);
 
-        assertEquals(getIncorrectEmptyErrorsForAdding(), PresentValidator.validateAdd(present));
-    }
-
-    @Test
-    public void validateUpdate_validEntry_shouldReturnNoErrors() {
-        Present present = getValidAddPresent();
-        present.setId(1);
-
-        Map<String, String> errors = PresentValidator.validateUpdate(present);
-
-        assertTrue(errors.isEmpty());
-    }
-
-    @Test
-    public void validateUpdate_nullEntry_shouldThrowException() {
-        try {
-            PresentValidator.validateUpdate(null);
-            fail();
-        } catch (IllegalArgumentException ignored) {
-        }
-    }
-
-    @Test
-    public void validateUpdate_emptyEntry_shouldReturnFewErrors() {
-        Map<String, String> errors = getEmptyErrorsForAdding();
-        errors.put("id", "empty");
-
-        assertEquals(errors, PresentValidator.validateUpdate(new Present()));
-    }
-
-    @Test
-    public void validateUpdate_notValidEntry_shouldReturnFewErrors() {
-        Present present = getValidAddPresent();
-        present.setId(-1);
-        present.setName(LONG_STRING);
-        present.setPrice(BigDecimal.valueOf(0));
-
-        Candy candy = new Candy();
-        candy.setVid(-1);
-        candy.setCount(0);
-        present.getCandies().add(candy);
-
-        Map<String, String> errors = getIncorrectEmptyErrorsForAdding();
-        errors.put("id", "incorrect");
-
-        assertEquals(errors, PresentValidator.validateUpdate(present));
+        assertEquals(getIncorrectEmptyErrorsForAdding(), PresentValidator.validate(present));
     }
 }
