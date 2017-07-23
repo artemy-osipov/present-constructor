@@ -18,8 +18,7 @@ import ru.home.shop.domain.repo.CandyRepository;
 import java.math.BigDecimal;
 
 import static org.junit.Assert.*;
-import static ru.home.db.Tables.CANDY_HISTORY;
-import static ru.home.db.tables.Candy.CANDY;
+import static ru.home.db.Tables.CANDY;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = {PresentsApplication.class})
@@ -51,15 +50,6 @@ public class JOOQCandyRepositoryTest {
         assertEquals(++before, dsl.fetchCount(CANDY));
     }
 
-    @Test
-    public void addShouldAddNewVersionOfCandy() {
-        int before = dsl.fetchCount(CANDY_HISTORY);
-
-        repository.add(getCandy());
-
-        assertEquals(++before, dsl.fetchCount(CANDY_HISTORY));
-    }
-
     @Test(expected = DataIntegrityViolationException.class)
     public void addWithEmptyNotNullableFieldShouldThrowException() {
         Candy candy = getCandy();
@@ -86,19 +76,6 @@ public class JOOQCandyRepositoryTest {
         candy.setId(1);
 
         assertEquals(1, repository.edit(candy));
-    }
-
-    @Test
-    @FlywayTest
-    public void editValidEntryShouldAddNewVersion() {
-        Candy candy = getCandy();
-        candy.setId(1);
-
-        int before = dsl.fetchCount(CANDY_HISTORY);
-
-        repository.edit(candy);
-
-        assertEquals(++before, dsl.fetchCount(CANDY_HISTORY));
     }
 
     @Test

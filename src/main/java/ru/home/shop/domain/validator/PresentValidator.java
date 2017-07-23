@@ -38,8 +38,8 @@ public class PresentValidator {
     }
 
     private static void validateCandy(Candy candy, Map<String, String> errors) {
-        if (candy.getVid() == null || candy.getVid() < 1) {
-            errors.put("candies.vid", "incorrect");
+        if (candy.getId() == null || candy.getId() < 1) {
+            errors.put("candies.id", "incorrect");
         }
 
         if (candy.getCount() < 1) {

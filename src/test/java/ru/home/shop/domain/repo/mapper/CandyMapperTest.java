@@ -11,12 +11,10 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static ru.home.db.Tables.CANDY;
-import static ru.home.db.Tables.CANDY_HISTORY;
 
 public class CandyMapperTest {
 
     private static final Integer ID = 1;
-    private static final Integer VID = 10;
     private static final String NAME = "name";
     private static final String FIRM = "firm";
     private static final BigDecimal PRICE = BigDecimal.valueOf(2.3);
@@ -32,7 +30,6 @@ public class CandyMapperTest {
         when(record.getValue(CANDY.FIRM)).thenReturn(FIRM);
         when(record.getValue(CANDY.PRICE)).thenReturn(PRICE);
         when(record.getValue(CANDY.ORDER)).thenReturn(ORDER);
-        when(record.getValue(CANDY_HISTORY.ID)).thenReturn(VID);
 
         return record;
     }
@@ -47,7 +44,6 @@ public class CandyMapperTest {
         Candy candy = mapper.map(getRecord());
 
         assertEquals(ID, candy.getId());
-        assertEquals(VID, candy.getVid());
         assertEquals(NAME, candy.getName());
         assertEquals(FIRM, candy.getFirm());
         assertEquals(PRICE, candy.getPrice());

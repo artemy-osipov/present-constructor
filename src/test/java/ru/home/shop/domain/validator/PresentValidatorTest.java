@@ -20,11 +20,11 @@ public class PresentValidatorTest {
         present.setPrice(BigDecimal.valueOf(4.2));
 
         Candy candy1 = new Candy();
-        candy1.setVid(1);
+        candy1.setId(1);
         candy1.setCount(2);
 
         Candy candy2 = new Candy();
-        candy2.setVid(3);
+        candy2.setId(3);
         candy2.setCount(6);
 
         present.getCandies().add(candy1);
@@ -46,7 +46,7 @@ public class PresentValidatorTest {
         Map<String, String> errors = new HashMap<>();
         errors.put("name", "length exceeded (50)");
         errors.put("price", "incorrect");
-        errors.put("candies.vid", "incorrect");
+        errors.put("candies.id", "incorrect");
         errors.put("candies.count", "incorrect");
 
         return errors;

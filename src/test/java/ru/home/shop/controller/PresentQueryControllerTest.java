@@ -9,8 +9,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ru.home.shop.PresentsApplication;
 import ru.home.shop.domain.model.Candy;
+import ru.home.shop.domain.model.Entity;
 import ru.home.shop.domain.model.Present;
-import ru.home.shop.domain.model.VersionedEntity;
 import ru.home.shop.exception.ValidationException;
 import ru.home.shop.service.PresentService;
 
@@ -68,7 +68,7 @@ public class PresentQueryControllerTest {
         List<Candy> expected = new ArrayList<>(expectedCol);
         List<Candy> actual = new ArrayList<>(actualCol);
 
-        Comparator<Candy> comparator = Comparator.comparing(VersionedEntity::getId);
+        Comparator<Candy> comparator = Comparator.comparing(Entity::getId);
         expected.sort(comparator);
         actual.sort(comparator);
 

@@ -23,12 +23,10 @@ public class PresentServiceImplTest {
 
         Candy candy1 = new Candy();
         candy1.setId(1);
-        candy1.setVid(11);
         candy1.setCount(2);
 
         Candy candy2 = new Candy();
         candy2.setId(3);
-        candy2.setVid(33);
         candy2.setCount(6);
 
         present.getCandies().add(candy1);

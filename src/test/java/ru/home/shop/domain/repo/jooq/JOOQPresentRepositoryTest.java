@@ -20,8 +20,8 @@ import ru.home.shop.domain.repo.PresentRepository;
 import java.math.BigDecimal;
 
 import static org.junit.Assert.*;
-import static ru.home.db.tables.CandyPresent.CANDY_PRESENT;
-import static ru.home.db.tables.Present.PRESENT;
+import static ru.home.db.Tables.PRESENT;
+import static ru.home.db.Tables.PRESENT_ITEM;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = {PresentsApplication.class})
@@ -56,14 +56,16 @@ public class JOOQPresentRepositoryTest {
         Present present = getPresent();
 
         Candy candy = new Candy();
-        candy.setVid(1);
+        candy.setId(1);
         candy.setCount(2);
 
         present.getCandies().add(candy);
 
         int presentID = repository.add(present);
 
-        Select count = dsl.selectCount().from(CANDY_PRESENT).where(CANDY_PRESENT.PRESENT.eq(presentID));
+        Select count = dsl.selectCount()
+                .from(PRESENT_ITEM)
+                .where(PRESENT_ITEM.PRESENT.eq(presentID));
         assertEquals(1, dsl.fetchCount(count));
     }
 
@@ -121,13 +123,15 @@ public class JOOQPresentRepositoryTest {
         present.setId(1);
 
         Candy candy = new Candy();
-        candy.setVid(1);
+        candy.setId(1);
         candy.setCount(2);
 
         present.getCandies().add(candy);
 
         int presentID = repository.add(present);
-        Select count = dsl.selectCount().from(CANDY_PRESENT).where(CANDY_PRESENT.PRESENT.eq(presentID));
+        Select count = dsl.selectCount()
+                .from(PRESENT_ITEM)
+                .where(PRESENT_ITEM.PRESENT.eq(presentID));
 
         assertEquals(1, dsl.fetchCount(count));
     }

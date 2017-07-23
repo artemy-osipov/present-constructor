@@ -10,19 +10,13 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ru.home.shop.PresentsApplication;
 import ru.home.shop.domain.model.Candy;
 import ru.home.shop.domain.model.Present;
-import ru.home.shop.domain.model.VersionedEntity;
 import ru.home.shop.exception.EntityNotFoundException;
 import ru.home.shop.exception.ValidationException;
 import ru.home.shop.service.PresentService;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -55,20 +49,6 @@ public class PresentCommandControllerTest {
         present.getCandies().add(candy2);
 
         return present;
-    }
-
-    private void assertCandiesEquals(Collection<Candy> expectedCol, Collection<Candy> actualCol) {
-        List<Candy> expected = new ArrayList<>(expectedCol);
-        List<Candy> actual = new ArrayList<>(actualCol);
-
-        Comparator<Candy> comparator = Comparator.comparing(VersionedEntity::getId);
-        expected.sort(comparator);
-        actual.sort(comparator);
-
-        for (int i = 0; i < expected.size(); i++) {
-            assertEquals(expected.get(i).getId(), actual.get(i).getId());
-            assertEquals(expected.get(i).getCount(), actual.get(i).getCount());
-        }
     }
 
     @Test

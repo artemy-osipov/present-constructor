@@ -47,7 +47,7 @@ public class TransactionTest {
         Present present = getPresent();
 
         Candy candy = new Candy();
-        candy.setVid(1);
+        candy.setId(1);
         candy.setCount(2);
 
         present.getCandies().add(candy);
@@ -59,7 +59,7 @@ public class TransactionTest {
 
         try {
             Candy incorrectCandy = new Candy();
-            incorrectCandy.setVid(-11);
+            incorrectCandy.setId(-11);
             incorrectCandy.setCount(2);
             present.getCandies().add(incorrectCandy);
             repository.add(present);
