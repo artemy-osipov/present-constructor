@@ -1,5 +1,6 @@
 package ru.home.shop.controller;
 
+import com.fasterxml.uuid.Generators;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,6 +15,7 @@ import ru.home.shop.exception.ValidationException;
 import ru.home.shop.service.CandyService;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Matchers.any;
@@ -34,7 +36,7 @@ public class CandyCommandControllerTest {
 
     private Candy getCandy() {
         Candy candy = new Candy();
-        candy.setId(1);
+        candy.setId(Generators.timeBasedGenerator().generate());
         candy.setName("name");
         candy.setFirm("firm");
         candy.setPrice(BigDecimal.valueOf(4.20));
@@ -46,7 +48,7 @@ public class CandyCommandControllerTest {
     @Test
     public void addCandyWithValidEntityShouldReturn200() throws Exception {
         Candy candy = getCandy();
-        Integer id = candy.getId();
+        String id = candy.getId().toString();
         CandyService mock = mock(CandyService.class);
 
         getMockMvc(mock).perform(post("/candy")
@@ -100,7 +102,7 @@ public class CandyCommandControllerTest {
 
     @Test
     public void removeCandyWithValidIdShouldReturn200() throws Exception {
-        int id = 1;
+        UUID id = Generators.timeBasedGenerator().generate();
         CandyService mock = mock(CandyService.class);
 
         getMockMvc(mock).perform(delete("/candy/{id}", id).accept(MediaType.APPLICATION_JSON))
@@ -109,7 +111,7 @@ public class CandyCommandControllerTest {
 
     @Test
     public void removeCandyWithNotValidIdShouldReturn400() throws Exception {
-        int id = 1;
+        UUID id = Generators.timeBasedGenerator().generate();
         CandyService mock = mock(CandyService.class);
         doThrow(ValidationException.class).when(mock).remove(id);
 
@@ -119,7 +121,7 @@ public class CandyCommandControllerTest {
 
     @Test
     public void removeCandyWithNonExistentIdShouldReturn404() throws Exception {
-        int id = 1;
+        UUID id = Generators.timeBasedGenerator().generate();
         CandyService mock = mock(CandyService.class);
         doThrow(EntityNotFoundException.class).when(mock).remove(id);
 

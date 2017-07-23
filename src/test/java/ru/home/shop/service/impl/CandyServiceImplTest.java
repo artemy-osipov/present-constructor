@@ -1,5 +1,6 @@
 package ru.home.shop.service.impl;
 
+import com.fasterxml.uuid.Generators;
 import org.junit.Test;
 import ru.home.shop.domain.model.Candy;
 import ru.home.shop.domain.repo.CandyRepository;
@@ -9,7 +10,10 @@ import ru.home.shop.exception.ValidationException;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.UUID;
 
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -30,13 +34,9 @@ public class CandyServiceImplTest {
         CandyRepository mock = mock(CandyRepository.class);
         Candy candy = getValidAddCandy();
 
-        Integer newId = 2;
-
-        when(mock.add(candy)).thenReturn(newId);
-
         new CandyServiceImpl(mock).add(candy);
         verify(mock).add(candy);
-        assertEquals(newId, candy.getId());
+        assertThat(candy.getId(), notNullValue());
     }
 
     @Test
@@ -65,7 +65,7 @@ public class CandyServiceImplTest {
     @Test
     public void edit_validEntry_shouldInvokeRepository() {
         Candy candy = getValidAddCandy();
-        candy.setId(1);
+        candy.setId(Generators.timeBasedGenerator().generate());
 
         CandyRepository mock = mock(CandyRepository.class);
         when(mock.edit(candy)).thenReturn(1);
@@ -102,7 +102,7 @@ public class CandyServiceImplTest {
     public void edit_nonexistentId_shouldThrowException() {
         CandyRepository mock = mock(CandyRepository.class);
         Candy candy = getValidAddCandy();
-        candy.setId(1);
+        candy.setId(Generators.timeBasedGenerator().generate());
 
         when(mock.edit(candy)).thenReturn(0);
 
@@ -115,7 +115,7 @@ public class CandyServiceImplTest {
 
     @Test
     public void remove_validId_shouldInvokeRepository() {
-        int id = 1;
+        UUID id = Generators.timeBasedGenerator().generate();
         CandyRepository mock = mock(CandyRepository.class);
         when(mock.remove(id)).thenReturn(1);
 
@@ -126,10 +126,10 @@ public class CandyServiceImplTest {
     @Test
     public void remove_nonexistentId_shouldThrowException() {
         CandyRepository mock = mock(CandyRepository.class);
-        when(mock.remove(1)).thenReturn(0);
+        when(mock.remove(Generators.timeBasedGenerator().generate())).thenReturn(0);
 
         try {
-            new CandyServiceImpl(mock).remove(1);
+            new CandyServiceImpl(mock).remove(Generators.timeBasedGenerator().generate());
             fail();
         } catch (EntityNotFoundException ignored) {
         }
@@ -150,7 +150,7 @@ public class CandyServiceImplTest {
     public void find_validId_shouldInvokeRepository() {
         CandyRepository mock = mock(CandyRepository.class);
         Candy candy = getValidAddCandy();
-        int id = 1;
+        UUID id = Generators.timeBasedGenerator().generate();
 
         when(mock.find(id)).thenReturn(candy);
 

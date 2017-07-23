@@ -10,6 +10,7 @@ import ru.home.shop.exception.EntityNotFoundException;
 import ru.home.shop.service.CandyService;
 
 import java.util.Collection;
+import java.util.UUID;
 
 @RestController
 public class CandyQueryController {
@@ -22,8 +23,8 @@ public class CandyQueryController {
     }
 
     @RequestMapping(value = "/candy/{id}", method = RequestMethod.GET)
-    public Candy findCandy(@PathVariable("id") int id) {
-        Candy candy = candyService.find(id);
+    public Candy findCandy(@PathVariable("id") String id) {
+        Candy candy = candyService.find(UUID.fromString(id));
 
         if (candy != null) {
             return candy;

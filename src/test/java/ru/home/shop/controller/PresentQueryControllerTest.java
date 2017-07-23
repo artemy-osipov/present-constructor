@@ -1,5 +1,6 @@
 package ru.home.shop.controller;
 
+import com.fasterxml.uuid.Generators;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,16 +39,16 @@ public class PresentQueryControllerTest {
 
     private Present getPresent() {
         Present present = new Present();
-        present.setId(1);
+        present.setId(Generators.timeBasedGenerator().generate());
         present.setName("name");
         present.setPrice(BigDecimal.valueOf(4.2));
 
         Candy candy1 = new Candy();
-        candy1.setId(1);
+        candy1.setId(Generators.timeBasedGenerator().generate());
         candy1.setCount(2);
 
         Candy candy2 = new Candy();
-        candy2.setId(3);
+        candy2.setId(Generators.timeBasedGenerator().generate());
         candy2.setCount(6);
 
         present.getCandies().add(candy1);
@@ -117,7 +118,7 @@ public class PresentQueryControllerTest {
     public void listPresentWithNotEmptyDBShouldReturnArray() throws Exception {
         Present present1 = getPresent();
         Present present2 = new Present();
-        present2.setId(2);
+        present2.setId(Generators.timeBasedGenerator().generate());
         present2.setName("name2");
         present2.setPrice(BigDecimal.valueOf(-1.441));
         present2.setCandies(present1.getCandies());

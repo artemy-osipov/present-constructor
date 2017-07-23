@@ -1,5 +1,6 @@
 package ru.home.shop.domain.repo.jooq;
 
+import com.fasterxml.uuid.Generators;
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -10,6 +11,7 @@ import ru.home.shop.domain.repo.PresentRepository;
 import ru.home.shop.domain.repo.mapper.PresentMapper;
 
 import java.util.Collection;
+import java.util.UUID;
 
 import static ru.home.db.Tables.*;
 
@@ -25,21 +27,20 @@ public class JOOQPresentRepository implements PresentRepository {
 
     @Override
     @Transactional
-    public int add(Present present) {
-        int id = dsl.insertInto(PRESENT)
+    public void add(Present present) {
+        dsl.insertInto(PRESENT)
+                .set(PRESENT.ID, present.getId())
                 .set(PRESENT.NAME, present.getName())
                 .set(PRESENT.PRICE, present.getPrice())
-                .returning(PRESENT.ID)
-                .fetchOne().getId();
+                .execute();
 
-        addCandiesToPresent(id, present.getCandies());
-
-        return id;
+        addCandiesToPresent(present.getId(), present.getCandies());
     }
 
-    private void addCandiesToPresent(int present, Collection<Candy> candies) {
+    private void addCandiesToPresent(UUID present, Collection<Candy> candies) {
         candies.forEach(
                 candy -> dsl.insertInto(PRESENT_ITEM)
+                        .set(PRESENT_ITEM.ID, Generators.timeBasedGenerator().generate())
                         .set(PRESENT_ITEM.PRESENT, present)
                         .set(PRESENT_ITEM.CANDY, candy.getId())
                         .set(PRESENT_ITEM.COUNT, candy.getCount())
@@ -48,7 +49,7 @@ public class JOOQPresentRepository implements PresentRepository {
     }
 
     @Override
-    public int remove(int id) {
+    public int remove(UUID id) {
         return dsl.deleteFrom(PRESENT)
                 .where(PRESENT.ID.eq(id))
                 .execute();
@@ -79,7 +80,7 @@ public class JOOQPresentRepository implements PresentRepository {
 
     @Override
     @Transactional
-    public Present findFull(int id) {
+    public Present findFull(UUID id) {
         Present present = dsl.selectFrom(PRESENT)
                 .where(PRESENT.ID.eq(id))
                 .fetchOne(new PresentMapper());
@@ -91,7 +92,7 @@ public class JOOQPresentRepository implements PresentRepository {
         return present;
     }
 
-    private Collection<Candy> listCandiesByPresent(int present) {
+    private Collection<Candy> listCandiesByPresent(UUID present) {
         return dsl.select()
                 .from(PRESENT_ITEM)
                 .leftJoin(CANDY).on(PRESENT_ITEM.CANDY.eq(CANDY.ID))

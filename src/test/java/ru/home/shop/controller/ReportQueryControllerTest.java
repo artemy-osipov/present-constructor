@@ -1,5 +1,6 @@
 package ru.home.shop.controller;
 
+import com.fasterxml.uuid.Generators;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,6 +14,7 @@ import ru.home.shop.service.PresentService;
 import ru.home.shop.service.ReportService;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertArrayEquals;
@@ -43,7 +45,7 @@ public class ReportQueryControllerTest {
 
     @Test
     public void publicReportWithExistentIdShouldReturnReport() throws Exception {
-        int presentId = 1;
+        UUID presentId = Generators.timeBasedGenerator().generate();
         Present present = getPresent();
         Report report = getReport();
         PresentService mockPresent = mock(PresentService.class);
@@ -62,7 +64,7 @@ public class ReportQueryControllerTest {
 
     @Test
     public void publicReportWithNonExistentIdShouldReturn404() throws Exception {
-        int presentId = 1;
+        UUID presentId = Generators.timeBasedGenerator().generate();
         PresentService mockPresent = mock(PresentService.class);
         ReportService mockReport = mock(ReportService.class);
 
@@ -76,7 +78,7 @@ public class ReportQueryControllerTest {
 
     @Test
     public void privateReportWithExistentIdShouldReturnReport() throws Exception {
-        int presentId = 1;
+        UUID presentId = Generators.timeBasedGenerator().generate();
         Present present = getPresent();
         Report report = getReport();
         PresentService mockPresent = mock(PresentService.class);
@@ -95,7 +97,7 @@ public class ReportQueryControllerTest {
 
     @Test
     public void privateReportWithNonExistentIdShouldReturn404() throws Exception {
-        int presentId = 1;
+        UUID presentId = Generators.timeBasedGenerator().generate();
         PresentService mockPresent = mock(PresentService.class);
         ReportService mockReport = mock(ReportService.class);
 

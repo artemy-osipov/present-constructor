@@ -1,5 +1,6 @@
 package ru.home.shop.controller;
 
+import com.fasterxml.uuid.Generators;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +16,7 @@ import ru.home.shop.exception.ValidationException;
 import ru.home.shop.service.PresentService;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.*;
@@ -33,16 +35,16 @@ public class PresentCommandControllerTest {
 
     private Present getPresent() {
         Present present = new Present();
-        present.setId(1);
+        present.setId(Generators.timeBasedGenerator().generate());
         present.setName("name");
         present.setPrice(BigDecimal.valueOf(4.2));
 
         Candy candy1 = new Candy();
-        candy1.setId(1);
+        candy1.setId(Generators.timeBasedGenerator().generate());
         candy1.setCount(2);
 
         Candy candy2 = new Candy();
-        candy2.setId(3);
+        candy2.setId(Generators.timeBasedGenerator().generate());
         candy2.setCount(6);
 
         present.getCandies().add(candy1);
@@ -54,7 +56,7 @@ public class PresentCommandControllerTest {
     @Test
     public void addPresentWithValidEntityShouldReturn200() throws Exception {
         Present present = getPresent();
-        Integer id = present.getId();
+        String id = present.getId().toString();
         PresentService mock = mock(PresentService.class);
 
         getMockMvc(mock).perform(post("/present")
@@ -108,7 +110,7 @@ public class PresentCommandControllerTest {
 
     @Test
     public void removePresentWithValidIdShouldReturn200() throws Exception {
-        int id = 1;
+        UUID id = Generators.timeBasedGenerator().generate();
         PresentService mock = mock(PresentService.class);
 
         getMockMvc(mock).perform(delete("/present/{id}", id).accept(MediaType.APPLICATION_JSON))
@@ -117,7 +119,7 @@ public class PresentCommandControllerTest {
 
     @Test
     public void removePresentWithNotValidIdShouldReturn400() throws Exception {
-        int id = 1;
+        UUID id = Generators.timeBasedGenerator().generate();
         PresentService mock = mock(PresentService.class);
         doThrow(ValidationException.class).when(mock).remove(id);
 
@@ -127,7 +129,7 @@ public class PresentCommandControllerTest {
 
     @Test
     public void removePresentWithNonexistentIdShouldReturn404() throws Exception {
-        int id = 1;
+        UUID id = Generators.timeBasedGenerator().generate();
         PresentService mock = mock(PresentService.class);
         doThrow(EntityNotFoundException.class).when(mock).remove(id);
 

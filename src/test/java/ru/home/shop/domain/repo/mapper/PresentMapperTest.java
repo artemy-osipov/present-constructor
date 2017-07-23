@@ -1,16 +1,19 @@
 package ru.home.shop.domain.repo.mapper;
 
+import com.fasterxml.uuid.Generators;
 import org.junit.Test;
 import ru.home.db.tables.records.PresentRecord;
 import ru.home.shop.domain.model.Present;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class PresentMapperTest {
 
-    private static final Integer ID = 1;
+    private static final UUID ID = Generators.timeBasedGenerator().generate();
     private static final String NAME = "name";
     private static final BigDecimal PRICE = BigDecimal.valueOf(2.3);
 

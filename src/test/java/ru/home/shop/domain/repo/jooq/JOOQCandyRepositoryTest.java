@@ -1,5 +1,6 @@
 package ru.home.shop.domain.repo.jooq;
 
+import com.fasterxml.uuid.Generators;
 import org.flywaydb.test.annotation.FlywayTest;
 import org.flywaydb.test.junit.FlywayTestExecutionListener;
 import org.jooq.DSLContext;
@@ -16,7 +17,10 @@ import ru.home.shop.domain.model.Candy;
 import ru.home.shop.domain.repo.CandyRepository;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 import static ru.home.db.Tables.CANDY;
 
@@ -33,6 +37,7 @@ public class JOOQCandyRepositoryTest {
 
     private Candy getCandy() {
         Candy bean = new Candy();
+        bean.setId(Generators.timeBasedGenerator().generate());
         bean.setName("name");
         bean.setFirm("firm");
         bean.setPrice(BigDecimal.valueOf(2.6));
@@ -61,19 +66,20 @@ public class JOOQCandyRepositoryTest {
     @Test
     @FlywayTest
     public void removeExistentEntityShouldRemoveOneEntry() {
-        assertEquals(1, repository.remove(1));
+        int updated = repository.remove(UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c"));
+        assertThat(updated, equalTo(1));
     }
 
     @Test
     public void removeNonexistentEntityShouldRemoveNone() {
-        assertEquals(0, repository.remove(-1));
+        assertEquals(0, repository.remove(Generators.timeBasedGenerator().generate()));
     }
 
     @Test
     @FlywayTest
     public void editValidEntryShouldUpdateOneEntry() {
         Candy candy = getCandy();
-        candy.setId(1);
+        candy.setId(UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c"));
 
         assertEquals(1, repository.edit(candy));
     }
@@ -82,7 +88,7 @@ public class JOOQCandyRepositoryTest {
     @FlywayTest
     public void editNonexistentEntityShouldUpdateNone() {
         Candy candy = getCandy();
-        candy.setId(-1);
+        candy.setId(Generators.timeBasedGenerator().generate());
 
         assertEquals(0, repository.edit(candy));
     }
@@ -91,7 +97,7 @@ public class JOOQCandyRepositoryTest {
     @FlywayTest
     public void editNotValidEntryShouldThrowException() {
         Candy candy = getCandy();
-        candy.setId(1);
+        candy.setId(UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c"));
         candy.setPrice(null);
 
         repository.edit(candy);
@@ -106,7 +112,7 @@ public class JOOQCandyRepositoryTest {
     @Test
     @FlywayTest
     public void findByExistentIdShouldReturnValidEntry() {
-        Candy fromDB = repository.find(1);
+        Candy fromDB = repository.find(UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c"));
 
         assertEquals("someName1", fromDB.getName());
         assertEquals("someFirm1", fromDB.getFirm());
@@ -116,6 +122,6 @@ public class JOOQCandyRepositoryTest {
 
     @Test
     public void findByNonexistentIdShouldReturnNull() {
-        assertNull(repository.find(-1));
+        assertNull(repository.find(Generators.timeBasedGenerator().generate()));
     }
 }

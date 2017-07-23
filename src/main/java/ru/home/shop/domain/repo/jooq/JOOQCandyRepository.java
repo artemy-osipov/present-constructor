@@ -8,6 +8,7 @@ import ru.home.shop.domain.repo.CandyRepository;
 import ru.home.shop.domain.repo.mapper.CandyMapper;
 
 import java.util.Collection;
+import java.util.UUID;
 
 import static ru.home.db.tables.Candy.CANDY;
 
@@ -22,26 +23,18 @@ public class JOOQCandyRepository implements CandyRepository {
     }
 
     @Override
-    public int add(Candy candy) {
-        int candyId = addCandy(candy);
-        candy.setId(candyId);
-
-        return candyId;
-    }
-
-    private int addCandy(Candy candy) {
-        return dsl.insertInto(CANDY)
+    public void add(Candy candy) {
+        dsl.insertInto(CANDY)
+                .set(CANDY.ID, candy.getId())
                 .set(CANDY.NAME, candy.getName())
                 .set(CANDY.FIRM, candy.getFirm())
                 .set(CANDY.PRICE, candy.getPrice())
                 .set(CANDY.ORDER, candy.getOrder())
-                .returning(CANDY.ID)
-                .fetchOne()
-                .getId();
+                .execute();
     }
 
     @Override
-    public int remove(int id) {
+    public int remove(UUID id) {
         return dsl.update(CANDY)
                 .set(CANDY.ACTIVE, false)
                 .where(CANDY.ID.eq(id))
@@ -69,7 +62,7 @@ public class JOOQCandyRepository implements CandyRepository {
     }
 
     @Override
-    public Candy find(int id) {
+    public Candy find(UUID id) {
         return dsl.select()
                 .from(CANDY)
                 .where(CANDY.ID.eq(id))

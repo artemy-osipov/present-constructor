@@ -1,5 +1,6 @@
 package ru.home.shop.service.impl;
 
+import com.fasterxml.uuid.Generators;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.home.shop.domain.model.Present;
@@ -11,6 +12,7 @@ import ru.home.shop.service.PresentService;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class PresentServiceImpl implements PresentService {
@@ -30,8 +32,8 @@ public class PresentServiceImpl implements PresentService {
             throw new ValidationException(errors);
         }
 
-        Integer newId = repository.add(present);
-        present.setId(newId);
+        present.setId(Generators.timeBasedGenerator().generate());
+        repository.add(present);
     }
 
     @Override
@@ -50,7 +52,7 @@ public class PresentServiceImpl implements PresentService {
     }
 
     @Override
-    public void remove(int id) {
+    public void remove(UUID id) {
         int removed = repository.remove(id);
 
         if (removed != 1) {
@@ -64,7 +66,7 @@ public class PresentServiceImpl implements PresentService {
     }
 
     @Override
-    public Present find(int id) {
+    public Present find(UUID id) {
         return repository.findFull(id);
     }
 }

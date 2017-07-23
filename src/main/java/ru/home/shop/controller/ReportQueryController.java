@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.UUID;
 
 @RestController
 public class ReportQueryController {
@@ -32,8 +33,8 @@ public class ReportQueryController {
     }
 
     @RequestMapping(value = "/present/publicReport/{id}", method = RequestMethod.GET)
-    public ResponseEntity<byte[]> publicReport(@PathVariable("id") int presentId, HttpServletResponse response) {
-        Present present = presentService.find(presentId);
+    public ResponseEntity<byte[]> publicReport(@PathVariable("id") String presentId, HttpServletResponse response) {
+        Present present = presentService.find(UUID.fromString(presentId));
 
         if (present == null) {
             throw new EntityNotFoundException();
@@ -45,8 +46,8 @@ public class ReportQueryController {
     }
 
     @RequestMapping(value = "/present/privateReport/{id}", method = RequestMethod.GET)
-    public ResponseEntity<byte[]> privateReport(@PathVariable("id") int presentId) throws IOException {
-        Present present = presentService.find(presentId);
+    public ResponseEntity<byte[]> privateReport(@PathVariable("id") String presentId) throws IOException {
+        Present present = presentService.find(UUID.fromString(presentId));
 
         if (present == null) {
             throw new EntityNotFoundException();

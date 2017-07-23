@@ -1,5 +1,6 @@
 package ru.home.shop.domain.repo.jooq;
 
+import com.fasterxml.uuid.Generators;
 import org.flywaydb.test.annotation.FlywayTest;
 import org.flywaydb.test.junit.FlywayTestExecutionListener;
 import org.jooq.DSLContext;
@@ -17,6 +18,7 @@ import ru.home.shop.domain.model.Present;
 import ru.home.shop.domain.repo.PresentRepository;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -35,6 +37,7 @@ public class TransactionTest {
 
     private Present getPresent() {
         Present bean = new Present();
+        bean.setId(Generators.timeBasedGenerator().generate());
         bean.setName("name");
         bean.setPrice(BigDecimal.valueOf(2.6));
 
@@ -47,7 +50,7 @@ public class TransactionTest {
         Present present = getPresent();
 
         Candy candy = new Candy();
-        candy.setId(1);
+        candy.setId(UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c"));
         candy.setCount(2);
 
         present.getCandies().add(candy);
@@ -59,7 +62,7 @@ public class TransactionTest {
 
         try {
             Candy incorrectCandy = new Candy();
-            incorrectCandy.setId(-11);
+            incorrectCandy.setId(Generators.timeBasedGenerator().generate());
             incorrectCandy.setCount(2);
             present.getCandies().add(incorrectCandy);
             repository.add(present);

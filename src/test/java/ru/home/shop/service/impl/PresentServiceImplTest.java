@@ -1,5 +1,7 @@
 package ru.home.shop.service.impl;
 
+import com.fasterxml.uuid.Generators;
+import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 import ru.home.shop.domain.model.Candy;
 import ru.home.shop.domain.model.Present;
@@ -10,7 +12,9 @@ import ru.home.shop.exception.ValidationException;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.UUID;
 
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -22,11 +26,11 @@ public class PresentServiceImplTest {
         present.setPrice(BigDecimal.valueOf(4.2));
 
         Candy candy1 = new Candy();
-        candy1.setId(1);
+        candy1.setId(Generators.timeBasedGenerator().generate());
         candy1.setCount(2);
 
         Candy candy2 = new Candy();
-        candy2.setId(3);
+        candy2.setId(Generators.timeBasedGenerator().generate());
         candy2.setCount(6);
 
         present.getCandies().add(candy1);
@@ -40,13 +44,9 @@ public class PresentServiceImplTest {
         PresentRepository mock = mock(PresentRepository.class);
         Present present = getValidAddPresent();
 
-        Integer newId = 2;
-
-        when(mock.add(present)).thenReturn(newId);
-
         new PresentServiceImpl(mock).add(present);
         verify(mock).add(present);
-        assertEquals(newId, present.getId());
+        MatcherAssert.assertThat(present.getId(), notNullValue());
     }
 
     @Test
@@ -75,7 +75,7 @@ public class PresentServiceImplTest {
     @Test
     public void edit_validEntry_shouldInvokeRepository() {
         Present present = getValidAddPresent();
-        present.setId(1);
+        present.setId(Generators.timeBasedGenerator().generate());
 
         PresentRepository mock = mock(PresentRepository.class);
         when(mock.edit(present)).thenReturn(1);
@@ -112,7 +112,7 @@ public class PresentServiceImplTest {
     public void edit_nonexistentId_shouldThrowException() {
         PresentRepository mock = mock(PresentRepository.class);
         Present present = getValidAddPresent();
-        present.setId(1);
+        present.setId(Generators.timeBasedGenerator().generate());
 
         when(mock.edit(present)).thenReturn(0);
 
@@ -121,7 +121,7 @@ public class PresentServiceImplTest {
 
     @Test
     public void remove_validId_shouldInvokeRepository() {
-        int id = 1;
+        UUID id = Generators.timeBasedGenerator().generate();
         PresentRepository mock = mock(PresentRepository.class);
         when(mock.remove(id)).thenReturn(1);
 
@@ -132,10 +132,10 @@ public class PresentServiceImplTest {
     @Test
     public void remove_nonexistentId_shouldThrowException() {
         PresentRepository mock = mock(PresentRepository.class);
-        when(mock.remove(1)).thenReturn(0);
+        when(mock.remove(Generators.timeBasedGenerator().generate())).thenReturn(0);
 
         try {
-            new PresentServiceImpl(mock).remove(1);
+            new PresentServiceImpl(mock).remove(Generators.timeBasedGenerator().generate());
             fail();
         } catch (EntityNotFoundException ignored) {
         }
@@ -156,7 +156,7 @@ public class PresentServiceImplTest {
     public void find_validId_shouldInvokeRepository() {
         PresentRepository mock = mock(PresentRepository.class);
         Present present = getValidAddPresent();
-        int id = 1;
+        UUID id = Generators.timeBasedGenerator().generate();
 
         when(mock.findFull(id)).thenReturn(present);
 

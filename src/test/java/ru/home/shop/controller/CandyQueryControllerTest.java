@@ -1,5 +1,6 @@
 package ru.home.shop.controller;
 
+import com.fasterxml.uuid.Generators;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,7 +34,7 @@ public class CandyQueryControllerTest {
 
     private Candy getCandy() {
         Candy candy = new Candy();
-        candy.setId(1);
+        candy.setId(Generators.timeBasedGenerator().generate());
         candy.setName("name");
         candy.setFirm("firm");
         candy.setPrice(BigDecimal.valueOf(4.20));
@@ -90,7 +91,7 @@ public class CandyQueryControllerTest {
     public void listCandyWithNotEmptyDBShouldReturnArray() throws Exception {
         Candy candy1 = getCandy();
         Candy candy2 = new Candy();
-        candy2.setId(2);
+        candy2.setId(Generators.timeBasedGenerator().generate());
         candy2.setName("name2");
         candy2.setFirm("firm2");
         candy2.setPrice(BigDecimal.valueOf(-1.441));

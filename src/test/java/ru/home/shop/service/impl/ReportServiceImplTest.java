@@ -1,5 +1,6 @@
 package ru.home.shop.service.impl;
 
+import com.fasterxml.uuid.Generators;
 import org.junit.Test;
 import ru.home.shop.domain.model.Candy;
 import ru.home.shop.domain.model.Present;
@@ -8,6 +9,7 @@ import ru.home.shop.service.PresentService;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -23,14 +25,14 @@ public class ReportServiceImplTest {
         present.setPrice(BigDecimal.valueOf(4.2));
 
         Candy candy1 = new Candy();
-        candy1.setId(1);
+        candy1.setId(Generators.timeBasedGenerator().generate());
         candy1.setName("name1");
         candy1.setFirm("firm1");
         candy1.setPrice(BigDecimal.valueOf(1.1));
         candy1.setCount(2);
 
         Candy candy2 = new Candy();
-        candy2.setId(3);
+        candy2.setId(Generators.timeBasedGenerator().generate());
         candy2.setName("name2");
         candy2.setFirm("firm2");
         candy2.setPrice(BigDecimal.valueOf(2.2));
@@ -53,7 +55,7 @@ public class ReportServiceImplTest {
     @Test(expected = IllegalArgumentException.class)
     public void publicReportWithNotValidIdShouldThrowException() throws IOException {
         PresentService mock = mock(PresentService.class);
-        int id = 1;
+        UUID id = Generators.timeBasedGenerator().generate();
         when(mock.find(id)).thenReturn(null);
 
         reportService.publicReport(null);

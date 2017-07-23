@@ -3,12 +3,13 @@ package ru.home.shop.domain.repo;
 import ru.home.shop.domain.model.Candy;
 
 import java.util.Collection;
+import java.util.UUID;
 
 public interface CandyRepository {
 
-    int add(Candy candy);
-    int remove(int id);
+    void add(Candy candy);
+    int remove(UUID id);
     int edit(Candy candy);
     Collection<Candy> findAll();
-    Candy find(int id);
+    Candy find(UUID id);
 }

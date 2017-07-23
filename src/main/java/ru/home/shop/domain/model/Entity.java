@@ -1,15 +1,17 @@
 package ru.home.shop.domain.model;
 
+import java.util.UUID;
+
 public class Entity {
 
     /*Идентификатор сущности*/
-    private Integer id;
+    private UUID id;
 
-    public Integer getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 }

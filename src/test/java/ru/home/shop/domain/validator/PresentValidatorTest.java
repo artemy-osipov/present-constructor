@@ -1,5 +1,6 @@
 package ru.home.shop.domain.validator;
 
+import com.fasterxml.uuid.Generators;
 import org.junit.Test;
 import ru.home.shop.domain.model.Candy;
 import ru.home.shop.domain.model.Present;
@@ -20,11 +21,11 @@ public class PresentValidatorTest {
         present.setPrice(BigDecimal.valueOf(4.2));
 
         Candy candy1 = new Candy();
-        candy1.setId(1);
+        candy1.setId(Generators.timeBasedGenerator().generate());
         candy1.setCount(2);
 
         Candy candy2 = new Candy();
-        candy2.setId(3);
+        candy2.setId(Generators.timeBasedGenerator().generate());
         candy2.setCount(6);
 
         present.getCandies().add(candy1);
@@ -46,7 +47,7 @@ public class PresentValidatorTest {
         Map<String, String> errors = new HashMap<>();
         errors.put("name", "length exceeded (50)");
         errors.put("price", "incorrect");
-        errors.put("candies.id", "incorrect");
+        errors.put("candies.id", "empty");
         errors.put("candies.count", "incorrect");
 
         return errors;
@@ -80,7 +81,6 @@ public class PresentValidatorTest {
         present.setPrice(BigDecimal.valueOf(12.414));
 
         Candy candy = new Candy();
-        candy.setId(-1);
         candy.setCount(0);
         present.getCandies().add(candy);
 

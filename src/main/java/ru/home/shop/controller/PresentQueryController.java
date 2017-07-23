@@ -10,6 +10,7 @@ import ru.home.shop.exception.EntityNotFoundException;
 import ru.home.shop.service.PresentService;
 
 import java.util.Collection;
+import java.util.UUID;
 
 @RestController
 public class PresentQueryController {
@@ -22,8 +23,8 @@ public class PresentQueryController {
     }
 
     @RequestMapping(value = "/present/{id}", method = RequestMethod.GET)
-    public Present findPresent(@PathVariable("id") int id) {
-        Present present = presentService.find(id);
+    public Present findPresent(@PathVariable("id") String id) {
+        Present present = presentService.find(UUID.fromString(id));
 
         if (present != null) {
             return present;

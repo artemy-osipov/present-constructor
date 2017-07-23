@@ -3,12 +3,13 @@ package ru.home.shop.service;
 import ru.home.shop.domain.model.Present;
 
 import java.util.Collection;
+import java.util.UUID;
 
 public interface PresentService {
 
     void add(Present present);
     void edit(Present present);
-    void remove(int id);
+    void remove(UUID id);
     Collection<Present> listView();
-    Present find(int id);
+    Present find(UUID id);
 }
