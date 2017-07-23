@@ -1,8 +1,8 @@
 package ru.home.shop.domain.repo.mapper;
 
 import com.fasterxml.uuid.Generators;
-import org.jooq.Record;
 import org.junit.Test;
+import ru.home.db.tables.records.CandyRecord;
 import ru.home.shop.domain.model.Candy;
 
 import java.math.BigDecimal;
@@ -10,9 +10,6 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static ru.home.db.Tables.CANDY;
 
 public class CandyMapperTest {
 
@@ -24,14 +21,13 @@ public class CandyMapperTest {
 
     private CandyMapper mapper = new CandyMapper();
 
-    private Record getRecord() {
-        Record record = mock(Record.class);
-
-        when(record.getValue(CANDY.ID)).thenReturn(ID);
-        when(record.getValue(CANDY.NAME)).thenReturn(NAME);
-        when(record.getValue(CANDY.FIRM)).thenReturn(FIRM);
-        when(record.getValue(CANDY.PRICE)).thenReturn(PRICE);
-        when(record.getValue(CANDY.ORDER)).thenReturn(ORDER);
+    private CandyRecord getRecord() {
+        CandyRecord record = new CandyRecord();
+        record.setId(ID);
+        record.setName(NAME);
+        record.setFirm(FIRM);
+        record.setPrice(PRICE);
+        record.setOrder(ORDER);
 
         return record;
     }
