@@ -8,6 +8,7 @@ import ru.home.shop.service.PresentService;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/presents")
 public class PresentCommandController {
 
     private final PresentService presentService;
@@ -17,21 +18,21 @@ public class PresentCommandController {
         this.presentService = presentService;
     }
 
-    @RequestMapping(value = "/present", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public UUID addPresent(@RequestBody Present present) {
         presentService.add(present);
 
         return present.getId();
     }
 
-    @RequestMapping(value = "/present/{id}", method = RequestMethod.PUT)
-    public void editPresent(@PathVariable("id") String id, @RequestBody Present present) {
-        present.setId(UUID.fromString(id));
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public void editPresent(@PathVariable("id") UUID id, @RequestBody Present present) {
+        present.setId(id);
         presentService.edit(present);
     }
 
-    @RequestMapping(value = "/present/{id}", method = RequestMethod.DELETE)
-    public void removePresent(@PathVariable("id") String id) {
-        presentService.remove(UUID.fromString(id));
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public void removePresent(@PathVariable("id") UUID id) {
+        presentService.remove(id);
     }
 }

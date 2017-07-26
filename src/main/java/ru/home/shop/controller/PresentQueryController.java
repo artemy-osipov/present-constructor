@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/presents")
 public class PresentQueryController {
 
     private final PresentService presentService;
@@ -22,9 +23,9 @@ public class PresentQueryController {
         this.presentService = presentService;
     }
 
-    @RequestMapping(value = "/present/{id}", method = RequestMethod.GET)
-    public Present findPresent(@PathVariable("id") String id) {
-        Present present = presentService.find(UUID.fromString(id));
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public Present findPresent(@PathVariable("id") UUID id) {
+        Present present = presentService.find(id);
 
         if (present != null) {
             return present;
@@ -33,7 +34,7 @@ public class PresentQueryController {
         }
     }
 
-    @RequestMapping(value = "/present", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public Collection<Present> listPresent() {
         return presentService.listView();
     }

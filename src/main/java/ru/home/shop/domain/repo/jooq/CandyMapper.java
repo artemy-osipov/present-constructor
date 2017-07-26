@@ -1,4 +1,4 @@
-package ru.home.shop.domain.repo.mapper;
+package ru.home.shop.domain.repo.jooq;
 
 import org.jooq.RecordMapper;
 import ru.home.db.tables.records.CandyRecord;

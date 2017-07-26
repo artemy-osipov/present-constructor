@@ -27,11 +27,11 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static ru.home.shop.util.JsonUtils.fromJson;
+import static ru.home.shop.utils.JsonUtils.fromJson;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = PresentsApplication.class)
-public class PresentQueryControllerTest {
+public class PresentQueryControllerIT {
 
     private MockMvc getMockMvc(PresentService mockService) {
         return MockMvcBuilders.standaloneSetup(new PresentQueryController(mockService)).build();
@@ -85,7 +85,7 @@ public class PresentQueryControllerTest {
         PresentService mock = mock(PresentService.class);
         when(mock.find(origin.getId())).thenReturn(origin);
 
-        String responseJson = getMockMvc(mock).perform(get("/present/{id}", origin.getId()).accept(MediaType.APPLICATION_JSON))
+        String responseJson = getMockMvc(mock).perform(get("/presents/{id}", origin.getId()).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse().getContentAsString();
@@ -100,7 +100,7 @@ public class PresentQueryControllerTest {
         PresentService mock = mock(PresentService.class);
         doThrow(ValidationException.class).when(mock).find(present.getId());
 
-        getMockMvc(mock).perform(get("/present/{id}", present.getId()).accept(MediaType.APPLICATION_JSON))
+        getMockMvc(mock).perform(get("/presents/{id}", present.getId()).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
 
@@ -110,7 +110,7 @@ public class PresentQueryControllerTest {
         PresentService mock = mock(PresentService.class);
         when(mock.find(present.getId())).thenReturn(null);
 
-        getMockMvc(mock).perform(get("/present/{id}", present.getId()).accept(MediaType.APPLICATION_JSON))
+        getMockMvc(mock).perform(get("/presents/{id}", present.getId()).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
@@ -127,7 +127,7 @@ public class PresentQueryControllerTest {
         PresentService mock = mock(PresentService.class);
         when(mock.listView()).thenReturn(asList(origin));
 
-        String responseJson = getMockMvc(mock).perform(get("/present").accept(MediaType.APPLICATION_JSON))
+        String responseJson = getMockMvc(mock).perform(get("/presents").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse().getContentAsString();
@@ -145,7 +145,7 @@ public class PresentQueryControllerTest {
         PresentService mock = mock(PresentService.class);
         when(mock.listView()).thenReturn(new ArrayList<>());
 
-        getMockMvc(mock).perform(get("/present").accept(MediaType.APPLICATION_JSON))
+        getMockMvc(mock).perform(get("/presents").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(0)));

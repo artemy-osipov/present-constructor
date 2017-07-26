@@ -1,15 +1,22 @@
-package ru.home.shop.domain.model;
+package ru.home.shop.controller.command;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
-public class Candy extends Entity {
-
+class GenericUpdateCandy {
+    private UUID id;
     private String name;
     private String firm;
-    private double order;
+    private Double order;
     private BigDecimal price;
-    private Boolean active;
-    private int count = 1;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -27,11 +34,11 @@ public class Candy extends Entity {
         this.firm = firm;
     }
 
-    public double getOrder() {
+    public Double getOrder() {
         return order;
     }
 
-    public void setOrder(double order) {
+    public void setOrder(Double order) {
         this.order = order;
     }
 
@@ -41,21 +48,5 @@ public class Candy extends Entity {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
     }
 }

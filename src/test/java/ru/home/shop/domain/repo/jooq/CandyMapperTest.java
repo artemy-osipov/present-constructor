@@ -1,4 +1,4 @@
-package ru.home.shop.domain.repo.mapper;
+package ru.home.shop.domain.repo.jooq;
 
 import com.fasterxml.uuid.Generators;
 import org.junit.Test;

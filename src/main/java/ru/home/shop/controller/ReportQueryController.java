@@ -21,6 +21,7 @@ import java.net.URLEncoder;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/presents")
 public class ReportQueryController {
 
     private final PresentService presentService;
@@ -32,9 +33,9 @@ public class ReportQueryController {
         this.reportService = reportService;
     }
 
-    @RequestMapping(value = "/present/publicReport/{id}", method = RequestMethod.GET)
-    public ResponseEntity<byte[]> publicReport(@PathVariable("id") String presentId, HttpServletResponse response) {
-        Present present = presentService.find(UUID.fromString(presentId));
+    @RequestMapping(value = "/{id}/publicReport", method = RequestMethod.GET)
+    public ResponseEntity<byte[]> publicReport(@PathVariable("id") UUID id, HttpServletResponse response) {
+        Present present = presentService.find(id);
 
         if (present == null) {
             throw new EntityNotFoundException();
@@ -45,9 +46,9 @@ public class ReportQueryController {
         return toResponseEntity(report);
     }
 
-    @RequestMapping(value = "/present/privateReport/{id}", method = RequestMethod.GET)
-    public ResponseEntity<byte[]> privateReport(@PathVariable("id") String presentId) throws IOException {
-        Present present = presentService.find(UUID.fromString(presentId));
+    @RequestMapping(value = "/{id}/privateReport", method = RequestMethod.GET)
+    public ResponseEntity<byte[]> privateReport(@PathVariable("id") UUID id) throws IOException {
+        Present present = presentService.find(id);
 
         if (present == null) {
             throw new EntityNotFoundException();

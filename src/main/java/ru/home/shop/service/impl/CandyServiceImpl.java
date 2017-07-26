@@ -1,17 +1,14 @@
 package ru.home.shop.service.impl;
 
-import com.fasterxml.uuid.Generators;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.home.shop.domain.model.Candy;
 import ru.home.shop.domain.repo.CandyRepository;
-import ru.home.shop.domain.validator.CandyValidator;
 import ru.home.shop.exception.EntityNotFoundException;
 import ru.home.shop.exception.ValidationException;
 import ru.home.shop.service.CandyService;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -27,24 +24,11 @@ public class CandyServiceImpl implements CandyService {
 
     @Override
     public void add(Candy candy) throws ValidationException {
-        Map<String, String> errors = CandyValidator.validate(candy);
-
-        if (!errors.isEmpty()) {
-            throw new ValidationException(errors);
-        }
-
-        candy.setId(Generators.timeBasedGenerator().generate());
         repository.add(candy);
     }
 
     @Override
     public void edit(Candy candy) throws ValidationException {
-        Map<String, String> errors = CandyValidator.validate(candy);
-
-        if (!errors.isEmpty()) {
-            throw new ValidationException(errors);
-        }
-
         int updated = repository.edit(candy);
 
         if (updated != 1) {

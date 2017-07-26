@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.home.shop.domain.model.Candy;
 import ru.home.shop.domain.model.Present;
 import ru.home.shop.domain.repo.PresentRepository;
-import ru.home.shop.domain.repo.mapper.PresentMapper;
 
 import java.util.Collection;
 import java.util.UUID;

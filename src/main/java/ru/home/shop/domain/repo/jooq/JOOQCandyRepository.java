@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.home.shop.domain.model.Candy;
 import ru.home.shop.domain.repo.CandyRepository;
-import ru.home.shop.domain.repo.mapper.CandyMapper;
 
 import java.util.Collection;
 import java.util.UUID;

@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/candies")
 public class CandyQueryController {
 
     private final CandyService candyService;
@@ -22,9 +23,9 @@ public class CandyQueryController {
         this.candyService = candyService;
     }
 
-    @RequestMapping(value = "/candy/{id}", method = RequestMethod.GET)
-    public Candy findCandy(@PathVariable("id") String id) {
-        Candy candy = candyService.find(UUID.fromString(id));
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public Candy findCandy(@PathVariable("id") UUID id) {
+        Candy candy = candyService.find(id);
 
         if (candy != null) {
             return candy;
@@ -33,7 +34,7 @@ public class CandyQueryController {
         }
     }
 
-    @RequestMapping(value = "/candy", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public Collection<Candy> listCandy() {
         return candyService.list();
     }

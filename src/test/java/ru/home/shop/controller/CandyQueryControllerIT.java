@@ -22,11 +22,11 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static ru.home.shop.util.JsonUtils.fromJson;
+import static ru.home.shop.utils.JsonUtils.fromJson;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = PresentsApplication.class)
-public class CandyQueryControllerTest {
+public class CandyQueryControllerIT {
 
     private MockMvc getMockMvc(CandyService mockService) {
         return MockMvcBuilders.standaloneSetup(new CandyQueryController(mockService)).build();
@@ -57,7 +57,7 @@ public class CandyQueryControllerTest {
         CandyService mock = mock(CandyService.class);
         when(mock.find(candy.getId())).thenReturn(candy);
 
-        String responseJson = getMockMvc(mock).perform(get("/candy/{id}", candy.getId()).accept(MediaType.APPLICATION_JSON))
+        String responseJson = getMockMvc(mock).perform(get("/candies/{id}", candy.getId()).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse().getContentAsString();
@@ -73,7 +73,7 @@ public class CandyQueryControllerTest {
         CandyService mock = mock(CandyService.class);
         doThrow(ValidationException.class).when(mock).find(candy.getId());
 
-        getMockMvc(mock).perform(get("/candy/{id}", candy.getId()).accept(MediaType.APPLICATION_JSON))
+        getMockMvc(mock).perform(get("/candies/{id}", candy.getId()).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
 
@@ -83,7 +83,7 @@ public class CandyQueryControllerTest {
         CandyService mock = mock(CandyService.class);
         when(mock.find(candy.getId())).thenReturn(null);
 
-        getMockMvc(mock).perform(get("/candy/{id}", candy.getId()).accept(MediaType.APPLICATION_JSON))
+        getMockMvc(mock).perform(get("/candies/{id}", candy.getId()).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
@@ -101,7 +101,7 @@ public class CandyQueryControllerTest {
         CandyService mock = mock(CandyService.class);
         when(mock.list()).thenReturn(asList(origin));
 
-        String responseJson = getMockMvc(mock).perform(get("/candy").accept(MediaType.APPLICATION_JSON))
+        String responseJson = getMockMvc(mock).perform(get("/candies").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse().getContentAsString();
@@ -120,7 +120,7 @@ public class CandyQueryControllerTest {
         CandyService mock = mock(CandyService.class);
         when(mock.list()).thenReturn(new ArrayList<>());
 
-        getMockMvc(mock).perform(get("/candy").accept(MediaType.APPLICATION_JSON))
+        getMockMvc(mock).perform(get("/candies").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(0)));

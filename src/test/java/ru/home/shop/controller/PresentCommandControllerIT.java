@@ -23,11 +23,11 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.home.shop.util.JsonUtils.toJson;
+import static ru.home.shop.utils.JsonUtils.toJson;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = PresentsApplication.class)
-public class PresentCommandControllerTest {
+public class PresentCommandControllerIT {
 
     private MockMvc getMockMvc(PresentService mockService) {
         return MockMvcBuilders.standaloneSetup(new PresentCommandController(mockService)).build();
@@ -59,7 +59,7 @@ public class PresentCommandControllerTest {
         String id = present.getId().toString();
         PresentService mock = mock(PresentService.class);
 
-        getMockMvc(mock).perform(post("/present")
+        getMockMvc(mock).perform(post("/presents")
                 .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(toJson(present)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", is(id)));
@@ -71,7 +71,7 @@ public class PresentCommandControllerTest {
         PresentService mock = mock(PresentService.class);
         doThrow(ValidationException.class).when(mock).add(any(Present.class));
 
-        getMockMvc(mock).perform(post("/present")
+        getMockMvc(mock).perform(post("/presents")
                 .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(toJson(present)))
                 .andExpect(status().isBadRequest());
     }
@@ -81,7 +81,7 @@ public class PresentCommandControllerTest {
         Present present = getPresent();
         PresentService mock = mock(PresentService.class);
 
-        getMockMvc(mock).perform(put("/present/{id}", present.getId())
+        getMockMvc(mock).perform(put("/presents/{id}", present.getId())
                 .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(toJson(present)))
                 .andExpect(status().isOk());
     }
@@ -92,7 +92,7 @@ public class PresentCommandControllerTest {
         PresentService mock = mock(PresentService.class);
         doThrow(ValidationException.class).when(mock).edit(any(Present.class));
 
-        getMockMvc(mock).perform(put("/present/{id}", present.getId())
+        getMockMvc(mock).perform(put("/presents/{id}", present.getId())
                 .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(toJson(present)))
                 .andExpect(status().isBadRequest());
     }
@@ -103,7 +103,7 @@ public class PresentCommandControllerTest {
         PresentService mock = mock(PresentService.class);
         doThrow(EntityNotFoundException.class).when(mock).edit(any(Present.class));
 
-        getMockMvc(mock).perform(put("/present/{id}", present.getId())
+        getMockMvc(mock).perform(put("/presents/{id}", present.getId())
                 .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(toJson(present)))
                 .andExpect(status().isNotFound());
     }
@@ -113,7 +113,7 @@ public class PresentCommandControllerTest {
         UUID id = Generators.timeBasedGenerator().generate();
         PresentService mock = mock(PresentService.class);
 
-        getMockMvc(mock).perform(delete("/present/{id}", id).accept(MediaType.APPLICATION_JSON))
+        getMockMvc(mock).perform(delete("/presents/{id}", id).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
@@ -123,7 +123,7 @@ public class PresentCommandControllerTest {
         PresentService mock = mock(PresentService.class);
         doThrow(ValidationException.class).when(mock).remove(id);
 
-        getMockMvc(mock).perform(delete("/present/{id}", id).accept(MediaType.APPLICATION_JSON))
+        getMockMvc(mock).perform(delete("/presents/{id}", id).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
 
@@ -133,7 +133,7 @@ public class PresentCommandControllerTest {
         PresentService mock = mock(PresentService.class);
         doThrow(EntityNotFoundException.class).when(mock).remove(id);
 
-        getMockMvc(mock).perform(delete("/present/{id}", id).accept(MediaType.APPLICATION_JSON))
+        getMockMvc(mock).perform(delete("/presents/{id}", id).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 }

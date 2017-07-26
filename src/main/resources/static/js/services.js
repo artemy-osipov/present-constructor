@@ -5,7 +5,7 @@
 var presentServices = angular.module('presentServices', ['ngResource']);
 
 presentServices.factory('Candy', ['$resource', function($resource) {
-    return $resource('candy/:candyId', {}, {
+    return $resource('candies/:candyId', {}, {
       update: {
         method: 'PUT', params: {candyId: '@id'}
       }
@@ -13,6 +13,6 @@ presentServices.factory('Candy', ['$resource', function($resource) {
 }]);
 
 presentServices.factory('Present', ['$resource', function($resource) {
-    return $resource('present/:presentId');
+    return $resource('presents/:presentId');
 }]);
 

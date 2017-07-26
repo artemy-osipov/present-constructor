@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = PresentsApplication.class)
-public class ReportQueryControllerTest {
+public class ReportQueryControllerIT {
 
     private MockMvc getMockMvc(PresentService presentService, ReportService reportService) {
         return MockMvcBuilders.standaloneSetup(new ReportQueryController(presentService, reportService)).build();
@@ -54,7 +54,7 @@ public class ReportQueryControllerTest {
         doReturn(present).when(mockPresent).find(presentId);
         doReturn(report).when(mockReport).publicReport(present);
 
-        byte[] response = getMockMvc(mockPresent, mockReport).perform(get("/present/publicReport/{id}", presentId))
+        byte[] response = getMockMvc(mockPresent, mockReport).perform(get("/presents/{id}/publicReport", presentId))
                 .andExpect(status().isOk())
                 .andExpect(header().string("Content-Disposition", is(String.format("attachment; filename*=UTF-8''%s%%20%s%%20RUB.docx", present.getName(), present.getPrice()))))
                 .andReturn().getResponse().getContentAsByteArray();
@@ -70,7 +70,7 @@ public class ReportQueryControllerTest {
 
         doReturn(null).when(mockPresent).find(presentId);
 
-        getMockMvc(mockPresent, mockReport).perform(get("/present/publicReport/{id}", presentId))
+        getMockMvc(mockPresent, mockReport).perform(get("/presents/{id}/publicReport", presentId))
                 .andExpect(status().isNotFound());
 
         verify(mockPresent).find(presentId);
@@ -87,7 +87,7 @@ public class ReportQueryControllerTest {
         doReturn(present).when(mockPresent).find(presentId);
         doReturn(report).when(mockReport).privateReport(present);
 
-        byte[] response = getMockMvc(mockPresent, mockReport).perform(get("/present/privateReport/{id}", presentId))
+        byte[] response = getMockMvc(mockPresent, mockReport).perform(get("/presents/{id}/privateReport", presentId))
                 .andExpect(status().isOk())
                 .andExpect(header().string("Content-Disposition", is(String.format("attachment; filename*=UTF-8''%s%%20%s%%20RUB.docx", present.getName(), present.getPrice()))))
                 .andReturn().getResponse().getContentAsByteArray();
@@ -103,7 +103,7 @@ public class ReportQueryControllerTest {
 
         doReturn(null).when(mockPresent).find(presentId);
 
-        getMockMvc(mockPresent, mockReport).perform(get("/present/privateReport/{id}", presentId))
+        getMockMvc(mockPresent, mockReport).perform(get("/presents/{id}/privateReport", presentId))
                 .andExpect(status().isNotFound());
     }
 }
