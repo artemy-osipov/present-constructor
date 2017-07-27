@@ -1,21 +1,18 @@
 package ru.home.shop.service.impl;
 
 import com.fasterxml.uuid.Generators;
-import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 import ru.home.shop.domain.model.Candy;
 import ru.home.shop.domain.model.Present;
 import ru.home.shop.domain.repo.PresentRepository;
 import ru.home.shop.exception.EntityNotFoundException;
-import ru.home.shop.exception.ValidationException;
 
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;
 
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 public class PresentServiceImplTest {
@@ -33,43 +30,10 @@ public class PresentServiceImplTest {
         candy2.setId(Generators.timeBasedGenerator().generate());
         candy2.setCount(6);
 
-        present.getCandies().add(candy1);
-        present.getCandies().add(candy2);
+        present.getItems().add(candy1);
+        present.getItems().add(candy2);
 
         return present;
-    }
-
-    @Test
-    public void add_validEntry_shouldSetNewId() {
-        PresentRepository mock = mock(PresentRepository.class);
-        Present present = getValidAddPresent();
-
-        new PresentServiceImpl(mock).add(present);
-        verify(mock).add(present);
-        MatcherAssert.assertThat(present.getId(), notNullValue());
-    }
-
-    @Test
-    public void add_nullEntry_shouldThrowException() {
-        PresentRepository mock = mock(PresentRepository.class);
-
-        try {
-            new PresentServiceImpl(mock).add(null);
-            fail();
-        } catch (IllegalArgumentException ignored) {
-        }
-    }
-
-    @Test
-    public void add_notValidEntry_shouldThrowException() {
-        PresentRepository mock = mock(PresentRepository.class);
-
-        try {
-            new PresentServiceImpl(mock).add(new Present());
-            fail();
-        } catch (ValidationException e) {
-            assertFalse(e.getErrors().isEmpty());
-        }
     }
 
     @Test
@@ -83,29 +47,6 @@ public class PresentServiceImplTest {
 
         new PresentServiceImpl(mock).edit(present);
         verify(mock).edit(present);
-    }
-
-    @Test
-    public void edit_nullEntry_shouldThrowException() {
-        PresentRepository mock = mock(PresentRepository.class);
-
-        try {
-            new PresentServiceImpl(mock).edit(null);
-            fail();
-        } catch (IllegalArgumentException ignored) {
-        }
-    }
-
-    @Test
-    public void edit_notValidEntry_shouldThrowException() {
-        PresentRepository mock = mock(PresentRepository.class);
-
-        try {
-            new PresentServiceImpl(mock).edit(new Present());
-            fail();
-        } catch (ValidationException e) {
-            assertFalse(e.getErrors().isEmpty());
-        }
     }
 
     @Test(expected = EntityNotFoundException.class)
@@ -129,16 +70,12 @@ public class PresentServiceImplTest {
         verify(mock).remove(id);
     }
 
-    @Test
+    @Test(expected = EntityNotFoundException.class)
     public void remove_nonexistentId_shouldThrowException() {
         PresentRepository mock = mock(PresentRepository.class);
         when(mock.remove(Generators.timeBasedGenerator().generate())).thenReturn(0);
 
-        try {
-            new PresentServiceImpl(mock).remove(Generators.timeBasedGenerator().generate());
-            fail();
-        } catch (EntityNotFoundException ignored) {
-        }
+        new PresentServiceImpl(mock).remove(Generators.timeBasedGenerator().generate());
     }
 
     @Test

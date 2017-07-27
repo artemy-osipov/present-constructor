@@ -27,6 +27,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = PresentsApplication.class)
 public class ReportQueryControllerIT {
 
+    private final ReportService reportService = mock(ReportService.class);
+    private final PresentService presentService = mock(PresentService.class);
+    private final MockMvc mockMvc = MockMvcBuilders
+            .standaloneSetup(new ReportQueryController(presentService, reportService))
+            .setControllerAdvice(new ErrorHandler())
+            .build();
+
     private MockMvc getMockMvc(PresentService presentService, ReportService reportService) {
         return MockMvcBuilders.standaloneSetup(new ReportQueryController(presentService, reportService)).build();
     }
@@ -65,15 +72,13 @@ public class ReportQueryControllerIT {
     @Test
     public void publicReportWithNonExistentIdShouldReturn404() throws Exception {
         UUID presentId = Generators.timeBasedGenerator().generate();
-        PresentService mockPresent = mock(PresentService.class);
-        ReportService mockReport = mock(ReportService.class);
 
-        doReturn(null).when(mockPresent).find(presentId);
+        doReturn(null).when(presentService).find(presentId);
 
-        getMockMvc(mockPresent, mockReport).perform(get("/presents/{id}/publicReport", presentId))
+        mockMvc.perform(get("/presents/{id}/publicReport", presentId))
                 .andExpect(status().isNotFound());
 
-        verify(mockPresent).find(presentId);
+        verify(presentService).find(presentId);
     }
 
     @Test
@@ -99,11 +104,10 @@ public class ReportQueryControllerIT {
     public void privateReportWithNonExistentIdShouldReturn404() throws Exception {
         UUID presentId = Generators.timeBasedGenerator().generate();
         PresentService mockPresent = mock(PresentService.class);
-        ReportService mockReport = mock(ReportService.class);
 
         doReturn(null).when(mockPresent).find(presentId);
 
-        getMockMvc(mockPresent, mockReport).perform(get("/presents/{id}/privateReport", presentId))
+        mockMvc.perform(get("/presents/{id}/privateReport", presentId))
                 .andExpect(status().isNotFound());
     }
 }

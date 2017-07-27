@@ -28,13 +28,13 @@ import static ru.home.shop.utils.UuidUtils.newUUID;
 @SpringBootTest
 public class CandyCommandControllerIT {
 
-    private final CandyService mockService = mock(CandyService.class);
+    private final CandyService candyService = mock(CandyService.class);
     private final MockMvc mockMvc = MockMvcBuilders
-            .standaloneSetup(new CandyCommandController(mockService))
+            .standaloneSetup(new CandyCommandController(candyService))
             .setControllerAdvice(new ErrorHandler())
             .build();
 
-    private UpdateCandyDTO getCandy() {
+    private UpdateCandyDTO getUpdateDTO() {
         UpdateCandyDTO dto = new UpdateCandyDTO();
         dto.setName("name");
         dto.setFirm("firm");
@@ -47,7 +47,8 @@ public class CandyCommandControllerIT {
     @Test
     public void addCandyWithValidEntityShouldReturnId() throws Exception {
         mockMvc.perform(post("/candies")
-                .contentType(MediaType.APPLICATION_JSON).content(toJson(getCandy())))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(getUpdateDTO())))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$", notNullValue()));
     }
@@ -55,7 +56,8 @@ public class CandyCommandControllerIT {
     @Test
     public void addCandyWithNotValidEntityShouldReturnErrors() throws Exception {
         mockMvc.perform(post("/candies")
-                .contentType(MediaType.APPLICATION_JSON).content("{}"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.fieldErrors", hasSize(4)));
     }
@@ -63,24 +65,27 @@ public class CandyCommandControllerIT {
     @Test
     public void editCandyWithValidEntityShouldReturn200() throws Exception {
         mockMvc.perform(put("/candies/{id}", newUUID())
-                .contentType(MediaType.APPLICATION_JSON).content(toJson(getCandy())))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(getUpdateDTO())))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void editCandyWithNotValidEntityShouldReturnErrors() throws Exception {
         mockMvc.perform(put("/candies/{id}", newUUID())
-                .contentType(MediaType.APPLICATION_JSON).content("{}"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.fieldErrors", hasSize(4)));
     }
 
     @Test
     public void editCandyWithNonExistentIdShouldReturn404() throws Exception {
-        doThrow(EntityNotFoundException.class).when(mockService).edit(any());
+        doThrow(EntityNotFoundException.class).when(candyService).edit(any());
 
         mockMvc.perform(put("/candies/{id}", newUUID())
-                .contentType(MediaType.APPLICATION_JSON).content(toJson(getCandy())))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(getUpdateDTO())))
                 .andExpect(status().isNotFound());
     }
 
@@ -92,7 +97,7 @@ public class CandyCommandControllerIT {
 
     @Test
     public void removeCandyWithNonExistentIdShouldReturn404() throws Exception {
-        doThrow(EntityNotFoundException.class).when(mockService).remove(any());
+        doThrow(EntityNotFoundException.class).when(candyService).remove(any());
 
         mockMvc.perform(delete("/candies/{id}", newUUID()))
                 .andExpect(status().isNotFound());

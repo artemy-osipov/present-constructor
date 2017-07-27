@@ -4,38 +4,35 @@ import com.fasterxml.uuid.Generators;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import ru.home.shop.PresentsApplication;
 import ru.home.shop.domain.model.Candy;
-import ru.home.shop.domain.model.Entity;
 import ru.home.shop.domain.model.Present;
-import ru.home.shop.exception.ValidationException;
 import ru.home.shop.service.PresentService;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
 
 import static java.util.Arrays.asList;
-import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static ru.home.shop.utils.JsonUtils.fromJson;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.home.shop.utils.UuidUtils.newUUID;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = PresentsApplication.class)
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class PresentQueryControllerIT {
 
-    private MockMvc getMockMvc(PresentService mockService) {
-        return MockMvcBuilders.standaloneSetup(new PresentQueryController(mockService)).build();
-    }
+    private final PresentService presentService = mock(PresentService.class);
+    private final MockMvc mockMvc = MockMvcBuilders
+            .standaloneSetup(new PresentQueryController(presentService))
+            .setControllerAdvice(new ErrorHandler())
+            .build();
 
     private Present getPresent() {
         Present present = new Present();
@@ -51,103 +48,42 @@ public class PresentQueryControllerIT {
         candy2.setId(Generators.timeBasedGenerator().generate());
         candy2.setCount(6);
 
-        present.getCandies().add(candy1);
-        present.getCandies().add(candy2);
+        present.getItems().add(candy1);
+        present.getItems().add(candy2);
 
         return present;
     }
 
-    private void assertPresentEquals(Present expected, Present actual) {
-        assertEquals(expected.getId(), actual.getId());
-        assertEquals(expected.getName(), actual.getName());
-        assertEquals(expected.getPrice(), actual.getPrice());
-
-        assertCandiesEquals(expected.getCandies(), actual.getCandies());
-    }
-
-    private void assertCandiesEquals(Collection<Candy> expectedCol, Collection<Candy> actualCol) {
-        List<Candy> expected = new ArrayList<>(expectedCol);
-        List<Candy> actual = new ArrayList<>(actualCol);
-
-        Comparator<Candy> comparator = Comparator.comparing(Entity::getId);
-        expected.sort(comparator);
-        actual.sort(comparator);
-
-        for (int i = 0; i < expected.size(); i++) {
-            assertEquals(expected.get(i).getId(), actual.get(i).getId());
-            assertEquals(expected.get(i).getCount(), actual.get(i).getCount());
-        }
-    }
-
     @Test
-    public void findPresentWithValidIdShouldReturnEntity() throws Exception {
-        Present origin = getPresent();
-        PresentService mock = mock(PresentService.class);
-        when(mock.find(origin.getId())).thenReturn(origin);
+    public void findExistentPresentShouldReturnIt() throws Exception {
+        Present present = getPresent();
+        doReturn(present).when(presentService).find(any());
 
-        String responseJson = getMockMvc(mock).perform(get("/presents/{id}", origin.getId()).accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/presents/{id}", newUUID()))
                 .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andReturn().getResponse().getContentAsString();
-        Present response = fromJson(responseJson, Present.class);
-
-        assertPresentEquals(response, origin);
+                .andExpect(jsonPath("$.id", equalTo(present.getId().toString())))
+                .andExpect(jsonPath("$.name", equalTo(present.getName())))
+                .andExpect(jsonPath("$.price", equalTo(present.getPrice().doubleValue())))
+                .andExpect(jsonPath("$.items[0].id", equalTo(present.getItems().get(0).getId().toString())))
+                .andExpect(jsonPath("$.items[0].count", equalTo(present.getItems().get(0).getCount())))
+                .andExpect(jsonPath("$.items[1].id", equalTo(present.getItems().get(1).getId().toString())))
+                .andExpect(jsonPath("$.items[1].count", equalTo(present.getItems().get(1).getCount())));
     }
 
     @Test
-    public void findPresentWithNotValidIdShouldReturn400() throws Exception {
-        Present present = getPresent();
-        PresentService mock = mock(PresentService.class);
-        doThrow(ValidationException.class).when(mock).find(present.getId());
+    public void findNotExistentPresentReturn404() throws Exception {
+        doReturn(null).when(presentService).find(any());
 
-        getMockMvc(mock).perform(get("/presents/{id}", present.getId()).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    public void findPresentWithNonexistentIdShouldReturn404() throws Exception {
-        Present present = getPresent();
-        PresentService mock = mock(PresentService.class);
-        when(mock.find(present.getId())).thenReturn(null);
-
-        getMockMvc(mock).perform(get("/presents/{id}", present.getId()).accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/presents/{id}", newUUID()))
                 .andExpect(status().isNotFound());
     }
 
     @Test
-    public void listPresentWithNotEmptyDBShouldReturnArray() throws Exception {
-        Present present1 = getPresent();
-        Present present2 = new Present();
-        present2.setId(Generators.timeBasedGenerator().generate());
-        present2.setName("name2");
-        present2.setPrice(BigDecimal.valueOf(-1.441));
-        present2.setCandies(present1.getCandies());
-        Present[] origin = {present1, present2};
+    public void listPresentShouldReturnArray() throws Exception {
+        doReturn(asList(getPresent(), getPresent())).when(presentService).listView();
 
-        PresentService mock = mock(PresentService.class);
-        when(mock.listView()).thenReturn(asList(origin));
-
-        String responseJson = getMockMvc(mock).perform(get("/presents").accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/presents"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andReturn().getResponse().getContentAsString();
-        Present[] response = fromJson(responseJson, Present[].class);
-
-        assertEquals(origin.length, response.length);
-
-        for (int i = 0; i < origin.length; i++) {
-            assertPresentEquals(origin[i], response[i]);
-        }
-    }
-
-    @Test
-    public void listPresentWithEmptyDBShouldReturnEmptyArray() throws Exception {
-        PresentService mock = mock(PresentService.class);
-        when(mock.listView()).thenReturn(new ArrayList<>());
-
-        getMockMvc(mock).perform(get("/presents").accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$", hasSize(0)));
+                .andExpect(jsonPath("$", hasSize(2)));
     }
 }

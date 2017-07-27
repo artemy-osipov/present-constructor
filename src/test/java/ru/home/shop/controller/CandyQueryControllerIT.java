@@ -25,9 +25,9 @@ import static ru.home.shop.utils.UuidUtils.newUUID;
 @SpringBootTest
 public class CandyQueryControllerIT {
 
-    private final CandyService mockService = mock(CandyService.class);
+    private final CandyService candyService = mock(CandyService.class);
     private final MockMvc mockMvc = MockMvcBuilders
-            .standaloneSetup(new CandyQueryController(mockService))
+            .standaloneSetup(new CandyQueryController(candyService))
             .setControllerAdvice(new ErrorHandler())
             .build();
 
@@ -43,9 +43,9 @@ public class CandyQueryControllerIT {
     }
 
     @Test
-    public void findCandyWithValidIdShouldReturnEntity() throws Exception {
+    public void findExistentCandyReturnIt() throws Exception {
         Candy candy = getCandy();
-        doReturn(candy).when(mockService).find(any());
+        doReturn(candy).when(candyService).find(any());
 
         mockMvc.perform(get("/candies/{id}", candy.getId()))
                 .andExpect(status().isOk())
@@ -57,16 +57,16 @@ public class CandyQueryControllerIT {
     }
 
     @Test
-    public void findCandyWithNonExistentIdShouldReturn404() throws Exception {
-        doReturn(null).when(mockService).find(any());
+    public void findNotExistentCandyShouldReturn404() throws Exception {
+        doReturn(null).when(candyService).find(any());
 
         mockMvc.perform(get("/candies/{id}", newUUID()))
                 .andExpect(status().isNotFound());
     }
 
     @Test
-    public void listCandyWithNotEmptyDBShouldReturnArray() throws Exception {
-        doReturn(asList(getCandy(), getCandy())).when(mockService).list();
+    public void listCandyShouldReturnArray() throws Exception {
+        doReturn(asList(getCandy(), getCandy())).when(candyService).list();
 
         mockMvc.perform(get("/candies"))
                 .andExpect(status().isOk())

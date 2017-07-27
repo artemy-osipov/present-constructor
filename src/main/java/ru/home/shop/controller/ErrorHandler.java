@@ -8,7 +8,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.home.shop.controller.dto.ValidationErrorDTO;
+import ru.home.shop.controller.dto.base.ValidationErrorDTO;
+import ru.home.shop.exception.EntityNotFoundException;
 
 import java.util.List;
 
@@ -19,6 +20,11 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String processNotReadableRequest(HttpMessageNotReadableException ex) {
         return "malformed request";
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public void processEntityNotFound(EntityNotFoundException ex) {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

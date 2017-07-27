@@ -63,7 +63,7 @@ public class JOOQPresentRepositoryTest {
         candy.setId(UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c"));
         candy.setCount(2);
 
-        present.getCandies().add(candy);
+        present.getItems().add(candy);
 
         repository.add(present);
 
@@ -129,7 +129,7 @@ public class JOOQPresentRepositoryTest {
         candy.setId(UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c"));
         candy.setCount(2);
 
-        present.getCandies().add(candy);
+        present.getItems().add(candy);
 
         repository.add(present);
         Select count = dsl.selectCount()
@@ -153,9 +153,9 @@ public class JOOQPresentRepositoryTest {
         assertEquals("someName", fromDB.getName());
         assertEquals(BigDecimal.valueOf(12.35).doubleValue(), fromDB.getPrice().doubleValue(), 0);
 
-        assertEquals(2, fromDB.getCandies().size());
+        assertEquals(2, fromDB.getItems().size());
 
-        Candy candy1FromDB = fromDB.getCandies().iterator().next();
+        Candy candy1FromDB = fromDB.getItems().iterator().next();
         assertEquals(6, candy1FromDB.getCount());
 
         assertEquals(UUID.fromString("b08871d2-cc84-4be0-9671-8c73bf8658ae"), candy1FromDB.getId());

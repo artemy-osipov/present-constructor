@@ -53,7 +53,7 @@ public class TransactionTest {
         candy.setId(UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c"));
         candy.setCount(2);
 
-        present.getCandies().add(candy);
+        present.getItems().add(candy);
 
         int before = dsl.fetchCount(PRESENT);
 
@@ -64,7 +64,7 @@ public class TransactionTest {
             Candy incorrectCandy = new Candy();
             incorrectCandy.setId(Generators.timeBasedGenerator().generate());
             incorrectCandy.setCount(2);
-            present.getCandies().add(incorrectCandy);
+            present.getItems().add(incorrectCandy);
             repository.add(present);
             fail();
         } catch (DataIntegrityViolationException ignored) {

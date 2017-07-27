@@ -63,10 +63,10 @@ public class ReportServiceImpl implements ReportService {
     }
 
     BigDecimal computeCostPrice(Present present) {
-        if (present.getCandies() == null) {
+        if (present.getItems() == null) {
             return BigDecimal.ZERO;
         } else {
-            return present.getCandies().stream()
+            return present.getItems().stream()
                     .map(c ->
                             (c.getPrice() == null ? BigDecimal.ZERO : c.getPrice())
                                     .multiply(BigDecimal.valueOf(c.getCount())))

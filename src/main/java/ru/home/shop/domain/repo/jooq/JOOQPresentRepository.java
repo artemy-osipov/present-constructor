@@ -10,6 +10,7 @@ import ru.home.shop.domain.model.Present;
 import ru.home.shop.domain.repo.PresentRepository;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import static ru.home.db.Tables.*;
@@ -33,7 +34,7 @@ public class JOOQPresentRepository implements PresentRepository {
                 .set(PRESENT.PRICE, present.getPrice())
                 .execute();
 
-        addCandiesToPresent(present.getId(), present.getCandies());
+        addCandiesToPresent(present.getId(), present.getItems());
     }
 
     private void addCandiesToPresent(UUID present, Collection<Candy> candies) {
@@ -66,7 +67,7 @@ public class JOOQPresentRepository implements PresentRepository {
         dsl.deleteFrom(PRESENT_ITEM)
                 .where(PRESENT_ITEM.PRESENT.eq(present.getId()));
 
-        addCandiesToPresent(present.getId(), present.getCandies());
+        addCandiesToPresent(present.getId(), present.getItems());
 
         return updated;
     }
@@ -85,13 +86,13 @@ public class JOOQPresentRepository implements PresentRepository {
                 .fetchOne(new PresentMapper());
 
         if (present != null) {
-            present.setCandies(listCandiesByPresent(id));
+            present.setItems(listCandiesByPresent(id));
         }
 
         return present;
     }
 
-    private Collection<Candy> listCandiesByPresent(UUID present) {
+    private List<Candy> listCandiesByPresent(UUID present) {
         return dsl.select()
                 .from(PRESENT_ITEM)
                 .leftJoin(CANDY).on(PRESENT_ITEM.CANDY.eq(CANDY.ID))

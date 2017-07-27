@@ -1,4 +1,4 @@
-package ru.home.shop.controller.dto;
+package ru.home.shop.controller.dto.base;
 
 public class FieldErrorDTO {
 

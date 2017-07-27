@@ -1,4 +1,4 @@
-package ru.home.shop.controller.dto;
+package ru.home.shop.controller.dto.base;
 
 import java.util.ArrayList;
 import java.util.List;

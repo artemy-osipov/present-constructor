@@ -38,8 +38,8 @@ public class ReportServiceImplTest {
         candy2.setPrice(BigDecimal.valueOf(2.2));
         candy2.setCount(6);
 
-        present.getCandies().add(candy1);
-        present.getCandies().add(candy2);
+        present.getItems().add(candy1);
+        present.getItems().add(candy2);
 
         return present;
     }

@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import ru.home.shop.domain.model.Candy;
 import ru.home.shop.domain.repo.CandyRepository;
 import ru.home.shop.exception.EntityNotFoundException;
-import ru.home.shop.exception.ValidationException;
 import ru.home.shop.service.CandyService;
 
 import java.util.Collection;
@@ -23,12 +22,12 @@ public class CandyServiceImpl implements CandyService {
 
 
     @Override
-    public void add(Candy candy) throws ValidationException {
+    public void add(Candy candy) {
         repository.add(candy);
     }
 
     @Override
-    public void edit(Candy candy) throws ValidationException {
+    public void edit(Candy candy) {
         int updated = repository.edit(candy);
 
         if (updated == 0) {
@@ -37,7 +36,7 @@ public class CandyServiceImpl implements CandyService {
     }
 
     @Override
-    public void remove(UUID id) throws ValidationException {
+    public void remove(UUID id) {
         int removed = repository.remove(id);
 
         if (removed == 0) {
@@ -51,7 +50,7 @@ public class CandyServiceImpl implements CandyService {
     }
 
     @Override
-    public Candy find(UUID id) throws ValidationException {
+    public Candy find(UUID id) {
         return repository.find(id);
     }
 }
