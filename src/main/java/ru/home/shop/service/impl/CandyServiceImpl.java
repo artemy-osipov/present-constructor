@@ -31,7 +31,7 @@ public class CandyServiceImpl implements CandyService {
     public void edit(Candy candy) throws ValidationException {
         int updated = repository.edit(candy);
 
-        if (updated != 1) {
+        if (updated == 0) {
             throw new EntityNotFoundException();
         }
     }
@@ -40,7 +40,7 @@ public class CandyServiceImpl implements CandyService {
     public void remove(UUID id) throws ValidationException {
         int removed = repository.remove(id);
 
-        if (removed != 1) {
+        if (removed == 0) {
             throw new EntityNotFoundException();
         }
     }

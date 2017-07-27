@@ -1,6 +1,8 @@
 package ru.home.shop.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.home.shop.domain.model.Present;
 import ru.home.shop.service.PresentService;
@@ -19,10 +21,10 @@ public class PresentCommandController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public UUID addPresent(@RequestBody Present present) {
+    public ResponseEntity<UUID> addPresent(@RequestBody Present present) {
         presentService.add(present);
 
-        return present.getId();
+        return new ResponseEntity<>(present.getId(), HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
