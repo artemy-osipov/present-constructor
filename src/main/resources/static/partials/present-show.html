@@ -20,10 +20,10 @@
 </fieldset>
 
 <div>
-  <a href="/presents/{{present.id}}/publicReport">Скачать без цены</a>
+  <a href="/presents/{{present.id}}/public-report">Скачать без цены</a>
 </div>
 <div>
-  <a href="/presents/{{present.id}}/privateReport">Скачать с ценой</a>
+  <a href="/presents/{{present.id}}/private-report">Скачать с ценой</a>
 </div>
 
 <table class="entity">
@@ -34,10 +34,10 @@
     <th>Количество</th>
   </tr>
 
-  <tr ng-repeat="candy in present.candies">
-    <td>{{candy.name}}</td>
-    <td>{{candy.firm}}</td>
-    <td>{{candy.price}}</td>
-    <td>{{candy.count}}</td>
+  <tr ng-repeat="item in present.items">
+    <td>{{item.name}}</td>
+    <td>{{item.firm}}</td>
+    <td>{{item.price}}</td>
+    <td>{{item.count}}</td>
   </tr> 
 </table>

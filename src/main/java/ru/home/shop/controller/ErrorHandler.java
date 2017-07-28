@@ -1,7 +1,6 @@
 package ru.home.shop.controller;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -15,12 +14,6 @@ import java.util.List;
 
 @RestControllerAdvice
 public class ErrorHandler {
-
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String processNotReadableRequest(HttpMessageNotReadableException ex) {
-        return "malformed request";
-    }
 
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
