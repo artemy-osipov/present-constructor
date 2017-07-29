@@ -1,103 +1,72 @@
 package ru.home.shop.service.impl;
 
-import com.fasterxml.uuid.Generators;
 import org.junit.Test;
-import ru.home.shop.domain.model.Candy;
 import ru.home.shop.domain.model.Present;
 import ru.home.shop.domain.repo.PresentRepository;
 import ru.home.shop.exception.EntityNotFoundException;
+import ru.home.shop.service.PresentService;
 
-import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.*;
+import static ru.home.shop.utils.UuidUtils.newUUID;
 
 public class PresentServiceImplTest {
-
-    private Present getValidAddPresent() {
-        Present present = new Present();
-        present.setName("name");
-        present.setPrice(BigDecimal.valueOf(4.2));
-
-        Candy candy1 = new Candy();
-        candy1.setId(Generators.timeBasedGenerator().generate());
-        candy1.setCount(2);
-
-        Candy candy2 = new Candy();
-        candy2.setId(Generators.timeBasedGenerator().generate());
-        candy2.setCount(6);
-
-        present.getItems().add(candy1);
-        present.getItems().add(candy2);
-
-        return present;
-    }
+    
+    private final PresentRepository presentRepository = mock(PresentRepository.class);
+    private final PresentService presentService = new PresentServiceImpl(presentRepository);
+    private final Present present = new Present();
 
     @Test
-    public void edit_validEntry_shouldInvokeRepository() {
-        Present present = getValidAddPresent();
-        present.setId(Generators.timeBasedGenerator().generate());
+    public void editShouldInvokeRepository() {
+        when(presentRepository.edit(present)).thenReturn(1);
+        
+        presentService.edit(present);
 
-        PresentRepository mock = mock(PresentRepository.class);
-        when(mock.edit(present)).thenReturn(1);
-
-
-        new PresentServiceImpl(mock).edit(present);
-        verify(mock).edit(present);
+        verify(presentRepository).edit(present);
     }
 
     @Test(expected = EntityNotFoundException.class)
-    public void edit_nonexistentId_shouldThrowException() {
-        PresentRepository mock = mock(PresentRepository.class);
-        Present present = getValidAddPresent();
-        present.setId(Generators.timeBasedGenerator().generate());
+    public void editNonExistentEntityShouldThrowException() {
+        when(presentRepository.edit(present)).thenReturn(0);
 
-        when(mock.edit(present)).thenReturn(0);
-
-        new PresentServiceImpl(mock).edit(present);
+        presentService.edit(present);
     }
 
     @Test
-    public void remove_validId_shouldInvokeRepository() {
-        UUID id = Generators.timeBasedGenerator().generate();
-        PresentRepository mock = mock(PresentRepository.class);
-        when(mock.remove(id)).thenReturn(1);
+    public void removeShouldInvokeRepository() {
+        UUID id = newUUID();
+        when(presentRepository.remove(id)).thenReturn(1);
 
-        new PresentServiceImpl(mock).remove(id);
-        verify(mock).remove(id);
+        presentService.remove(id);
+
+        verify(presentRepository).remove(id);
     }
 
     @Test(expected = EntityNotFoundException.class)
-    public void remove_nonexistentId_shouldThrowException() {
-        PresentRepository mock = mock(PresentRepository.class);
-        when(mock.remove(Generators.timeBasedGenerator().generate())).thenReturn(0);
+    public void removeNonExistentEntityShouldThrowException() {
+        when(presentRepository.remove(any())).thenReturn(0);
 
-        new PresentServiceImpl(mock).remove(Generators.timeBasedGenerator().generate());
+        presentService.remove(newUUID());
     }
 
     @Test
-    public void list_shouldReturnSameAsRepository() {
-        PresentRepository mock = mock(PresentRepository.class);
-        Collection<Present> res = Collections.singletonList(getValidAddPresent());
+    public void listShouldReturnSameAsRepository() {
+        Collection<Present> res = Collections.singletonList(present);
+        when(presentRepository.listView()).thenReturn(res);
 
-        when(mock.findAll()).thenReturn(res);
-
-        assertEquals(res, new PresentServiceImpl(mock).listView());
-        verify(mock).findAll();
+        assertThat(presentService.listView(), equalTo(res));
     }
 
     @Test
-    public void find_validId_shouldInvokeRepository() {
-        PresentRepository mock = mock(PresentRepository.class);
-        Present present = getValidAddPresent();
-        UUID id = Generators.timeBasedGenerator().generate();
+    public void findShouldInvokeRepository() {
+        UUID id = newUUID();
+        when(presentRepository.findById(id)).thenReturn(present);
 
-        when(mock.findFull(id)).thenReturn(present);
-
-        assertEquals(present, new PresentServiceImpl(mock).find(id));
-        verify(mock).findFull(id);
+        assertThat(presentService.find(id), equalTo(present));
     }
 }

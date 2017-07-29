@@ -35,12 +35,12 @@ public class ReportQueryController {
 
     @RequestMapping(value = "/{id}/public-report", method = RequestMethod.GET)
     public ResponseEntity<byte[]> publicReport(@PathVariable("id") UUID id) {
-        return report(id, reportService::publicReport);
+        return report(id, reportService::generatePublicReport);
     }
 
     @RequestMapping(value = "/{id}/private-report", method = RequestMethod.GET)
     public ResponseEntity<byte[]> privateReport(@PathVariable("id") UUID id) {
-        return report(id, reportService::privateReport);
+        return report(id, reportService::generatePrivateReport);
     }
 
     private ResponseEntity<byte[]> report(UUID id, Function<Present, Report> makeReport) {

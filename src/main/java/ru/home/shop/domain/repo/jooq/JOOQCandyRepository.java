@@ -52,7 +52,7 @@ public class JOOQCandyRepository implements CandyRepository {
     }
 
     @Override
-    public Collection<Candy> findAll() {
+    public Collection<Candy> list() {
         return dsl.selectFrom(CANDY)
                 .where(CANDY.ACTIVE.eq(true))
                 .orderBy(CANDY.ORDER)
@@ -60,7 +60,7 @@ public class JOOQCandyRepository implements CandyRepository {
     }
 
     @Override
-    public Candy find(UUID id) {
+    public Candy findById(UUID id) {
         return dsl.selectFrom(CANDY)
                 .where(CANDY.ID.eq(id))
                 .fetchOne(new CandyMapper());

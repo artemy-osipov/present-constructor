@@ -10,6 +10,6 @@ public interface CandyRepository {
     void add(Candy candy);
     int remove(UUID id);
     int edit(Candy candy);
-    Collection<Candy> findAll();
-    Candy find(UUID id);
+    Collection<Candy> list();
+    Candy findById(UUID id);
 }

@@ -4,7 +4,6 @@ import java.util.UUID;
 
 public class Entity {
 
-    /*Идентификатор сущности*/
     private UUID id;
 
     public UUID getId() {

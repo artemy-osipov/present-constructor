@@ -1,6 +1,5 @@
 package ru.home.shop.domain.repo.jooq;
 
-import com.fasterxml.uuid.Generators;
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -14,6 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static ru.home.db.Tables.*;
+import static ru.home.shop.utils.UuidUtils.newUUID;
 
 @Repository
 public class JOOQPresentRepository implements PresentRepository {
@@ -37,11 +37,11 @@ public class JOOQPresentRepository implements PresentRepository {
         addCandiesToPresent(present.getId(), present.getItems());
     }
 
-    private void addCandiesToPresent(UUID present, Collection<Candy> candies) {
+    private void addCandiesToPresent(UUID presentId, Collection<Candy> candies) {
         candies.forEach(
                 candy -> dsl.insertInto(PRESENT_ITEM)
-                        .set(PRESENT_ITEM.ID, Generators.timeBasedGenerator().generate())
-                        .set(PRESENT_ITEM.PRESENT, present)
+                        .set(PRESENT_ITEM.ID, newUUID())
+                        .set(PRESENT_ITEM.PRESENT, presentId)
                         .set(PRESENT_ITEM.CANDY, candy.getId())
                         .set(PRESENT_ITEM.COUNT, candy.getCount())
                         .execute()
@@ -73,14 +73,14 @@ public class JOOQPresentRepository implements PresentRepository {
     }
 
     @Override
-    public Collection<Present> findAll() {
+    public Collection<Present> listView() {
         return dsl.selectFrom(PRESENT)
                 .fetch(new PresentMapper());
     }
 
     @Override
     @Transactional
-    public Present findFull(UUID id) {
+    public Present findById(UUID id) {
         Present present = dsl.selectFrom(PRESENT)
                 .where(PRESENT.ID.eq(id))
                 .fetchOne(new PresentMapper());
@@ -100,12 +100,7 @@ public class JOOQPresentRepository implements PresentRepository {
                 .orderBy(CANDY.ORDER)
                 .fetch()
                 .map(r -> {
-                    Candy candy = new Candy();
-                    candy.setId(r.getValue(PRESENT_ITEM.CANDY));
-                    candy.setName(r.getValue(CANDY.NAME));
-                    candy.setFirm(r.getValue(CANDY.FIRM));
-                    candy.setPrice(r.getValue(CANDY.PRICE));
-                    candy.setOrder(r.getValue(CANDY.ORDER));
+                    Candy candy = new CandyMapper().map(r.into(CANDY));
                     candy.setCount(r.getValue(PRESENT_ITEM.COUNT));
 
                     return candy;

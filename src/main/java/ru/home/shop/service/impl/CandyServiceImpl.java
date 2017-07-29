@@ -46,11 +46,11 @@ public class CandyServiceImpl implements CandyService {
 
     @Override
     public Collection<Candy> list() {
-        return repository.findAll();
+        return repository.list();
     }
 
     @Override
     public Candy find(UUID id) {
-        return repository.find(id);
+        return repository.findById(id);
     }
 }

@@ -45,11 +45,11 @@ public class PresentServiceImpl implements PresentService {
 
     @Override
     public Collection<Present> listView() {
-        return repository.findAll();
+        return repository.listView();
     }
 
     @Override
     public Present find(UUID id) {
-        return repository.findFull(id);
+        return repository.findById(id);
     }
 }

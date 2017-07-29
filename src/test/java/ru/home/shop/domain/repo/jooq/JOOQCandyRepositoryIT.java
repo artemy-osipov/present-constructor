@@ -10,9 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import ru.home.shop.PresentsApplication;
 import ru.home.shop.domain.model.Candy;
 import ru.home.shop.domain.repo.CandyRepository;
 
@@ -24,10 +23,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 import static ru.home.db.Tables.CANDY;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = {PresentsApplication.class})
+@RunWith(SpringRunner.class)
+@SpringBootTest
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class, FlywayTestExecutionListener.class })
-public class JOOQCandyRepositoryTest {
+public class JOOQCandyRepositoryIT {
 
     @Autowired
     private CandyRepository repository;
@@ -106,13 +105,13 @@ public class JOOQCandyRepositoryTest {
     @Test
     @FlywayTest
     public void findAllShouldNotReturnEmptySet() {
-        assertFalse(repository.findAll().isEmpty());
+        assertFalse(repository.list().isEmpty());
     }
 
     @Test
     @FlywayTest
     public void findByExistentIdShouldReturnValidEntry() {
-        Candy fromDB = repository.find(UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c"));
+        Candy fromDB = repository.findById(UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c"));
 
         assertEquals("someName1", fromDB.getName());
         assertEquals("someFirm1", fromDB.getFirm());
@@ -122,6 +121,6 @@ public class JOOQCandyRepositoryTest {
 
     @Test
     public void findByNonexistentIdShouldReturnNull() {
-        assertNull(repository.find(Generators.timeBasedGenerator().generate()));
+        assertNull(repository.findById(Generators.timeBasedGenerator().generate()));
     }
 }

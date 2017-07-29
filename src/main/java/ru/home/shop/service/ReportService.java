@@ -5,6 +5,6 @@ import ru.home.shop.domain.model.Report;
 
 public interface ReportService {
 
-    Report publicReport(Present present);
-    Report privateReport(Present present);
+    Report generatePublicReport(Present present);
+    Report generatePrivateReport(Present present);
 }

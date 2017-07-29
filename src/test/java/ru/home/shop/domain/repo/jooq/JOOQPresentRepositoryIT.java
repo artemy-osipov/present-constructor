@@ -11,9 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import ru.home.shop.PresentsApplication;
 import ru.home.shop.domain.model.Candy;
 import ru.home.shop.domain.model.Present;
 import ru.home.shop.domain.repo.PresentRepository;
@@ -25,10 +24,10 @@ import static org.junit.Assert.*;
 import static ru.home.db.Tables.PRESENT;
 import static ru.home.db.Tables.PRESENT_ITEM;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = {PresentsApplication.class})
+@RunWith(SpringRunner.class)
+@SpringBootTest
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class, FlywayTestExecutionListener.class })
-public class JOOQPresentRepositoryTest {
+public class JOOQPresentRepositoryIT {
 
     @Autowired
     private PresentRepository repository;
@@ -142,13 +141,13 @@ public class JOOQPresentRepositoryTest {
     @Test
     @FlywayTest
     public void findAllShouldNotReturnEmptySet() {
-        assertFalse(repository.findAll().isEmpty());
+        assertFalse(repository.listView().isEmpty());
     }
 
     @Test
     @FlywayTest
     public void findByExistentIdShouldReturnValidEntry() {
-        Present fromDB = repository.findFull(UUID.fromString("9744b2ea-2328-447c-b437-a4f8b57c9985"));
+        Present fromDB = repository.findById(UUID.fromString("9744b2ea-2328-447c-b437-a4f8b57c9985"));
 
         assertEquals("someName", fromDB.getName());
         assertEquals(BigDecimal.valueOf(12.35).doubleValue(), fromDB.getPrice().doubleValue(), 0);
@@ -167,6 +166,6 @@ public class JOOQPresentRepositoryTest {
 
     @Test
     public void findByNonexistentIdShouldReturnNull() {
-        assertNull(repository.findFull(Generators.timeBasedGenerator().generate()));
+        assertNull(repository.findById(Generators.timeBasedGenerator().generate()));
     }
 }

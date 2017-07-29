@@ -50,7 +50,7 @@ public class ReportQueryControllerIT {
         Report report = getReport();
 
         doReturn(present).when(presentService).find(any());
-        doReturn(report).when(reportService).publicReport(present);
+        doReturn(report).when(reportService).generatePublicReport(present);
 
         mockMvc.perform(get("/presents/{id}/public-report", newUUID()))
                 .andExpect(status().isOk())
@@ -72,7 +72,7 @@ public class ReportQueryControllerIT {
         Report report = getReport();
 
         doReturn(present).when(presentService).find(any());
-        doReturn(report).when(reportService).privateReport(present);
+        doReturn(report).when(reportService).generatePrivateReport(present);
 
         mockMvc.perform(get("/presents/{id}/private-report", newUUID()))
                 .andExpect(status().isOk())

@@ -10,6 +10,6 @@ public interface PresentRepository {
     void add(Present present);
     int remove(UUID id);
     int edit(Present present);
-    Collection<Present> findAll();
-    Present findFull(UUID id);
+    Collection<Present> listView();
+    Present findById(UUID id);
 }

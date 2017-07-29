@@ -1,23 +1,23 @@
 package ru.home.shop.service.impl;
 
-import com.fasterxml.uuid.Generators;
 import org.junit.Test;
 import ru.home.shop.domain.model.Candy;
 import ru.home.shop.domain.model.Present;
 import ru.home.shop.domain.model.Report;
-import ru.home.shop.service.PresentService;
 
-import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static ru.home.shop.utils.UuidUtils.newUUID;
 
 public class ReportServiceImplTest {
 
-    private ReportServiceImpl reportService = new ReportServiceImpl();
+    private final static int PUBLIC_REPORT_LENGTH = 11632;
+    private final static int PRIVATE_REPORT_LENGTH = 14572;
+    private final static String REPORT_NAME = "name 4.2 RUB.docx";
+
+    private final ReportServiceImpl reportService = new ReportServiceImpl();
 
     private Present getPresent() {
         Present present = new Present();
@@ -25,14 +25,14 @@ public class ReportServiceImplTest {
         present.setPrice(BigDecimal.valueOf(4.2));
 
         Candy candy1 = new Candy();
-        candy1.setId(Generators.timeBasedGenerator().generate());
+        candy1.setId(newUUID());
         candy1.setName("name1");
         candy1.setFirm("firm1");
         candy1.setPrice(BigDecimal.valueOf(1.1));
         candy1.setCount(2);
 
         Candy candy2 = new Candy();
-        candy2.setId(Generators.timeBasedGenerator().generate());
+        candy2.setId(newUUID());
         candy2.setName("name2");
         candy2.setFirm("firm2");
         candy2.setPrice(BigDecimal.valueOf(2.2));
@@ -45,42 +45,36 @@ public class ReportServiceImplTest {
     }
 
     @Test
-    public void publicReportWithValidIdShouldGenerateSomeReport() throws IOException {
-        Report report = reportService.publicReport(getPresent());
+    public void generatePublicReportShouldGenerateSomeReport() {
+        Report report = reportService.generatePublicReport(getPresent());
 
-        assertEquals("name 4.2 RUB.docx", report.getName());
-        assertEquals(11632, report.getContent().length);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void publicReportWithNotValidIdShouldThrowException() throws IOException {
-        PresentService mock = mock(PresentService.class);
-        UUID id = Generators.timeBasedGenerator().generate();
-        when(mock.find(id)).thenReturn(null);
-
-        reportService.publicReport(null);
+        assertThat(report.getName(), equalTo(REPORT_NAME));
+        assertThat(report.getContent().length, equalTo(PUBLIC_REPORT_LENGTH));
     }
 
     @Test
-    public void privateReportWithValidIdShouldGenerateSomeReport() throws IOException {
-        Report report = reportService.privateReport(getPresent());
+    public void generatePrivateReportShouldGenerateSomeReport() {
+        Report report = reportService.generatePrivateReport(getPresent());
 
-        assertEquals("name 4.2 RUB.docx", report.getName());
-        assertEquals(14572, report.getContent().length);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void privateWithNotValidIdShouldThrowException() throws IOException {
-        reportService.privateReport(null);
+        assertThat(report.getName(), equalTo(REPORT_NAME));
+        assertThat(report.getContent().length, equalTo(PRIVATE_REPORT_LENGTH));
     }
 
     @Test
-    public void presentWithoutCandiesHasZeroCostPrice() {
-        assertEquals(BigDecimal.ZERO, reportService.computeCostPrice(new Present()));
+    public void emptyPresentShouldHasZeroCostPrice() {
+        Present emptyPresent = new Present();
+
+        BigDecimal costPrice = reportService.computeCostPrice(emptyPresent);
+
+        assertThat(costPrice, equalTo(BigDecimal.ZERO));
     }
 
     @Test
     public void testComputeCostPrice() {
-        assertEquals(new BigDecimal("15.4"), reportService.computeCostPrice(getPresent()));
+        Present present = getPresent();
+
+        BigDecimal costPrice = reportService.computeCostPrice(present);
+
+        assertThat(costPrice, equalTo(new BigDecimal("15.4")));
     }
 }

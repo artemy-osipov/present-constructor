@@ -8,7 +8,7 @@ public class Present extends Entity {
 
     private String name;
     private BigDecimal price;
-    private List<Candy> candies = new ArrayList<>();
+    private List<Candy> items;
 
     public String getName() {
         return name;
@@ -27,10 +27,14 @@ public class Present extends Entity {
     }
 
     public List<Candy> getItems() {
-        return candies;
+        if (items == null) {
+            items = new ArrayList<>();
+        }
+
+        return items;
     }
 
     public void setItems(List<Candy> candies) {
-        this.candies = candies;
+        this.items = candies;
     }
 }

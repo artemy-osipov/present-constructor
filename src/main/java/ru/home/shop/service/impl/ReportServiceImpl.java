@@ -18,23 +18,22 @@ import java.math.BigDecimal;
 @Service
 public class ReportServiceImpl implements ReportService {
 
+    private final static String PUBLIC_REPORT_PATH = "templates/publicReport.docx";
+    private final static String PRIVATE_REPORT_PATH = "templates/privateReport.docx";
+
     @Override
-    public Report publicReport(Present present) {
-        return generateReport(present, "templates/publicReport.docx");
+    public Report generatePublicReport(Present present) {
+        return generateReport(present, PUBLIC_REPORT_PATH);
     }
 
     @Override
-    public Report privateReport(Present present) {
-        return generateReport(present, "templates/privateReport.docx");
+    public Report generatePrivateReport(Present present) {
+        return generateReport(present, PRIVATE_REPORT_PATH);
     }
 
-    private Report generateReport(Present present, String templateName) {
-        if (present == null) {
-            throw new IllegalArgumentException();
-        }
-
+    private Report generateReport(Present present, String templatePath) {
         String name = formatReportName(present);
-        byte[] content = generateReportContent(present, templateName);
+        byte[] content = generateReportContent(present, templatePath);
 
         return new Report(name, content);
     }
@@ -44,10 +43,8 @@ public class ReportServiceImpl implements ReportService {
     }
 
     private byte[] generateReportContent(Present present, String templateName) {
-        try {
-            InputStream in = getClass().getClassLoader().getResourceAsStream(templateName);
-            IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in, TemplateEngineKind.Freemarker);
-
+        try (InputStream templateStream = getClass().getClassLoader().getResourceAsStream(templateName)) {
+            IXDocReport report = XDocReportRegistry.getRegistry().loadReport(templateStream, TemplateEngineKind.Freemarker);
 
             IContext context = report.createContext();
             context.put("present", present);
@@ -63,15 +60,9 @@ public class ReportServiceImpl implements ReportService {
     }
 
     BigDecimal computeCostPrice(Present present) {
-        if (present.getItems() == null) {
-            return BigDecimal.ZERO;
-        } else {
-            return present.getItems().stream()
-                    .map(c ->
-                            (c.getPrice() == null ? BigDecimal.ZERO : c.getPrice())
-                                    .multiply(BigDecimal.valueOf(c.getCount())))
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
-        }
+        return present.getItems().stream()
+                .map(c -> c.getPrice().multiply(BigDecimal.valueOf(c.getCount())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }
 
