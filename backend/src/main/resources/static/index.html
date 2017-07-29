@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ru" ng-app="presentApp">
+<head>
+  <meta charset="utf-8" />
+  <title>Подарки</title>
+  <link rel="stylesheet" href="css/app.css">
+  <script src="components/angular/angular.js"></script>
+  <script src="components/angular-route/angular-route.js"></script>
+  <script src="components/angular-resource/angular-resource.js"></script>
+  <script src="components/jquery/dist/jquery.js"></script>
+  <script src="components/jquery-sticky/jquery.sticky.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/controllers.js"></script>
+  <script src="js/services.js"></script>
+  <script src="js/routes.js"></script>
+  <script src="js/directives.js"></script>
+
+  <!-- Angular-Translate with the JSON loader -->
+  <script type="text/javascript" src="/components/angular-translate/angular-translate.min.js"></script>
+  <script type="text/javascript" src="/components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
+
+  <!-- Angular-Validation library -->
+  <script type="text/javascript" src="/components/angular-validation-ghiscoding/dist/angular-validation.min.js"></script>
+</head>
+    
+<body>
+  <header>
+    <div class="content-wrapper">
+      <div class="float-right">
+        <nav>
+          <ul id="menu">
+            <li>
+              <a href="#/index">Справка</a>
+            </li>
+            <li>
+              <a href="#/candy-list">Конфеты</a>
+            </li>
+            <li>
+              <a href="#/present-add">Добавление подарка</a>
+            </li>
+            <li>
+              <a href="#/present-list">Список подарков</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <div id="body">
+    <section class="content-wrapper main-content clear-fix" ng-view></section>
+  </div>
+
+  <footer>
+    <div class="content-wrapper">
+      <div class="float-left"></div>
+    </div>
+  </footer>
+</body>
+</html>
+
