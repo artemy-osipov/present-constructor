@@ -5,21 +5,20 @@
     <span class="navbar-toggler-icon"></span>
   </button>
 
-    <a class="navbar-brand" href="#">Presents</a>
+    <a class="navbar-brand" routerLink="/">
+      <img src="/assets/presents.svg" width="30" height="30" alt="">
+    </a>
 
     <div class="collapse navbar-collapse" id="header-navbar-collapse">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Справка</a>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/about" routerLinkActive="active">Справка</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Конфеты</a>
+          <a class="nav-link" routerLink="/candies" routerLinkActive="active">Конфеты</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Добавление подарка</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Список подарков</a>
+          <a class="nav-link" routerLink="/presents" routerLinkActive="active">Подарки</a>
         </li>
       </ul>
 

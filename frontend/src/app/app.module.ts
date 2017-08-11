@@ -5,6 +5,8 @@ import { HttpModule } from '@angular/http';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
+import {AppRoutingModule} from './app-routing.module';
+
 import { AppComponent } from './app.component';
 import { AboutComponent } from './about/about.component';
 import { HeaderComponent } from './header/header.component';
@@ -21,7 +23,8 @@ import { CandyListComponent } from './candy-list/candy-list.component';
     BrowserModule,
     FormsModule,
     HttpModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
