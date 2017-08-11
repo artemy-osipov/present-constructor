@@ -2,16 +2,29 @@ body {
   padding-top: 5rem;
 }
 
-.btn-icon:active,
-.btn-icon:hover,
-.btn-icon:focus {
-  color: #757575;
+.btn-outline-primary {
+  color: #44484B;
+  background-image: none;
+  background-color: transparent;
+  border-color: #44484B;
+}
+
+.btn-outline-primary:active,
+.btn-outline-primary:hover {
+  color: #292b2c;
   background-color: #c3c3c3;
   border-color: #aeaeae;
 }
 
 .btn-icon {
   color: #44484B;
+}
+
+.btn-icon:active,
+.btn-icon:hover {
+  color: #757575;
+  background-color: #c3c3c3;
+  border-color: #aeaeae;
 }
 
 .tooltip.show {

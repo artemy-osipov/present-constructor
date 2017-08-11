@@ -1,4 +1,11 @@
 <h1>Конфеты</h1>
+<div class="row">
+  <div class="col-md-6">
+    <button class="btn btn-outline-primary" type="button">
+      <i class="fa fa-plus" aria-hidden="true"></i> Добавить
+    </button>
+  </div>
+</div>
 <table class="table table-striped">
   <thead>
     <tr>
@@ -9,42 +16,16 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>Название 1</td>
-      <td>Производитель 1</td>
-      <td>Цена 1</td>
+    <tr *ngFor="let candy of candies">
+      <td>{{candy.name}}</td>
+      <td>{{candy.firm}}</td>
+      <td>{{candy.price}}</td>
       <td>
         <a href="#" class="btn btn-icon" ngbTooltip="Изменить">
-          <i class="fa fa-pencil"></i>
+          <i class="fa fa-pencil" aria-hidden="true"></i>
         </a>
         <a href="#" class="btn btn-icon" ngbTooltip="Удалить">
-          <i class="fa fa-trash"></i>
-        </a>
-      </td>
-    </tr>
-    <tr>
-      <td>Название 2</td>
-      <td>Производитель 2</td>
-      <td>Цена 2</td>
-      <td>
-        <a href="#" class="btn btn-icon" ngbTooltip="Изменить">
-          <i class="fa fa-pencil"></i>
-        </a>
-        <a href="#" class="btn btn-icon" ngbTooltip="Удалить">
-          <i class="fa fa-trash"></i>
-        </a>
-      </td>
-    </tr>
-    <tr>
-      <td>Название 3</td>
-      <td>Производитель 3</td>
-      <td>Цена 3</td>
-      <td>
-        <a href="#" class="btn btn-icon" ngbTooltip="Изменить">
-          <i class="fa fa-pencil"></i>
-        </a>
-        <a href="#" class="btn btn-icon" ngbTooltip="Удалить">
-          <i class="fa fa-trash"></i>
+          <i class="fa fa-trash" aria-hidden="true"></i>
         </a>
       </td>
     </tr>
