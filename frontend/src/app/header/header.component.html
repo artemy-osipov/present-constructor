@@ -1,27 +1,25 @@
-<div class="container">
-  <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse fixed-top">
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#header-navbar-collapse"
-      aria-controls="header-navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+  <a class="navbar-brand" routerLink="/">
+    <img src="/assets/presents.svg" width="30" height="30" alt="">
+  </a>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#header-navbar-collapse"
+    aria-controls="header-navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
-    <a class="navbar-brand" routerLink="/">
-      <img src="/assets/presents.svg" width="30" height="30" alt="">
-    </a>
+  <div class="collapse navbar-collapse" id="header-navbar-collapse">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/about" routerLinkActive="active">Справка</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/candies" routerLinkActive="active">Конфеты</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/presents" routerLinkActive="active">Подарки</a>
+      </li>
+    </ul>
 
-    <div class="collapse navbar-collapse" id="header-navbar-collapse">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/about" routerLinkActive="active">Справка</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/candies" routerLinkActive="active">Конфеты</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/presents" routerLinkActive="active">Подарки</a>
-        </li>
-      </ul>
-
-    </div>
-  </nav>
-</div>
+  </div>
+</nav>
