@@ -1,7 +1,7 @@
 <h1>Конфеты</h1>
 <div class="row">
   <div class="col-md-6">
-    <button class="btn btn-outline-primary" type="button">
+    <button class="btn btn-outline-dark" type="button">
       <i class="fa fa-plus" aria-hidden="true"></i> Добавить
     </button>
   </div>
@@ -21,12 +21,12 @@
       <td>{{candy.firm}}</td>
       <td>{{candy.price}}</td>
       <td>
-        <a href="#" class="btn btn-icon" ngbTooltip="Изменить">
+        <button class="btn btn-icon btn-outline-dark" ngbTooltip="Изменить" type="button" (click)="openEditForm(candy)">
           <i class="fa fa-pencil" aria-hidden="true"></i>
-        </a>
-        <a href="#" class="btn btn-icon" ngbTooltip="Удалить">
+        </button>
+        <button class="btn btn-icon btn-outline-dark" ngbTooltip="Удалить" type="button" (click)="openEditForm(candy)">
           <i class="fa fa-trash" aria-hidden="true"></i>
-        </a>
+        </button>
       </td>
     </tr>
   </tbody>

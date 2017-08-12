@@ -11,13 +11,18 @@ import { AppComponent } from './app.component';
 import { AboutComponent } from './about/about.component';
 import { HeaderComponent } from './header/header.component';
 import { CandyListComponent } from './candy-list/candy-list.component';
+import { CandyEditComponent } from './candy-edit/candy-edit.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AboutComponent,
     HeaderComponent,
-    CandyListComponent
+    CandyListComponent,
+    CandyEditComponent
+  ],
+  entryComponents: [
+    CandyEditComponent
   ],
   imports: [
     BrowserModule,
