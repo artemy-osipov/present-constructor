@@ -38,6 +38,12 @@ export class CandyEditComponent {
     if (this.form.valid) {
       this.candy = this.prepareSaveCandy();
       this.modal.close(this.candy);
+    } else {
+      for (const key in this.form.controls) {
+        if (this.form.controls.hasOwnProperty(key)) {
+          this.form.controls[key].markAsDirty();
+        }
+      }
     }
   }
 

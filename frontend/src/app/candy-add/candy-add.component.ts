@@ -28,6 +28,12 @@ export class CandyAddComponent {
     if (this.form.valid) {
       const candy = this.prepareSaveCandy();
       this.modal.close(candy);
+    } else {
+      for (const key in this.form.controls) {
+        if (this.form.controls.hasOwnProperty(key)) {
+          this.form.controls[key].markAsDirty();
+        }
+      }
     }
   }
 
