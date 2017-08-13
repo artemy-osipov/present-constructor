@@ -1,32 +1,50 @@
-<div class="modal-body">
-  <form>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="modal-body">
     <div class="form-group">
       <label for="name">Название</label>
-      <input class="form-control" id="name" value="{{candy.name}}">
+      <input class="form-control" id="name" formControlName="name" [class.is-valid]="form.controls.name.valid" [class.is-invalid]="form.controls.name.invalid">
+      <div *ngIf="form.controls.name.invalid && form.controls.name.errors.empty" class="invalid-feedback">
+        Обязательно для заполнения
+      </div>
+      <div *ngIf="form.controls.name.invalid && form.controls.name.errors.maxLength" class="invalid-feedback">
+        Превышает максимальную длину (50 символов)
+      </div>
     </div>
     <div class="form-group">
       <label for="firm">Производитель</label>
-      <input class="form-control" id="firm" value="{{candy.firm}}">
+      <input class="form-control" id="firm" formControlName="firm" [class.is-valid]="form.controls.firm.valid" [class.is-invalid]="form.controls.firm.invalid">
+      <div *ngIf="form.controls.firm.invalid && form.controls.firm.errors.empty" class="invalid-feedback">
+        Обязательно для заполнения
+      </div>
+      <div *ngIf="form.controls.firm.invalid && form.controls.firm.errors.maxLength" class="invalid-feedback">
+        Превышает максимальную длину (50 символов)
+      </div>
     </div>
     <div class="form-group">
       <label for="price">Цена</label>
-      <input type="number" class="form-control" id="price" value="{{candy.price}}">
-    </div>
-  </form>
-</div>
-<div class="modal-footer">
-  <div class="container">
-    <div class="row">
-      <div class="col-6">
-        <button type="button" class="btn btn-outline-dark float-left" (click)="activeModal.close('Close click')">
-            <i class="fa fa-pencil" aria-hidden="true"></i> Сохранить
-          </button>
+      <input type="number" class="form-control" id="price" formControlName="price" [class.is-valid]="form.controls.price.valid" [class.is-invalid]="form.controls.price.invalid">
+      <div *ngIf="form.controls.price.invalid && form.controls.price.errors.required" class="invalid-feedback">
+        Обязательно для заполнения
       </div>
-      <div class="col-6">
-        <button type="button" class="btn btn-outline-secondary float-right" (click)="activeModal.close('Close click')">
-            <i class="fa fa-times" aria-hidden="true"></i> Отмена
-          </button>
+      <div *ngIf="form.controls.price.invalid && form.controls.price.errors.pattern" class="invalid-feedback">
+        Неверный формат (пример 123.12)
       </div>
     </div>
   </div>
-</div>
+  <div class="modal-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-6">
+          <button type="submit" class="btn btn-outline-dark float-left">
+            <i class="fa fa-pencil" aria-hidden="true"></i> Сохранить
+          </button>
+        </div>
+        <div class="col-6">
+          <button type="button" class="btn btn-outline-secondary float-right" (click)="modal.dismiss()">
+            <i class="fa fa-times" aria-hidden="true"></i> Отмена
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

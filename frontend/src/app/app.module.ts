@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
@@ -28,6 +29,7 @@ import { CandyEditComponent } from './candy-edit/candy-edit.component';
     BrowserModule,
     FormsModule,
     HttpModule,
+    ReactiveFormsModule,
     NgbModule.forRoot(),
     AppRoutingModule
   ],
