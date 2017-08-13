@@ -14,6 +14,7 @@ import { HeaderComponent } from './header/header.component';
 import { CandyListComponent } from './candy-list/candy-list.component';
 import { CandyEditComponent } from './candy-edit/candy-edit.component';
 import { CandyDeleteComponent } from './candy-delete/candy-delete.component';
+import { CandyAddComponent } from './candy-add/candy-add.component';
 
 @NgModule({
   declarations: [
@@ -22,11 +23,13 @@ import { CandyDeleteComponent } from './candy-delete/candy-delete.component';
     HeaderComponent,
     CandyListComponent,
     CandyEditComponent,
-    CandyDeleteComponent
+    CandyDeleteComponent,
+    CandyAddComponent
   ],
   entryComponents: [
     CandyEditComponent,
-    CandyDeleteComponent
+    CandyDeleteComponent,
+    CandyAddComponent
   ],
   imports: [
     BrowserModule,

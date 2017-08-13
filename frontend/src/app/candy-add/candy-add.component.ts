@@ -7,14 +7,13 @@ import { Candy } from 'app/shared/candy.model';
 import { StringValidators } from 'app/shared/string.validators';
 
 @Component({
-  selector: 'app-candy-edit',
-  templateUrl: './candy-edit.component.html',
-  styleUrls: ['./candy-edit.component.css']
+  selector: 'app-candy-add',
+  templateUrl: './candy-add.component.html',
+  styleUrls: ['./candy-add.component.css']
 })
-export class CandyEditComponent {
+export class CandyAddComponent {
   modal: NgbActiveModal;
   form: FormGroup;
-  candy: Candy;
 
   constructor(modal: NgbActiveModal, private fb: FormBuilder) {
     this.modal = modal;
@@ -25,24 +24,15 @@ export class CandyEditComponent {
     });
   }
 
-  initForm(candy: Candy) {
-    this.candy = candy;
-    this.form.setValue({
-      name: candy.name,
-      firm: candy.firm,
-      price: candy.price
-    });
-  }
-
   onSubmit() {
     if (this.form.valid) {
-      this.candy = this.prepareSaveCandy();
-      this.modal.close(this.candy);
+      const candy = this.prepareSaveCandy();
+      this.modal.close(candy);
     }
   }
 
   private prepareSaveCandy(): Candy {
     const formModel = this.form.value;
-    return new Candy(this.candy.id, formModel.name.trim(), formModel.firm.trim(), formModel.price, this.candy.order);
+    return new Candy('1', formModel.name.trim(), formModel.firm.trim(), formModel.price, 1);
   }
 }
