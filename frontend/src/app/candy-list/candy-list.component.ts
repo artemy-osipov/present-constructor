@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { CandyEditComponent } from 'app/candy-edit/candy-edit.component';
+import { CandyDeleteComponent } from 'app/candy-delete/candy-delete.component';
 import { Candy } from 'app/shared/candy.model';
 
 @Component({
@@ -36,5 +37,20 @@ export class CandyListComponent {
 
   private onEdited(edited: Candy) {
     this.candies = this.candies.map(c => c.id === edited.id ? edited : c);
+  }
+
+  openDeleteForm(candy: Candy) {
+    const modalRef = this.modalService.open(CandyDeleteComponent);
+    modalRef.result
+      .then(res => {
+        if (res) {
+          this.onDeleted(candy);
+        }
+      })
+      .catch(e => {});
+  }
+
+  private onDeleted(deleted: Candy) {
+    this.candies = this.candies.filter(c => c.id !== deleted.id);
   }
 }

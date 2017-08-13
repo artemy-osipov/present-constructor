@@ -13,6 +13,7 @@ import { AboutComponent } from './about/about.component';
 import { HeaderComponent } from './header/header.component';
 import { CandyListComponent } from './candy-list/candy-list.component';
 import { CandyEditComponent } from './candy-edit/candy-edit.component';
+import { CandyDeleteComponent } from './candy-delete/candy-delete.component';
 
 @NgModule({
   declarations: [
@@ -20,10 +21,12 @@ import { CandyEditComponent } from './candy-edit/candy-edit.component';
     AboutComponent,
     HeaderComponent,
     CandyListComponent,
-    CandyEditComponent
+    CandyEditComponent,
+    CandyDeleteComponent
   ],
   entryComponents: [
-    CandyEditComponent
+    CandyEditComponent,
+    CandyDeleteComponent
   ],
   imports: [
     BrowserModule,
