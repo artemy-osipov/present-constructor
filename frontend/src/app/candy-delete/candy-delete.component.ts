@@ -15,5 +15,4 @@ export class CandyDeleteComponent {
   delete() {
     this.modal.close(true);
   }
-
 }

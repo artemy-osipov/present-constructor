@@ -35,7 +35,10 @@
     <div class="container">
       <div class="row">
         <div class="col-6">
-          <button type="submit" class="btn btn-outline-dark float-left">
+          <button *ngIf="action === Action.Add" type="submit" class="btn btn-outline-dark float-left">
+            <i class="fa fa-plus" aria-hidden="true"></i> Добавить
+          </button>
+          <button *ngIf="action === Action.Update" type="submit" class="btn btn-outline-dark float-left">
             <i class="fa fa-pencil" aria-hidden="true"></i> Сохранить
           </button>
         </div>
