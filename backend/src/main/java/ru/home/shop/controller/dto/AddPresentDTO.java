@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.Collection;
 
-public class UpdatePresentDTO {
+public class AddPresentDTO {
     @NotNull
     @Size(min = 1, max = 50)
     private String name;

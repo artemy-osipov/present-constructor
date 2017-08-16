@@ -32,6 +32,7 @@ public class JOOQPresentRepository implements PresentRepository {
                 .set(PRESENT.ID, present.getId())
                 .set(PRESENT.NAME, present.getName())
                 .set(PRESENT.PRICE, present.getPrice())
+                .set(PRESENT.DATE, present.getDate())
                 .execute();
 
         addCandiesToPresent(present.getId(), present.getItems());
@@ -53,23 +54,6 @@ public class JOOQPresentRepository implements PresentRepository {
         return dsl.deleteFrom(PRESENT)
                 .where(PRESENT.ID.eq(id))
                 .execute();
-    }
-
-    @Override
-    @Transactional
-    public int edit(Present present) {
-        int updated = dsl.update(PRESENT)
-                .set(PRESENT.NAME, present.getName())
-                .set(PRESENT.PRICE, present.getPrice())
-                .where(PRESENT.ID.eq(present.getId()))
-                .execute();
-
-        dsl.deleteFrom(PRESENT_ITEM)
-                .where(PRESENT_ITEM.PRESENT.eq(present.getId()));
-
-        addCandiesToPresent(present.getId(), present.getItems());
-
-        return updated;
     }
 
     @Override

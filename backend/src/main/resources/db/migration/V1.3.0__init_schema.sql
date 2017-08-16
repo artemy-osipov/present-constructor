@@ -20,6 +20,7 @@ CREATE TABLE "present" (
     "id" UUID NOT NULL,
     "name" NVARCHAR (50) NOT NULL,
     "price" DECIMAL(8, 2) NOT NULL,
+    "date" DATETIME NOT NULL,
     PRIMARY KEY ("id")
 );
 

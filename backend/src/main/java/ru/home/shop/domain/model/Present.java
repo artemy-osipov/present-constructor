@@ -1,6 +1,7 @@
 package ru.home.shop.domain.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,7 @@ public class Present extends Entity {
 
     private String name;
     private BigDecimal price;
+    private LocalDateTime date;
     private List<Candy> items;
 
     public String getName() {
@@ -24,6 +26,14 @@ public class Present extends Entity {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 
     public List<Candy> getItems() {

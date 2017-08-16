@@ -19,10 +19,14 @@ export class PresentListComponent {
     const presents: Present[] = [];
 
     for (let i = 1; i <= count; i++) {
-      presents.push(new Present(i.toString(), 'Название ' + i, i, []));
+      presents.push(new Present(i.toString(), 'Название ' + i, i, new Date(2017, 1, 1, 1, 1, 1, i), []));
     }
 
     return presents;
+  }
+
+  get orderedPresents() {
+    return this.presents.sort((x, y) => x.date.getTime() - y.date.getTime());
   }
 
   openDeleteForm(present: Present) {

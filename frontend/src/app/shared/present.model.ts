@@ -5,6 +5,7 @@ export class Present {
     public id: string,
     public name: string,
     public price: number,
+    public date: Date,
     public items: Candy[]) {
   }
 }

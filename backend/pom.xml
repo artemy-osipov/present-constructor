@@ -191,6 +191,10 @@
                         <password>${db.password}</password>
                     </jdbc>
                     <generator>
+                        <generate>
+                            <javaTimeTypes>true</javaTimeTypes>
+                        </generate>
+
                         <database>
                             <includes>.*</includes>
                             <inputSchema>presents</inputSchema>

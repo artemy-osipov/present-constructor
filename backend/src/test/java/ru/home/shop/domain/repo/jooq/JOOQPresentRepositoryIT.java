@@ -18,6 +18,7 @@ import ru.home.shop.domain.model.Present;
 import ru.home.shop.domain.repo.PresentRepository;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
@@ -40,6 +41,7 @@ public class JOOQPresentRepositoryIT {
         bean.setId(Generators.timeBasedGenerator().generate());
         bean.setName("name");
         bean.setPrice(BigDecimal.valueOf(2.6));
+        bean.setDate(LocalDateTime.now());
 
         return bean;
     }
@@ -89,53 +91,6 @@ public class JOOQPresentRepositoryIT {
     @Test
     public void removeByNonexistentIdShouldRemoveNoneEntry() {
         assertEquals(0, repository.remove(Generators.timeBasedGenerator().generate()));
-    }
-
-    @Test
-    @FlywayTest
-    public void editValidEntryShouldUpdateOneEntry() {
-        Present present = getPresent();
-        present.setId(UUID.fromString("9744b2ea-2328-447c-b437-a4f8b57c9985"));
-
-        assertEquals(1, repository.edit(present));
-    }
-
-    @Test
-    @FlywayTest
-    public void editByNonexistentIdShouldUpdateNoneEntry() {
-        Present present = getPresent();
-        present.setId(Generators.timeBasedGenerator().generate());
-
-        assertEquals(0, repository.edit(present));
-    }
-
-    @Test(expected = DataIntegrityViolationException.class)
-    @FlywayTest
-    public void editNotValidEntryShouldThrowException() {
-        Present present = getPresent();
-        present.setId(UUID.fromString("9744b2ea-2328-447c-b437-a4f8b57c9985"));
-        present.setPrice(null);
-
-        repository.edit(present);
-    }
-
-    @Test
-    @FlywayTest
-    public void editWithCandiesShouldUpdateCandies() {
-        Present present = getPresent();
-
-        Candy candy = new Candy();
-        candy.setId(UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c"));
-        candy.setCount(2);
-
-        present.getItems().add(candy);
-
-        repository.add(present);
-        Select count = dsl.selectCount()
-                .from(PRESENT_ITEM)
-                .where(PRESENT_ITEM.PRESENT.eq(present.getId()));
-
-        assertEquals(1, dsl.fetchCount(count));
     }
 
     @Test

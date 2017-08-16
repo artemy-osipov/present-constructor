@@ -27,7 +27,7 @@ export class CandyListComponent {
     return candies;
   }
 
-  get orderedList() {
+  get orderedCandies() {
     return this.candies.sort((x, y) => x.order - y.order);
   }
 

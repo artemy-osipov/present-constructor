@@ -16,6 +16,7 @@ public class PresentMapper implements RecordMapper<PresentRecord, Present>{
         bean.setId(record.getId());
         bean.setName(record.getName());
         bean.setPrice(record.getPrice());
+        bean.setDate(record.getDate());
 
         return bean;
     }

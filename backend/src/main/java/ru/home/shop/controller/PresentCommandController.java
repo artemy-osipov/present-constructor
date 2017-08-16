@@ -5,12 +5,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.home.shop.controller.dto.AddPresentDTO;
 import ru.home.shop.controller.dto.PresentItemDTO;
-import ru.home.shop.controller.dto.UpdatePresentDTO;
 import ru.home.shop.domain.model.Candy;
 import ru.home.shop.domain.model.Present;
 import ru.home.shop.service.PresentService;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -28,19 +29,13 @@ public class PresentCommandController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<UUID> addPresent(@RequestBody @Validated UpdatePresentDTO dto) {
+    public ResponseEntity<Present> addPresent(@RequestBody @Validated AddPresentDTO dto) {
         Present present = map(dto);
         present.setId(newUUID());
+        present.setDate(LocalDateTime.now());
         presentService.add(present);
 
-        return new ResponseEntity<>(present.getId(), HttpStatus.CREATED);
-    }
-
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public void editPresent(@PathVariable("id") UUID id, @RequestBody @Validated UpdatePresentDTO dto) {
-        Present present = map(dto);
-        present.setId(id);
-        presentService.edit(present);
+        return new ResponseEntity<>(present, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -48,7 +43,7 @@ public class PresentCommandController {
         presentService.remove(id);
     }
 
-    private Present map(UpdatePresentDTO dto) {
+    private Present map(AddPresentDTO dto) {
         Present present = new Present();
         present.setName(dto.getName());
         present.setPrice(dto.getPrice());

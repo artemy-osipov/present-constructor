@@ -8,7 +8,6 @@ import java.util.UUID;
 public interface PresentService {
 
     void add(Present present);
-    void edit(Present present);
     void remove(UUID id);
     Collection<Present> listView();
     Present find(UUID id);

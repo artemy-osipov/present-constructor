@@ -26,15 +26,6 @@ public class PresentServiceImpl implements PresentService {
     }
 
     @Override
-    public void edit(Present present) {
-        int updated = repository.edit(present);
-
-        if (updated == 0) {
-            throw new EntityNotFoundException();
-        }
-    }
-
-    @Override
     public void remove(UUID id) {
         int removed = repository.remove(id);
 

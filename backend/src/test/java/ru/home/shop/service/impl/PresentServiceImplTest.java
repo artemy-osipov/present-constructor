@@ -22,22 +22,6 @@ public class PresentServiceImplTest {
     private final Present present = new Present();
 
     @Test
-    public void editShouldInvokeRepository() {
-        when(presentRepository.edit(present)).thenReturn(1);
-        
-        presentService.edit(present);
-
-        verify(presentRepository).edit(present);
-    }
-
-    @Test(expected = EntityNotFoundException.class)
-    public void editNonExistentEntityShouldThrowException() {
-        when(presentRepository.edit(present)).thenReturn(0);
-
-        presentService.edit(present);
-    }
-
-    @Test
     public void removeShouldInvokeRepository() {
         UUID id = newUUID();
         when(presentRepository.remove(id)).thenReturn(1);
