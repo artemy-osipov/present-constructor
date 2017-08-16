@@ -1,0 +1,36 @@
+<h1>Подарки</h1>
+<div class="row">
+  <div class="col-md-6">
+    <button class="btn btn-outline-dark" type="button" (click)="openAddForm(candy)">
+      <i class="fa fa-plus" aria-hidden="true"></i> Добавить
+    </button>
+  </div>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Название</th>
+      <th>Цена</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let present of presents">
+      <td>{{present.name}}</td>
+      <td>{{present.price}}</td>
+      <td>
+        <button class="btn btn-icon btn-outline-dark" ngbTooltip="Открыть" type="button" (click)="openUpdateForm(present)">
+          <i class="fa fa-eye" aria-hidden="true"></i>
+        </button>
+        <button class="btn btn-icon btn-outline-dark" ngbTooltip="Создать на основе" type="button" (click)="openUpdateForm(present)">
+          <i class="fa fa-files-o" aria-hidden="true"></i>
+        </button>
+        <button class="btn btn-icon btn-outline-dark" ngbTooltip="Удалить" type="button" (click)="openDeleteForm(present)">
+          <i class="fa fa-trash" aria-hidden="true"></i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<app-link-border></app-link-border>
