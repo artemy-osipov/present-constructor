@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
+import { ConfirmationDeleteComponent } from 'app/shared/confirmation-delete/confirmation-delete.component';
 import { Present } from 'app/shared/present.model';
 
 @Component({
@@ -30,7 +31,7 @@ export class PresentListComponent {
   }
 
   openDeleteForm(present: Present) {
-    const modalRef = this.modalService.open(null);
+    const modalRef = this.modalService.open(ConfirmationDeleteComponent);
     modalRef.result
       .then(res => {
         if (res) {

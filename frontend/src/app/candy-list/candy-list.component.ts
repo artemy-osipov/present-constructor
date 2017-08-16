@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { CandyEditComponent } from 'app/candy-edit/candy-edit.component';
-import { CandyDeleteComponent } from 'app/candy-delete/candy-delete.component';
+import { ConfirmationDeleteComponent } from 'app/shared/confirmation-delete/confirmation-delete.component';
 import { Candy } from 'app/shared/candy.model';
 
 @Component({
@@ -56,7 +56,7 @@ export class CandyListComponent {
   }
 
   openDeleteForm(candy: Candy) {
-    const modalRef = this.modalService.open(CandyDeleteComponent);
+    const modalRef = this.modalService.open(ConfirmationDeleteComponent);
     modalRef.result
       .then(res => {
         if (res) {

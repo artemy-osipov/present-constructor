@@ -3,11 +3,11 @@ import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-candy-delete',
-  templateUrl: './candy-delete.component.html',
-  styleUrls: ['./candy-delete.component.css']
+  selector: 'app-confirmation-delete',
+  templateUrl: './confirmation-delete.component.html',
+  styleUrls: ['./confirmation-delete.component.css']
 })
-export class CandyDeleteComponent {
+export class ConfirmationDeleteComponent {
 
   constructor(public modal: NgbActiveModal) {
   }
