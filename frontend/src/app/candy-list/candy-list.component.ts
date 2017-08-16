@@ -27,6 +27,10 @@ export class CandyListComponent {
     return candies;
   }
 
+  get orderedList() {
+    return this.candies.sort((x, y) => x.order - y.order);
+  }
+
   openAddForm(candy: Candy) {
     const modalRef = this.modalService.open(CandyEditComponent);
     modalRef.componentInstance.initAddForm(candy);

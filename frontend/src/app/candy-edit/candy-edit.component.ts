@@ -23,7 +23,8 @@ export class CandyEditComponent {
     this.form = fb.group({
       name: ['', [StringValidators.notEmpty, StringValidators.maxLength(50)]],
       firm: ['', [StringValidators.notEmpty, StringValidators.maxLength(50)]],
-      price: ['', [Validators.required, Validators.pattern(/^\d+(\.\d{2})?$/)]]
+      price: ['', [Validators.required, Validators.pattern(/^\d+(\.\d{2})?$/)]],
+      order: ['', Validators.required]
     });
   }
 
@@ -37,7 +38,8 @@ export class CandyEditComponent {
     this.form.setValue({
       name: candy.name,
       firm: candy.firm,
-      price: candy.price
+      price: candy.price,
+      order: candy.order
     });
   }
 
@@ -63,12 +65,12 @@ export class CandyEditComponent {
 
   private addCandy(): Candy {
     const formModel = this.form.value;
-    return new Candy('1', formModel.name.trim(), formModel.firm.trim(), formModel.price, 1);
+    return new Candy('1', formModel.name.trim(), formModel.firm.trim(), formModel.price, formModel.order);
   }
 
   private editCandy(): Candy {
     const formModel = this.form.value;
-    return new Candy(this.candy.id, formModel.name.trim(), formModel.firm.trim(), formModel.price, this.candy.order);
+    return new Candy(this.candy.id, formModel.name.trim(), formModel.firm.trim(), formModel.price, formModel.order);
   }
 }
 

@@ -12,14 +12,16 @@
       <th>Название</th>
       <th>Производитель</th>
       <th>Цена</th>
+      <th>Порядок</th>
       <th></th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let candy of candies">
+    <tr *ngFor="let candy of orderedList">
       <td>{{candy.name}}</td>
       <td>{{candy.firm}}</td>
       <td>{{candy.price}}</td>
+      <td>{{candy.order}}</td>
       <td>
         <button class="btn btn-icon btn-outline-dark" ngbTooltip="Изменить" type="button" (click)="openUpdateForm(candy)">
           <i class="fa fa-pencil" aria-hidden="true"></i>

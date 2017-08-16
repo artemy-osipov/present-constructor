@@ -30,6 +30,13 @@
         Неверный формат
       </div>
     </div>
+    <div class="form-group">
+      <label for="price">Порядок</label>
+      <input type="number" placeholder="Пример: 123.1" class="form-control" id="order" formControlName="order" appFormControl>
+      <div *ngIf="form.controls.order.invalid && form.controls.order.errors.required" class="invalid-feedback">
+        Обязательно для заполнения
+      </div>
+    </div>
   </div>
   <div class="modal-footer">
     <div class="container">
