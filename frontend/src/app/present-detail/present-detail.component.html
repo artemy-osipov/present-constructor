@@ -1,0 +1,44 @@
+<h1>Подарок</h1>
+
+<button class="btn btn-outline-dark" type="button">
+  <i class="fa fa-file" aria-hidden="true"></i> Прайс
+</button>
+
+<button class="btn btn-outline-dark" type="button">
+  <i class="fa fa-file" aria-hidden="true"></i> Прайс для розницы
+</button>
+
+<div>
+  <b>Название</b>
+</div>
+<div>{{present.name}}</div>
+
+<div>
+  <b>Цена</b>
+</div>
+<div>{{present.price}}</div>
+
+<div>
+  <b>Себестоимость</b>
+</div>
+<div>{{present.cost}}</div>
+
+<div>
+  <b>Состав</b>
+</div>
+
+<table class="table table-sm table-bordered table-striped">
+  <tr>
+    <th>Название</th>
+    <th>Производитель</th>
+    <th>Цена</th>
+    <th>Количество</th>
+  </tr>
+
+  <tr *ngFor="let item of present.items">
+    <td>{{item.candy.name}}</td>
+    <td>{{item.candy.firm}}</td>
+    <td>{{item.candy.price}}</td>
+    <td>{{item.count}}</td>
+  </tr>
+</table>

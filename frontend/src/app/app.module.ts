@@ -17,6 +17,7 @@ import { CandyEditComponent } from 'app/candy-edit/candy-edit.component';
 import { LinkBorderComponent } from 'app/link-border/link-border.component';
 import { PresentListComponent } from 'app/present-list/present-list.component';
 import { ConfirmationDeleteComponent } from 'app/shared/confirmation-delete/confirmation-delete.component';
+import { PresentDetailComponent } from './present-detail/present-detail.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { ConfirmationDeleteComponent } from 'app/shared/confirmation-delete/conf
     CandyEditComponent,
     ConfirmationDeleteComponent,
     LinkBorderComponent,
-    PresentListComponent
+    PresentListComponent,
+    PresentDetailComponent
   ],
   entryComponents: [
     CandyEditComponent,

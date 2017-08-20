@@ -6,6 +6,19 @@ export class Present {
     public name: string,
     public price: number,
     public date: Date,
-    public items: Candy[]) {
+    public items: PresentItem[]) {
+  }
+
+  get cost(): number {
+    return this.items
+      .map(i => i.candy.price * i.count)
+      .reduce((a, b) => a + b);
+  }
+}
+
+export class PresentItem {
+  constructor(
+    public candy: Candy,
+    public count: number) {
   }
 }
