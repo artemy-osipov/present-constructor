@@ -18,6 +18,7 @@ import { LinkBorderComponent } from 'app/link-border/link-border.component';
 import { PresentListComponent } from 'app/present-list/present-list.component';
 import { ConfirmationDeleteComponent } from 'app/shared/confirmation-delete/confirmation-delete.component';
 import { PresentDetailComponent } from './present-detail/present-detail.component';
+import { PresentNewComponent } from './present-new/present-new.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { PresentDetailComponent } from './present-detail/present-detail.componen
     ConfirmationDeleteComponent,
     LinkBorderComponent,
     PresentListComponent,
-    PresentDetailComponent
+    PresentDetailComponent,
+    PresentNewComponent
   ],
   entryComponents: [
     CandyEditComponent,

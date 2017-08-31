@@ -12,7 +12,13 @@ export class Present {
   get cost(): number {
     return this.items
       .map(i => i.candy.price * i.count)
-      .reduce((a, b) => a + b);
+      .reduce((a, b) => a + b, 0);
+  }
+
+  hasCandy(candy: Candy): boolean {
+    return this.items.find(pi => {
+      return pi.candy.id === candy.id;
+    }) !== undefined;
   }
 }
 

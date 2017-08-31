@@ -14,7 +14,7 @@ export class PresentDetailComponent  {
     this.present = this.generatePresent();
   }
 
-  generatePresent(): Present {
+  private generatePresent(): Present {
     return new Present('1', 'name', 123.12, new Date(), this.generateItems(10));
   }
 
