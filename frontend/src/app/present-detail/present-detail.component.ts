@@ -15,7 +15,14 @@ export class PresentDetailComponent  {
   }
 
   private generatePresent(): Present {
-    return new Present('1', 'name', 123.12, new Date(), this.generateItems(10));
+    const present = new Present();
+    present.id = '1';
+    present.name = 'name';
+    present.price = 123.12;
+    present.date = new Date();
+    present.items = this.generateItems(10);
+
+    return present;
   }
 
   private generateItems(count: number): PresentItem[] {

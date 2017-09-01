@@ -20,10 +20,20 @@ export class PresentListComponent {
     const presents: Present[] = [];
 
     for (let i = 1; i <= count; i++) {
-      presents.push(new Present(i.toString(), 'Название ' + i, i, new Date(2017, 1, 1, 1, 1, 1, i), []));
+      presents.push(this.generatePresent(i));
     }
 
     return presents;
+  }
+
+  private generatePresent(i: number): Present {
+    const present = new Present();
+    present.id = i.toString();
+    present.name = 'Название ' + i;
+    present.price = i;
+    present.date = new Date(2017, 1, 1, 1, 1, 1, i);
+
+    return present;
   }
 
   get orderedPresents() {

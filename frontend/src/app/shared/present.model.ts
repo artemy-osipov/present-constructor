@@ -1,13 +1,11 @@
 import { Candy } from 'app/shared/candy.model';
 
 export class Present {
-  constructor(
-    public id: string,
-    public name: string,
-    public price: number,
-    public date: Date,
-    public items: PresentItem[]) {
-  }
+  id: string;
+  name: string;
+  price: number;
+  date: Date;
+  items: PresentItem[] = [];
 
   get cost(): number {
     return this.items
@@ -16,8 +14,8 @@ export class Present {
   }
 
   hasCandy(candy: Candy): boolean {
-    return this.items.find(pi => {
-      return pi.candy.id === candy.id;
+    return this.items.find(item => {
+      return item.candy.id === candy.id;
     }) !== undefined;
   }
 }

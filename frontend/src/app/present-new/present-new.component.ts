@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 
 import { Candy } from 'app/shared/candy.model';
 import { Present, PresentItem } from 'app/shared/present.model';
@@ -17,11 +17,11 @@ export class PresentNewComponent {
 
   constructor(private fb: FormBuilder) {
     this.candies = this.generateCandies(20);
-    this.present = this.generatePresent();
+    this.present = new Present();
     this.form = fb.group({
       name: ['', [StringValidators.notEmpty, StringValidators.maxLength(50)]],
       price: ['', [Validators.required, Validators.pattern(/^\d+(\.\d{2})?$/)]],
-      count: ['', [Validators.required, Validators.pattern(/^[1-9]\d*$/)]]
+      items: fb.array([])
     });
   }
 
@@ -39,21 +39,35 @@ export class PresentNewComponent {
     return new Candy(i.toString(), 'Название ' + i, 'Производитель ' + i, i, i);
   }
 
-  private generatePresent(): Present {
-    return new Present('1', 'name', 123.12, new Date(), []);
-  }
-
   get orderedCandies() {
     return this.candies.sort((x, y) => x.order - y.order);
   }
 
   select(candy: Candy): void {
     if (this.present.hasCandy(candy)) {
-      this.present.items = this.present.items.filter(item => {
-        return item.candy.id !== candy.id;
-      });
+      this.removeItem(candy);
     } else {
-      this.present.items.push(new PresentItem(candy, 1));
+      this.addItem(candy);
     }
+  }
+
+  private removeItem(candy: Candy) {
+    const index = this.present.items.findIndex(item => {
+      return item.candy.id === candy.id;
+    });
+
+    const itemsForm = this.form.get('items') as FormArray;
+    itemsForm.removeAt(index);
+
+    this.present.items.splice(index, 1);
+  }
+
+  private addItem(candy: Candy) {
+    const itemsForm = this.form.get('items') as FormArray;
+    itemsForm.push(this.fb.group({
+      count: ['', [Validators.required, Validators.pattern(/^[1-9]\d*$/)]]
+    }));
+
+    this.present.items.push(new PresentItem(candy, 1));
   }
 }

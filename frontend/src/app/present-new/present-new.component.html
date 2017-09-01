@@ -24,7 +24,7 @@
       </div>
 
       <label for="items">Состав</label>
-      <table id="items" class="table table-sm table-bordered">
+      <table formArrayName="items" id="items" class="table table-sm table-bordered">
         <tr>
           <th>Название</th>
           <th>Производитель</th>
@@ -32,16 +32,16 @@
           <th>Количество</th>
         </tr>
 
-        <tr *ngFor="let item of present.items;let index = index">
+        <tr *ngFor="let item of present.items;let i = index" [formGroupName]="i">
           <td>{{item.candy.name}}</td>
           <td>{{item.candy.firm}}</td>
           <td>{{item.candy.price}}</td>
           <td>
-            <input type="number" class="form-control" formControlName="count" appFormControl>
-            <div *ngIf="form.controls.count.invalid && form.controls.count.errors.required" class="invalid-feedback">
+            <input type="number" min="1" class="form-control" formControlName="count" [(ngModel)]="item.count" appFormControl>
+            <div *ngIf="form.controls.items.controls[i].controls.count.invalid && form.controls.items.controls[i].controls.count.errors.required" class="invalid-feedback">
               Обязательно для заполнения
             </div>
-            <div *ngIf="form.controls.count.invalid && form.controls.count.errors.pattern" class="invalid-feedback">
+            <div *ngIf="form.controls.items.controls[i].controls.count.invalid && form.controls.items.controls[i].controls.count.errors.pattern" class="invalid-feedback">
               Неверный формат
             </div>
           </td>
