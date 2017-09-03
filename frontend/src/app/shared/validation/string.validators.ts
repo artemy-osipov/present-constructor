@@ -2,7 +2,7 @@ import { AbstractControl, ValidatorFn } from '@angular/forms';
 
 export class StringValidators {
 
-  static notEmpty(control: AbstractControl) {
+  static notEmpty(control: AbstractControl): {[key: string]: boolean} {
     if (control.value.trim().length === 0) {
       return { empty: true };
     }

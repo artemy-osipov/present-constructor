@@ -1,0 +1,15 @@
+<div *ngIf="control.invalid && control.errors.required" class="invalid-feedback">
+  Обязательно для заполнения
+</div>
+<div *ngIf="control.invalid && control.errors.positive" class="invalid-feedback">
+  Неверный формат
+</div>
+<div *ngIf="control.invalid && control.errors.maxFractionLength" class="invalid-feedback">
+  Неверный формат
+</div>
+<div *ngIf="control.invalid && control.errors.empty" class="invalid-feedback">
+  Обязательно для заполнения
+</div>
+<div *ngIf="control.invalid && control.errors.maxLength" class="invalid-feedback">
+  Превышает максимальную длину (50 символов)
+</div>

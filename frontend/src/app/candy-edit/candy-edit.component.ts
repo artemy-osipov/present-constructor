@@ -4,7 +4,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { Candy } from 'app/shared/candy.model';
-import { StringValidators } from 'app/shared/string.validators';
+import { StringValidators } from 'app/shared/validation/string.validators';
+import { NumberValidators } from 'app/shared/validation/number.validators';
 
 @Component({
   selector: 'app-candy-edit',
@@ -23,7 +24,7 @@ export class CandyEditComponent {
     this.form = fb.group({
       name: ['', [StringValidators.notEmpty, StringValidators.maxLength(50)]],
       firm: ['', [StringValidators.notEmpty, StringValidators.maxLength(50)]],
-      price: ['', [Validators.required, Validators.pattern(/^\d+(\.\d{2})?$/)]],
+      price: ['', [Validators.required, NumberValidators.positive, NumberValidators.maxFractionLength(2)]],
       order: ['', Validators.required]
     });
   }

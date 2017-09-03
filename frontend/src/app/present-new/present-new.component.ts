@@ -3,7 +3,8 @@ import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 
 import { Candy } from 'app/shared/candy.model';
 import { Present, PresentItem } from 'app/shared/present.model';
-import { StringValidators } from 'app/shared/string.validators';
+import { StringValidators } from 'app/shared/validation/string.validators';
+import { NumberValidators } from 'app/shared/validation/number.validators';
 
 @Component({
   selector: 'app-present-new',
@@ -20,7 +21,7 @@ export class PresentNewComponent {
     this.present = new Present();
     this.form = fb.group({
       name: ['', [StringValidators.notEmpty, StringValidators.maxLength(50)]],
-      price: ['', [Validators.required, Validators.pattern(/^\d+(\.\d{2})?$/)]],
+      price: ['', [Validators.required, NumberValidators.positive, NumberValidators.maxFractionLength(2)]],
       items: fb.array([])
     });
   }
@@ -65,7 +66,7 @@ export class PresentNewComponent {
   private addItem(candy: Candy) {
     const itemsForm = this.form.get('items') as FormArray;
     itemsForm.push(this.fb.group({
-      count: ['', [Validators.required, Validators.pattern(/^[1-9]\d*$/)]]
+      count: ['', [Validators.required, NumberValidators.positive, NumberValidators.maxFractionLength(0)]]
     }));
 
     this.present.items.push(new PresentItem(candy, 1));
