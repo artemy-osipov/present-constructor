@@ -42,11 +42,11 @@ public class PresentCommandControllerIT {
         dto.setPrice(BigDecimal.valueOf(4.2));
 
         PresentItemDTO item1 = new PresentItemDTO();
-        item1.setId(Generators.timeBasedGenerator().generate());
+        item1.setCandyId(Generators.timeBasedGenerator().generate());
         item1.setCount(2);
 
         PresentItemDTO item2 = new PresentItemDTO();
-        item2.setId(Generators.timeBasedGenerator().generate());
+        item2.setCandyId(Generators.timeBasedGenerator().generate());
         item2.setCount(6);
 
         dto.setItems(asList(item1, item2));

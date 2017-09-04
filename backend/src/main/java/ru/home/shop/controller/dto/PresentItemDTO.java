@@ -6,17 +6,17 @@ import java.util.UUID;
 
 public class PresentItemDTO {
     @NotNull
-    private UUID id;
+    private UUID candyId;
     @NotNull
     @Min(1)
     private Integer count;
 
-    public UUID getId() {
-        return id;
+    public UUID getCandyId() {
+        return candyId;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setCandyId(UUID candyId) {
+        this.candyId = candyId;
     }
 
     public Integer getCount() {

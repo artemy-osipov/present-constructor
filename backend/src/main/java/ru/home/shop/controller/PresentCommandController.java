@@ -57,7 +57,7 @@ public class PresentCommandController {
 
     private Candy map(PresentItemDTO dto) {
         Candy candy = new Candy();
-        candy.setId(dto.getId());
+        candy.setId(dto.getCandyId());
         candy.setCount(dto.getCount());
 
         return candy;
