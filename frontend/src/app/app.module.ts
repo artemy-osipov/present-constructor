@@ -1,12 +1,14 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from 'app/app-routing.module';
-import { ValidationModule } from 'app/shared/validation/validation.module';
+import { ValidationModule } from 'app/shared/validation/index';
+
+import { CandyService } from 'app/shared/services/candy.service';
 
 import { AppComponent } from 'app/app.component';
 import { AboutComponent } from 'app/about/about.component';
@@ -39,13 +41,15 @@ import { PresentNewComponent } from 'app/present-new/present-new.component';
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule,
+    HttpClientModule,
     ReactiveFormsModule,
     NgbModule.forRoot(),
     AppRoutingModule,
     ValidationModule
   ],
-  providers: [],
+  providers: [
+    CandyService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

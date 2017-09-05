@@ -3,8 +3,7 @@ import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 
 import { Candy } from 'app/shared/candy.model';
 import { Present, PresentItem } from 'app/shared/present.model';
-import { StringValidators } from 'app/shared/validation/string.validators';
-import { NumberValidators } from 'app/shared/validation/number.validators';
+import { NumberValidators, StringValidators } from 'app/shared/validation/index';
 
 @Component({
   selector: 'app-present-new',

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
+import { CandyService } from 'app/shared/services/candy.service';
 import { CandyEditComponent } from 'app/candy-edit/candy-edit.component';
 import { ConfirmationDeleteComponent } from 'app/shared/confirmation-delete/confirmation-delete.component';
 import { Candy } from 'app/shared/candy.model';
@@ -11,32 +12,24 @@ import { Candy } from 'app/shared/candy.model';
   styleUrls: ['./candy-list.component.css']
 })
 export class CandyListComponent {
-  candies: Candy[];
+  candies: Candy[] = [];
 
-  constructor(private modalService: NgbModal) {
-    this.candies = this.generateCandies(20);
-  }
-
-  private generateCandies(count: number): Candy[] {
-    const candies: Candy[] = [];
-
-    for (let i = 1; i <= count; i++) {
-      candies.push(new Candy(i.toString(), 'Название ' + i, 'Производитель ' + i, i, i));
-    }
-
-    return candies;
+  constructor(private modalService: NgbModal, private candyService: CandyService) {
+    this.candyService.list().subscribe(data => {
+      this.candies = data;
+    });
   }
 
   get orderedCandies() {
     return this.candies.sort((x, y) => x.order - y.order);
   }
 
-  openAddForm(candy: Candy) {
+  openAddForm() {
     const modalRef = this.modalService.open(CandyEditComponent);
-    modalRef.componentInstance.initAddForm(candy);
+    modalRef.componentInstance.initAddForm();
     modalRef.result
       .then(added => this.onAdded(added))
-      .catch(e => {});
+      .catch(e => { });
   }
 
   private onAdded(added: Candy) {
@@ -48,7 +41,7 @@ export class CandyListComponent {
     modalRef.componentInstance.initUpdateForm(candy);
     modalRef.result
       .then(edited => this.onEdited(edited))
-      .catch(e => {});
+      .catch(e => { });
   }
 
   private onEdited(edited: Candy) {
@@ -63,7 +56,7 @@ export class CandyListComponent {
           this.onDeleted(candy);
         }
       })
-      .catch(e => {});
+      .catch(e => { });
   }
 
   private onDeleted(deleted: Candy) {

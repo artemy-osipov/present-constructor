@@ -4,8 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { Candy } from 'app/shared/candy.model';
-import { StringValidators } from 'app/shared/validation/string.validators';
-import { NumberValidators } from 'app/shared/validation/number.validators';
+import { NumberValidators, StringValidators } from 'app/shared/validation/index';
 
 @Component({
   selector: 'app-candy-edit',
