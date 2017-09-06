@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { Candy } from 'app/shared/candy.model';
+import { CandyStore } from 'app/shared/services/candy.store';
 import { NumberValidators, StringValidators } from 'app/shared/validation/index';
+
+import { Candy } from 'app/shared/candy.model';
 
 @Component({
   selector: 'app-candy-edit',
@@ -14,12 +15,10 @@ import { NumberValidators, StringValidators } from 'app/shared/validation/index'
 export class CandyEditComponent {
   Action = Action;
   action: Action;
-  modal: NgbActiveModal;
   form: FormGroup;
   candy: Candy;
 
-  constructor(modal: NgbActiveModal, private fb: FormBuilder) {
-    this.modal = modal;
+  constructor(private modal: NgbActiveModal, private fb: FormBuilder, private candyStore: CandyStore) {
     this.form = fb.group({
       name: ['', [StringValidators.notEmpty, StringValidators.maxLength(50)]],
       firm: ['', [StringValidators.notEmpty, StringValidators.maxLength(50)]],
@@ -47,30 +46,40 @@ export class CandyEditComponent {
     if (this.form.valid) {
       switch (this.action) {
         case Action.Add:
-          this.candy = this.addCandy();
+          this.candyStore.add(this.candyFromForm());
           break;
         case Action.Update:
-          this.candy = this.editCandy();
+          this.candyStore.update(this.candyFromForm());
           break;
       }
-      this.modal.close(this.candy);
+      this.modal.close();
     } else {
-      for (const key in this.form.controls) {
-        if (this.form.controls.hasOwnProperty(key)) {
-          this.form.controls[key].markAsDirty();
-        }
+      this.markFormContolsAsDirty(this.form);
+    }
+  }
+
+  private markFormContolsAsDirty(form: FormGroup) {
+    for (const key in form.controls) {
+      if (form.controls.hasOwnProperty(key)) {
+        form.controls[key].markAsDirty();
       }
     }
   }
 
-  private addCandy(): Candy {
+  private candyFromForm(): Candy {
     const formModel = this.form.value;
-    return new Candy('1', formModel.name.trim(), formModel.firm.trim(), formModel.price, formModel.order);
-  }
 
-  private editCandy(): Candy {
-    const formModel = this.form.value;
-    return new Candy(this.candy.id, formModel.name.trim(), formModel.firm.trim(), formModel.price, formModel.order);
+    const candy = new Candy();
+    candy.name = formModel.name.trim();
+    candy.firm = formModel.firm.trim();
+    candy.price = formModel.price;
+    candy.order = formModel.order;
+
+    if (this.action === Action.Update) {
+      candy.id = this.candy.id;
+    }
+
+    return candy;
   }
 }
 

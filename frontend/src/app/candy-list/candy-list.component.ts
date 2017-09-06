@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { CandyService } from 'app/shared/services/candy.service';
 import { CandyEditComponent } from 'app/candy-edit/candy-edit.component';
 import { ConfirmationDeleteComponent } from 'app/shared/confirmation-delete/confirmation-delete.component';
+import { CandyStore } from 'app/shared/services/candy.store';
+
 import { Candy } from 'app/shared/candy.model';
 
 @Component({
@@ -12,54 +13,29 @@ import { Candy } from 'app/shared/candy.model';
   styleUrls: ['./candy-list.component.css']
 })
 export class CandyListComponent {
-  candies: Candy[] = [];
 
-  constructor(private modalService: NgbModal, private candyService: CandyService) {
-    this.candyService.list().subscribe(data => {
-      this.candies = data;
-    });
-  }
-
-  get orderedCandies() {
-    return this.candies.sort((x, y) => x.order - y.order);
+  constructor(private modalService: NgbModal, private candyStore: CandyStore) {
+    this.candyStore.fetch();
   }
 
   openAddForm() {
-    const modalRef = this.modalService.open(CandyEditComponent);
-    modalRef.componentInstance.initAddForm();
-    modalRef.result
-      .then(added => this.onAdded(added))
-      .catch(e => { });
-  }
-
-  private onAdded(added: Candy) {
-    this.candies.push(added);
+    const modal = this.modalService.open(CandyEditComponent);
+    modal.componentInstance.initAddForm();
   }
 
   openUpdateForm(candy: Candy) {
-    const modalRef = this.modalService.open(CandyEditComponent);
-    modalRef.componentInstance.initUpdateForm(candy);
-    modalRef.result
-      .then(edited => this.onEdited(edited))
-      .catch(e => { });
-  }
-
-  private onEdited(edited: Candy) {
-    this.candies = this.candies.map(c => c.id === edited.id ? edited : c);
+    const modal = this.modalService.open(CandyEditComponent);
+    modal.componentInstance.initUpdateForm(candy);
   }
 
   openDeleteForm(candy: Candy) {
-    const modalRef = this.modalService.open(ConfirmationDeleteComponent);
-    modalRef.result
+    const modal = this.modalService.open(ConfirmationDeleteComponent);
+    modal.result
       .then(res => {
         if (res) {
-          this.onDeleted(candy);
+          this.candyStore.delete(candy);
         }
       })
       .catch(e => { });
-  }
-
-  private onDeleted(deleted: Candy) {
-    this.candies = this.candies.filter(c => c.id !== deleted.id);
   }
 }

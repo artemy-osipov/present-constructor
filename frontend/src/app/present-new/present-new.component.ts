@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+import { CandyStore } from 'app/shared/services/candy.store';
+import { NumberValidators, StringValidators } from 'app/shared/validation/index';
 
 import { Candy } from 'app/shared/candy.model';
 import { Present, PresentItem } from 'app/shared/present.model';
-import { NumberValidators, StringValidators } from 'app/shared/validation/index';
 
 @Component({
   selector: 'app-present-new',
@@ -12,35 +14,16 @@ import { NumberValidators, StringValidators } from 'app/shared/validation/index'
 })
 export class PresentNewComponent {
   form: FormGroup;
-  candies: Candy[];
   present: Present;
 
-  constructor(private fb: FormBuilder) {
-    this.candies = this.generateCandies(20);
+  constructor(private fb: FormBuilder, private candyStore: CandyStore) {
+    this.candyStore.fetch();
     this.present = new Present();
     this.form = fb.group({
       name: ['', [StringValidators.notEmpty, StringValidators.maxLength(50)]],
       price: ['', [Validators.required, NumberValidators.positive, NumberValidators.maxFractionLength(2)]],
       items: fb.array([])
     });
-  }
-
-  private generateCandies(count: number): Candy[] {
-    const candies: Candy[] = [];
-
-    for (let i = 1; i <= count; i++) {
-      candies.push(this.generateCandy(i));
-    }
-
-    return candies;
-  }
-
-  private generateCandy(i: number): Candy {
-    return new Candy(i.toString(), 'Название ' + i, 'Производитель ' + i, i, i);
-  }
-
-  get orderedCandies() {
-    return this.candies.sort((x, y) => x.order - y.order);
   }
 
   select(candy: Candy): void {

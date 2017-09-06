@@ -1,4 +1,4 @@
-import { Directive, HostBinding, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
+import { ComponentFactoryResolver, Directive, HostBinding, ViewContainerRef } from '@angular/core';
 import { NgControl } from '@angular/forms';
 
 import { ValidationErrorComponent } from './validation-error/validation-error.component';

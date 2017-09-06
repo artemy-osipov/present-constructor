@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { Present, PresentItem } from 'app/shared/present.model';
+
 import { Candy } from 'app/shared/candy.model';
+import { Present, PresentItem } from 'app/shared/present.model';
 
 @Component({
   selector: 'app-present-detail',
@@ -36,6 +37,13 @@ export class PresentDetailComponent  {
   }
 
   private generateCandy(i: number): Candy {
-    return new Candy(i.toString(), 'Название ' + i, 'Производитель ' + i, i, i);
+    const candy = new Candy();
+    candy.id = i.toString();
+    candy.name = 'Название ' + i;
+    candy.firm = 'Производитель ' + i;
+    candy.price = i;
+    candy.order = i;
+
+    return candy;
   }
 }

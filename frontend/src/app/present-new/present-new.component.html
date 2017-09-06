@@ -49,7 +49,7 @@
         <th>Цена</th>
       </tr>
 
-      <tr *ngFor="let candy of orderedCandies" (click)="select(candy)" [class.table-dark]="present.hasCandy(candy)">
+      <tr *ngFor="let candy of candyStore.orderedCandies" (click)="select(candy)" [class.table-dark]="present.hasCandy(candy)">
         <td>{{candy.name}}</td>
         <td>{{candy.firm}}</td>
         <td>{{candy.price}}</td>

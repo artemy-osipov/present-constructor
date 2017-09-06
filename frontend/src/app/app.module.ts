@@ -1,25 +1,25 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { BrowserModule } from '@angular/platform-browser';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from 'app/app-routing.module';
 import { ValidationModule } from 'app/shared/validation/index';
 
-import { CandyService } from 'app/shared/services/candy.service';
-
-import { AppComponent } from 'app/app.component';
 import { AboutComponent } from 'app/about/about.component';
-import { HeaderComponent } from 'app/header/header.component';
-import { CandyListComponent } from 'app/candy-list/candy-list.component';
+import { AppComponent } from 'app/app.component';
 import { CandyEditComponent } from 'app/candy-edit/candy-edit.component';
+import { CandyListComponent } from 'app/candy-list/candy-list.component';
+import { HeaderComponent } from 'app/header/header.component';
 import { LinkBorderComponent } from 'app/link-border/link-border.component';
-import { PresentListComponent } from 'app/present-list/present-list.component';
-import { ConfirmationDeleteComponent } from 'app/shared/confirmation-delete/confirmation-delete.component';
 import { PresentDetailComponent } from 'app/present-detail/present-detail.component';
+import { PresentListComponent } from 'app/present-list/present-list.component';
 import { PresentNewComponent } from 'app/present-new/present-new.component';
+import { ConfirmationDeleteComponent } from 'app/shared/confirmation-delete/confirmation-delete.component';
+
+import { CandyService } from 'app/shared/services/candy.service';
+import { CandyStore } from 'app/shared/services/candy.store';
 
 @NgModule({
   declarations: [
@@ -48,7 +48,8 @@ import { PresentNewComponent } from 'app/present-new/present-new.component';
     ValidationModule
   ],
   providers: [
-    CandyService
+    CandyService,
+    CandyStore
   ],
   bootstrap: [AppComponent]
 })
