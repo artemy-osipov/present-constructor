@@ -1,14 +1,15 @@
 package ru.home.shop.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.home.shop.controller.dto.UpdateCandyDTO;
 import ru.home.shop.domain.model.Candy;
 import ru.home.shop.service.CandyService;
 
+import java.net.URI;
 import java.util.UUID;
 
 import static ru.home.shop.utils.UuidUtils.newUUID;
@@ -25,13 +26,18 @@ public class CandyCommandController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<UUID> addCandy(@RequestBody @Validated UpdateCandyDTO dto) {
+    public ResponseEntity<?> addCandy(@RequestBody @Validated UpdateCandyDTO dto) {
         Candy candy = map(dto);
         candy.setId(newUUID());
 
         candyService.add(candy);
 
-        return new ResponseEntity<>(candy.getId(), HttpStatus.CREATED);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequestUri()
+                .path("/{id}").buildAndExpand(candy.getId()).toUri();
+
+        return ResponseEntity
+                .created(location)
+                .build();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)

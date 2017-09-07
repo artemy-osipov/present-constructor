@@ -19,8 +19,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.home.shop.utils.JsonUtils.toJson;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
@@ -50,7 +49,7 @@ public class CandyCommandControllerIT {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJson(getUpdateDTO())))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$", notNullValue()));
+                .andExpect(header().string("Location", notNullValue()));
     }
 
     @Test
