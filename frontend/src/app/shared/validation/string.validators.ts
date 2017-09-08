@@ -4,7 +4,7 @@ export class StringValidators {
 
   static notEmpty(control: AbstractControl): {[key: string]: boolean} {
     if (control.value.trim().length === 0) {
-      return { empty: true };
+      return { notEmpty: true };
     }
 
     return null;

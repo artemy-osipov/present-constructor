@@ -22,7 +22,7 @@ export class CandyEditComponent {
     this.form = fb.group({
       name: ['', [StringValidators.notEmpty, StringValidators.maxLength(50)]],
       firm: ['', [StringValidators.notEmpty, StringValidators.maxLength(50)]],
-      price: ['', [Validators.required, NumberValidators.positive, NumberValidators.maxFractionLength(2)]],
+      price: ['', [Validators.required, NumberValidators.min(1), NumberValidators.maxFractionLength(2)]],
       order: ['', Validators.required]
     });
   }
