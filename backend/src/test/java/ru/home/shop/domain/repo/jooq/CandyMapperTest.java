@@ -1,6 +1,5 @@
 package ru.home.shop.domain.repo.jooq;
 
-import com.fasterxml.uuid.Generators;
 import org.junit.Test;
 import ru.home.db.tables.records.CandyRecord;
 import ru.home.shop.domain.model.Candy;
@@ -10,10 +9,11 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static ru.home.shop.utils.UuidUtils.newUUID;
 
 public class CandyMapperTest {
 
-    private static final UUID ID = Generators.timeBasedGenerator().generate();
+    private static final UUID ID = newUUID();
     private static final String NAME = "name";
     private static final String FIRM = "firm";
     private static final BigDecimal PRICE = BigDecimal.valueOf(2.3);

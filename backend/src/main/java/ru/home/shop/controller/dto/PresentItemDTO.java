@@ -1,22 +1,23 @@
 package ru.home.shop.controller.dto;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.util.UUID;
 
 public class PresentItemDTO {
     @NotNull
-    private UUID candyId;
+    @Valid
+    private EntityDTO candy;
     @NotNull
     @Min(1)
     private Integer count;
 
-    public UUID getCandyId() {
-        return candyId;
+    public EntityDTO getCandy() {
+        return candy;
     }
 
-    public void setCandyId(UUID candyId) {
-        this.candyId = candyId;
+    public void setCandy(EntityDTO candy) {
+        this.candy = candy;
     }
 
     public Integer getCount() {

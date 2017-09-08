@@ -1,6 +1,5 @@
 package ru.home.shop.domain.repo.jooq;
 
-import com.fasterxml.uuid.Generators;
 import org.flywaydb.test.annotation.FlywayTest;
 import org.flywaydb.test.junit.FlywayTestExecutionListener;
 import org.jooq.DSLContext;
@@ -22,6 +21,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 import static ru.home.db.Tables.CANDY;
+import static ru.home.shop.utils.UuidUtils.newUUID;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -36,7 +36,7 @@ public class JOOQCandyRepositoryIT {
 
     private Candy getCandy() {
         Candy bean = new Candy();
-        bean.setId(Generators.timeBasedGenerator().generate());
+        bean.setId(newUUID());
         bean.setName("name");
         bean.setFirm("firm");
         bean.setPrice(BigDecimal.valueOf(2.6));
@@ -71,7 +71,7 @@ public class JOOQCandyRepositoryIT {
 
     @Test
     public void removeNonexistentEntityShouldRemoveNone() {
-        assertEquals(0, repository.remove(Generators.timeBasedGenerator().generate()));
+        assertEquals(0, repository.remove(newUUID()));
     }
 
     @Test
@@ -87,7 +87,7 @@ public class JOOQCandyRepositoryIT {
     @FlywayTest
     public void editNonexistentEntityShouldUpdateNone() {
         Candy candy = getCandy();
-        candy.setId(Generators.timeBasedGenerator().generate());
+        candy.setId(newUUID());
 
         assertEquals(0, repository.edit(candy));
     }
@@ -121,6 +121,6 @@ public class JOOQCandyRepositoryIT {
 
     @Test
     public void findByNonexistentIdShouldReturnNull() {
-        assertNull(repository.findById(Generators.timeBasedGenerator().generate()));
+        assertNull(repository.findById(newUUID()));
     }
 }

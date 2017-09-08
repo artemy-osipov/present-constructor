@@ -1,6 +1,5 @@
 package ru.home.shop.controller;
 
-import com.fasterxml.uuid.Generators;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,6 +8,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ru.home.shop.domain.model.Candy;
 import ru.home.shop.domain.model.Present;
+import ru.home.shop.domain.model.PresentItem;
 import ru.home.shop.service.PresentService;
 
 import java.math.BigDecimal;
@@ -36,20 +36,22 @@ public class PresentQueryControllerIT {
 
     private Present getPresent() {
         Present present = new Present();
-        present.setId(Generators.timeBasedGenerator().generate());
+        present.setId(newUUID());
         present.setName("name");
         present.setPrice(BigDecimal.valueOf(4.2));
 
-        Candy candy1 = new Candy();
-        candy1.setId(Generators.timeBasedGenerator().generate());
-        candy1.setCount(2);
+        PresentItem item1 = new PresentItem();
+        item1.setCandy(new Candy());
+        item1.getCandy().setId(newUUID());
+        item1.setCount(2);
 
-        Candy candy2 = new Candy();
-        candy2.setId(Generators.timeBasedGenerator().generate());
-        candy2.setCount(6);
+        PresentItem item2 = new PresentItem();
+        item2.setCandy(new Candy());
+        item2.getCandy().setId(newUUID());
+        item2.setCount(6);
 
-        present.getItems().add(candy1);
-        present.getItems().add(candy2);
+        present.getItems().add(item1);
+        present.getItems().add(item2);
 
         return present;
     }
@@ -64,9 +66,9 @@ public class PresentQueryControllerIT {
                 .andExpect(jsonPath("$.id", equalTo(present.getId().toString())))
                 .andExpect(jsonPath("$.name", equalTo(present.getName())))
                 .andExpect(jsonPath("$.price", equalTo(present.getPrice().doubleValue())))
-                .andExpect(jsonPath("$.items[0].id", equalTo(present.getItems().get(0).getId().toString())))
+                .andExpect(jsonPath("$.items[0].candy.id", equalTo(present.getItems().get(0).getCandy().getId().toString())))
                 .andExpect(jsonPath("$.items[0].count", equalTo(present.getItems().get(0).getCount())))
-                .andExpect(jsonPath("$.items[1].id", equalTo(present.getItems().get(1).getId().toString())))
+                .andExpect(jsonPath("$.items[1].candy.id", equalTo(present.getItems().get(1).getCandy().getId().toString())))
                 .andExpect(jsonPath("$.items[1].count", equalTo(present.getItems().get(1).getCount())));
     }
 

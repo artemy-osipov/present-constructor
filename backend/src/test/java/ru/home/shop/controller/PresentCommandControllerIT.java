@@ -1,6 +1,5 @@
 package ru.home.shop.controller;
 
-import com.fasterxml.uuid.Generators;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,6 +8,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ru.home.shop.controller.dto.AddPresentDTO;
+import ru.home.shop.controller.dto.EntityDTO;
 import ru.home.shop.controller.dto.PresentItemDTO;
 import ru.home.shop.exception.EntityNotFoundException;
 import ru.home.shop.service.PresentService;
@@ -42,11 +42,13 @@ public class PresentCommandControllerIT {
         dto.setPrice(BigDecimal.valueOf(4.2));
 
         PresentItemDTO item1 = new PresentItemDTO();
-        item1.setCandyId(Generators.timeBasedGenerator().generate());
+        item1.setCandy(new EntityDTO());
+        item1.getCandy().setId(newUUID());
         item1.setCount(2);
 
         PresentItemDTO item2 = new PresentItemDTO();
-        item2.setCandyId(Generators.timeBasedGenerator().generate());
+        item2.setCandy(new EntityDTO());
+        item2.getCandy().setId(newUUID());
         item2.setCount(6);
 
         dto.setItems(asList(item1, item2));

@@ -1,10 +1,6 @@
-package ru.home.shop.service.impl;
+package ru.home.shop.domain.model;
 
 import org.junit.Test;
-import ru.home.shop.domain.model.Candy;
-import ru.home.shop.domain.model.Present;
-import ru.home.shop.domain.model.PresentItem;
-import ru.home.shop.domain.model.Report;
 
 import java.math.BigDecimal;
 
@@ -12,13 +8,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
-public class ReportServiceImplTest {
-
-    private final static int PUBLIC_REPORT_LENGTH = 11632;
-    private final static int PRIVATE_REPORT_LENGTH = 14572;
-    private final static String REPORT_NAME = "name 4.2 RUB.docx";
-
-    private final ReportServiceImpl reportService = new ReportServiceImpl();
+public class PresentTest {
 
     private Present getPresent() {
         Present present = new Present();
@@ -48,18 +38,20 @@ public class ReportServiceImplTest {
     }
 
     @Test
-    public void generatePublicReportShouldGenerateSomeReport() {
-        Report report = reportService.generatePublicReport(getPresent());
+    public void emptyPresentShouldHasZeroCostPrice() {
+        Present emptyPresent = new Present();
 
-        assertThat(report.getName(), equalTo(REPORT_NAME));
-        assertThat(report.getContent().length, equalTo(PUBLIC_REPORT_LENGTH));
+        BigDecimal costPrice = emptyPresent.computeCost();
+
+        assertThat(costPrice, equalTo(BigDecimal.ZERO));
     }
 
     @Test
-    public void generatePrivateReportShouldGenerateSomeReport() {
-        Report report = reportService.generatePrivateReport(getPresent());
+    public void testComputeCostPrice() {
+        Present present = getPresent();
 
-        assertThat(report.getName(), equalTo(REPORT_NAME));
-        assertThat(report.getContent().length, equalTo(PRIVATE_REPORT_LENGTH));
+        BigDecimal costPrice = present.computeCost();
+
+        assertThat(costPrice, equalTo(new BigDecimal("15.4")));
     }
 }

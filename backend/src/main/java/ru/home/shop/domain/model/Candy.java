@@ -9,7 +9,6 @@ public class Candy extends Entity {
     private double order;
     private BigDecimal price;
     private Boolean active;
-    private int count = 1;
 
     public String getName() {
         return name;
@@ -49,13 +48,5 @@ public class Candy extends Entity {
 
     public void setActive(Boolean active) {
         this.active = active;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
     }
 }

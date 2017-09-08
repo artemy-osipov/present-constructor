@@ -10,7 +10,7 @@ public class Present extends Entity {
     private String name;
     private BigDecimal price;
     private LocalDateTime date;
-    private List<Candy> items;
+    private List<PresentItem> items;
 
     public String getName() {
         return name;
@@ -36,7 +36,7 @@ public class Present extends Entity {
         this.date = date;
     }
 
-    public List<Candy> getItems() {
+    public List<PresentItem> getItems() {
         if (items == null) {
             items = new ArrayList<>();
         }
@@ -44,7 +44,13 @@ public class Present extends Entity {
         return items;
     }
 
-    public void setItems(List<Candy> candies) {
+    public void setItems(List<PresentItem> candies) {
         this.items = candies;
+    }
+
+    public BigDecimal computeCost() {
+        return getItems().stream()
+                .map(c -> c.getCandy().getPrice().multiply(BigDecimal.valueOf(c.getCount())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

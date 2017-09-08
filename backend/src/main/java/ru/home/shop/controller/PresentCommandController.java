@@ -9,6 +9,7 @@ import ru.home.shop.controller.dto.AddPresentDTO;
 import ru.home.shop.controller.dto.PresentItemDTO;
 import ru.home.shop.domain.model.Candy;
 import ru.home.shop.domain.model.Present;
+import ru.home.shop.domain.model.PresentItem;
 import ru.home.shop.service.PresentService;
 
 import java.time.LocalDateTime;
@@ -55,11 +56,12 @@ public class PresentCommandController {
         return present;
     }
 
-    private Candy map(PresentItemDTO dto) {
-        Candy candy = new Candy();
-        candy.setId(dto.getCandyId());
-        candy.setCount(dto.getCount());
+    private PresentItem map(PresentItemDTO dto) {
+        PresentItem item = new PresentItem();
+        item.setCandy(new Candy());
+        item.getCandy().setId(dto.getCandy().getId());
+        item.setCount(dto.getCount());
 
-        return candy;
+        return item;
     }
 }

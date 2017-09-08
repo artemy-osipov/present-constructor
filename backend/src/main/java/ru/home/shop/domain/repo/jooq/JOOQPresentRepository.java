@@ -4,8 +4,8 @@ import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import ru.home.shop.domain.model.Candy;
 import ru.home.shop.domain.model.Present;
+import ru.home.shop.domain.model.PresentItem;
 import ru.home.shop.domain.repo.PresentRepository;
 
 import java.util.Collection;
@@ -35,16 +35,16 @@ public class JOOQPresentRepository implements PresentRepository {
                 .set(PRESENT.DATE, present.getDate())
                 .execute();
 
-        addCandiesToPresent(present.getId(), present.getItems());
+        addPresentItem(present.getId(), present.getItems());
     }
 
-    private void addCandiesToPresent(UUID presentId, Collection<Candy> candies) {
-        candies.forEach(
-                candy -> dsl.insertInto(PRESENT_ITEM)
+    private void addPresentItem(UUID presentId, Collection<PresentItem> items) {
+        items.forEach(
+                item -> dsl.insertInto(PRESENT_ITEM)
                         .set(PRESENT_ITEM.ID, newUUID())
                         .set(PRESENT_ITEM.PRESENT, presentId)
-                        .set(PRESENT_ITEM.CANDY, candy.getId())
-                        .set(PRESENT_ITEM.COUNT, candy.getCount())
+                        .set(PRESENT_ITEM.CANDY, item.getCandy().getId())
+                        .set(PRESENT_ITEM.COUNT, item.getCount())
                         .execute()
         );
     }
@@ -70,13 +70,13 @@ public class JOOQPresentRepository implements PresentRepository {
                 .fetchOne(new PresentMapper());
 
         if (present != null) {
-            present.setItems(listCandiesByPresent(id));
+            present.setItems(listPresentItem(id));
         }
 
         return present;
     }
 
-    private List<Candy> listCandiesByPresent(UUID present) {
+    private List<PresentItem> listPresentItem(UUID present) {
         return dsl.select()
                 .from(PRESENT_ITEM)
                 .leftJoin(CANDY).on(PRESENT_ITEM.CANDY.eq(CANDY.ID))
@@ -84,10 +84,11 @@ public class JOOQPresentRepository implements PresentRepository {
                 .orderBy(CANDY.ORDER)
                 .fetch()
                 .map(r -> {
-                    Candy candy = new CandyMapper().map(r.into(CANDY));
-                    candy.setCount(r.getValue(PRESENT_ITEM.COUNT));
+                    PresentItem item = new PresentItem();
+                    item.setCandy(new CandyMapper().map(r.into(CANDY)));
+                    item.setCount(r.getValue(PRESENT_ITEM.COUNT));
 
-                    return candy;
+                    return item;
                 });
     }
 }

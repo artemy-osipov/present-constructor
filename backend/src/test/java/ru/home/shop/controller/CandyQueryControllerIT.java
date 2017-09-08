@@ -1,6 +1,5 @@
 package ru.home.shop.controller;
 
-import com.fasterxml.uuid.Generators;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,7 +32,7 @@ public class CandyQueryControllerIT {
 
     private Candy getCandy() {
         Candy candy = new Candy();
-        candy.setId(Generators.timeBasedGenerator().generate());
+        candy.setId(newUUID());
         candy.setName("name");
         candy.setFirm("firm");
         candy.setPrice(BigDecimal.valueOf(4.20));

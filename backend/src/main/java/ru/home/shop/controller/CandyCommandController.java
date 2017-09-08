@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.home.shop.controller.dto.UpdateCandyDTO;
 import ru.home.shop.domain.model.Candy;
 import ru.home.shop.service.CandyService;
@@ -12,6 +11,7 @@ import ru.home.shop.service.CandyService;
 import java.net.URI;
 import java.util.UUID;
 
+import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequestUri;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
 @RestController
@@ -32,7 +32,7 @@ public class CandyCommandController {
 
         candyService.add(candy);
 
-        URI location = ServletUriComponentsBuilder.fromCurrentRequestUri()
+        URI location = fromCurrentRequestUri()
                 .path("/{id}").buildAndExpand(candy.getId()).toUri();
 
         return ResponseEntity
