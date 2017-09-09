@@ -21,7 +21,7 @@ export class PresentNewComponent {
     this.present = new Present();
     this.form = fb.group({
       name: ['', [StringValidators.notEmpty, StringValidators.maxLength(50)]],
-      price: ['', [Validators.required, NumberValidators.min(1), NumberValidators.maxFractionLength(2)]],
+      price: ['', [Validators.required, Validators.min(1), NumberValidators.maxFractionLength(2)]],
       items: fb.array([])
     });
   }
@@ -48,7 +48,7 @@ export class PresentNewComponent {
   private addItem(candy: Candy) {
     const itemsForm = this.form.get('items') as FormArray;
     itemsForm.push(this.fb.group({
-      count: ['', [Validators.required, NumberValidators.min(1), NumberValidators.maxFractionLength(0)]]
+      count: ['', [Validators.required, Validators.min(1), NumberValidators.maxFractionLength(0)]]
     }));
 
     this.present.items.push(new PresentItem(candy, 1));

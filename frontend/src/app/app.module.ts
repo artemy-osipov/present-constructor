@@ -19,6 +19,7 @@ import { PresentNewComponent } from 'app/present-new/present-new.component';
 import { ConfirmationDeleteComponent } from 'app/shared/confirmation-delete/confirmation-delete.component';
 
 import { CandyStore } from 'app/shared/services/candy.store';
+import { PresentStore } from 'app/shared/services/present.store';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { CandyStore } from 'app/shared/services/candy.store';
     ValidationModule
   ],
   providers: [
-    CandyStore
+    CandyStore,
+    PresentStore
   ],
   bootstrap: [AppComponent]
 })

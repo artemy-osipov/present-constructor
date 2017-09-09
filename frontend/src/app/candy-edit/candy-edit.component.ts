@@ -22,7 +22,7 @@ export class CandyEditComponent {
     this.form = fb.group({
       name: ['', [StringValidators.notEmpty, StringValidators.maxLength(50)]],
       firm: ['', [StringValidators.notEmpty, StringValidators.maxLength(50)]],
-      price: ['', [Validators.required, NumberValidators.min(1), NumberValidators.maxFractionLength(2)]],
+      price: ['', [Validators.required, Validators.min(1), NumberValidators.maxFractionLength(2)]],
       order: ['', Validators.required]
     });
   }
@@ -34,12 +34,7 @@ export class CandyEditComponent {
   initUpdateForm(candy: Candy) {
     this.action = Action.Update;
     this.candy = candy;
-    this.form.setValue({
-      name: candy.name,
-      firm: candy.firm,
-      price: candy.price,
-      order: candy.order
-    });
+    this.form.patchValue(candy);
   }
 
   onSubmit() {
@@ -67,13 +62,7 @@ export class CandyEditComponent {
   }
 
   private candyFromForm(): Candy {
-    const formModel = this.form.value;
-
-    const candy = new Candy();
-    candy.name = formModel.name.trim();
-    candy.firm = formModel.firm.trim();
-    candy.price = formModel.price;
-    candy.order = formModel.order;
+    const candy = new Candy(this.form.value);
 
     if (this.action === Action.Update) {
       candy.id = this.candy.id;
