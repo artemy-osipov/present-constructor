@@ -22,7 +22,7 @@
         <button class="btn btn-icon btn-outline-dark" ngbTooltip="Открыть" type="button" [routerLink]="['/presents/show', present.id]">
           <i class="fa fa-eye" aria-hidden="true"></i>
         </button>
-        <button class="btn btn-icon btn-outline-dark" ngbTooltip="Создать на основе" type="button" (click)="openUpdateForm(present)">
+        <button class="btn btn-icon btn-outline-dark" ngbTooltip="Создать на основе" type="button" [routerLink]="['/presents/new', {source: present.id}]">
           <i class="fa fa-files-o" aria-hidden="true"></i>
         </button>
         <button class="btn btn-icon btn-outline-dark" ngbTooltip="Удалить" type="button" (click)="openDeleteForm(present)">

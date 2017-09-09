@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { CandyEditComponent } from 'app/candy-edit/candy-edit.component';
-import { ConfirmationDeleteComponent } from 'app/shared/confirmation-delete/confirmation-delete.component';
-import { CandyStore } from 'app/shared/services/candy.store';
-
 import { Candy } from 'app/shared/candy.model';
+import { ConfirmationDeleteComponent } from 'app/shared/confirmation-delete/confirmation-delete.component';
+import { CandyService } from 'app/shared/services/candy.service';
+import { CandyStore } from 'app/shared/services/candy.store';
 
 @Component({
   selector: 'app-candy-list',
@@ -14,8 +14,10 @@ import { Candy } from 'app/shared/candy.model';
 })
 export class CandyListComponent {
 
-  constructor(private modalService: NgbModal, private candyStore: CandyStore) {
-    this.candyStore.fetch();
+  constructor(private modalService: NgbModal, private candyService: CandyService, private candyStore: CandyStore) {
+    this.candyService.list().subscribe(
+      candies => this.candyStore.candies = candies
+    );
   }
 
   openAddForm() {
@@ -33,9 +35,15 @@ export class CandyListComponent {
     modal.result
       .then(res => {
         if (res) {
-          this.candyStore.delete(candy);
+          this.delete(candy);
         }
       })
       .catch(e => { });
+  }
+
+  private delete(candy: Candy) {
+    this.candyService.delete(candy).subscribe(
+      () => this.candyStore.delete(candy)
+    );
   }
 }

@@ -85,18 +85,22 @@ presentControllers.controller('PresentAddCtrl', function($scope, $location, $anc
   initSticky($scope, $location, $anchorScroll);
 
   $scope.candies = Candy.query();
-  $scope.selectedCandies = [];
+  $scope.selectedItems = [];
   $scope.totalCount = 0;
   $scope.totalPrice = 0.0;
 
   $scope.computeStatistics = function() {
-    $scope.totalCount = $scope.selectedCandies.reduce(function(sum, candy) {return sum + candy.count}, 0);
-    $scope.totalPrice = $scope.selectedCandies.reduce(function(sum, candy) {return sum + candy.price * candy.count}, 0).toFixed(2);
+    $scope.totalCount = $scope.selectedItems.reduce(function(sum, item) {return sum + item.count}, 0);
+    $scope.totalPrice = $scope.selectedItems.reduce(function(sum, item) {return sum + item.candy.price * item.count}, 0).toFixed(2);
   }
 
-  function findById(id, xs) {
+  function findCandyById(id, xs) {
     return xs.filter(function(x) {return x.id === id})[0];
   }
+
+  function findItemById(id, xs) {
+      return xs.filter(function(x) {return x.candy.id === id})[0];
+    }
 
   if ($routeParams.presentId) {
     var presentPromise = Present.get({presentId: $routeParams.presentId}).$promise;
@@ -107,12 +111,12 @@ presentControllers.controller('PresentAddCtrl', function($scope, $location, $anc
         var present = data[1];
 
         candies.forEach(function(candy) {
-          var selected = findById(candy.id, present.items);
+          var selected = findItemById(candy.id, present.items);
 
           if (selected) {
             candy.checked = true;
             candy.count = selected.count;
-            $scope.selectedCandies.push(candy);
+            $scope.selectedItems.push({"candy": candy, "count": candy.count});
           } else {
             candy.checked = false;
           }
@@ -128,12 +132,12 @@ presentControllers.controller('PresentAddCtrl', function($scope, $location, $anc
       return;
     }
 
-    var candy = findById(id, $scope.candies);
+    var candy = findCandyById(id, $scope.candies);
 
     if (candy.checked) {
-      $scope.selectedCandies = $scope.selectedCandies.filter(function(c) {return c.id !== id});
+      $scope.selectedItems = $scope.selectedItems.filter(function(i) {return i.candy.id !== id});
     } else {
-      $scope.selectedCandies.push(candy);
+      $scope.selectedItems.push({"candy": candy, "count": candy.count});
     }
 
     candy.checked = !candy.checked;
@@ -143,7 +147,7 @@ presentControllers.controller('PresentAddCtrl', function($scope, $location, $anc
   $scope.submitForm = function() {
     if (new validationService().checkFormValidity($scope.addPresentForm)) {
       var present = $scope.present;
-      present.items = $scope.selectedCandies;
+      present.items = $scope.selectedItems;
 
       Present.save(present).$promise.then(function() {
         $location.path("/present-add");
@@ -178,7 +182,7 @@ presentControllers.controller('PresentListCtrl', function($scope, $location, $an
 presentControllers.controller('PresentShowCtrl', function($scope, $routeParams, Present) {
    Present.get({presentId: $routeParams.presentId}).$promise.then(
       function(present) {
-        present.truePrice = present.items.reduce(function(sum, candy) {return sum + candy.price * candy.count}, 0).toFixed(2);
+        present.truePrice = present.items.reduce(function(sum, item) {return sum + item.candy.price * item.count}, 0).toFixed(2);
         $scope.present = present;
       }
     );

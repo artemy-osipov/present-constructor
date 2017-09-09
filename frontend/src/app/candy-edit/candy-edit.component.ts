@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
+import { Candy } from 'app/shared/candy.model';
+import { CandyService } from 'app/shared/services/candy.service';
 import { CandyStore } from 'app/shared/services/candy.store';
 import { NumberValidators, StringValidators } from 'app/shared/validation/index';
-
-import { Candy } from 'app/shared/candy.model';
 
 @Component({
   selector: 'app-candy-edit',
@@ -18,7 +18,7 @@ export class CandyEditComponent {
   form: FormGroup;
   candy: Candy;
 
-  constructor(private modal: NgbActiveModal, private fb: FormBuilder, private candyStore: CandyStore) {
+  constructor(private modal: NgbActiveModal, private fb: FormBuilder, private candyService: CandyService, private candyStore: CandyStore) {
     this.form = fb.group({
       name: ['', [StringValidators.notEmpty, StringValidators.maxLength(50)]],
       firm: ['', [StringValidators.notEmpty, StringValidators.maxLength(50)]],
@@ -41,10 +41,10 @@ export class CandyEditComponent {
     if (this.form.valid) {
       switch (this.action) {
         case Action.Add:
-          this.candyStore.add(this.candyFromForm());
+          this.add(this.candyFromForm());
           break;
         case Action.Update:
-          this.candyStore.update(this.candyFromForm());
+          this.update(this.candyFromForm());
           break;
       }
       this.modal.close();
@@ -69,6 +69,20 @@ export class CandyEditComponent {
     }
 
     return candy;
+  }
+
+  private add(candy: Candy) {
+    this.candyService.add(candy).subscribe(
+      (id) => this.candyService.get(id).subscribe(
+        added => this.candyStore.add(added)
+      )
+    );
+  }
+
+  private update(candy: Candy) {
+    this.candyService.update(candy).subscribe(
+      () => this.candyStore.update(candy)
+    );
   }
 }
 

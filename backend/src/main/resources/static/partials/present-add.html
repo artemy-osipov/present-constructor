@@ -68,10 +68,10 @@
     <th>Количество</th>
   </tr>
 
-  <tr ng-repeat="candy in selectedCandies">
-    <td>{{candy.name}}</td>
-    <td>{{candy.firm}}</td>
-    <td>{{candy.price}}</td>
-    <td>{{candy.count}}</td>
+  <tr ng-repeat="item in selectedItems">
+    <td>{{item.candy.name}}</td>
+    <td>{{item.candy.firm}}</td>
+    <td>{{item.candy.price}}</td>
+    <td>{{item.count}}</td>
   </tr> 
 </table>
