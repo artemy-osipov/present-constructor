@@ -1,4 +1,4 @@
-import { Candy } from 'app/shared/candy.model';
+import { Candy } from 'app/shared/model/candy.model';
 
 export class Present {
   id: string;

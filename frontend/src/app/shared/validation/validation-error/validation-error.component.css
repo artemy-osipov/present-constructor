@@ -1,4 +1,4 @@
-.form-control.is-invalid~app-validation-error>.invalid-feedback,
-.form-control.is-invalid~app-validation-error>.invalid-tooltip {
+.is-invalid~app-validation-error>.invalid-feedback,
+.is-invalid~app-validation-error>.invalid-tooltip {
   display: block;
 }

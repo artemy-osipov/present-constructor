@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Present } from 'app/shared/present.model';
+import { Present } from 'app/shared/model/present.model';
 
 @Injectable()
 export class PresentStore {

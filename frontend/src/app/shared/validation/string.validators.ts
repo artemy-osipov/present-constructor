@@ -3,7 +3,7 @@ import { AbstractControl, ValidatorFn } from '@angular/forms';
 export class StringValidators {
 
   static notEmpty(control: AbstractControl): {[key: string]: boolean} {
-    if (control.value.trim().length === 0) {
+    if (control.value === null || control.value.trim().length === 0) {
       return { notEmpty: true };
     }
 
@@ -12,7 +12,7 @@ export class StringValidators {
 
   static maxLength(maxLength: number): ValidatorFn {
     return (control: AbstractControl): {[key: string]: boolean} => {
-      if (control.value.trim().length > maxLength) {
+      if (control.value !== null && control.value.trim().length > maxLength) {
         return { maxLength: true };
       }
 

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 
-import { Present } from 'app/shared/present.model';
+import { Present } from 'app/shared/model/present.model';
 import { environment } from 'environments/environment';
 
 @Injectable()

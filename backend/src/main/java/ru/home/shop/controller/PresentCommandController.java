@@ -1,7 +1,6 @@
 package ru.home.shop.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -12,10 +11,12 @@ import ru.home.shop.domain.model.Present;
 import ru.home.shop.domain.model.PresentItem;
 import ru.home.shop.service.PresentService;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequestUri;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
 @RestController
@@ -34,9 +35,15 @@ public class PresentCommandController {
         Present present = map(dto);
         present.setId(newUUID());
         present.setDate(LocalDateTime.now());
+
         presentService.add(present);
 
-        return new ResponseEntity<>(present, HttpStatus.CREATED);
+        URI location = fromCurrentRequestUri()
+                .path("/{id}").buildAndExpand(present.getId()).toUri();
+
+        return ResponseEntity
+                .created(location)
+                .build();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

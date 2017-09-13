@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Rx';
 
-import { Candy } from 'app/shared/candy.model';
+import { Candy } from 'app/shared/model/candy.model';
 import { environment } from 'environments/environment';
 
 @Injectable()

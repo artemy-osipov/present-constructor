@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ConfirmationDeleteComponent } from 'app/shared/confirmation-delete/confirmation-delete.component';
-import { Present } from 'app/shared/present.model';
+import { Present } from 'app/shared/model/present.model';
 import { PresentService } from 'app/shared/services/present.service';
 import { PresentStore } from 'app/shared/services/present.store';
 
@@ -24,7 +24,7 @@ export class PresentListComponent {
     modalRef.result
       .then(res => {
         if (res) {
-          this.presentStore.delete(present);
+          this.delete(present);
         }
       })
       .catch(e => { });

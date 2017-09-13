@@ -2,10 +2,8 @@ import { Component } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
-import { Candy } from 'app/shared/candy.model';
-import { Present, PresentItem } from 'app/shared/present.model';
-import { CandyService } from 'app/shared/services/candy.service';
-import { CandyStore } from 'app/shared/services/candy.store';
+import { Candy } from 'app/shared/model/candy.model';
+import { Present, PresentItem } from 'app/shared/model/present.model';
 import { PresentService } from 'app/shared/services/present.service';
 import { NumberValidators, StringValidators } from 'app/shared/validation/index';
 
@@ -16,23 +14,13 @@ import { NumberValidators, StringValidators } from 'app/shared/validation/index'
 })
 export class PresentNewComponent {
   form: FormGroup;
+  itemsForm: FormArray;
   present = new Present();
+  successAdd = false;
 
-  constructor(
-    private route: ActivatedRoute,
-    private fb: FormBuilder,
-    private presentService: PresentService,
-    private candyService: CandyService,
-    private candyStore: CandyStore) {
-    this.candyService.list().subscribe(
-      candies => this.candyStore.candies = candies
-    );
-
-    this.form = fb.group({
-      name: ['', [StringValidators.notEmpty, StringValidators.maxLength(50)]],
-      price: ['', [Validators.required, Validators.min(1), NumberValidators.maxFractionLength(2)]],
-      items: fb.array([])
-    });
+  constructor(private route: ActivatedRoute, private fb: FormBuilder, private presentService: PresentService) {
+    this.form = this.buildForm();
+    this.itemsForm = this.form.get('items') as FormArray;
 
     this.route.params.subscribe(params => {
       const source = params['source'];
@@ -44,12 +32,26 @@ export class PresentNewComponent {
     });
   }
 
-  select(candy: Candy): void {
-    if (this.present.hasCandy(candy)) {
-      this.removeItem(candy);
-    } else {
-      this.addItem(candy);
-    }
+  private buildForm() {
+    return this.fb.group({
+      name: ['', [StringValidators.notEmpty, StringValidators.maxLength(50)]],
+      price: ['', [Validators.required, Validators.min(1), NumberValidators.maxFractionLength(2)]],
+      items: this.fb.array([], Validators.required)
+    });
+  }
+
+  private buildItemForm(candy: Candy) {
+    return this.fb.group({
+      count: ['', [Validators.required, Validators.min(1), NumberValidators.maxFractionLength(0)]],
+      candy: this.fb.group({
+        id: [candy.id]
+      })
+    });
+  }
+
+  private addItem(candy: Candy, count?: number) {
+    this.itemsForm.push(this.buildItemForm(candy));
+    this.present.items.push(new PresentItem(candy, count || 1));
   }
 
   private removeItem(candy: Candy) {
@@ -57,18 +59,36 @@ export class PresentNewComponent {
       return item.candy.id === candy.id;
     });
 
-    const itemsForm = this.form.get('items') as FormArray;
-    itemsForm.removeAt(index);
-
+    this.itemsForm.removeAt(index);
     this.present.items.splice(index, 1);
   }
 
-  private addItem(candy: Candy, count?: number) {
-    const itemsForm = this.form.get('items') as FormArray;
-    itemsForm.push(this.fb.group({
-      count: ['', [Validators.required, Validators.min(1), NumberValidators.maxFractionLength(0)]]
-    }));
+  onSubmit() {
+    if (this.form.valid) {
+      this.add(this.form.value);
+    } else {
+      this.markFormContolsAsDirty(this.form);
+    }
+  }
 
-    this.present.items.push(new PresentItem(candy, count || 1));
+  private add(present: Present) {
+    this.presentService.add(present).subscribe(
+      () => {
+        this.present = new Present();
+        this.form.reset();
+        this.form.controls['items'] = this.fb.array([]);
+
+        this.successAdd = true;
+        setTimeout(() => this.successAdd = false, 5000);
+      }
+    );
+  }
+
+  private markFormContolsAsDirty(form: FormGroup) {
+    for (const key in form.controls) {
+      if (form.controls.hasOwnProperty(key)) {
+        form.controls[key].markAsDirty();
+      }
+    }
   }
 }

@@ -1,6 +1,7 @@
 <div class="row">
   <div class="col-md-6">
     <h1>Добавление подарка</h1>
+    <ngb-alert *ngIf="successAdd" type="success" (close)="successAdd = null">Добавлено</ngb-alert>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="name">Название</label>
@@ -12,7 +13,7 @@
       </div>
 
       <label for="items">Состав</label>
-      <table formArrayName="items" id="items" class="table table-sm table-bordered">
+      <table formArrayName="items" id="items" class="table table-sm table-bordered" appFormControl>
         <tr>
           <th>Название</th>
           <th>Производитель</th>
@@ -41,19 +42,6 @@
   </div>
 
   <div class="col-md-6">
-    <h1>Выбор конфет</h1>
-    <table class="table table-striped table-sm">
-      <tr>
-        <th>Название</th>
-        <th>Производитель</th>
-        <th>Цена</th>
-      </tr>
-
-      <tr *ngFor="let candy of candyStore.orderedCandies" (click)="select(candy)" [class.table-primary]="present.hasCandy(candy)">
-        <td>{{candy.name}}</td>
-        <td>{{candy.firm}}</td>
-        <td>{{candy.price}}</td>
-      </tr>
-    </table>
+    <app-present-new-select-candy [present]="present" (onSelect)="addItem($event)" (onUnselect)="removeItem($event)"></app-present-new-select-candy>
   </div>
 </div>

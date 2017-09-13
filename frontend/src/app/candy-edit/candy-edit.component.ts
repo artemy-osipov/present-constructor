@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { Candy } from 'app/shared/candy.model';
+import { Candy } from 'app/shared/model/candy.model';
 import { CandyService } from 'app/shared/services/candy.service';
 import { CandyStore } from 'app/shared/services/candy.store';
 import { NumberValidators, StringValidators } from 'app/shared/validation/index';

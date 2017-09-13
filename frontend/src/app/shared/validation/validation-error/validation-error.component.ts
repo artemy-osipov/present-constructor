@@ -1,5 +1,5 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
-import { NgControl } from '@angular/forms';
+import { AbstractControlDirective } from '@angular/forms';
 
 @Component({
   selector: 'app-validation-error',
@@ -8,5 +8,9 @@ import { NgControl } from '@angular/forms';
   encapsulation: ViewEncapsulation.None
 })
 export class ValidationErrorComponent {
-  @Input() control: NgControl;
+  @Input() control: AbstractControlDirective;
+
+  get hasError(): boolean {
+    return this.control && this.control.invalid && this.control.errors !== null;
+  }
 }

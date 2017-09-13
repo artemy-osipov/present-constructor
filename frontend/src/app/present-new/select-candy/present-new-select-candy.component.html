@@ -1,0 +1,14 @@
+<h1>Выбор конфет</h1>
+<table class="table table-striped table-sm">
+  <tr>
+    <th>Название</th>
+    <th>Производитель</th>
+    <th>Цена</th>
+  </tr>
+
+  <tr *ngFor="let candy of candyStore.orderedCandies" (click)="select(candy)" [class.table-primary]="present.hasCandy(candy)">
+    <td>{{candy.name}}</td>
+    <td>{{candy.firm}}</td>
+    <td>{{candy.price}}</td>
+  </tr>
+</table>

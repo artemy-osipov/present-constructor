@@ -1,15 +1,15 @@
-<div *ngIf="control.invalid && control.errors.required" class="invalid-feedback">
+<div *ngIf="hasError && control.errors.required" class="invalid-feedback">
   Обязательно для заполнения
 </div>
-<div *ngIf="control.invalid && control.errors.min" class="invalid-feedback">
+<div *ngIf="hasError && control.errors.min" class="invalid-feedback">
   Меньше допустимого
 </div>
-<div *ngIf="control.invalid && control.errors.maxFractionLength" class="invalid-feedback">
+<div *ngIf="hasError && control.errors.maxFractionLength" class="invalid-feedback">
   Неверный формат
 </div>
-<div *ngIf="control.invalid && control.errors.notEmpty" class="invalid-feedback">
+<div *ngIf="hasError && control.errors.notEmpty" class="invalid-feedback">
   Обязательно для заполнения
 </div>
-<div *ngIf="control.invalid && control.errors.maxLength" class="invalid-feedback">
+<div *ngIf="hasError && control.errors.maxLength" class="invalid-feedback">
   Превышает максимальную длину
 </div>

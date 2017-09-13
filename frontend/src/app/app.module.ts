@@ -14,6 +14,7 @@ import { LinkBorderComponent } from 'app/link-border/link-border.component';
 import { PresentDetailComponent } from 'app/present-detail/present-detail.component';
 import { PresentListComponent } from 'app/present-list/present-list.component';
 import { PresentNewComponent } from 'app/present-new/present-new.component';
+import { PresentNewSelectCandyComponent } from 'app/present-new/select-candy/present-new-select-candy.component';
 import { ConfirmationDeleteComponent } from 'app/shared/confirmation-delete/confirmation-delete.component';
 import { CandyService } from 'app/shared/services/candy.service';
 import { CandyStore } from 'app/shared/services/candy.store';
@@ -32,7 +33,8 @@ import { ValidationModule } from 'app/shared/validation/index';
     LinkBorderComponent,
     PresentListComponent,
     PresentDetailComponent,
-    PresentNewComponent
+    PresentNewComponent,
+    PresentNewSelectCandyComponent
   ],
   entryComponents: [
     CandyEditComponent,

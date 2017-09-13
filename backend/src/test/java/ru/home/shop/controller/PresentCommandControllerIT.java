@@ -21,8 +21,7 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.home.shop.utils.JsonUtils.toJson;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
@@ -62,7 +61,7 @@ public class PresentCommandControllerIT {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJson(getUpdateDTO())))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$", notNullValue()));
+                .andExpect(header().string("Location", notNullValue()));
     }
 
     @Test

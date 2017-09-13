@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Candy } from 'app/shared/candy.model';
-import { Present, PresentItem } from 'app/shared/present.model';
+import { Candy } from 'app/shared/model/candy.model';
+import { Present, PresentItem } from 'app/shared/model/present.model';
 import { PresentService } from 'app/shared/services/present.service';
 
 @Component({

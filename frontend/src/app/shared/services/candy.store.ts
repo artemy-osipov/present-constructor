@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Candy } from 'app/shared/candy.model';
+import { Candy } from 'app/shared/model/candy.model';
 
 @Injectable()
 export class CandyStore {
