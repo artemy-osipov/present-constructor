@@ -1,0 +1,77 @@
+<h2>Добавление подарка</h2>
+<a id="top"></a>
+  
+<div id="sticky">
+  <a href ng-click="scrollTo('bottom')">Вниз</a>
+  <a href ng-click="scrollTo('top')">Наверх</a>
+</div>
+
+<form name="addPresentForm" ng-submit="submitForm()">
+  <fieldset>
+    <legend>Подарок</legend>
+    <div>
+      <label for="name">Название</label>
+    </div>
+    <div>
+      <input id="name" name="name" ng-model="present.name" type="text" validation="required" required>
+    </div>
+
+    <div>
+      <label for="price">Цена</label>
+    </div>
+    <div>
+      <input id="price" name="price" ng-model="present.price" type="number" step="0.01" validation="numeric|required" required>
+    </div>
+
+    <p>
+      <input type="submit" value="Добавить" />
+    </p>
+  </fieldset>
+</form>
+
+<table class="entity">
+  <tr>
+    <th>Название</th>
+    <th>Производитель</th>
+    <th>Цена</th>
+    <th>Количество</th>
+  </tr>
+
+  <tr ng-repeat="candy in candies" ng-click="checkCandy(candy.id, $event)" ng-class="candy.checked ? 'selectedRow' : ''">
+    <td>{{candy.name}}</td>
+    <td>{{candy.firm}}</td>
+    <td>{{candy.price}}</td>
+    <td>
+      <input name="count" type="number" ng-disabled="!candy.checked" min="1" step="1" ng-model="candy.count" ng-change="computeStatistics()">
+    </td>
+  </tr>
+</table>
+
+<hr/>
+<hr/>
+<hr/>
+<hr/>
+<a id="bottom"></a>
+<table class="entity">
+  <tr>
+    <td colspan="3">Выбрано :</td>
+    <td id="numSelected">{{totalCount}}</td>
+  </tr>
+  <tr>
+    <td colspan="3">Сумма :</td>
+    <td id="priceSelected">{{totalPrice}}</td>
+  </tr>
+  <tr>
+    <th>Название</th>
+    <th>Производитель</th>
+    <th>Цена</th>
+    <th>Количество</th>
+  </tr>
+
+  <tr ng-repeat="item in selectedItems">
+    <td>{{item.candy.name}}</td>
+    <td>{{item.candy.firm}}</td>
+    <td>{{item.candy.price}}</td>
+    <td>{{item.count}}</td>
+  </tr> 
+</table>

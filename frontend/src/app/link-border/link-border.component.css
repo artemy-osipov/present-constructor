@@ -1,0 +1,12 @@
+.link-to-top, .link-to-down {
+  position: fixed;
+  right: 1rem;
+}
+
+.link-to-top {
+  top: 5rem;
+}
+
+.link-to-down {
+  bottom: 20px;
+}
