@@ -35,4 +35,12 @@ export class PresentService {
   delete(present: Present): Observable<Object> {
     return this.http.delete(this.presentHost + present.id);
   }
+
+  publicReportLocation(id: string) {
+    return this.presentHost + id + '/public-report';
+  }
+
+  privateReportLocation(id: string) {
+    return this.presentHost + id + '/private-report';
+  }
 }

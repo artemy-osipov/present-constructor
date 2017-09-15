@@ -25,7 +25,7 @@ public class CandyCommandController {
         this.candyService = candyService;
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping
     public ResponseEntity<?> addCandy(@RequestBody @Validated UpdateCandyDTO dto) {
         Candy candy = map(dto);
         candy.setId(newUUID());
@@ -40,14 +40,14 @@ public class CandyCommandController {
                 .build();
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @PutMapping(value = "/{id}")
     public void editCandy(@PathVariable("id") UUID id, @RequestBody @Validated UpdateCandyDTO dto) {
         Candy candy = map(dto);
         candy.setId(id);
         candyService.edit(candy);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{id}")
     public void removeCandy(@PathVariable("id") UUID id) {
         candyService.remove(id);
     }

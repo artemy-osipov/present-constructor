@@ -30,7 +30,7 @@ public class PresentCommandController {
         this.presentService = presentService;
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping
     public ResponseEntity<Present> addPresent(@RequestBody @Validated AddPresentDTO dto) {
         Present present = map(dto);
         present.setId(newUUID());
@@ -46,7 +46,7 @@ public class PresentCommandController {
                 .build();
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{id}")
     public void removePresent(@PathVariable("id") UUID id) {
         presentService.remove(id);
     }

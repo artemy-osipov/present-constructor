@@ -3,19 +3,18 @@ package ru.home.shop.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriUtils;
 import ru.home.shop.domain.model.Present;
 import ru.home.shop.domain.model.Report;
 import ru.home.shop.exception.EntityNotFoundException;
 import ru.home.shop.service.PresentService;
 import ru.home.shop.service.ReportService;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import java.util.function.Function;
@@ -33,12 +32,12 @@ public class ReportQueryController {
         this.reportService = reportService;
     }
 
-    @RequestMapping(value = "/{id}/public-report", method = RequestMethod.GET)
+    @GetMapping(value = "/{id}/public-report")
     public ResponseEntity<byte[]> publicReport(@PathVariable("id") UUID id) {
         return report(id, reportService::generatePublicReport);
     }
 
-    @RequestMapping(value = "/{id}/private-report", method = RequestMethod.GET)
+    @GetMapping(value = "/{id}/private-report")
     public ResponseEntity<byte[]> privateReport(@PathVariable("id") UUID id) {
         return report(id, reportService::generatePrivateReport);
     }
@@ -56,16 +55,9 @@ public class ReportQueryController {
     }
 
     private ResponseEntity<byte[]> toDocumentEntity(Report report) {
-        String fileName;
-        try {
-            fileName = UriUtils.encode(report.getName(), StandardCharsets.UTF_8.name());
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
-
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Content-Type", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-        headers.set("Content-Disposition", "attachment; filename*=UTF-8''" + fileName);
+        headers.setContentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.wordprocessingml.document"));
+        headers.setContentDispositionFormData("attachment", report.getName(), StandardCharsets.UTF_8);
 
         return new ResponseEntity<>(report.getContent(), headers, HttpStatus.OK);
     }

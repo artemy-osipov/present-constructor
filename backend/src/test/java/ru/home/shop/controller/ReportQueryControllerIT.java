@@ -30,7 +30,7 @@ public class ReportQueryControllerIT {
             .setControllerAdvice(new ErrorHandler())
             .build();
 
-    private final static String CONTENT_DISPOSITION = "attachment; filename*=UTF-8''name%202.4%20RUB.docx";
+    private final static String CONTENT_DISPOSITION = "form-data; name=\"attachment\"; filename*=UTF-8''name%202.4%20RUB.docx";
 
     private Present getPresent() {
         Present present = new Present();

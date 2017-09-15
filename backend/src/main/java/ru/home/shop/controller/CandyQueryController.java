@@ -1,9 +1,9 @@
 package ru.home.shop.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import ru.home.shop.domain.model.Candy;
 import ru.home.shop.exception.EntityNotFoundException;
@@ -23,7 +23,7 @@ public class CandyQueryController {
         this.candyService = candyService;
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @GetMapping(value = "/{id}")
     public Candy findCandy(@PathVariable("id") UUID id) {
         Candy candy = candyService.find(id);
 
@@ -34,7 +34,7 @@ public class CandyQueryController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     public Collection<Candy> listCandy() {
         return candyService.list();
     }

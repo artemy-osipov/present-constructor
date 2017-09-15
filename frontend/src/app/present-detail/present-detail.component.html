@@ -1,12 +1,12 @@
 <h1>Подарок</h1>
 
-<button class="btn btn-outline-dark" type="button">
+<a class="btn btn-outline-dark" href="{{ presentSerive.privateReportLocation(present.id) }}" role="button">
   <i class="fa fa-file" aria-hidden="true"></i> Прайс
-</button>
+</a>
 
-<button class="btn btn-outline-dark" type="button">
+<a class="btn btn-outline-dark" href="{{ presentSerive.publicReportLocation(present.id) }}" role="button">
   <i class="fa fa-file" aria-hidden="true"></i> Прайс для розницы
-</button>
+</a>
 
 <div>
   <b>Название</b>
