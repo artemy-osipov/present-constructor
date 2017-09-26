@@ -6,9 +6,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.home.shop.controller.dto.AddPresentDTO;
 import ru.home.shop.controller.dto.PresentItemDTO;
-import ru.home.shop.domain.model.Candy;
 import ru.home.shop.domain.model.Present;
 import ru.home.shop.domain.model.PresentItem;
+import ru.home.shop.query.candy.CandyEntry;
 import ru.home.shop.service.PresentService;
 
 import java.net.URI;
@@ -65,7 +65,7 @@ public class PresentCommandController {
 
     private PresentItem map(PresentItemDTO dto) {
         PresentItem item = new PresentItem();
-        item.setCandy(new Candy());
+        item.setCandy(new CandyEntry());
         item.getCandy().setId(dto.getCandy().getId());
         item.setCount(dto.getCount());
 

@@ -17,7 +17,7 @@ public class PresentMapperTest {
     private static final String NAME = "name";
     private static final BigDecimal PRICE = BigDecimal.valueOf(2.3);
 
-    private PresentMapper mapper = new PresentMapper();
+    private final PresentMapper mapper = new PresentMapper();
 
     private PresentRecord getRecord() {
         PresentRecord record = new PresentRecord();

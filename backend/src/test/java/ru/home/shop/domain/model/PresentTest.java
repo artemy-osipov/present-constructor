@@ -1,6 +1,7 @@
 package ru.home.shop.domain.model;
 
 import org.junit.Test;
+import ru.home.shop.query.candy.CandyEntry;
 
 import java.math.BigDecimal;
 
@@ -16,7 +17,7 @@ public class PresentTest {
         present.setPrice(BigDecimal.valueOf(4.2));
 
         PresentItem item1 = new PresentItem();
-        item1.setCandy(new Candy());
+        item1.setCandy(new CandyEntry());
         item1.getCandy().setId(newUUID());
         item1.getCandy().setName("name1");
         item1.getCandy().setFirm("firm1");
@@ -24,7 +25,7 @@ public class PresentTest {
         item1.setCount(2);
 
         PresentItem item2 = new PresentItem();
-        item2.setCandy(new Candy());
+        item2.setCandy(new CandyEntry());
         item2.getCandy().setId(newUUID());
         item2.getCandy().setName("name2");
         item2.getCandy().setFirm("firm2");

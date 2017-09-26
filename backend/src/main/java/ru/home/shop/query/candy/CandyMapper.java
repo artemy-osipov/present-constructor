@@ -1,18 +1,17 @@
-package ru.home.shop.domain.repo.jooq;
+package ru.home.shop.query.candy;
 
 import org.jooq.RecordMapper;
 import ru.home.db.tables.records.CandyRecord;
-import ru.home.shop.domain.model.Candy;
 
-public class CandyMapper implements RecordMapper<CandyRecord, Candy>{
+public class CandyMapper implements RecordMapper<CandyRecord, CandyEntry> {
 
     @Override
-    public Candy map(CandyRecord record) {
+    public CandyEntry map(CandyRecord record) {
         if (record == null) {
             return null;
         }
 
-        Candy bean = new Candy();
+        CandyEntry bean = new CandyEntry();
         bean.setId(record.getId());
         bean.setName(record.getName());
         bean.setFirm(record.getFirm());

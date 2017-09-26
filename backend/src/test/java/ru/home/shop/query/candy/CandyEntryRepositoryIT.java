@@ -1,4 +1,4 @@
-package ru.home.shop.domain.repo.jooq;
+package ru.home.shop.query.candy;
 
 import org.flywaydb.test.annotation.FlywayTest;
 import org.flywaydb.test.junit.FlywayTestExecutionListener;
@@ -11,8 +11,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import ru.home.shop.domain.model.Candy;
-import ru.home.shop.domain.repo.CandyRepository;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -26,16 +24,16 @@ import static ru.home.shop.utils.UuidUtils.newUUID;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class, FlywayTestExecutionListener.class })
-public class JOOQCandyRepositoryIT {
+public class CandyEntryRepositoryIT {
 
     @Autowired
-    private CandyRepository repository;
+    private CandyEntryRepository repository;
 
     @Autowired
     private DSLContext dsl;
 
-    private Candy getCandy() {
-        Candy bean = new Candy();
+    private CandyEntry getCandy() {
+        CandyEntry bean = new CandyEntry();
         bean.setId(newUUID());
         bean.setName("name");
         bean.setFirm("firm");
@@ -56,7 +54,7 @@ public class JOOQCandyRepositoryIT {
 
     @Test(expected = DataIntegrityViolationException.class)
     public void addWithEmptyNotNullableFieldShouldThrowException() {
-        Candy candy = getCandy();
+        CandyEntry candy = getCandy();
         candy.setPrice(null);
 
         repository.add(candy);
@@ -77,7 +75,7 @@ public class JOOQCandyRepositoryIT {
     @Test
     @FlywayTest
     public void editValidEntryShouldUpdateOneEntry() {
-        Candy candy = getCandy();
+        CandyEntry candy = getCandy();
         candy.setId(UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c"));
 
         assertEquals(1, repository.edit(candy));
@@ -86,7 +84,7 @@ public class JOOQCandyRepositoryIT {
     @Test
     @FlywayTest
     public void editNonexistentEntityShouldUpdateNone() {
-        Candy candy = getCandy();
+        CandyEntry candy = getCandy();
         candy.setId(newUUID());
 
         assertEquals(0, repository.edit(candy));
@@ -95,7 +93,7 @@ public class JOOQCandyRepositoryIT {
     @Test(expected = DataIntegrityViolationException.class)
     @FlywayTest
     public void editNotValidEntryShouldThrowException() {
-        Candy candy = getCandy();
+        CandyEntry candy = getCandy();
         candy.setId(UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c"));
         candy.setPrice(null);
 
@@ -111,7 +109,7 @@ public class JOOQCandyRepositoryIT {
     @Test
     @FlywayTest
     public void findByExistentIdShouldReturnValidEntry() {
-        Candy fromDB = repository.findById(UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c"));
+        CandyEntry fromDB = repository.findById(UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c"));
 
         assertEquals("someName1", fromDB.getName());
         assertEquals("someFirm1", fromDB.getFirm());

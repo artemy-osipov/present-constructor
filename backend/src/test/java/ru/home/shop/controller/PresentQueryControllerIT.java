@@ -6,9 +6,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import ru.home.shop.domain.model.Candy;
 import ru.home.shop.domain.model.Present;
 import ru.home.shop.domain.model.PresentItem;
+import ru.home.shop.query.candy.CandyEntry;
 import ru.home.shop.service.PresentService;
 
 import java.math.BigDecimal;
@@ -41,12 +41,12 @@ public class PresentQueryControllerIT {
         present.setPrice(BigDecimal.valueOf(4.2));
 
         PresentItem item1 = new PresentItem();
-        item1.setCandy(new Candy());
+        item1.setCandy(new CandyEntry());
         item1.getCandy().setId(newUUID());
         item1.setCount(2);
 
         PresentItem item2 = new PresentItem();
-        item2.setCandy(new Candy());
+        item2.setCandy(new CandyEntry());
         item2.getCandy().setId(newUUID());
         item2.setCount(6);
 

@@ -25,7 +25,7 @@
 
         <xdocreport.version>1.0.6</xdocreport.version>
         <uuid-generator.version>3.1.4</uuid-generator.version>
-        <maven-compiler-plugin>3.3</maven-compiler-plugin>
+        <axon.version>3.0.6</axon.version>
     </properties>
 
     <profiles>
@@ -63,11 +63,24 @@
             <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
 
+        <!--infrastructure-->
+        <dependency>
+            <groupId>org.axonframework</groupId>
+            <artifactId>axon-spring-boot-starter</artifactId>
+            <version>${axon.version}</version>
+        </dependency>
+
         <!--utils-->
         <dependency>
             <groupId>com.fasterxml.uuid</groupId>
             <artifactId>java-uuid-generator</artifactId>
             <version>${uuid-generator.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- db access -->
@@ -122,13 +135,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin}</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
-                    <compilerArgs>
-                        <arg>-Xlint:deprecation</arg>
-                    </compilerArgs>
                 </configuration>
             </plugin>
 

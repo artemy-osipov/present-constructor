@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.home.shop.domain.model.Present;
 import ru.home.shop.domain.model.PresentItem;
 import ru.home.shop.domain.repo.PresentRepository;
+import ru.home.shop.query.candy.CandyMapper;
 
 import java.util.Collection;
 import java.util.List;

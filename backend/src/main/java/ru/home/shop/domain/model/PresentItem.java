@@ -1,15 +1,17 @@
 package ru.home.shop.domain.model;
 
+import ru.home.shop.query.candy.CandyEntry;
+
 public class PresentItem {
 
-    private Candy candy;
+    private CandyEntry candy;
     private int count = 1;
 
-    public Candy getCandy() {
+    public CandyEntry getCandy() {
         return candy;
     }
 
-    public void setCandy(Candy candy) {
+    public void setCandy(CandyEntry candy) {
         this.candy = candy;
     }
 

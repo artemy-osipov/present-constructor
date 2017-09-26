@@ -1,8 +1,7 @@
-package ru.home.shop.domain.repo.jooq;
+package ru.home.shop.query.candy;
 
 import org.junit.Test;
 import ru.home.db.tables.records.CandyRecord;
-import ru.home.shop.domain.model.Candy;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -19,7 +18,7 @@ public class CandyMapperTest {
     private static final BigDecimal PRICE = BigDecimal.valueOf(2.3);
     private static final double ORDER = 1.1;
 
-    private CandyMapper mapper = new CandyMapper();
+    private final CandyMapper mapper = new CandyMapper();
 
     private CandyRecord getRecord() {
         CandyRecord record = new CandyRecord();
@@ -39,7 +38,7 @@ public class CandyMapperTest {
 
     @Test
     public void testFullInfoMap() {
-        Candy candy = mapper.map(getRecord());
+        CandyEntry candy = mapper.map(getRecord());
 
         assertEquals(ID, candy.getId());
         assertEquals(NAME, candy.getName());

@@ -1,15 +1,12 @@
 package ru.home.shop.service;
 
-import ru.home.shop.domain.model.Candy;
+import ru.home.shop.query.candy.CandyEntry;
 
 import java.util.Collection;
 import java.util.UUID;
 
 public interface CandyService {
 
-    void add(Candy candy);
-    void edit(Candy candy);
-    void remove(UUID id);
-    Collection<Candy> list();
-    Candy find(UUID id);
+    Collection<CandyEntry> list();
+    CandyEntry find(UUID id);
 }

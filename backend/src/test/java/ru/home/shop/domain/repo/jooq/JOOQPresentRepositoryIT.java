@@ -12,10 +12,10 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import ru.home.shop.domain.model.Candy;
 import ru.home.shop.domain.model.Present;
 import ru.home.shop.domain.model.PresentItem;
 import ru.home.shop.domain.repo.PresentRepository;
+import ru.home.shop.query.candy.CandyEntry;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -62,7 +62,7 @@ public class JOOQPresentRepositoryIT {
         present.setId(newUUID());
 
         PresentItem item = new PresentItem();
-        item.setCandy(new Candy());
+        item.setCandy(new CandyEntry());
         item.getCandy().setId(UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c"));
         item.setCount(2);
 

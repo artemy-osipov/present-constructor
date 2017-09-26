@@ -1,37 +1,43 @@
 package ru.home.shop.controller;
 
+import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import ru.home.shop.api.candy.CreateCandyCommand;
+import ru.home.shop.api.candy.RemoveCandyCommand;
 import ru.home.shop.controller.dto.UpdateCandyDTO;
 import ru.home.shop.exception.EntityNotFoundException;
-import ru.home.shop.service.CandyService;
 
 import java.math.BigDecimal;
+import java.util.concurrent.CompletableFuture;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.home.shop.utils.JsonUtils.toJson;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@WebMvcTest(CandyCommandController.class)
 public class CandyCommandControllerIT {
 
-    private final CandyService candyService = mock(CandyService.class);
-    private final MockMvc mockMvc = MockMvcBuilders
-            .standaloneSetup(new CandyCommandController(candyService))
-            .setControllerAdvice(new ErrorHandler())
-            .build();
+    @MockBean
+    private CommandGateway commandGateway;
+
+    @Autowired
+    private MockMvc mockMvc;
 
     private UpdateCandyDTO getUpdateDTO() {
         UpdateCandyDTO dto = new UpdateCandyDTO();
@@ -43,11 +49,16 @@ public class CandyCommandControllerIT {
         return dto;
     }
 
+    @Before
+    public void mockInit() {
+        when(commandGateway.send(any())).thenReturn(CompletableFuture.completedFuture(null));
+    }
+
     @Test
     public void addCandyWithValidEntityShouldReturnId() throws Exception {
-        mockMvc.perform(post("/candies")
+        mockMvc.perform(async(post("/candies")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(getUpdateDTO())))
+                .content(toJson(getUpdateDTO()))))
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", notNullValue()));
     }
@@ -63,9 +74,9 @@ public class CandyCommandControllerIT {
 
     @Test
     public void editCandyWithValidEntityShouldReturn200() throws Exception {
-        mockMvc.perform(put("/candies/{id}", newUUID())
+        mockMvc.perform(async(put("/candies/{id}", newUUID())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(getUpdateDTO())))
+                .content(toJson(getUpdateDTO()))))
                 .andExpect(status().isOk());
     }
 
@@ -80,25 +91,36 @@ public class CandyCommandControllerIT {
 
     @Test
     public void editCandyWithNonExistentIdShouldReturn404() throws Exception {
-        doThrow(EntityNotFoundException.class).when(candyService).edit(any());
+        when(commandGateway.send(any(CreateCandyCommand.class))).thenReturn(exceptionallyCompletedFuture(new EntityNotFoundException()));
 
-        mockMvc.perform(put("/candies/{id}", newUUID())
+        mockMvc.perform(async(put("/candies/{id}", newUUID())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(getUpdateDTO())))
+                .content(toJson(getUpdateDTO()))))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void removeCandyWithValidIdShouldReturn200() throws Exception {
-        mockMvc.perform(delete("/candies/{id}", newUUID()))
+        mockMvc.perform(async(delete("/candies/{id}", newUUID())))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void removeCandyWithNonExistentIdShouldReturn404() throws Exception {
-        doThrow(EntityNotFoundException.class).when(candyService).remove(any());
+        when(commandGateway.send(any(RemoveCandyCommand.class))).thenReturn(exceptionallyCompletedFuture(new EntityNotFoundException()));
 
-        mockMvc.perform(delete("/candies/{id}", newUUID()))
+        mockMvc.perform(async(delete("/candies/{id}", newUUID())))
                 .andExpect(status().isNotFound());
+    }
+
+    public static <T> CompletableFuture<T> exceptionallyCompletedFuture(Throwable throwable) {
+        CompletableFuture<T> future = new CompletableFuture<>();
+        future.completeExceptionally(throwable);
+        return future;
+    }
+
+    public RequestBuilder async(MockHttpServletRequestBuilder request) throws Exception {
+        return asyncDispatch(mockMvc.perform(request)
+                .andReturn());
     }
 }

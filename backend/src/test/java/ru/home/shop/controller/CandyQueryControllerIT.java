@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import ru.home.shop.domain.model.Candy;
+import ru.home.shop.query.candy.CandyEntry;
 import ru.home.shop.service.CandyService;
 
 import java.math.BigDecimal;
@@ -30,8 +30,8 @@ public class CandyQueryControllerIT {
             .setControllerAdvice(new ErrorHandler())
             .build();
 
-    private Candy getCandy() {
-        Candy candy = new Candy();
+    private CandyEntry getCandy() {
+        CandyEntry candy = new CandyEntry();
         candy.setId(newUUID());
         candy.setName("name");
         candy.setFirm("firm");
@@ -43,7 +43,7 @@ public class CandyQueryControllerIT {
 
     @Test
     public void findExistentCandyReturnIt() throws Exception {
-        Candy candy = getCandy();
+        CandyEntry candy = getCandy();
         doReturn(candy).when(candyService).find(any());
 
         mockMvc.perform(get("/candies/{id}", candy.getId()))

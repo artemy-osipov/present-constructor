@@ -14,7 +14,8 @@ export class CandyService {
 
   add(candy: Candy): Observable<string> {
     return this.http.post(this.candyHost, candy, { observe: 'response' })
-      .map(resp => this.getIdFromLocation(resp.headers.get('Location')));
+      .map(resp => this.getIdFromLocation(resp.headers.get('Location'))
+    );
   }
 
   private getIdFromLocation(location: string): string {
