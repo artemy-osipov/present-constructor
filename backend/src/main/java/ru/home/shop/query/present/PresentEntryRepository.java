@@ -1,12 +1,8 @@
-package ru.home.shop.domain.repo.jooq;
+package ru.home.shop.query.present;
 
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-import ru.home.shop.domain.model.Present;
-import ru.home.shop.domain.model.PresentItem;
-import ru.home.shop.domain.repo.PresentRepository;
 import ru.home.shop.query.candy.CandyMapper;
 
 import java.util.Collection;
@@ -17,18 +13,16 @@ import static ru.home.db.Tables.*;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
 @Repository
-public class JOOQPresentRepository implements PresentRepository {
+public class PresentEntryRepository {
 
     private final DSLContext dsl;
 
     @Autowired
-    public JOOQPresentRepository(DSLContext dsl) {
+    public PresentEntryRepository(DSLContext dsl) {
         this.dsl = dsl;
     }
 
-    @Override
-    @Transactional
-    public void add(Present present) {
+    public void add(PresentEntry present) {
         dsl.insertInto(PRESENT)
                 .set(PRESENT.ID, present.getId())
                 .set(PRESENT.NAME, present.getName())
@@ -50,23 +44,19 @@ public class JOOQPresentRepository implements PresentRepository {
         );
     }
 
-    @Override
     public int remove(UUID id) {
         return dsl.deleteFrom(PRESENT)
                 .where(PRESENT.ID.eq(id))
                 .execute();
     }
 
-    @Override
-    public Collection<Present> listView() {
+    public Collection<PresentEntry> list() {
         return dsl.selectFrom(PRESENT)
                 .fetch(new PresentMapper());
     }
 
-    @Override
-    @Transactional
-    public Present findById(UUID id) {
-        Present present = dsl.selectFrom(PRESENT)
+    public PresentEntry findById(UUID id) {
+        PresentEntry present = dsl.selectFrom(PRESENT)
                 .where(PRESENT.ID.eq(id))
                 .fetchOne(new PresentMapper());
 

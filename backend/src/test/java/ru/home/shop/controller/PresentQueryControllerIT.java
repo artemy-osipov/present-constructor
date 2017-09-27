@@ -2,14 +2,15 @@ package ru.home.shop.controller;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import ru.home.shop.domain.model.Present;
-import ru.home.shop.domain.model.PresentItem;
 import ru.home.shop.query.candy.CandyEntry;
-import ru.home.shop.service.PresentService;
+import ru.home.shop.query.present.PresentEntry;
+import ru.home.shop.query.present.PresentEntryRepository;
+import ru.home.shop.query.present.PresentItem;
 
 import java.math.BigDecimal;
 
@@ -18,24 +19,23 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@WebMvcTest(PresentQueryController.class)
 public class PresentQueryControllerIT {
 
-    private final PresentService presentService = mock(PresentService.class);
-    private final MockMvc mockMvc = MockMvcBuilders
-            .standaloneSetup(new PresentQueryController(presentService))
-            .setControllerAdvice(new ErrorHandler())
-            .build();
+    @MockBean
+    private PresentEntryRepository repository;
 
-    private Present getPresent() {
-        Present present = new Present();
+    @Autowired
+    private MockMvc mockMvc;
+
+    private PresentEntry getPresent() {
+        PresentEntry present = new PresentEntry();
         present.setId(newUUID());
         present.setName("name");
         present.setPrice(BigDecimal.valueOf(4.2));
@@ -58,8 +58,8 @@ public class PresentQueryControllerIT {
 
     @Test
     public void findExistentPresentShouldReturnIt() throws Exception {
-        Present present = getPresent();
-        doReturn(present).when(presentService).find(any());
+        PresentEntry present = getPresent();
+        doReturn(present).when(repository).findById(any());
 
         mockMvc.perform(get("/presents/{id}", newUUID()))
                 .andExpect(status().isOk())
@@ -74,7 +74,7 @@ public class PresentQueryControllerIT {
 
     @Test
     public void findNotExistentPresentReturn404() throws Exception {
-        doReturn(null).when(presentService).find(any());
+        doReturn(null).when(repository).findById(any());
 
         mockMvc.perform(get("/presents/{id}", newUUID()))
                 .andExpect(status().isNotFound());
@@ -82,7 +82,7 @@ public class PresentQueryControllerIT {
 
     @Test
     public void listPresentShouldReturnArray() throws Exception {
-        doReturn(asList(getPresent(), getPresent())).when(presentService).listView();
+        doReturn(asList(getPresent(), getPresent())).when(repository).list();
 
         mockMvc.perform(get("/presents"))
                 .andExpect(status().isOk())

@@ -1,4 +1,4 @@
-package ru.home.shop.domain.model;
+package ru.home.shop.query.present;
 
 import org.junit.Test;
 import ru.home.shop.query.candy.CandyEntry;
@@ -9,10 +9,10 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
-public class PresentTest {
+public class PresentEntryTest {
 
-    private Present getPresent() {
-        Present present = new Present();
+    private PresentEntry getPresent() {
+        PresentEntry present = new PresentEntry();
         present.setName("name");
         present.setPrice(BigDecimal.valueOf(4.2));
 
@@ -40,7 +40,7 @@ public class PresentTest {
 
     @Test
     public void emptyPresentShouldHasZeroCostPrice() {
-        Present emptyPresent = new Present();
+        PresentEntry emptyPresent = new PresentEntry();
 
         BigDecimal costPrice = emptyPresent.computeCost();
 
@@ -49,7 +49,7 @@ public class PresentTest {
 
     @Test
     public void testComputeCostPrice() {
-        Present present = getPresent();
+        PresentEntry present = getPresent();
 
         BigDecimal costPrice = present.computeCost();
 

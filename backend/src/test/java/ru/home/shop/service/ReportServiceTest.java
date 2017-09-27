@@ -1,27 +1,28 @@
-package ru.home.shop.service.impl;
+package ru.home.shop.service;
 
 import org.junit.Test;
-import ru.home.shop.domain.model.Present;
-import ru.home.shop.domain.model.PresentItem;
-import ru.home.shop.domain.model.Report;
+import ru.home.shop.domain.Report;
 import ru.home.shop.query.candy.CandyEntry;
+import ru.home.shop.query.present.PresentEntry;
+import ru.home.shop.query.present.PresentItem;
 
 import java.math.BigDecimal;
 
+import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
-public class ReportServiceImplTest {
+public class ReportServiceTest {
 
     private final static int PUBLIC_REPORT_LENGTH = 11632;
     private final static int PRIVATE_REPORT_LENGTH = 14572;
     private final static String REPORT_NAME = "name 4.2 RUB.docx";
 
-    private final ReportServiceImpl reportService = new ReportServiceImpl();
+    private final ReportService reportService = new ReportService();
 
-    private Present getPresent() {
-        Present present = new Present();
+    private PresentEntry getPresent() {
+        PresentEntry present = new PresentEntry();
         present.setName("name");
         present.setPrice(BigDecimal.valueOf(4.2));
 
@@ -41,8 +42,7 @@ public class ReportServiceImplTest {
         item2.getCandy().setPrice(BigDecimal.valueOf(2.2));
         item2.setCount(6);
 
-        present.getItems().add(item1);
-        present.getItems().add(item2);
+        present.setItems(asList(item1, item2));
 
         return present;
     }

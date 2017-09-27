@@ -22,6 +22,9 @@ public class Candy {
     private BigDecimal price;
     private Boolean active;
 
+    private Candy() {
+    }
+
     public Candy(UUID id, String name, String firm, double order, BigDecimal price, Boolean active) {
         this.id = id;
         this.name = name;

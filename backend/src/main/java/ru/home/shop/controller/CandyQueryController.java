@@ -7,28 +7,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.home.shop.exception.EntityNotFoundException;
 import ru.home.shop.query.candy.CandyEntry;
-import ru.home.shop.service.CandyService;
+import ru.home.shop.query.candy.CandyEntryRepository;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/candies")
 public class CandyQueryController {
 
-    private final CandyService candyService;
+    private final CandyEntryRepository repository;
 
     @Autowired
-    public CandyQueryController(CandyService candyService) {
-        this.candyService = candyService;
+    public CandyQueryController(CandyEntryRepository repository) {
+        this.repository = repository;
     }
 
     @GetMapping(value = "/{id}")
     public CandyEntry findCandy(@PathVariable("id") UUID id) {
-        CandyEntry candy = candyService.find(id);
+        Optional<CandyEntry> candy = repository.findById(id);
 
-        if (candy != null) {
-            return candy;
+        if (candy.isPresent()) {
+            return candy.get();
         } else {
             throw new EntityNotFoundException();
         }
@@ -36,6 +37,6 @@ public class CandyQueryController {
 
     @GetMapping
     public Collection<CandyEntry> listCandy() {
-        return candyService.list();
+        return repository.list();
     }
 }

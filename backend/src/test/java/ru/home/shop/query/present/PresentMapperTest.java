@@ -1,8 +1,7 @@
-package ru.home.shop.domain.repo.jooq;
+package ru.home.shop.query.present;
 
 import org.junit.Test;
 import ru.home.db.tables.records.PresentRecord;
-import ru.home.shop.domain.model.Present;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -35,7 +34,7 @@ public class PresentMapperTest {
 
     @Test
     public void testFullInfoMap() {
-        Present present = mapper.map(getRecord());
+        PresentEntry present = mapper.map(getRecord());
 
         assertEquals(ID, present.getId());
         assertEquals(NAME, present.getName());

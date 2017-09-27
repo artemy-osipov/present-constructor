@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.home.shop.api.candy.CreateCandyCommand;
 import ru.home.shop.api.candy.RemoveCandyCommand;
 import ru.home.shop.api.candy.UpdateCandyCommand;
-import ru.home.shop.controller.dto.UpdateCandyDTO;
+import ru.home.shop.controller.dto.CandyDTO;
 
 import java.net.URI;
 import java.util.UUID;
@@ -29,7 +29,7 @@ public class CandyCommandController {
     }
 
     @PostMapping
-    public Future<ResponseEntity<?>> addCandy(@RequestBody @Validated UpdateCandyDTO dto) {
+    public Future<ResponseEntity<?>> addCandy(@RequestBody @Validated CandyDTO dto) {
         UUID newId = newUUID();
         URI location = fromCurrentRequestUri()
                 .path("/{id}").buildAndExpand(newId).toUri();
@@ -43,7 +43,7 @@ public class CandyCommandController {
     }
 
     @PutMapping(value = "/{id}")
-    public Future<ResponseEntity<?>> editCandy(@PathVariable("id") UUID id, @RequestBody @Validated UpdateCandyDTO dto) {
+    public Future<ResponseEntity<?>> editCandy(@PathVariable("id") UUID id, @RequestBody @Validated CandyDTO dto) {
         UpdateCandyCommand command = new UpdateCandyCommand(id, dto.getName(), dto.getFirm(), dto.getOrder(), dto.getPrice());
 
         return commandGateway.send(command)

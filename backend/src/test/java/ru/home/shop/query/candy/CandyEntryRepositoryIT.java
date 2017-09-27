@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -109,16 +110,18 @@ public class CandyEntryRepositoryIT {
     @Test
     @FlywayTest
     public void findByExistentIdShouldReturnValidEntry() {
-        CandyEntry fromDB = repository.findById(UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c"));
+        Optional<CandyEntry> fromDB = repository.findById(UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c"));
+        CandyEntry candy = fromDB.get();
 
-        assertEquals("someName1", fromDB.getName());
-        assertEquals("someFirm1", fromDB.getFirm());
-        assertEquals(BigDecimal.valueOf(2.5).doubleValue(), fromDB.getPrice().doubleValue(), 0);
-        assertEquals(1.1, fromDB.getOrder(), 0.001);
+        assertEquals("someName1", candy.getName());
+        assertEquals("someFirm1", candy.getFirm());
+        assertEquals(BigDecimal.valueOf(2.5).doubleValue(), candy.getPrice().doubleValue(), 0);
+        assertEquals(1.1, candy.getOrder(), 0.001);
     }
 
     @Test
     public void findByNonexistentIdShouldReturnNull() {
-        assertNull(repository.findById(newUUID()));
+        Optional<CandyEntry> fromDB = repository.findById(newUUID());
+        assertThat(fromDB.isPresent(), equalTo(false));
     }
 }

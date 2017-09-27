@@ -1,18 +1,18 @@
-package ru.home.shop.domain.repo.jooq;
+package ru.home.shop.query.present;
 
 import org.jooq.RecordMapper;
 import ru.home.db.tables.records.PresentRecord;
-import ru.home.shop.domain.model.Present;
+import ru.home.shop.domain.Present;
 
-public class PresentMapper implements RecordMapper<PresentRecord, Present>{
+public class PresentMapper implements RecordMapper<PresentRecord, PresentEntry> {
 
     @Override
-    public Present map(PresentRecord record) {
+    public PresentEntry map(PresentRecord record) {
         if (record == null) {
             return null;
         }
 
-        Present bean = new Present();
+        PresentEntry bean = new PresentEntry();
         bean.setId(record.getId());
         bean.setName(record.getName());
         bean.setPrice(record.getPrice());

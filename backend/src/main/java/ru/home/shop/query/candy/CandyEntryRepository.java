@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.UUID;
 
 import static ru.home.db.tables.Candy.CANDY;
@@ -53,9 +54,9 @@ public class CandyEntryRepository {
                 .fetch(new CandyMapper());
     }
 
-    public CandyEntry findById(UUID id) {
+    public Optional<CandyEntry> findById(UUID id) {
         return dsl.selectFrom(CANDY)
                 .where(CANDY.ID.eq(id))
-                .fetchOne(new CandyMapper());
+                .fetchOptional(new CandyMapper());
     }
 }

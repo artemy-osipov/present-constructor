@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import ru.home.shop.api.candy.CreateCandyCommand;
 import ru.home.shop.api.candy.RemoveCandyCommand;
-import ru.home.shop.controller.dto.UpdateCandyDTO;
+import ru.home.shop.controller.dto.CandyDTO;
 import ru.home.shop.exception.EntityNotFoundException;
 
 import java.math.BigDecimal;
@@ -39,8 +39,8 @@ public class CandyCommandControllerIT {
     @Autowired
     private MockMvc mockMvc;
 
-    private UpdateCandyDTO getUpdateDTO() {
-        UpdateCandyDTO dto = new UpdateCandyDTO();
+    private CandyDTO getUpdateDTO() {
+        CandyDTO dto = new CandyDTO();
         dto.setName("name");
         dto.setFirm("firm");
         dto.setPrice(BigDecimal.valueOf(4.2));
