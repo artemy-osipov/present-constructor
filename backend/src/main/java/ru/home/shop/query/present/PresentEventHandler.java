@@ -26,7 +26,11 @@ public class PresentEventHandler {
         present.setName(event.getName());
         present.setPrice(event.getPrice());
         present.setDate(event.getDate());
-        present.setItems(event.getItems().stream().map(this::map).collect(Collectors.toList()));
+        present.setItems(
+                event.getItems().stream()
+                .map(this::map)
+                .collect(Collectors.toList())
+        );
 
         repository.add(present);
     }

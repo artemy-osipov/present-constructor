@@ -12,7 +12,7 @@ import static ru.home.shop.utils.UuidUtils.newUUID;
 
 public class CandyTest {
 
-    private FixtureConfiguration<Candy> fixture = new AggregateTestFixture<>(Candy.class);
+    private final FixtureConfiguration<Candy> fixture = new AggregateTestFixture<>(Candy.class);
 
     @Test
     public void testCreateCandyCommand() {

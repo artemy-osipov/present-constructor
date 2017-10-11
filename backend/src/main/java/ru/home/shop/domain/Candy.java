@@ -6,32 +6,22 @@ import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.spring.stereotype.Aggregate;
 import ru.home.shop.api.candy.*;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 
 import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
+import static org.axonframework.commandhandling.model.AggregateLifecycle.markDeleted;
 
 @Aggregate
 public class Candy {
 
     @AggregateIdentifier
     private UUID id;
-    private String name;
-    private String firm;
-    private double order;
-    private BigDecimal price;
-    private Boolean active;
 
     private Candy() {
     }
 
-    public Candy(UUID id, String name, String firm, double order, BigDecimal price, Boolean active) {
+    public Candy(UUID id) {
         this.id = id;
-        this.name = name;
-        this.firm = firm;
-        this.order = order;
-        this.price = price;
-        this.active = active;
     }
 
     @CommandHandler
@@ -52,24 +42,10 @@ public class Candy {
     @EventHandler
     private void on(CandyCreatedEvent event) {
         this.id = event.getId();
-        this.active = true;
-        fill(event);
-    }
-
-    @EventHandler
-    private void on(CandyUpdatedEvent event) {
-        fill(event);
-    }
-
-    private void fill(AbstractCandyEvent event) {
-        this.name = event.getName();
-        this.firm = event.getFirm();
-        this.order = event.getOrder();
-        this.price = event.getPrice();
     }
 
     @EventHandler
     private void on(CandyRemovedEvent event) {
-        this.active = false;
+        markDeleted();
     }
 }

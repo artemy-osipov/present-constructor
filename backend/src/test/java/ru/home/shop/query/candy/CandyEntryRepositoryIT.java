@@ -111,8 +111,12 @@ public class CandyEntryRepositoryIT {
     @FlywayTest
     public void findByExistentIdShouldReturnValidEntry() {
         Optional<CandyEntry> fromDB = repository.findById(UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c"));
-        CandyEntry candy = fromDB.get();
 
+        if (!fromDB.isPresent()) {
+            fail();
+        }
+
+        CandyEntry candy = fromDB.get();
         assertEquals("someName1", candy.getName());
         assertEquals("someFirm1", candy.getFirm());
         assertEquals(BigDecimal.valueOf(2.5).doubleValue(), candy.getPrice().doubleValue(), 0);

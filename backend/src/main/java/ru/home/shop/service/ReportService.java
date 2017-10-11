@@ -6,7 +6,6 @@ import fr.opensagres.xdocreport.document.registry.XDocReportRegistry;
 import fr.opensagres.xdocreport.template.IContext;
 import fr.opensagres.xdocreport.template.TemplateEngineKind;
 import org.springframework.stereotype.Service;
-import ru.home.shop.domain.Present;
 import ru.home.shop.domain.Report;
 import ru.home.shop.query.present.PresentEntry;
 

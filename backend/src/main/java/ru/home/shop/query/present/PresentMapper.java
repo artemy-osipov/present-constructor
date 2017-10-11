@@ -2,9 +2,8 @@ package ru.home.shop.query.present;
 
 import org.jooq.RecordMapper;
 import ru.home.db.tables.records.PresentRecord;
-import ru.home.shop.domain.Present;
 
-public class PresentMapper implements RecordMapper<PresentRecord, PresentEntry> {
+class PresentMapper implements RecordMapper<PresentRecord, PresentEntry> {
 
     @Override
     public PresentEntry map(PresentRecord record) {
