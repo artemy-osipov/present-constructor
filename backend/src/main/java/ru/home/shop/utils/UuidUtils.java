@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public class UuidUtils {
 
-    private static TimeBasedGenerator generator = Generators.timeBasedGenerator();
+    private static final TimeBasedGenerator generator = Generators.timeBasedGenerator();
 
     public static UUID newUUID() {
         return generator.generate();

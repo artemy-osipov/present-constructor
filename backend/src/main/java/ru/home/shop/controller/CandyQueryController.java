@@ -5,37 +5,38 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.home.shop.domain.model.Candy;
 import ru.home.shop.exception.EntityNotFoundException;
-import ru.home.shop.service.CandyService;
+import ru.home.shop.query.candy.CandyEntry;
+import ru.home.shop.query.candy.CandyEntryRepository;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/candies")
 public class CandyQueryController {
 
-    private final CandyService candyService;
+    private final CandyEntryRepository repository;
 
     @Autowired
-    public CandyQueryController(CandyService candyService) {
-        this.candyService = candyService;
+    public CandyQueryController(CandyEntryRepository repository) {
+        this.repository = repository;
     }
 
     @GetMapping(value = "/{id}")
-    public Candy findCandy(@PathVariable("id") UUID id) {
-        Candy candy = candyService.find(id);
+    public CandyEntry findCandy(@PathVariable("id") UUID id) {
+        Optional<CandyEntry> candy = repository.findById(id);
 
-        if (candy != null) {
-            return candy;
+        if (candy.isPresent()) {
+            return candy.get();
         } else {
             throw new EntityNotFoundException();
         }
     }
 
     @GetMapping
-    public Collection<Candy> listCandy() {
-        return candyService.list();
+    public Collection<CandyEntry> listCandy() {
+        return repository.list();
     }
 }
