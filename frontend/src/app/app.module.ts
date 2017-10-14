@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MobxAngularModule } from 'mobx-angular';
 
 import { AboutComponent } from 'app/about/about.component';
 import { AppRoutingModule } from 'app/app-routing.module';
@@ -45,6 +46,7 @@ import { ValidationModule } from 'app/shared/validation/index';
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
+    MobxAngularModule,
     NgbModule.forRoot(),
     AppRoutingModule,
     ValidationModule

@@ -1,24 +1,25 @@
 import { Injectable } from '@angular/core';
+import { action, computed, observable } from 'mobx-angular';
 
 import { Candy } from 'app/shared/model/candy.model';
 
 @Injectable()
 export class CandyStore {
-  candies: Candy[] = [];
+  @observable candies: Candy[] = [];
 
-  get orderedCandies(): Candy[] {
+  @computed get orderedCandies(): Candy[] {
     return this.candies.sort((x, y) => x.order - y.order);
   }
 
-  add(candy: Candy) {
+  @action add(candy: Candy) {
     this.candies.push(candy);
   }
 
-  update(candy: Candy) {
+  @action update(candy: Candy) {
     this.candies = this.candies.map(c => c.id === candy.id ? candy : c);
   }
 
-  delete(candy: Candy) {
+  @action delete(candy: Candy) {
     this.candies = this.candies.filter(c => c.id !== candy.id);
   }
 }
