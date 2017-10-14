@@ -16,8 +16,7 @@ import java.util.UUID;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
-import static org.springframework.http.ResponseEntity.created;
-import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequestUri;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
@@ -47,7 +46,8 @@ public class PresentCommandController {
         );
 
         return commandGateway.send(command)
-                .thenApply(o -> created(fromCurrentRequestUri()
+                .thenApply(o -> noContent()
+                        .location(fromCurrentRequestUri()
                         .path("/{id}").buildAndExpand(newId).toUri())
                         .build());
     }
@@ -57,6 +57,6 @@ public class PresentCommandController {
         RemovePresentCommand command = new RemovePresentCommand(id);
 
         return commandGateway.send(command)
-                .thenApply(o -> ok().build());
+                .thenApply(o -> noContent().build());
     }
 }

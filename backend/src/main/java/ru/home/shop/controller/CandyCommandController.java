@@ -13,8 +13,7 @@ import ru.home.shop.controller.dto.CandyDTO;
 import java.util.UUID;
 import java.util.concurrent.Future;
 
-import static org.springframework.http.ResponseEntity.created;
-import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequestUri;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
@@ -35,7 +34,8 @@ public class CandyCommandController {
         CreateCandyCommand command = new CreateCandyCommand(newId, dto.getName(), dto.getFirm(), dto.getOrder(), dto.getPrice());
 
         return commandGateway.send(command)
-                .thenApply(o -> created(fromCurrentRequestUri()
+                .thenApply(o -> noContent()
+                        .location(fromCurrentRequestUri()
                         .path("/{id}").buildAndExpand(newId).toUri())
                         .build());
     }
@@ -47,7 +47,7 @@ public class CandyCommandController {
         UpdateCandyCommand command = new UpdateCandyCommand(id, dto.getName(), dto.getFirm(), dto.getOrder(), dto.getPrice());
 
         return commandGateway.send(command)
-                .thenApply(o -> ok().build());
+                .thenApply(o -> noContent().build());
     }
 
     @DeleteMapping(value = "/{id}")
@@ -55,6 +55,6 @@ public class CandyCommandController {
         RemoveCandyCommand command = new RemoveCandyCommand(id);
 
         return commandGateway.send(command)
-                .thenApply(o -> ok().build());
+                .thenApply(o -> noContent().build());
     }
 }

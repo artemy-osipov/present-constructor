@@ -67,11 +67,11 @@ public class PresentCommandControllerIT {
     }
 
     @Test
-    public void addPresentWithValidEntityShouldReturnId() throws Exception {
+    public void addPresentWithValidEntityShouldReturnLocation() throws Exception {
         mockMvc.perform(async(post("/presents")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJson(getUpdateDTO()))))
-                .andExpect(status().isCreated())
+                .andExpect(status().isNoContent())
                 .andExpect(header().string("Location", notNullValue()));
     }
 
@@ -85,9 +85,9 @@ public class PresentCommandControllerIT {
     }
 
     @Test
-    public void removePresentShouldReturn200() throws Exception {
-        mockMvc.perform(delete("/presents/{id}", newUUID()))
-                .andExpect(status().isOk());
+    public void removePresentShouldReturn2xx() throws Exception {
+        mockMvc.perform(async(delete("/presents/{id}", newUUID())))
+                .andExpect(status().isNoContent());
     }
 
     @Test

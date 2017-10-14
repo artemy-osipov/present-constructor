@@ -55,11 +55,11 @@ public class CandyCommandControllerIT {
     }
 
     @Test
-    public void addCandyWithValidEntityShouldReturnId() throws Exception {
+    public void addCandyWithValidEntityShouldReturnLocation() throws Exception {
         mockMvc.perform(async(post("/candies")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJson(getUpdateDTO()))))
-                .andExpect(status().isCreated())
+                .andExpect(status().isNoContent())
                 .andExpect(header().string("Location", notNullValue()));
     }
 
@@ -73,11 +73,11 @@ public class CandyCommandControllerIT {
     }
 
     @Test
-    public void editCandyWithValidEntityShouldReturn200() throws Exception {
+    public void editCandyWithValidEntityShouldReturn2xx() throws Exception {
         mockMvc.perform(async(put("/candies/{id}", newUUID())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJson(getUpdateDTO()))))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @Test
@@ -100,9 +100,9 @@ public class CandyCommandControllerIT {
     }
 
     @Test
-    public void removeCandyWithValidIdShouldReturn200() throws Exception {
+    public void removeCandyWithValidIdShouldReturn2xx() throws Exception {
         mockMvc.perform(async(delete("/candies/{id}", newUUID())))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @Test
