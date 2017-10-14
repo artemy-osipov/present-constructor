@@ -13,7 +13,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
-public class ReportServiceTest {
+public class ReportServiceIT {
 
     private final static int PUBLIC_REPORT_LENGTH = 11632;
     private final static int PRIVATE_REPORT_LENGTH = 14572;

@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @NonFinal
 @Value
-public class AbstractCandyEvent {
+class AbstractCandyEvent {
 
     UUID id;
     String name;

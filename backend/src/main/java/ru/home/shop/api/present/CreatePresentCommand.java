@@ -4,6 +4,7 @@ import lombok.Value;
 import org.axonframework.commandhandling.TargetAggregateIdentifier;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,5 +15,6 @@ public class CreatePresentCommand {
     UUID presentId;
     String name;
     BigDecimal price;
+    LocalDateTime date;
     List<PresentItem> items;
 }

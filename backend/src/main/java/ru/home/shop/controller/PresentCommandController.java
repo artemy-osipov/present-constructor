@@ -11,6 +11,7 @@ import ru.home.shop.api.present.RemovePresentCommand;
 import ru.home.shop.controller.dto.AddPresentDTO;
 import ru.home.shop.domain.Present;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
@@ -39,6 +40,7 @@ public class PresentCommandController {
                 newId,
                 dto.getName(),
                 dto.getPrice(),
+                LocalDateTime.now(),
                 dto.getItems().stream()
                         .map(i -> new PresentItem(i.getCandy().getId(), i.getCount()))
                         .collect(Collectors.toList())

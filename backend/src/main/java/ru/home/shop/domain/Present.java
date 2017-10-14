@@ -9,7 +9,6 @@ import ru.home.shop.api.present.PresentCreatedEvent;
 import ru.home.shop.api.present.PresentRemovedEvent;
 import ru.home.shop.api.present.RemovePresentCommand;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
@@ -30,7 +29,7 @@ public class Present {
 
     @CommandHandler
     public Present(CreatePresentCommand command) {
-        apply(new PresentCreatedEvent(command.getPresentId(), command.getName(), command.getPrice(), LocalDateTime.now(), command.getItems()));
+        apply(new PresentCreatedEvent(command.getPresentId(), command.getName(), command.getPrice(), command.getDate(), command.getItems()));
     }
 
     @CommandHandler

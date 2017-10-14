@@ -41,7 +41,9 @@ public class CandyCommandController {
     }
 
     @PutMapping(value = "/{id}")
-    public Future<ResponseEntity<?>> editCandy(@PathVariable("id") UUID id, @RequestBody @Validated CandyDTO dto) {
+    public Future<ResponseEntity<?>> editCandy(
+            @PathVariable("id") UUID id,
+            @RequestBody @Validated CandyDTO dto) {
         UpdateCandyCommand command = new UpdateCandyCommand(id, dto.getName(), dto.getFirm(), dto.getOrder(), dto.getPrice());
 
         return commandGateway.send(command)
