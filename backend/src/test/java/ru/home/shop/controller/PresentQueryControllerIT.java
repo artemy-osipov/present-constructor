@@ -65,7 +65,7 @@ public class PresentQueryControllerIT {
         PresentEntry present = getPresent();
         doReturn(present).when(repository).findById(any());
 
-        mockMvc.perform(get("/presents/{id}", newUUID()))
+        mockMvc.perform(get("/api/presents/{id}", newUUID()))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -74,7 +74,7 @@ public class PresentQueryControllerIT {
         PresentEntry present = getPresent();
         doReturn(present).when(repository).findById(any());
 
-        mockMvc.perform(get("/presents/{id}", newUUID()))
+        mockMvc.perform(get("/api/presents/{id}", newUUID()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", equalTo(present.getId().toString())))
                 .andExpect(jsonPath("$.name", equalTo(present.getName())))
@@ -89,7 +89,7 @@ public class PresentQueryControllerIT {
     public void findNotExistentPresentReturn404() throws Exception {
         doReturn(null).when(repository).findById(any());
 
-        mockMvc.perform(get("/presents/{id}", newUUID()))
+        mockMvc.perform(get("/api/presents/{id}", newUUID()))
                 .andExpect(status().isNotFound());
     }
 
@@ -97,7 +97,7 @@ public class PresentQueryControllerIT {
     public void listPresentShouldReturnArray() throws Exception {
         doReturn(asList(getPresent(), getPresent())).when(repository).list();
 
-        mockMvc.perform(get("/presents"))
+        mockMvc.perform(get("/api/presents"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)));
     }

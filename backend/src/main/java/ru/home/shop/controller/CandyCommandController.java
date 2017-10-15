@@ -18,7 +18,7 @@ import static org.springframework.web.servlet.support.ServletUriComponentsBuilde
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
 @RestController
-@RequestMapping("/candies")
+@RequestMapping("/api/candies")
 public class CandyCommandController {
 
     private final CommandGateway commandGateway;

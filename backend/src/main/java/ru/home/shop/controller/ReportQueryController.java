@@ -20,7 +20,7 @@ import java.util.UUID;
 import java.util.function.Function;
 
 @RestController
-@RequestMapping("/presents")
+@RequestMapping("/api/presents")
 public class ReportQueryController {
 
     private final PresentEntryRepository repository;

@@ -52,7 +52,7 @@ public class CandyQueryControllerIT {
         CandyEntry candy = getCandy();
         doReturn(Optional.of(candy)).when(repository).findById(any());
 
-        mockMvc.perform(get("/candies/{id}", candy.getId()))
+        mockMvc.perform(get("/api/candies/{id}", candy.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", equalTo(candy.getId().toString())))
                 .andExpect(jsonPath("$.name", equalTo(candy.getName())))
@@ -66,7 +66,7 @@ public class CandyQueryControllerIT {
     public void findWithAnonymousUserShouldReturn401() throws Exception {
         doReturn(Optional.empty()).when(repository).findById(any());
 
-        mockMvc.perform(get("/candies/{id}", newUUID()))
+        mockMvc.perform(get("/api/candies/{id}", newUUID()))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -74,7 +74,7 @@ public class CandyQueryControllerIT {
     public void findNotExistentCandyShouldReturn404() throws Exception {
         doReturn(Optional.empty()).when(repository).findById(any());
 
-        mockMvc.perform(get("/candies/{id}", newUUID()))
+        mockMvc.perform(get("/api/candies/{id}", newUUID()))
                 .andExpect(status().isNotFound());
     }
 
@@ -82,7 +82,7 @@ public class CandyQueryControllerIT {
     public void listCandyShouldReturnArray() throws Exception {
         doReturn(asList(getCandy(), getCandy())).when(repository).list();
 
-        mockMvc.perform(get("/candies"))
+        mockMvc.perform(get("/api/candies"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)));
     }

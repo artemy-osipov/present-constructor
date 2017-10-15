@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/presents")
+@RequestMapping("/api/presents")
 public class PresentQueryController {
 
     private final PresentEntryRepository repository;

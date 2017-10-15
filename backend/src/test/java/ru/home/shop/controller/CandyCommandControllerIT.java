@@ -60,7 +60,7 @@ public class CandyCommandControllerIT {
     @Test
     @WithAnonymousUser
     public void addCandyWithAnonymousUserShouldReturn401() throws Exception {
-        mockMvc.perform(post("/candies")
+        mockMvc.perform(post("/api/candies")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJson(getUpdateDTO())))
                 .andExpect(status().isUnauthorized());
@@ -68,7 +68,7 @@ public class CandyCommandControllerIT {
 
     @Test
     public void addCandyWithValidEntityShouldReturnLocation() throws Exception {
-        mockMvc.perform(async(post("/candies")
+        mockMvc.perform(async(post("/api/candies")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJson(getUpdateDTO()))))
                 .andExpect(status().isNoContent())
@@ -77,7 +77,7 @@ public class CandyCommandControllerIT {
 
     @Test
     public void addCandyWithNotValidEntityShouldReturnErrors() throws Exception {
-        mockMvc.perform(post("/candies")
+        mockMvc.perform(post("/api/candies")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{}"))
                 .andExpect(status().isBadRequest())
@@ -86,7 +86,7 @@ public class CandyCommandControllerIT {
 
     @Test
     public void editCandyWithValidEntityShouldReturn2xx() throws Exception {
-        mockMvc.perform(async(put("/candies/{id}", newUUID())
+        mockMvc.perform(async(put("/api/candies/{id}", newUUID())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJson(getUpdateDTO()))))
                 .andExpect(status().isNoContent());
@@ -94,7 +94,7 @@ public class CandyCommandControllerIT {
 
     @Test
     public void editCandyWithNotValidEntityShouldReturnErrors() throws Exception {
-        mockMvc.perform(put("/candies/{id}", newUUID())
+        mockMvc.perform(put("/api/candies/{id}", newUUID())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{}"))
                 .andExpect(status().isBadRequest())
@@ -105,7 +105,7 @@ public class CandyCommandControllerIT {
     public void editCandyWithNonExistentIdShouldReturn404() throws Exception {
         when(commandGateway.send(any(CreateCandyCommand.class))).thenReturn(exceptionallyCompletedFuture(new EntityNotFoundException()));
 
-        mockMvc.perform(async(put("/candies/{id}", newUUID())
+        mockMvc.perform(async(put("/api/candies/{id}", newUUID())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJson(getUpdateDTO()))))
                 .andExpect(status().isNotFound());
@@ -113,7 +113,7 @@ public class CandyCommandControllerIT {
 
     @Test
     public void removeCandyWithValidIdShouldReturn2xx() throws Exception {
-        mockMvc.perform(async(delete("/candies/{id}", newUUID())))
+        mockMvc.perform(async(delete("/api/candies/{id}", newUUID())))
                 .andExpect(status().isNoContent());
     }
 
@@ -121,7 +121,7 @@ public class CandyCommandControllerIT {
     public void removeCandyWithNonExistentIdShouldReturn404() throws Exception {
         when(commandGateway.send(any(RemoveCandyCommand.class))).thenReturn(exceptionallyCompletedFuture(new EntityNotFoundException()));
 
-        mockMvc.perform(async(delete("/candies/{id}", newUUID())))
+        mockMvc.perform(async(delete("/api/candies/{id}", newUUID())))
                 .andExpect(status().isNotFound());
     }
 

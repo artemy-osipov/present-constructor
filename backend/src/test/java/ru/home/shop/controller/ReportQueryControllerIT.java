@@ -59,7 +59,7 @@ public class ReportQueryControllerIT {
         doReturn(present).when(repository).findById(any());
         doReturn(report).when(reportService).generatePublicReport(present);
 
-        mockMvc.perform(get("/presents/{id}/public-report", newUUID()))
+        mockMvc.perform(get("/api/presents/{id}/public-report", newUUID()))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -71,7 +71,7 @@ public class ReportQueryControllerIT {
         doReturn(present).when(repository).findById(any());
         doReturn(report).when(reportService).generatePublicReport(present);
 
-        mockMvc.perform(get("/presents/{id}/public-report", newUUID()))
+        mockMvc.perform(get("/api/presents/{id}/public-report", newUUID()))
                 .andExpect(status().isOk())
                 .andExpect(header().string("Content-Disposition", is(CONTENT_DISPOSITION)))
                 .andExpect(content().bytes(report.getContent()));
@@ -81,7 +81,7 @@ public class ReportQueryControllerIT {
     public void publicReportWithNonExistentIdShouldReturn404() throws Exception {
         doReturn(null).when(repository).findById(any());
 
-        mockMvc.perform(get("/presents/{id}/public-report", newUUID()))
+        mockMvc.perform(get("/api/presents/{id}/public-report", newUUID()))
                 .andExpect(status().isNotFound());
     }
 
@@ -93,7 +93,7 @@ public class ReportQueryControllerIT {
         doReturn(present).when(repository).findById(any());
         doReturn(report).when(reportService).generatePrivateReport(present);
 
-        mockMvc.perform(get("/presents/{id}/private-report", newUUID()))
+        mockMvc.perform(get("/api/presents/{id}/private-report", newUUID()))
                 .andExpect(status().isOk())
                 .andExpect(header().string("Content-Disposition", is(CONTENT_DISPOSITION)))
                 .andExpect(content().bytes(report.getContent()));
@@ -103,7 +103,7 @@ public class ReportQueryControllerIT {
     public void privateReportWithNonExistentIdShouldReturn404() throws Exception {
         doReturn(null).when(repository).findById(any());
 
-        mockMvc.perform(get("/presents/{id}/private-report", newUUID()))
+        mockMvc.perform(get("/api/presents/{id}/private-report", newUUID()))
                 .andExpect(status().isNotFound());
     }
 }

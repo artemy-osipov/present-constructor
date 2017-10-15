@@ -7,7 +7,7 @@ import { environment } from 'environments/environment';
 
 @Injectable()
 export class PresentService {
-  presentHost = environment.apiUrl + '/presents/';
+  presentHost = environment.apiUrl + '/api/presents/';
 
   constructor(private http: HttpClient) { }
 

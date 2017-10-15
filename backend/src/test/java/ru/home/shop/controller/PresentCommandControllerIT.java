@@ -72,7 +72,7 @@ public class PresentCommandControllerIT {
     @Test
     @WithAnonymousUser
     public void addPresentWithAnonymousUserShouldReturn401() throws Exception {
-        mockMvc.perform(post("/presents")
+        mockMvc.perform(post("/api/presents")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJson(getUpdateDTO())))
                 .andExpect(status().isUnauthorized());
@@ -80,7 +80,7 @@ public class PresentCommandControllerIT {
 
     @Test
     public void addPresentWithValidEntityShouldReturnLocation() throws Exception {
-        mockMvc.perform(async(post("/presents")
+        mockMvc.perform(async(post("/api/presents")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJson(getUpdateDTO()))))
                 .andExpect(status().isNoContent())
@@ -89,7 +89,7 @@ public class PresentCommandControllerIT {
 
     @Test
     public void addPresentWithNotValidEntityShouldReturnErrors() throws Exception {
-        mockMvc.perform(post("/presents")
+        mockMvc.perform(post("/api/presents")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{}"))
                 .andExpect(status().isBadRequest())
@@ -98,7 +98,7 @@ public class PresentCommandControllerIT {
 
     @Test
     public void removePresentShouldReturn2xx() throws Exception {
-        mockMvc.perform(async(delete("/presents/{id}", newUUID())))
+        mockMvc.perform(async(delete("/api/presents/{id}", newUUID())))
                 .andExpect(status().isNoContent());
     }
 
@@ -106,7 +106,7 @@ public class PresentCommandControllerIT {
     public void removePresentWithNonexistentIdShouldReturn404() throws Exception {
         when(commandGateway.send(any(RemovePresentCommand.class))).thenReturn(exceptionallyCompletedFuture(new EntityNotFoundException()));
 
-        mockMvc.perform(async(delete("/presents/{id}", newUUID())))
+        mockMvc.perform(async(delete("/api/presents/{id}", newUUID())))
                 .andExpect(status().isNotFound());
     }
 
