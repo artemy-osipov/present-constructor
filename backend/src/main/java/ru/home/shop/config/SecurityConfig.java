@@ -1,5 +1,6 @@
 package ru.home.shop.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +21,15 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 @EnableWebSecurity
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private static final String SIGNING_KEY = "secret_pass";
+
+    @Value("${security.user.name}")
+    private String userName;
+
+    @Value("${security.user.password}")
+    private String userPassword;
+
+    @Value("${security.signing.private}")
+    private String signingKey;
 
     @Bean
     @Override
@@ -31,8 +40,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("test")
-                .password("123")
+                .withUser(userName)
+                .password(userPassword)
                 .authorities("USER");
     }
 
@@ -51,20 +60,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public JwtAccessTokenConverter accessTokenConverter() {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setSigningKey(SIGNING_KEY);
+        converter.setSigningKey(signingKey);
         return converter;
     }
 
     @Bean
-    public TokenStore tokenStore() {
-        return new JwtTokenStore(accessTokenConverter());
+    public TokenStore tokenStore(JwtAccessTokenConverter accessTokenConverter) {
+        return new JwtTokenStore(accessTokenConverter);
     }
 
     @Bean
     @Primary
-    public DefaultTokenServices tokenServices() {
+    public DefaultTokenServices tokenServices(TokenStore tokenStore) {
         DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
-        defaultTokenServices.setTokenStore(tokenStore());
+        defaultTokenServices.setTokenStore(tokenStore);
         defaultTokenServices.setSupportRefreshToken(true);
         return defaultTokenServices;
     }

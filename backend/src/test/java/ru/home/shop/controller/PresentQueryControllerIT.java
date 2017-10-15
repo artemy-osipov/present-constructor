@@ -5,6 +5,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.home.shop.query.candy.CandyEntry;
@@ -25,7 +27,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(PresentQueryController.class)
+@WebMvcTest(value = PresentQueryController.class)
+@WithMockUser
 public class PresentQueryControllerIT {
 
     @MockBean
@@ -54,6 +57,16 @@ public class PresentQueryControllerIT {
         present.getItems().add(item2);
 
         return present;
+    }
+
+    @Test
+    @WithAnonymousUser
+    public void findWithAnonymousUserShouldReturn401() throws Exception {
+        PresentEntry present = getPresent();
+        doReturn(present).when(repository).findById(any());
+
+        mockMvc.perform(get("/presents/{id}", newUUID()))
+                .andExpect(status().isUnauthorized());
     }
 
     @Test

@@ -1,6 +1,7 @@
 package ru.home.shop.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -18,11 +19,12 @@ import static java.util.Arrays.asList;
 @EnableAuthorizationServer
 @EnableResourceServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
-    private static final String CLIENT_ID = "frontend_id";
-    private static final String CLIENT_PASS = "frontend_pass";
-    private static final String GRANT_TYPE = "password";
-    private static final String SCOPE_READ = "read";
-    private static final String SCOPE_WRITE = "write";
+
+    @Value("${security.oauth2.client.id}")
+    private String frontendId;
+
+    @Value("${security.oauth2.client.password}")
+    private String frontendPassword;
 
     @Autowired
     private TokenStore tokenStore;
@@ -37,11 +39,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients
                 .inMemory()
-                .withClient(CLIENT_ID)
-                .secret(CLIENT_PASS)
-                .authorizedGrantTypes(GRANT_TYPE)
-                .scopes(SCOPE_READ, SCOPE_WRITE)
-                .resourceIds("asd");
+                .withClient(frontendId)
+                .secret(frontendPassword)
+                .authorizedGrantTypes("password")
+                .scopes("read", "write");
     }
 
 

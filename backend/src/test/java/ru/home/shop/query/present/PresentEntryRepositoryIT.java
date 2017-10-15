@@ -74,7 +74,7 @@ public class PresentEntryRepositoryIT {
     }
 
     @Test(expected = DataIntegrityViolationException.class)
-    public void add_emptyPrice_shouldThrowException() {
+    public void addInvalidPresentShouldThrowException() {
         PresentEntry present = getPresent();
         present.setPrice(null);
 
