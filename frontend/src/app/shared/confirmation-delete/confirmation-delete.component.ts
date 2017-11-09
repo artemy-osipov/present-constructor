@@ -3,8 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-confirmation-delete',
-  templateUrl: './confirmation-delete.component.html',
-  styleUrls: ['./confirmation-delete.component.css']
+  templateUrl: './confirmation-delete.component.html'
 })
 export class ConfirmationDeleteComponent {
 

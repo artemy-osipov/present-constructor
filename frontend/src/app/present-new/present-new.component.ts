@@ -5,12 +5,11 @@ import { ActivatedRoute } from '@angular/router';
 import { Candy } from 'app/shared/model/candy.model';
 import { Present, PresentItem } from 'app/shared/model/present.model';
 import { PresentService } from 'app/shared/services/present.service';
-import { NumberValidators, StringValidators } from 'app/shared/validation/index';
+import { FormHelper, NumberValidators, StringValidators } from 'app/shared/validation';
 
 @Component({
   selector: 'app-present-new',
-  templateUrl: './present-new.component.html',
-  styleUrls: ['./present-new.component.css']
+  templateUrl: './present-new.component.html'
 })
 export class PresentNewComponent {
   form: FormGroup;
@@ -67,7 +66,7 @@ export class PresentNewComponent {
     if (this.form.valid) {
       this.add(this.form.value);
     } else {
-      this.markFormContolsAsDirty(this.form);
+      FormHelper.markFormContolsAsDirty(this.form);
     }
   }
 
@@ -82,13 +81,5 @@ export class PresentNewComponent {
         setTimeout(() => this.successAdd = false, 5000);
       }
     );
-  }
-
-  private markFormContolsAsDirty(form: FormGroup) {
-    for (const key in form.controls) {
-      if (form.controls.hasOwnProperty(key)) {
-        form.controls[key].markAsDirty();
-      }
-    }
   }
 }

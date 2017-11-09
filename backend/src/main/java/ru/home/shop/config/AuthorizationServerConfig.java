@@ -21,9 +21,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Value("${security.oauth2.client.id}")
     private String frontendId;
 
-    @Value("${security.oauth2.client.password}")
-    private String frontendPassword;
-
     @Autowired
     private TokenStore tokenStore;
 
@@ -38,7 +35,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         clients
                 .inMemory()
                 .withClient(frontendId)
-                .secret(frontendPassword)
                 .authorizedGrantTypes("password")
                 .scopes("read", "write");
     }

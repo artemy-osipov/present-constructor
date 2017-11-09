@@ -5,12 +5,11 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Candy } from 'app/shared/model/candy.model';
 import { CandyService } from 'app/shared/services/candy.service';
 import { CandyStore } from 'app/shared/services/candy.store';
-import { NumberValidators, StringValidators } from 'app/shared/validation/index';
+import { FormHelper, NumberValidators, StringValidators } from 'app/shared/validation';
 
 @Component({
   selector: 'app-candy-edit',
-  templateUrl: './candy-edit.component.html',
-  styleUrls: ['./candy-edit.component.css']
+  templateUrl: './candy-edit.component.html'
 })
 export class CandyEditComponent {
   Action = Action;
@@ -49,15 +48,7 @@ export class CandyEditComponent {
       }
       this.modal.close();
     } else {
-      this.markFormContolsAsDirty(this.form);
-    }
-  }
-
-  private markFormContolsAsDirty(form: FormGroup) {
-    for (const key in form.controls) {
-      if (form.controls.hasOwnProperty(key)) {
-        form.controls[key].markAsDirty();
-      }
+      FormHelper.markFormContolsAsDirty(this.form);
     }
   }
 
