@@ -38,7 +38,7 @@ public class JacksonConfig {
             public String deserialize(JsonParser jsonParser, DeserializationContext ctx) throws IOException {
                 String value = jsonParser.getValueAsString();
 
-                return StringUtils.hasText(value) ? StringUtils.trimAllWhitespace(value) : null;
+                return StringUtils.hasText(value) ? StringUtils.trimWhitespace(value) : null;
             }
         });
 
