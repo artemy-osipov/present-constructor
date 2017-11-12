@@ -5,5 +5,10 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8080'
+  appId: 'frontend_id',
+  apiHost: 'localhost:8080',
+
+  get apiUrl() {
+    return 'http://' + this.apiHost;
+  }
 };

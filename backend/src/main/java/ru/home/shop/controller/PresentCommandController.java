@@ -21,7 +21,7 @@ import static org.springframework.web.servlet.support.ServletUriComponentsBuilde
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
 @RestController
-@RequestMapping("/presents")
+@RequestMapping("/api/presents")
 public class PresentCommandController {
 
     private final CommandGateway commandGateway;

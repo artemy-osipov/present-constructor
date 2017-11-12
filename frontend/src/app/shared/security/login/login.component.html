@@ -1,0 +1,14 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <ngb-alert *ngIf="error !== null" type="danger" (close)="error = null">{{ error }}</ngb-alert>
+  <div class="form-group">
+    <label for="login">Логин</label>
+    <input class="form-control" id="login" formControlName="login" appFormControl>
+  </div>
+  <div class="form-group">
+    <label for="password">Пароль</label>
+    <input type="password" class="form-control" id="password" formControlName="password" appFormControl>
+  </div>
+  <div class="form-group">
+    <button [disabled]="loading" class="btn btn-outline-dark">Войти</button>
+  </div>
+</form>

@@ -8,37 +8,37 @@ import { environment } from 'environments/environment';
 
 @Injectable()
 export class CandyService {
-  candyHost = environment.apiUrl + '/candies/';
+  candyResource = environment.apiUrl + '/api/candies/';
 
   constructor(private http: HttpClient) { }
 
   add(candy: Candy): Observable<string> {
-    return this.http.post(this.candyHost, candy, { observe: 'response' })
+    return this.http.post(this.candyResource, candy, { observe: 'response' })
       .map(resp => this.getIdFromLocation(resp.headers.get('Location'))
     );
   }
 
   private getIdFromLocation(location: string): string {
-    if (location.search(this.candyHost) === 0) {
-      return location.substring(this.candyHost.length);
+    if (location.search(this.candyResource) === 0) {
+      return location.substring(this.candyResource.length);
     }
   }
 
   get(id: string): Observable<Candy> {
-    return this.http.get(this.candyHost + id)
+    return this.http.get(this.candyResource + id)
       .map(res => new Candy(res));
   }
 
   list(): Observable<Candy[]> {
-    return this.http.get<Object[]>(this.candyHost)
+    return this.http.get<Object[]>(this.candyResource)
       .map(res => res.map(data => new Candy(data)));
   }
 
   update(candy: Candy): Observable<Object> {
-    return this.http.put(this.candyHost + candy.id, candy);
+    return this.http.put(this.candyResource + candy.id, candy);
   }
 
   delete(candy: Candy): Observable<Object> {
-    return this.http.delete(this.candyHost + candy.id);
+    return this.http.delete(this.candyResource + candy.id);
   }
 }

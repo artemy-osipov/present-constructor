@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
@@ -33,6 +35,7 @@ import static ru.home.shop.utils.UuidUtils.newUUID;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(PresentCommandController.class)
+@WithMockUser
 public class PresentCommandControllerIT {
 
     @MockBean
@@ -67,8 +70,17 @@ public class PresentCommandControllerIT {
     }
 
     @Test
+    @WithAnonymousUser
+    public void addPresentWithAnonymousUserShouldReturn401() throws Exception {
+        mockMvc.perform(post("/api/presents")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(getUpdateDTO())))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
     public void addPresentWithValidEntityShouldReturnLocation() throws Exception {
-        mockMvc.perform(async(post("/presents")
+        mockMvc.perform(async(post("/api/presents")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJson(getUpdateDTO()))))
                 .andExpect(status().isNoContent())
@@ -77,7 +89,7 @@ public class PresentCommandControllerIT {
 
     @Test
     public void addPresentWithNotValidEntityShouldReturnErrors() throws Exception {
-        mockMvc.perform(post("/presents")
+        mockMvc.perform(post("/api/presents")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{}"))
                 .andExpect(status().isBadRequest())
@@ -86,7 +98,7 @@ public class PresentCommandControllerIT {
 
     @Test
     public void removePresentShouldReturn2xx() throws Exception {
-        mockMvc.perform(async(delete("/presents/{id}", newUUID())))
+        mockMvc.perform(async(delete("/api/presents/{id}", newUUID())))
                 .andExpect(status().isNoContent());
     }
 
@@ -94,7 +106,7 @@ public class PresentCommandControllerIT {
     public void removePresentWithNonexistentIdShouldReturn404() throws Exception {
         when(commandGateway.send(any(RemovePresentCommand.class))).thenReturn(exceptionallyCompletedFuture(new EntityNotFoundException()));
 
-        mockMvc.perform(async(delete("/presents/{id}", newUUID())))
+        mockMvc.perform(async(delete("/api/presents/{id}", newUUID())))
                 .andExpect(status().isNotFound());
     }
 

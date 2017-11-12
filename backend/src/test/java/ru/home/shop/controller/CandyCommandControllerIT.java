@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
@@ -31,6 +33,7 @@ import static ru.home.shop.utils.UuidUtils.newUUID;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(CandyCommandController.class)
+@WithMockUser
 public class CandyCommandControllerIT {
 
     @MockBean
@@ -55,8 +58,17 @@ public class CandyCommandControllerIT {
     }
 
     @Test
+    @WithAnonymousUser
+    public void addCandyWithAnonymousUserShouldReturn401() throws Exception {
+        mockMvc.perform(post("/api/candies")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(getUpdateDTO())))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
     public void addCandyWithValidEntityShouldReturnLocation() throws Exception {
-        mockMvc.perform(async(post("/candies")
+        mockMvc.perform(async(post("/api/candies")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJson(getUpdateDTO()))))
                 .andExpect(status().isNoContent())
@@ -65,7 +77,7 @@ public class CandyCommandControllerIT {
 
     @Test
     public void addCandyWithNotValidEntityShouldReturnErrors() throws Exception {
-        mockMvc.perform(post("/candies")
+        mockMvc.perform(post("/api/candies")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{}"))
                 .andExpect(status().isBadRequest())
@@ -74,7 +86,7 @@ public class CandyCommandControllerIT {
 
     @Test
     public void editCandyWithValidEntityShouldReturn2xx() throws Exception {
-        mockMvc.perform(async(put("/candies/{id}", newUUID())
+        mockMvc.perform(async(put("/api/candies/{id}", newUUID())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJson(getUpdateDTO()))))
                 .andExpect(status().isNoContent());
@@ -82,7 +94,7 @@ public class CandyCommandControllerIT {
 
     @Test
     public void editCandyWithNotValidEntityShouldReturnErrors() throws Exception {
-        mockMvc.perform(put("/candies/{id}", newUUID())
+        mockMvc.perform(put("/api/candies/{id}", newUUID())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{}"))
                 .andExpect(status().isBadRequest())
@@ -93,7 +105,7 @@ public class CandyCommandControllerIT {
     public void editCandyWithNonExistentIdShouldReturn404() throws Exception {
         when(commandGateway.send(any(CreateCandyCommand.class))).thenReturn(exceptionallyCompletedFuture(new EntityNotFoundException()));
 
-        mockMvc.perform(async(put("/candies/{id}", newUUID())
+        mockMvc.perform(async(put("/api/candies/{id}", newUUID())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJson(getUpdateDTO()))))
                 .andExpect(status().isNotFound());
@@ -101,7 +113,7 @@ public class CandyCommandControllerIT {
 
     @Test
     public void removeCandyWithValidIdShouldReturn2xx() throws Exception {
-        mockMvc.perform(async(delete("/candies/{id}", newUUID())))
+        mockMvc.perform(async(delete("/api/candies/{id}", newUUID())))
                 .andExpect(status().isNoContent());
     }
 
@@ -109,7 +121,7 @@ public class CandyCommandControllerIT {
     public void removeCandyWithNonExistentIdShouldReturn404() throws Exception {
         when(commandGateway.send(any(RemoveCandyCommand.class))).thenReturn(exceptionallyCompletedFuture(new EntityNotFoundException()));
 
-        mockMvc.perform(async(delete("/candies/{id}", newUUID())))
+        mockMvc.perform(async(delete("/api/candies/{id}", newUUID())))
                 .andExpect(status().isNotFound());
     }
 

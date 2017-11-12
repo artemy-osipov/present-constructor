@@ -5,6 +5,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.home.shop.query.candy.CandyEntry;
@@ -25,6 +27,7 @@ import static ru.home.shop.utils.UuidUtils.newUUID;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(CandyQueryController.class)
+@WithMockUser
 public class CandyQueryControllerIT {
 
     @MockBean
@@ -49,7 +52,7 @@ public class CandyQueryControllerIT {
         CandyEntry candy = getCandy();
         doReturn(Optional.of(candy)).when(repository).findById(any());
 
-        mockMvc.perform(get("/candies/{id}", candy.getId()))
+        mockMvc.perform(get("/api/candies/{id}", candy.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", equalTo(candy.getId().toString())))
                 .andExpect(jsonPath("$.name", equalTo(candy.getName())))
@@ -59,10 +62,19 @@ public class CandyQueryControllerIT {
     }
 
     @Test
+    @WithAnonymousUser
+    public void findWithAnonymousUserShouldReturn401() throws Exception {
+        doReturn(Optional.empty()).when(repository).findById(any());
+
+        mockMvc.perform(get("/api/candies/{id}", newUUID()))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
     public void findNotExistentCandyShouldReturn404() throws Exception {
         doReturn(Optional.empty()).when(repository).findById(any());
 
-        mockMvc.perform(get("/candies/{id}", newUUID()))
+        mockMvc.perform(get("/api/candies/{id}", newUUID()))
                 .andExpect(status().isNotFound());
     }
 
@@ -70,7 +82,7 @@ public class CandyQueryControllerIT {
     public void listCandyShouldReturnArray() throws Exception {
         doReturn(asList(getCandy(), getCandy())).when(repository).list();
 
-        mockMvc.perform(get("/candies"))
+        mockMvc.perform(get("/api/candies"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)));
     }

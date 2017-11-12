@@ -7,8 +7,7 @@ import { CandyStore } from 'app/shared/services/candy.store';
 
 @Component({
   selector: 'app-present-new-select-candy',
-  templateUrl: './present-new-select-candy.component.html',
-  styleUrls: ['./present-new-select-candy.component.css']
+  templateUrl: './present-new-select-candy.component.html'
 })
 export class PresentNewSelectCandyComponent {
   @Input() present = new Present();

@@ -7,8 +7,7 @@ import { PresentService } from 'app/shared/services/present.service';
 
 @Component({
   selector: 'app-present-detail',
-  templateUrl: './present-detail.component.html',
-  styleUrls: ['./present-detail.component.css']
+  templateUrl: './present-detail.component.html'
 })
 export class PresentDetailComponent  {
   present: Present = new Present();

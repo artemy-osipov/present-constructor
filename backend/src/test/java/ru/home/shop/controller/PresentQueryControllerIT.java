@@ -5,6 +5,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.home.shop.query.candy.CandyEntry;
@@ -25,7 +27,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(PresentQueryController.class)
+@WebMvcTest(value = PresentQueryController.class)
+@WithMockUser
 public class PresentQueryControllerIT {
 
     @MockBean
@@ -57,11 +60,21 @@ public class PresentQueryControllerIT {
     }
 
     @Test
+    @WithAnonymousUser
+    public void findWithAnonymousUserShouldReturn401() throws Exception {
+        PresentEntry present = getPresent();
+        doReturn(present).when(repository).findById(any());
+
+        mockMvc.perform(get("/api/presents/{id}", newUUID()))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
     public void findExistentPresentShouldReturnIt() throws Exception {
         PresentEntry present = getPresent();
         doReturn(present).when(repository).findById(any());
 
-        mockMvc.perform(get("/presents/{id}", newUUID()))
+        mockMvc.perform(get("/api/presents/{id}", newUUID()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", equalTo(present.getId().toString())))
                 .andExpect(jsonPath("$.name", equalTo(present.getName())))
@@ -76,7 +89,7 @@ public class PresentQueryControllerIT {
     public void findNotExistentPresentReturn404() throws Exception {
         doReturn(null).when(repository).findById(any());
 
-        mockMvc.perform(get("/presents/{id}", newUUID()))
+        mockMvc.perform(get("/api/presents/{id}", newUUID()))
                 .andExpect(status().isNotFound());
     }
 
@@ -84,7 +97,7 @@ public class PresentQueryControllerIT {
     public void listPresentShouldReturnArray() throws Exception {
         doReturn(asList(getPresent(), getPresent())).when(repository).list();
 
-        mockMvc.perform(get("/presents"))
+        mockMvc.perform(get("/api/presents"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)));
     }

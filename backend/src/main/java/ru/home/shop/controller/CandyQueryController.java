@@ -14,7 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/candies")
+@RequestMapping("/api/candies")
 public class CandyQueryController {
 
     private final CandyEntryRepository repository;
