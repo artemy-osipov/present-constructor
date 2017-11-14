@@ -12,7 +12,7 @@ import { PresentService } from 'app/shared/services/present.service';
 export class PresentDetailComponent  {
   present: Present = new Present();
 
-  constructor(private route: ActivatedRoute, private presentSerive: PresentService) {
+  constructor(private route: ActivatedRoute, public presentSerive: PresentService) {
     this.route.params.subscribe(params => {
       presentSerive.get(params['id']).subscribe(present => {
         this.present = new Present(present);

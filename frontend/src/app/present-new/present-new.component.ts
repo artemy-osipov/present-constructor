@@ -48,12 +48,12 @@ export class PresentNewComponent {
     });
   }
 
-  private addItem(candy: Candy, count?: number) {
+  addItem(candy: Candy, count?: number) {
     this.itemsForm.push(this.buildItemForm(candy));
     this.present.items.push(new PresentItem(candy, count || 1));
   }
 
-  private removeItem(candy: Candy) {
+  removeItem(candy: Candy) {
     const index = this.present.items.findIndex(item => {
       return item.candy.id === candy.id;
     });

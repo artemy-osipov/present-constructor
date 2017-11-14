@@ -17,7 +17,7 @@ export class CandyEditComponent {
   form: FormGroup;
   candy: Candy;
 
-  constructor(private modal: NgbActiveModal, private fb: FormBuilder, private candyService: CandyService, private candyStore: CandyStore) {
+  constructor(public modal: NgbActiveModal, private fb: FormBuilder, private candyService: CandyService, private candyStore: CandyStore) {
     this.form = fb.group({
       name: ['', [StringValidators.notEmpty, StringValidators.maxLength(50)]],
       firm: ['', [StringValidators.notEmpty, StringValidators.maxLength(50)]],
