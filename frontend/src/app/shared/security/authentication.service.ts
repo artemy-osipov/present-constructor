@@ -7,7 +7,7 @@ import { environment } from 'environments/environment';
 
 @Injectable()
 export class AuthenticationService {
-  authTokenResource = environment.apiUrl + '/oauth/token';
+  authTokenResource = environment.apiUrl + 'oauth/token';
 
   constructor(private http: HttpClient) {
   }

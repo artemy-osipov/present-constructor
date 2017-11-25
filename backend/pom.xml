@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ru.home.shop</groupId>
-    <artifactId>presents</artifactId>
+    <artifactId>present-constructor-backend</artifactId>
     <version>1.3.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
@@ -26,6 +26,7 @@
         <xdocreport.version>1.0.6</xdocreport.version>
         <uuid-generator.version>3.1.4</uuid-generator.version>
         <axon.version>3.0.6</axon.version>
+        <dockerfile.plugin.version>1.3.6</dockerfile.plugin.version>
     </properties>
 
     <profiles>
@@ -185,6 +186,19 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>${dockerfile.plugin.version}</version>
+                <configuration>
+                    <repository>ir2sora/${project.artifactId}</repository>
+                    <tag>${project.version}</tag>
+                    <buildArgs>
+                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                    </buildArgs>
+                </configuration>
             </plugin>
 
             <plugin>

@@ -42,4 +42,3 @@ export class SecurityModule { }
 export function getJwtToken(): string {
   return localStorage.getItem(TOKEN_NAME);
 }
-

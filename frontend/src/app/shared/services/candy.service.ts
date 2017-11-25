@@ -8,7 +8,7 @@ import { environment } from 'environments/environment';
 
 @Injectable()
 export class CandyService {
-  candyResource = environment.apiUrl + '/api/candies/';
+  candyResource = environment.apiUrl + 'api/candies/';
 
   constructor(private http: HttpClient) { }
 
