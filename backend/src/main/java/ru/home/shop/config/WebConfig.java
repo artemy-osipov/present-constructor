@@ -17,6 +17,7 @@ public class WebConfig {
         cors.setAllowCredentials(true);
         cors.addAllowedOrigin("*");
         cors.addAllowedHeader("*");
+        cors.addExposedHeader("Location");
         cors.addAllowedMethod("*");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

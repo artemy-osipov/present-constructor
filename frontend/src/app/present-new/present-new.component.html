@@ -21,12 +21,12 @@
           <th>Количество</th>
         </tr>
 
-        <tr *ngFor="let item of present.items;let i = index" [formGroupName]="i">
-          <td>{{item.candy.name}}</td>
-          <td>{{item.candy.firm}}</td>
-          <td>{{item.candy.price}}</td>
+        <tr *ngFor="let item of itemsForm.controls; let i = index" [formGroupName]="i">
+          <td>{{item.controls.candy.controls.name.value}}</td>
+          <td>{{item.controls.candy.controls.firm.value}}</td>
+          <td>{{item.controls.candy.controls.price.value}}</td>
           <td>
-            <input type="number" min="1" class="form-control" formControlName="count" [(ngModel)]="item.count" appFormControl>
+            <input type="number" min="1" class="form-control" formControlName="count" appFormControl>
           </td>
         </tr>
         <tr>

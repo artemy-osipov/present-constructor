@@ -13,13 +13,10 @@ import { FormHelper, NumberValidators, StringValidators } from 'app/shared/valid
 })
 export class PresentNewComponent {
   form: FormGroup;
-  itemsForm: FormArray;
-  present = new Present();
   successAdd = false;
 
   constructor(private route: ActivatedRoute, private fb: FormBuilder, private presentService: PresentService) {
     this.form = this.buildForm();
-    this.itemsForm = this.form.get('items') as FormArray;
 
     this.route.params.subscribe(params => {
       const source = params['source'];
@@ -31,6 +28,14 @@ export class PresentNewComponent {
     });
   }
 
+  get itemsForm(): FormArray {
+    return this.form.get('items') as FormArray;
+  }
+
+  get present(): Present {
+    return new Present(this.form.value);
+  }
+
   private buildForm() {
     return this.fb.group({
       name: ['', [StringValidators.notEmpty, StringValidators.maxLength(50)]],
@@ -39,32 +44,28 @@ export class PresentNewComponent {
     });
   }
 
-  private buildItemForm(candy: Candy) {
+  private buildItemForm(candy: Candy, count: number) {
     return this.fb.group({
-      count: ['', [Validators.required, Validators.min(1), NumberValidators.maxFractionLength(0)]],
-      candy: this.fb.group({
-        id: [candy.id]
-      })
+      count: [count, [Validators.required, Validators.min(1), NumberValidators.maxFractionLength(0)]],
+      candy: this.fb.group(candy)
     });
   }
 
   addItem(candy: Candy, count?: number) {
-    this.itemsForm.push(this.buildItemForm(candy));
-    this.present.items.push(new PresentItem(candy, count || 1));
+    this.itemsForm.push(this.buildItemForm(candy, count || 1));
   }
 
   removeItem(candy: Candy) {
-    const index = this.present.items.findIndex(item => {
-      return item.candy.id === candy.id;
+    const index = this.itemsForm.controls.findIndex(item => {
+      return item.value.candy.id === candy.id;
     });
 
     this.itemsForm.removeAt(index);
-    this.present.items.splice(index, 1);
   }
 
   onSubmit() {
     if (this.form.valid) {
-      this.add(this.form.value);
+      this.add(this.present);
     } else {
       FormHelper.markFormContolsAsDirty(this.form);
     }
@@ -73,7 +74,6 @@ export class PresentNewComponent {
   private add(present: Present) {
     this.presentService.add(present).subscribe(
       () => {
-        this.present = new Present();
         this.form.reset();
         this.form.controls['items'] = this.fb.array([]);
 
