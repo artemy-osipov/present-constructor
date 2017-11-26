@@ -9,7 +9,8 @@ import { FormHelper, NumberValidators, StringValidators } from 'app/shared/valid
 
 @Component({
   selector: 'app-present-new',
-  templateUrl: './present-new.component.html'
+  templateUrl: './present-new.component.html',
+  styleUrls: ['./present-new.component.css']
 })
 export class PresentNewComponent {
   form: FormGroup;
