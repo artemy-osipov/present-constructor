@@ -1,0 +1,37 @@
+<h1>Конфеты</h1>
+<div class="row">
+  <div class="col-md-6">
+    <button class="btn btn-outline-dark" type="button" (click)="openAddForm()">
+      <i class="fa fa-plus" aria-hidden="true"></i> Добавить
+    </button>
+  </div>
+</div>
+<table class="table table-striped" *mobxAutorun>
+  <thead>
+    <tr>
+      <th>Название</th>
+      <th>Производитель</th>
+      <th>Цена</th>
+      <th>Порядок</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let candy of candyStore.orderedCandies">
+      <td>{{candy.name}}</td>
+      <td>{{candy.firm}}</td>
+      <td>{{candy.price}}</td>
+      <td>{{candy.order}}</td>
+      <td>
+        <button class="btn btn-icon btn-outline-dark" ngbTooltip="Изменить" type="button" (click)="openUpdateForm(candy)">
+          <i class="fa fa-pencil" aria-hidden="true"></i>
+        </button>
+        <button class="btn btn-icon btn-outline-dark" ngbTooltip="Удалить" type="button" (click)="openDeleteForm(candy)">
+          <i class="fa fa-trash" aria-hidden="true"></i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<app-link-border></app-link-border>

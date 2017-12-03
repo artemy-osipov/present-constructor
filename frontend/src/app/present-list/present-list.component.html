@@ -1,0 +1,36 @@
+<h1>Подарки</h1>
+<div class="row">
+  <div class="col-md-6">
+    <button class="btn btn-outline-dark" type="button" routerLink="/presents/new">
+      <i class="fa fa-plus" aria-hidden="true"></i> Добавить
+    </button>
+  </div>
+</div>
+<table class="table table-striped" *mobxAutorun>
+  <thead>
+    <tr>
+      <th>Название</th>
+      <th>Цена</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let present of presentStore.orderedPresents">
+      <td>{{present.name}}</td>
+      <td>{{present.price}}</td>
+      <td>
+        <button class="btn btn-icon btn-outline-dark" ngbTooltip="Открыть" type="button" [routerLink]="['/presents/show', present.id]">
+          <i class="fa fa-eye" aria-hidden="true"></i>
+        </button>
+        <button class="btn btn-icon btn-outline-dark" ngbTooltip="Создать на основе" type="button" [routerLink]="['/presents/new', {source: present.id}]">
+          <i class="fa fa-files-o" aria-hidden="true"></i>
+        </button>
+        <button class="btn btn-icon btn-outline-dark" ngbTooltip="Удалить" type="button" (click)="openDeleteForm(present)">
+          <i class="fa fa-trash" aria-hidden="true"></i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<app-link-border></app-link-border>

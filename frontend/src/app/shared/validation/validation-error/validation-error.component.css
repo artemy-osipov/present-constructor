@@ -1,0 +1,4 @@
+.is-invalid~app-validation-error>.invalid-feedback,
+.is-invalid~app-validation-error>.invalid-tooltip {
+  display: block;
+}

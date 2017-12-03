@@ -1,0 +1,53 @@
+<div class="row">
+  <div class="col-md-6 panel">
+    <h1>Добавление подарка</h1>
+    <ngb-alert *ngIf="successAdd" type="success" (close)="successAdd = null">Добавлено</ngb-alert>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Название</label>
+        <input class="form-control" id="name" formControlName="name" appFormControl>
+      </div>
+      <div class="form-group">
+        <label for="price">Цена</label>
+        <input type="number" placeholder="Пример: 123.12" class="form-control" id="price" formControlName="price" appFormControl>
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-outline-dark">
+          <i class="fa fa-plus" aria-hidden="true"></i> Добавить
+        </button>
+      </div>
+      <div class="form-group">
+        <label for="items">Состав:</label>
+        <table formArrayName="items" id="items" class="table table-sm table-bordered" appFormControl>
+          <tr>
+            <td colspan="3">Количество</td>
+            <td>{{present.items.length}}</td>
+          </tr>
+          <tr>
+            <td colspan="3">Сумма</td>
+            <td>{{present.cost}}</td>
+          </tr>
+          <tr>
+            <th>Название</th>
+            <th>Производитель</th>
+            <th>Цена</th>
+            <th>Кол-во</th>
+          </tr>
+  
+          <tr *ngFor="let item of itemsForm.controls; let i = index" [formGroupName]="i">
+            <td>{{item.controls.candy.controls.name.value}}</td>
+            <td>{{item.controls.candy.controls.firm.value}}</td>
+            <td>{{item.controls.candy.controls.price.value}}</td>
+            <td>
+              <input type="number" min="1" class="form-control" formControlName="count" appFormControl>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </form>
+  </div>
+
+  <div class="col-md-6 panel">
+    <app-present-new-select-candy [present]="present" (onSelect)="addItem($event)" (onUnselect)="removeItem($event)"></app-present-new-select-candy>
+  </div>
+</div>

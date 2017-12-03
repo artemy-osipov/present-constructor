@@ -1,0 +1,110 @@
+defaults: &backend
+  docker:
+    - image: circleci/openjdk:8-jdk
+  working_directory: ~/present-constructor/backend
+  environment:
+    MAVEN_OPTS: -Xmx3200m
+
+defaults: &frontend
+  docker:
+    - image: circleci/node:8.9.1-browsers
+  working_directory: ~/present-constructor/frontend
+
+version: 2
+jobs:
+  build_backend:
+    <<: *backend
+
+    steps:
+      - checkout:
+          path: ~/present-constructor
+      - restore_cache:
+          key: present-constructor-backend-{{ checksum "pom.xml" }}
+
+      - run: mvn dependency:go-offline
+
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: present-constructor-backend-{{ checksum "pom.xml" }}
+
+      - run: mvn integration-test
+
+      - persist_to_workspace:
+          root: ~/present-constructor/backend
+          paths:
+            - ./*
+
+  build_backend_docker:
+    <<: *backend
+
+    steps:
+      - setup_remote_docker
+
+      - attach_workspace:
+          at: ~/present-constructor/backend
+
+      - restore_cache:
+          keys:
+          - present-constructor-backend-{{ checksum "pom.xml" }}
+
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run: mvn dockerfile:build
+      - run: mvn dockerfile:push
+
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: present-constructor-backend-{{ checksum "pom.xml" }}
+
+
+  build_frontend:
+    <<: *frontend
+
+    steps:
+      - checkout:
+          path: ~/present-constructor
+
+      - restore_cache:
+          key: present-constructor-frontend-{{ checksum "package.json" }}
+
+      - run: npm install
+
+      - save_cache:
+          key: present-constructor-frontend-{{ checksum "package.json" }}
+          paths:
+            - "node_modules"
+
+      - run: npm run build -- --prod
+
+      - persist_to_workspace:
+          root: ~/present-constructor/frontend
+          paths:
+            - ./*
+
+  build_frontend_docker:
+    <<: *frontend
+
+    steps:
+      - setup_remote_docker
+
+      - attach_workspace:
+          at: ~/present-constructor/frontend
+
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run: npm run docker-build
+      - run: npm run docker-push
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build_backend
+      - build_backend_docker:
+          requires:
+            - build_backend
+
+      - build_frontend
+      - build_frontend_docker:
+          requires:
+            - build_frontend
