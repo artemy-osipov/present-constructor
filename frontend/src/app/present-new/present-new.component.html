@@ -11,33 +11,39 @@
         <label for="price">Цена</label>
         <input type="number" placeholder="Пример: 123.12" class="form-control" id="price" formControlName="price" appFormControl>
       </div>
-
-      <label for="items">Состав</label>
-      <table formArrayName="items" id="items" class="table table-sm table-bordered" appFormControl>
-        <tr>
-          <th>Название</th>
-          <th>Производитель</th>
-          <th>Цена</th>
-          <th>Кол-во</th>
-        </tr>
-
-        <tr *ngFor="let item of itemsForm.controls; let i = index" [formGroupName]="i">
-          <td>{{item.controls.candy.controls.name.value}}</td>
-          <td>{{item.controls.candy.controls.firm.value}}</td>
-          <td>{{item.controls.candy.controls.price.value}}</td>
-          <td>
-            <input type="number" min="1" class="form-control" formControlName="count" appFormControl>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="3">Сумма :</td>
-          <td>{{present.cost}}</td>
-        </tr>
-      </table>
-
-      <button type="submit" class="btn btn-outline-dark float-left">
-        <i class="fa fa-plus" aria-hidden="true"></i> Добавить
-      </button>
+      <div class="form-group">
+        <button type="submit" class="btn btn-outline-dark">
+          <i class="fa fa-plus" aria-hidden="true"></i> Добавить
+        </button>
+      </div>
+      <div class="form-group">
+        <label for="items">Состав:</label>
+        <table formArrayName="items" id="items" class="table table-sm table-bordered" appFormControl>
+          <tr>
+            <td colspan="3">Количество</td>
+            <td>{{present.items.length}}</td>
+          </tr>
+          <tr>
+            <td colspan="3">Сумма</td>
+            <td>{{present.cost}}</td>
+          </tr>
+          <tr>
+            <th>Название</th>
+            <th>Производитель</th>
+            <th>Цена</th>
+            <th>Кол-во</th>
+          </tr>
+  
+          <tr *ngFor="let item of itemsForm.controls; let i = index" [formGroupName]="i">
+            <td>{{item.controls.candy.controls.name.value}}</td>
+            <td>{{item.controls.candy.controls.firm.value}}</td>
+            <td>{{item.controls.candy.controls.price.value}}</td>
+            <td>
+              <input type="number" min="1" class="form-control" formControlName="count" appFormControl>
+            </td>
+          </tr>
+        </table>
+      </div>
     </form>
   </div>
 
