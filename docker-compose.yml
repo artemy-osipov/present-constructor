@@ -12,7 +12,7 @@ services:
       - frontend
       - backend
   frontend:
-    image: ir2sora/present-constructor-frontend:1.3.0
+    image: ir2sora/present-constructor-frontend:1.4.0
     depends_on:
       - backend
     labels:
@@ -20,7 +20,7 @@ services:
       - "traefik.frontend.rule=PathPrefix:/"
       - "traefik.port=80"
   backend:
-    image: ir2sora/present-constructor-backend:1.3.0
+    image: ir2sora/present-constructor-backend:1.4.0
     environment:
       - DB_USER=${DB_USER}
       - DB_PASS=${DB_PASS}
