@@ -6,8 +6,8 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.boot.jackson.JsonComponent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -30,18 +30,18 @@ public class JacksonConfig {
         return mapper;
     }
 
-    @Bean
-    public SimpleModule stringTrimModule() {
-        SimpleModule stringTrimModule = new SimpleModule();
-        stringTrimModule.addDeserializer(String.class, new StdScalarDeserializer<String>(String.class) {
-            @Override
-            public String deserialize(JsonParser jsonParser, DeserializationContext ctx) throws IOException {
-                String value = jsonParser.getValueAsString();
+    @JsonComponent
+    public static class TrimDeserializer extends StdScalarDeserializer<String> {
 
-                return StringUtils.hasText(value) ? StringUtils.trimWhitespace(value) : null;
-            }
-        });
+        public TrimDeserializer() {
+            super(String.class);
+        }
 
-        return stringTrimModule;
+        @Override
+        public String deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+            String value = jsonParser.getValueAsString();
+
+            return StringUtils.hasText(value) ? StringUtils.trimWhitespace(value) : null;
+        }
     }
 }
