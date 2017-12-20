@@ -13,8 +13,8 @@ import static ru.home.shop.utils.UuidUtils.newUUID;
 
 public class PresentTest {
 
-    private FixtureConfiguration<Present> fixture = new AggregateTestFixture<>(Present.class);
-    private CreatePresentCommand initCreateCommand = new CreatePresentCommand(
+    private final FixtureConfiguration<Present> fixture = new AggregateTestFixture<>(Present.class);
+    private final CreatePresentCommand initCreateCommand = new CreatePresentCommand(
             newUUID(),
             "name",
             BigDecimal.valueOf(123.12),

@@ -11,8 +11,8 @@ import static ru.home.shop.utils.UuidUtils.newUUID;
 
 public class CandyTest {
 
-    private FixtureConfiguration<Candy> fixture = new AggregateTestFixture<>(Candy.class);
-    private CreateCandyCommand initCreateCommand = new CreateCandyCommand(
+    private final FixtureConfiguration<Candy> fixture = new AggregateTestFixture<>(Candy.class);
+    private final CreateCandyCommand initCreateCommand = new CreateCandyCommand(
             newUUID(),
             "name",
             "firm",
