@@ -37,8 +37,8 @@ public class PresentEntryRepository {
         items.forEach(
                 item -> dsl.insertInto(PRESENT_ITEM)
                         .set(PRESENT_ITEM.ID, newUUID())
-                        .set(PRESENT_ITEM.PRESENT, presentId)
-                        .set(PRESENT_ITEM.CANDY, item.getCandy().getId())
+                        .set(PRESENT_ITEM.PRESENT_ID, presentId)
+                        .set(PRESENT_ITEM.CANDY_ID, item.getCandy().getId())
                         .set(PRESENT_ITEM.COUNT, item.getCount())
                         .execute()
         );
@@ -70,8 +70,8 @@ public class PresentEntryRepository {
     private List<PresentItem> listPresentItem(UUID present) {
         return dsl.select()
                 .from(PRESENT_ITEM)
-                .leftJoin(CANDY).on(PRESENT_ITEM.CANDY.eq(CANDY.ID))
-                .where(PRESENT_ITEM.PRESENT.eq(present))
+                .leftJoin(CANDY).on(PRESENT_ITEM.CANDY_ID.eq(CANDY.ID))
+                .where(PRESENT_ITEM.PRESENT_ID.eq(present))
                 .orderBy(CANDY.ORDER)
                 .fetch()
                 .map(r -> {

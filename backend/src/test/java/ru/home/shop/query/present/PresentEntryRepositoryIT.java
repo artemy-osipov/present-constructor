@@ -69,7 +69,7 @@ public class PresentEntryRepositoryIT {
 
         Select count = dsl.selectCount()
                 .from(PRESENT_ITEM)
-                .where(PRESENT_ITEM.PRESENT.eq(present.getId()));
+                .where(PRESENT_ITEM.PRESENT_ID.eq(present.getId()));
         assertEquals(1, dsl.fetchCount(count));
     }
 

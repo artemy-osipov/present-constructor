@@ -31,24 +31,15 @@
 
     <profiles>
         <profile>
-            <id>local</id>
-            <properties>
-                <db.driver>org.h2.Driver</db.driver>
-                <db.url>jdbc:h2:~/db/presents;AUTO_SERVER=TRUE</db.url>
-                <db.username>sa</db.username>
-                <db.password>as</db.password>
-            </properties>
-        </profile>
-        <profile>
             <id>dev</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
                 <db.driver>org.h2.Driver</db.driver>
-                <db.url>jdbc:h2:~/db-dev/presents;AUTO_SERVER=TRUE</db.url>
-                <db.username>sa</db.username>
-                <db.password>as</db.password>
+                <db.url>jdbc:mysql://127.0.0.1:3306/presents?useSSL=false</db.url>
+                <db.username>root</db.username>
+                <db.password>toor</db.password>
             </properties>
         </profile>
     </profiles>
@@ -91,8 +82,8 @@
             <artifactId>spring-boot-starter-jooq</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
         <!--utils-->
@@ -233,12 +224,19 @@
                         <database>
                             <includes>.*</includes>
                             <inputSchema>presents</inputSchema>
-                            <schemaVersionProvider>SELECT :schema_name || '_' || MAX("version") FROM "schema_version"
+                            <schemaVersionProvider>SELECT :schema_name || '_' || MAX(`version`) FROM `schema_version`
                             </schemaVersionProvider>
+
+                            <forcedTypes>
+                                <forcedType>
+                                    <name>UUID</name>
+                                    <expression>.*\..*\.(id|.*_id)</expression>
+                                </forcedType>
+                            </forcedTypes>
                         </database>
                         <target>
                             <packageName>ru.home.db</packageName>
-                            <directory>target/generated-sources/jooq-h2</directory>
+                            <directory>target/generated-sources/jooq</directory>
                         </target>
                     </generator>
                 </configuration>
