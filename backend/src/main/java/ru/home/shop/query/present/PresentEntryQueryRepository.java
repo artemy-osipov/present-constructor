@@ -10,44 +10,15 @@ import java.util.List;
 import java.util.UUID;
 
 import static ru.home.db.Tables.*;
-import static ru.home.shop.utils.UuidUtils.newUUID;
 
 @Repository
-public class PresentEntryRepository {
+public class PresentEntryQueryRepository {
 
     private final DSLContext dsl;
 
     @Autowired
-    public PresentEntryRepository(DSLContext dsl) {
+    public PresentEntryQueryRepository(DSLContext dsl) {
         this.dsl = dsl;
-    }
-
-    public void add(PresentEntry present) {
-        dsl.insertInto(PRESENT)
-                .set(PRESENT.ID, present.getId())
-                .set(PRESENT.NAME, present.getName())
-                .set(PRESENT.PRICE, present.getPrice())
-                .set(PRESENT.DATE, present.getDate())
-                .execute();
-
-        addPresentItem(present.getId(), present.getItems());
-    }
-
-    private void addPresentItem(UUID presentId, Collection<PresentItem> items) {
-        items.forEach(
-                item -> dsl.insertInto(PRESENT_ITEM)
-                        .set(PRESENT_ITEM.ID, newUUID())
-                        .set(PRESENT_ITEM.PRESENT_ID, presentId)
-                        .set(PRESENT_ITEM.CANDY_ID, item.getCandy().getId())
-                        .set(PRESENT_ITEM.COUNT, item.getCount())
-                        .execute()
-        );
-    }
-
-    public int remove(UUID id) {
-        return dsl.deleteFrom(PRESENT)
-                .where(PRESENT.ID.eq(id))
-                .execute();
     }
 
     public Collection<PresentEntry> list() {

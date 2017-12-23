@@ -19,7 +19,7 @@ public class PresentTest {
             "name",
             BigDecimal.valueOf(123.12),
             LocalDateTime.now(),
-            Arrays.asList(new PresentItem(newUUID(), 1), new PresentItem(newUUID(), 2)));
+            Arrays.asList(new PresentItem(newUUID(), newUUID(), 1), new PresentItem(newUUID(), newUUID(), 2)));
 
     @Test
     public void testCreatePresentCommand() {

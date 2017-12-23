@@ -11,24 +11,25 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import ru.home.shop.api.candy.CandyCreatedEvent;
+import ru.home.shop.api.candy.CandyRemovedEvent;
+import ru.home.shop.api.candy.CandyUpdatedEvent;
+import ru.home.shop.exception.EntityNotFoundException;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 import java.util.UUID;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static ru.home.db.Tables.CANDY;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class, FlywayTestExecutionListener.class })
-public class CandyEntryRepositoryIT {
+public class CandyEventHandlerIT {
 
     @Autowired
-    private CandyEntryRepository repository;
+    private CandyEventHandler eventHandler;
 
     @Autowired
     private DSLContext dsl;
@@ -44,11 +45,19 @@ public class CandyEntryRepositoryIT {
         return bean;
     }
 
+    private CandyCreatedEvent getCandyCreatedEvent(CandyEntry candy) {
+        return new CandyCreatedEvent(candy.id, candy.name, candy.firm, candy.order, candy.price);
+    }
+
+    private CandyUpdatedEvent getCandyUpdatedEvent(CandyEntry candy) {
+        return new CandyUpdatedEvent(candy.id, candy.name, candy.firm, candy.order, candy.price);
+    }
+
     @Test
     public void addShouldAddNewCandy() {
         int before = dsl.fetchCount(CANDY);
 
-        repository.add(getCandy());
+        eventHandler.on(getCandyCreatedEvent(getCandy()));
 
         assertEquals(++before, dsl.fetchCount(CANDY));
     }
@@ -58,19 +67,18 @@ public class CandyEntryRepositoryIT {
         CandyEntry candy = getCandy();
         candy.setPrice(null);
 
-        repository.add(candy);
+        eventHandler.on(getCandyCreatedEvent(candy));
     }
 
     @Test
     @FlywayTest
     public void removeExistentEntityShouldRemoveOneEntry() {
-        int updated = repository.remove(UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c"));
-        assertThat(updated, equalTo(1));
+        eventHandler.on(new CandyRemovedEvent(UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c")));
     }
 
-    @Test
+    @Test(expected = EntityNotFoundException.class)
     public void removeNonexistentEntityShouldRemoveNone() {
-        assertEquals(0, repository.remove(newUUID()));
+        eventHandler.on(new CandyRemovedEvent(newUUID()));
     }
 
     @Test
@@ -79,16 +87,16 @@ public class CandyEntryRepositoryIT {
         CandyEntry candy = getCandy();
         candy.setId(UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c"));
 
-        assertEquals(1, repository.edit(candy));
+        eventHandler.on(getCandyUpdatedEvent(candy));
     }
 
-    @Test
+    @Test(expected = EntityNotFoundException.class)
     @FlywayTest
     public void editNonexistentEntityShouldUpdateNone() {
         CandyEntry candy = getCandy();
         candy.setId(newUUID());
 
-        assertEquals(0, repository.edit(candy));
+        eventHandler.on(getCandyUpdatedEvent(candy));
     }
 
     @Test(expected = DataIntegrityViolationException.class)
@@ -98,34 +106,6 @@ public class CandyEntryRepositoryIT {
         candy.setId(UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c"));
         candy.setPrice(null);
 
-        repository.edit(candy);
-    }
-
-    @Test
-    @FlywayTest
-    public void findAllShouldNotReturnEmptySet() {
-        assertFalse(repository.list().isEmpty());
-    }
-
-    @Test
-    @FlywayTest
-    public void findByExistentIdShouldReturnValidEntry() {
-        Optional<CandyEntry> fromDB = repository.findById(UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c"));
-
-        if (!fromDB.isPresent()) {
-            fail();
-        }
-
-        CandyEntry candy = fromDB.get();
-        assertEquals("someName1", candy.getName());
-        assertEquals("someFirm1", candy.getFirm());
-        assertEquals(BigDecimal.valueOf(2.5).doubleValue(), candy.getPrice().doubleValue(), 0);
-        assertEquals(1.1, candy.getOrder(), 0.001);
-    }
-
-    @Test
-    public void findByNonexistentIdShouldReturnNull() {
-        Optional<CandyEntry> fromDB = repository.findById(newUUID());
-        assertThat(fromDB.isPresent(), equalTo(false));
+        eventHandler.on(getCandyUpdatedEvent(candy));
     }
 }

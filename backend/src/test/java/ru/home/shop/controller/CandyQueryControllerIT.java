@@ -10,10 +10,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.home.shop.query.candy.CandyEntry;
-import ru.home.shop.query.candy.CandyEntryRepository;
+import ru.home.shop.query.candy.CandyEntryQueryRepository;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -31,7 +30,7 @@ import static ru.home.shop.utils.UuidUtils.newUUID;
 public class CandyQueryControllerIT {
 
     @MockBean
-    private CandyEntryRepository repository;
+    private CandyEntryQueryRepository repository;
 
     @Autowired
     private MockMvc mockMvc;
@@ -50,7 +49,7 @@ public class CandyQueryControllerIT {
     @Test
     public void findExistentCandyReturnIt() throws Exception {
         CandyEntry candy = getCandy();
-        doReturn(Optional.of(candy)).when(repository).findById(any());
+        doReturn(candy).when(repository).findById(any());
 
         mockMvc.perform(get("/api/candies/{id}", candy.getId()))
                 .andExpect(status().isOk())
@@ -64,7 +63,7 @@ public class CandyQueryControllerIT {
     @Test
     @WithAnonymousUser
     public void findWithAnonymousUserShouldReturn401() throws Exception {
-        doReturn(Optional.empty()).when(repository).findById(any());
+        doReturn(null).when(repository).findById(any());
 
         mockMvc.perform(get("/api/candies/{id}", newUUID()))
                 .andExpect(status().isUnauthorized());
@@ -72,7 +71,7 @@ public class CandyQueryControllerIT {
 
     @Test
     public void findNotExistentCandyShouldReturn404() throws Exception {
-        doReturn(Optional.empty()).when(repository).findById(any());
+        doReturn(null).when(repository).findById(any());
 
         mockMvc.perform(get("/api/candies/{id}", newUUID()))
                 .andExpect(status().isNotFound());

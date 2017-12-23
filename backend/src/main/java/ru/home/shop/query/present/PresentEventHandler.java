@@ -12,10 +12,10 @@ import java.util.stream.Collectors;
 @Component
 public class PresentEventHandler {
 
-    private final PresentEntryRepository repository;
+    private final PresentEntryJpaRepository repository;
 
     @Autowired
-    public PresentEventHandler(PresentEntryRepository repository) {
+    public PresentEventHandler(PresentEntryJpaRepository repository) {
         this.repository = repository;
     }
 
@@ -32,11 +32,12 @@ public class PresentEventHandler {
                 .collect(Collectors.toList())
         );
 
-        repository.add(present);
+        repository.save(present);
     }
 
     private PresentItem map(ru.home.shop.api.present.PresentItem apiItem) {
         PresentItem item = new PresentItem();
+        item.setId(apiItem.getId());
         item.setCandy(new CandyEntry());
         item.getCandy().setId(apiItem.getCandyId());
         item.setCount(apiItem.getCount());
@@ -46,6 +47,6 @@ public class PresentEventHandler {
 
     @EventHandler
     public void on(PresentRemovedEvent event) {
-        repository.remove(event.getId());
+        repository.delete(event.getId());
     }
 }

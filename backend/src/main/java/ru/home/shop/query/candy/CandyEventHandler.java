@@ -6,14 +6,15 @@ import org.springframework.stereotype.Component;
 import ru.home.shop.api.candy.CandyCreatedEvent;
 import ru.home.shop.api.candy.CandyRemovedEvent;
 import ru.home.shop.api.candy.CandyUpdatedEvent;
+import ru.home.shop.exception.EntityNotFoundException;
 
 @Component
 public class CandyEventHandler {
 
-    private final CandyEntryRepository repository;
+    private final CandyEntryJpaRepository repository;
 
     @Autowired
-    public CandyEventHandler(CandyEntryRepository repository) {
+    public CandyEventHandler(CandyEntryJpaRepository repository) {
         this.repository = repository;
     }
 
@@ -26,23 +27,35 @@ public class CandyEventHandler {
         candy.setPrice(event.getPrice());
         candy.setOrder(event.getOrder());
 
-        repository.add(candy);
+        repository.save(candy);
     }
 
     @EventHandler
     public void on(CandyUpdatedEvent event) {
-        CandyEntry candy = new CandyEntry();
-        candy.setId(event.getId());
+        CandyEntry candy = repository.findOne(event.getId());
+
+        if (candy == null) {
+            throw new EntityNotFoundException();
+        }
+
         candy.setName(event.getName());
         candy.setFirm(event.getFirm());
         candy.setPrice(event.getPrice());
         candy.setOrder(event.getOrder());
 
-        repository.edit(candy);
+        repository.save(candy);
     }
 
     @EventHandler
     public void on(CandyRemovedEvent event) {
-        repository.remove(event.getId());
+        CandyEntry candy = repository.findOne(event.getId());
+
+        if (candy == null) {
+            throw new EntityNotFoundException();
+        }
+
+        candy.setActive(false);
+
+        repository.save(candy);
     }
 }

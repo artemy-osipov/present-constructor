@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.home.shop.exception.EntityNotFoundException;
 import ru.home.shop.query.present.PresentEntry;
-import ru.home.shop.query.present.PresentEntryRepository;
+import ru.home.shop.query.present.PresentEntryQueryRepository;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -16,10 +16,10 @@ import java.util.UUID;
 @RequestMapping("/api/presents")
 public class PresentQueryController {
 
-    private final PresentEntryRepository repository;
+    private final PresentEntryQueryRepository repository;
 
     @Autowired
-    public PresentQueryController(PresentEntryRepository repository) {
+    public PresentQueryController(PresentEntryQueryRepository repository) {
         this.repository = repository;
     }
 

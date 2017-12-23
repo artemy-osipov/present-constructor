@@ -12,24 +12,28 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import ru.home.shop.api.present.PresentCreatedEvent;
+import ru.home.shop.api.present.PresentRemovedEvent;
 import ru.home.shop.query.candy.CandyEntry;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static ru.home.db.Tables.PRESENT;
 import static ru.home.db.Tables.PRESENT_ITEM;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@TestExecutionListeners({DependencyInjectionTestExecutionListener.class, FlywayTestExecutionListener.class })
-public class PresentEntryRepositoryIT {
+@TestExecutionListeners({DependencyInjectionTestExecutionListener.class, FlywayTestExecutionListener.class})
+public class PresentEventHandlerIT {
 
     @Autowired
-    private PresentEntryRepository repository;
+    private PresentEventHandler eventHandler;
 
     @Autowired
     private DSLContext dsl;
@@ -40,15 +44,24 @@ public class PresentEntryRepositoryIT {
         bean.setName("name");
         bean.setPrice(BigDecimal.valueOf(2.6));
         bean.setDate(LocalDateTime.now());
+        bean.setItems(new ArrayList<>());
 
         return bean;
+    }
+
+    private PresentCreatedEvent getPresentCreatedEvent(PresentEntry present) {
+        return new PresentCreatedEvent(present.id, present.name, present.price, present.date,
+                present.items.stream()
+                        .map(item -> new ru.home.shop.api.present.PresentItem(item.id, item.candy.getId(), item.count))
+                        .collect(Collectors.toList())
+        );
     }
 
     @Test
     public void addShouldAddNewEntry() {
         int before = dsl.fetchCount(PRESENT);
 
-        repository.add(getPresent());
+        eventHandler.on(getPresentCreatedEvent(getPresent()));
 
         assertEquals(++before, dsl.fetchCount(PRESENT));
     }
@@ -59,13 +72,14 @@ public class PresentEntryRepositoryIT {
         present.setId(newUUID());
 
         PresentItem item = new PresentItem();
+        item.setId(newUUID());
         item.setCandy(new CandyEntry());
         item.getCandy().setId(UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c"));
         item.setCount(2);
 
         present.getItems().add(item);
 
-        repository.add(present);
+        eventHandler.on(getPresentCreatedEvent(present));
 
         Select count = dsl.selectCount()
                 .from(PRESENT_ITEM)
@@ -78,48 +92,16 @@ public class PresentEntryRepositoryIT {
         PresentEntry present = getPresent();
         present.setPrice(null);
 
-        repository.add(present);
+        eventHandler.on(getPresentCreatedEvent(present));
     }
 
     @Test
     @FlywayTest
     public void removeByExistentIdShouldRemoveOneEntry() {
-        assertEquals(1, repository.remove(UUID.fromString("9744b2ea-2328-447c-b437-a4f8b57c9985")));
-    }
+        int before = dsl.fetchCount(PRESENT);
 
-    @Test
-    public void removeByNonexistentIdShouldRemoveNoneEntry() {
-        assertEquals(0, repository.remove(newUUID()));
-    }
+        eventHandler.on(new PresentRemovedEvent(UUID.fromString("9744b2ea-2328-447c-b437-a4f8b57c9985")));
 
-    @Test
-    @FlywayTest
-    public void findAllShouldNotReturnEmptySet() {
-        assertFalse(repository.list().isEmpty());
-    }
-
-    @Test
-    @FlywayTest
-    public void findByExistentIdShouldReturnValidEntry() {
-        PresentEntry fromDB = repository.findById(UUID.fromString("9744b2ea-2328-447c-b437-a4f8b57c9985"));
-
-        assertEquals("someName", fromDB.getName());
-        assertEquals(BigDecimal.valueOf(12.35).doubleValue(), fromDB.getPrice().doubleValue(), 0);
-
-        assertEquals(2, fromDB.getItems().size());
-
-        PresentItem item1FromDB = fromDB.getItems().iterator().next();
-        assertEquals(6, item1FromDB.getCount().intValue());
-
-        assertEquals(UUID.fromString("b08871d2-cc84-4be0-9671-8c73bf8658ae"), item1FromDB.getCandy().getId());
-        assertEquals("someName3", item1FromDB.getCandy().getName());
-        assertEquals("someFirm3", item1FromDB.getCandy().getFirm());
-        assertEquals(BigDecimal.valueOf(13213.11), item1FromDB.getCandy().getPrice());
-        assertEquals(3, item1FromDB.getCandy().getOrder(), 0.001);
-    }
-
-    @Test
-    public void findByNonexistentIdShouldReturnNull() {
-        assertNull(repository.findById(newUUID()));
+        assertEquals(--before, dsl.fetchCount(PRESENT));
     }
 }

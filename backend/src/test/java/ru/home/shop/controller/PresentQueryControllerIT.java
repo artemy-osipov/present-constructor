@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.home.shop.query.candy.CandyEntry;
 import ru.home.shop.query.present.PresentEntry;
-import ru.home.shop.query.present.PresentEntryRepository;
+import ru.home.shop.query.present.PresentEntryQueryRepository;
 import ru.home.shop.query.present.PresentItem;
 
 import java.math.BigDecimal;
@@ -32,7 +32,7 @@ import static ru.home.shop.utils.UuidUtils.newUUID;
 public class PresentQueryControllerIT {
 
     @MockBean
-    private PresentEntryRepository repository;
+    private PresentEntryQueryRepository repository;
 
     @Autowired
     private MockMvc mockMvc;
