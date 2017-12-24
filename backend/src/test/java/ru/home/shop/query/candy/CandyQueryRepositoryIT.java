@@ -21,10 +21,10 @@ import static ru.home.shop.utils.UuidUtils.newUUID;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class, FlywayTestExecutionListener.class })
-public class CandyEntryQueryRepositoryIT {
+public class CandyQueryRepositoryIT {
 
     @Autowired
-    private CandyEntryQueryRepository repository;
+    private CandyQueryRepository repository;
 
     @Test
     @FlywayTest
@@ -35,7 +35,7 @@ public class CandyEntryQueryRepositoryIT {
     @Test
     @FlywayTest
     public void findByExistentIdShouldReturnValidEntry() {
-        CandyEntry candy = repository.findById(UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c"));
+        CandyQuery candy = repository.findById(UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c"));
         assertEquals("someName1", candy.getName());
         assertEquals("someFirm1", candy.getFirm());
         assertEquals(BigDecimal.valueOf(2.5).doubleValue(), candy.getPrice().doubleValue(), 0);
@@ -44,7 +44,7 @@ public class CandyEntryQueryRepositoryIT {
 
     @Test
     public void findByNonexistentIdShouldReturnNull() {
-        CandyEntry candy = repository.findById(newUUID());
+        CandyQuery candy = repository.findById(newUUID());
         assertThat(candy, nullValue());
     }
 }

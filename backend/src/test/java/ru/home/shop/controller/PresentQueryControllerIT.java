@@ -9,10 +9,10 @@ import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.home.shop.query.candy.CandyEntry;
-import ru.home.shop.query.present.PresentEntry;
-import ru.home.shop.query.present.PresentEntryQueryRepository;
-import ru.home.shop.query.present.PresentItem;
+import ru.home.shop.query.candy.CandyQuery;
+import ru.home.shop.query.present.PresentItemQuery;
+import ru.home.shop.query.present.PresentQuery;
+import ru.home.shop.query.present.PresentQueryRepository;
 
 import java.math.BigDecimal;
 
@@ -32,29 +32,28 @@ import static ru.home.shop.utils.UuidUtils.newUUID;
 public class PresentQueryControllerIT {
 
     @MockBean
-    private PresentEntryQueryRepository repository;
+    private PresentQueryRepository repository;
 
     @Autowired
     private MockMvc mockMvc;
 
-    private PresentEntry getPresent() {
-        PresentEntry present = new PresentEntry();
+    private PresentQuery getPresent() {
+        PresentQuery present = new PresentQuery();
         present.setId(newUUID());
         present.setName("name");
         present.setPrice(BigDecimal.valueOf(4.2));
 
-        PresentItem item1 = new PresentItem();
-        item1.setCandy(new CandyEntry());
+        PresentItemQuery item1 = new PresentItemQuery();
+        item1.setCandy(new CandyQuery());
         item1.getCandy().setId(newUUID());
         item1.setCount(2);
 
-        PresentItem item2 = new PresentItem();
-        item2.setCandy(new CandyEntry());
+        PresentItemQuery item2 = new PresentItemQuery();
+        item2.setCandy(new CandyQuery());
         item2.getCandy().setId(newUUID());
         item2.setCount(6);
 
-        present.getItems().add(item1);
-        present.getItems().add(item2);
+        present.setItems(asList(item1, item2));
 
         return present;
     }
@@ -62,7 +61,7 @@ public class PresentQueryControllerIT {
     @Test
     @WithAnonymousUser
     public void findWithAnonymousUserShouldReturn401() throws Exception {
-        PresentEntry present = getPresent();
+        PresentQuery present = getPresent();
         doReturn(present).when(repository).findById(any());
 
         mockMvc.perform(get("/api/presents/{id}", newUUID()))
@@ -71,7 +70,7 @@ public class PresentQueryControllerIT {
 
     @Test
     public void findExistentPresentShouldReturnIt() throws Exception {
-        PresentEntry present = getPresent();
+        PresentQuery present = getPresent();
         doReturn(present).when(repository).findById(any());
 
         mockMvc.perform(get("/api/presents/{id}", newUUID()))

@@ -38,7 +38,7 @@ public class CandyMapperTest {
 
     @Test
     public void testFullInfoMap() {
-        CandyEntry candy = mapper.map(getRecord());
+        CandyQuery candy = mapper.map(getRecord());
 
         assertEquals(ID, candy.getId());
         assertEquals(NAME, candy.getName());

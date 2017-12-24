@@ -34,7 +34,7 @@ public class PresentMapperTest {
 
     @Test
     public void testFullInfoMap() {
-        PresentEntry present = mapper.map(getRecord());
+        PresentQuery present = mapper.map(getRecord());
 
         assertEquals(ID, present.getId());
         assertEquals(NAME, present.getName());

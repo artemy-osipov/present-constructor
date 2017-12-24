@@ -11,10 +11,10 @@ import ru.home.shop.exception.EntityNotFoundException;
 @Component
 public class CandyEventHandler {
 
-    private final CandyEntryJpaRepository repository;
+    private final CandyEntryRepository repository;
 
     @Autowired
-    public CandyEventHandler(CandyEntryJpaRepository repository) {
+    public CandyEventHandler(CandyEntryRepository repository) {
         this.repository = repository;
     }
 

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.home.shop.domain.Report;
 import ru.home.shop.exception.EntityNotFoundException;
 import ru.home.shop.query.present.PresentEntry;
-import ru.home.shop.query.present.PresentEntryQueryRepository;
+import ru.home.shop.query.present.PresentEntryRepository;
 import ru.home.shop.service.ReportService;
 
 import java.nio.charset.StandardCharsets;
@@ -23,11 +23,11 @@ import java.util.function.Function;
 @RequestMapping("/api/presents")
 public class ReportQueryController {
 
-    private final PresentEntryQueryRepository repository;
+    private final PresentEntryRepository repository;
     private final ReportService reportService;
 
     @Autowired
-    public ReportQueryController(PresentEntryQueryRepository repository, ReportService reportService) {
+    public ReportQueryController(PresentEntryRepository repository, ReportService reportService) {
         this.repository = repository;
         this.reportService = reportService;
     }
@@ -43,7 +43,7 @@ public class ReportQueryController {
     }
 
     private ResponseEntity<byte[]> report(UUID id, Function<PresentEntry, Report> makeReport) {
-        PresentEntry present = repository.findById(id);
+        PresentEntry present = repository.findOne(id);
 
         if (present == null) {
             throw new EntityNotFoundException();

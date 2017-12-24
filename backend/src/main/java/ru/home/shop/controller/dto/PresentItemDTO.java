@@ -10,9 +10,9 @@ import javax.validation.constraints.NotNull;
 public class PresentItemDTO {
     @NotNull
     @Valid
-    private EntityDTO candy;
+    EntityDTO candy;
 
     @NotNull
     @Min(1)
-    private Integer count;
+    Integer count;
 }

@@ -12,10 +12,10 @@ import java.util.stream.Collectors;
 @Component
 public class PresentEventHandler {
 
-    private final PresentEntryJpaRepository repository;
+    private final PresentEntryRepository repository;
 
     @Autowired
-    public PresentEventHandler(PresentEntryJpaRepository repository) {
+    public PresentEventHandler(PresentEntryRepository repository) {
         this.repository = repository;
     }
 

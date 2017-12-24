@@ -10,23 +10,23 @@ import java.util.UUID;
 import static ru.home.db.tables.Candy.CANDY;
 
 @Repository
-public class CandyEntryQueryRepository {
+public class CandyQueryRepository {
 
     private final DSLContext dsl;
 
     @Autowired
-    public CandyEntryQueryRepository(DSLContext dsl) {
+    public CandyQueryRepository(DSLContext dsl) {
         this.dsl = dsl;
     }
 
-    public Collection<CandyEntry> list() {
+    public Collection<CandyQuery> list() {
         return dsl.selectFrom(CANDY)
                 .where(CANDY.ACTIVE.eq(true))
                 .orderBy(CANDY.ORDER)
                 .fetch(new CandyMapper());
     }
 
-    public CandyEntry findById(UUID id) {
+    public CandyQuery findById(UUID id) {
         return dsl.selectFrom(CANDY)
                 .where(CANDY.ID.eq(id))
                 .fetchOne(new CandyMapper());

@@ -19,10 +19,10 @@ import static ru.home.shop.utils.UuidUtils.newUUID;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class, FlywayTestExecutionListener.class })
-public class PresentEntryQueryRepositoryIT {
+public class PresentQueryRepositoryIT {
 
     @Autowired
-    private PresentEntryQueryRepository repository;
+    private PresentQueryRepository repository;
 
     @Test
     @FlywayTest
@@ -33,14 +33,14 @@ public class PresentEntryQueryRepositoryIT {
     @Test
     @FlywayTest
     public void findByExistentIdShouldReturnValidEntry() {
-        PresentEntry fromDB = repository.findById(UUID.fromString("9744b2ea-2328-447c-b437-a4f8b57c9985"));
+        PresentQuery fromDB = repository.findById(UUID.fromString("9744b2ea-2328-447c-b437-a4f8b57c9985"));
 
         assertEquals("someName", fromDB.getName());
         assertEquals(BigDecimal.valueOf(12.35).doubleValue(), fromDB.getPrice().doubleValue(), 0);
 
         assertEquals(2, fromDB.getItems().size());
 
-        PresentItem item1FromDB = fromDB.getItems().iterator().next();
+        PresentItemQuery item1FromDB = fromDB.getItems().iterator().next();
         assertEquals(6, item1FromDB.getCount().intValue());
 
         assertEquals(UUID.fromString("b08871d2-cc84-4be0-9671-8c73bf8658ae"), item1FromDB.getCandy().getId());

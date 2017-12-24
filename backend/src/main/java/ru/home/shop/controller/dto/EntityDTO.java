@@ -8,5 +8,5 @@ import java.util.UUID;
 @Data
 public class EntityDTO {
     @NotNull
-    private UUID id;
+    UUID id;
 }

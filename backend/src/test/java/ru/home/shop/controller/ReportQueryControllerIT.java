@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.home.shop.domain.Report;
 import ru.home.shop.query.present.PresentEntry;
-import ru.home.shop.query.present.PresentEntryQueryRepository;
+import ru.home.shop.query.present.PresentEntryRepository;
 import ru.home.shop.service.ReportService;
 
 import java.math.BigDecimal;
@@ -31,7 +31,7 @@ public class ReportQueryControllerIT {
     @MockBean
     private ReportService reportService;
     @MockBean
-    private PresentEntryQueryRepository repository;
+    private PresentEntryRepository repository;
 
     @Autowired
     private MockMvc mockMvc;
@@ -56,7 +56,7 @@ public class ReportQueryControllerIT {
         PresentEntry present = getPresent();
         Report report = getReport();
 
-        doReturn(present).when(repository).findById(any());
+        doReturn(present).when(repository).findOne(any());
         doReturn(report).when(reportService).generatePublicReport(present);
 
         mockMvc.perform(get("/api/presents/{id}/public-report", newUUID()))
@@ -68,7 +68,7 @@ public class ReportQueryControllerIT {
         PresentEntry present = getPresent();
         Report report = getReport();
 
-        doReturn(present).when(repository).findById(any());
+        doReturn(present).when(repository).findOne(any());
         doReturn(report).when(reportService).generatePublicReport(present);
 
         mockMvc.perform(get("/api/presents/{id}/public-report", newUUID()))
@@ -79,7 +79,7 @@ public class ReportQueryControllerIT {
 
     @Test
     public void publicReportWithNonExistentIdShouldReturn404() throws Exception {
-        doReturn(null).when(repository).findById(any());
+        doReturn(null).when(repository).findOne(any());
 
         mockMvc.perform(get("/api/presents/{id}/public-report", newUUID()))
                 .andExpect(status().isNotFound());
@@ -90,7 +90,7 @@ public class ReportQueryControllerIT {
         PresentEntry present = getPresent();
         Report report = getReport();
 
-        doReturn(present).when(repository).findById(any());
+        doReturn(present).when(repository).findOne(any());
         doReturn(report).when(reportService).generatePrivateReport(present);
 
         mockMvc.perform(get("/api/presents/{id}/private-report", newUUID()))
@@ -101,7 +101,7 @@ public class ReportQueryControllerIT {
 
     @Test
     public void privateReportWithNonExistentIdShouldReturn404() throws Exception {
-        doReturn(null).when(repository).findById(any());
+        doReturn(null).when(repository).findOne(any());
 
         mockMvc.perform(get("/api/presents/{id}/private-report", newUUID()))
                 .andExpect(status().isNotFound());

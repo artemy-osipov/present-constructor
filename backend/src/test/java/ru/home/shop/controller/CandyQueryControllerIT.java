@@ -9,8 +9,8 @@ import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.home.shop.query.candy.CandyEntry;
-import ru.home.shop.query.candy.CandyEntryQueryRepository;
+import ru.home.shop.query.candy.CandyQuery;
+import ru.home.shop.query.candy.CandyQueryRepository;
 
 import java.math.BigDecimal;
 
@@ -30,13 +30,13 @@ import static ru.home.shop.utils.UuidUtils.newUUID;
 public class CandyQueryControllerIT {
 
     @MockBean
-    private CandyEntryQueryRepository repository;
+    private CandyQueryRepository repository;
 
     @Autowired
     private MockMvc mockMvc;
 
-    private CandyEntry getCandy() {
-        CandyEntry candy = new CandyEntry();
+    private CandyQuery getCandy() {
+        CandyQuery candy = new CandyQuery();
         candy.setId(newUUID());
         candy.setName("name");
         candy.setFirm("firm");
@@ -48,7 +48,7 @@ public class CandyQueryControllerIT {
 
     @Test
     public void findExistentCandyReturnIt() throws Exception {
-        CandyEntry candy = getCandy();
+        CandyQuery candy = getCandy();
         doReturn(candy).when(repository).findById(any());
 
         mockMvc.perform(get("/api/candies/{id}", candy.getId()))

@@ -12,22 +12,22 @@ import java.util.UUID;
 import static ru.home.db.Tables.*;
 
 @Repository
-public class PresentEntryQueryRepository {
+public class PresentQueryRepository {
 
     private final DSLContext dsl;
 
     @Autowired
-    public PresentEntryQueryRepository(DSLContext dsl) {
+    public PresentQueryRepository(DSLContext dsl) {
         this.dsl = dsl;
     }
 
-    public Collection<PresentEntry> list() {
+    public Collection<PresentQuery> list() {
         return dsl.selectFrom(PRESENT)
                 .fetch(new PresentMapper());
     }
 
-    public PresentEntry findById(UUID id) {
-        PresentEntry present = dsl.selectFrom(PRESENT)
+    public PresentQuery findById(UUID id) {
+        PresentQuery present = dsl.selectFrom(PRESENT)
                 .where(PRESENT.ID.eq(id))
                 .fetchOne(new PresentMapper());
 
@@ -38,7 +38,7 @@ public class PresentEntryQueryRepository {
         return present;
     }
 
-    private List<PresentItem> listPresentItem(UUID present) {
+    private List<PresentItemQuery> listPresentItem(UUID present) {
         return dsl.select()
                 .from(PRESENT_ITEM)
                 .leftJoin(CANDY).on(PRESENT_ITEM.CANDY_ID.eq(CANDY.ID))
@@ -46,7 +46,7 @@ public class PresentEntryQueryRepository {
                 .orderBy(CANDY.ORDER)
                 .fetch()
                 .map(r -> {
-                    PresentItem item = new PresentItem();
+                    PresentItemQuery item = new PresentItemQuery();
                     item.setCandy(new CandyMapper().map(r.into(CANDY)));
                     item.setCount(r.getValue(PRESENT_ITEM.COUNT));
 

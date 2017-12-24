@@ -17,7 +17,7 @@ public class CandyEntry {
     UUID id;
     String name;
     String firm;
-    double order;
     BigDecimal price;
+    double order;
     Boolean active = true;
 }
