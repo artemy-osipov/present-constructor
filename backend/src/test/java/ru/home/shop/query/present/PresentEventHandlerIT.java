@@ -20,7 +20,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 import static ru.home.db.Tables.PRESENT;
@@ -49,19 +48,11 @@ public class PresentEventHandlerIT {
         return bean;
     }
 
-    private PresentCreatedEvent getPresentCreatedEvent(PresentEntry present) {
-        return new PresentCreatedEvent(present.id, present.name, present.price, present.date,
-                present.items.stream()
-                        .map(item -> new ru.home.shop.api.present.PresentItem(item.id, item.candy.getId(), item.count))
-                        .collect(Collectors.toList())
-        );
-    }
-
     @Test
     public void addShouldAddNewEntry() {
         int before = dsl.fetchCount(PRESENT);
 
-        eventHandler.on(getPresentCreatedEvent(getPresent()));
+        eventHandler.on(new PresentCreatedEvent(getPresent()));
 
         assertEquals(++before, dsl.fetchCount(PRESENT));
     }
@@ -79,7 +70,7 @@ public class PresentEventHandlerIT {
 
         present.getItems().add(item);
 
-        eventHandler.on(getPresentCreatedEvent(present));
+        eventHandler.on(new PresentCreatedEvent(present));
 
         Select count = dsl.selectCount()
                 .from(PRESENT_ITEM)
@@ -92,7 +83,7 @@ public class PresentEventHandlerIT {
         PresentEntry present = getPresent();
         present.setPrice(null);
 
-        eventHandler.on(getPresentCreatedEvent(present));
+        eventHandler.on(new PresentCreatedEvent(present));
     }
 
     @Test

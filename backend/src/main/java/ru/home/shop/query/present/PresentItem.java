@@ -1,23 +1,28 @@
 package ru.home.shop.query.present;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Type;
 import ru.home.shop.query.candy.CandyEntry;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @Entity(name = "present_item")
 public class PresentItem {
 
     @Id
     @Type(type = "uuid-char")
-    UUID id;
+    private UUID id;
 
     @OneToOne
     @JoinColumn(name = "candy_id")
-    CandyEntry candy;
+    private CandyEntry candy;
 
-    Integer count;
+    private Integer count;
 }

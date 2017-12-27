@@ -1,6 +1,7 @@
 package ru.home.shop.query.present;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -10,25 +11,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @Entity(name = "present")
 public class PresentEntry {
 
     @Id
     @Type(type = "uuid-char")
-    UUID id;
+    private UUID id;
 
-    String name;
-    BigDecimal price;
-    LocalDateTime date;
+    private String name;
+    private BigDecimal price;
+    private LocalDateTime date;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "present_id", nullable = false, updatable = false)
-    List<PresentItem> items = new ArrayList<>();
+    private List<PresentItem> items = new ArrayList<>();
 
     public BigDecimal computeCost() {
         return getItems().stream()
-                .map(c -> c.getCandy().getPrice().multiply(BigDecimal.valueOf(c.getCount())))
+                .map(item -> item.getCandy().getPrice().multiply(BigDecimal.valueOf(item.getCount())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

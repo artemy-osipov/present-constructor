@@ -45,19 +45,11 @@ public class CandyEventHandlerIT {
         return bean;
     }
 
-    private CandyCreatedEvent getCandyCreatedEvent(CandyEntry candy) {
-        return new CandyCreatedEvent(candy.id, candy.name, candy.firm, candy.order, candy.price);
-    }
-
-    private CandyUpdatedEvent getCandyUpdatedEvent(CandyEntry candy) {
-        return new CandyUpdatedEvent(candy.id, candy.name, candy.firm, candy.order, candy.price);
-    }
-
     @Test
     public void addShouldAddNewCandy() {
         int before = dsl.fetchCount(CANDY);
 
-        eventHandler.on(getCandyCreatedEvent(getCandy()));
+        eventHandler.on(new CandyCreatedEvent(getCandy()));
 
         assertEquals(++before, dsl.fetchCount(CANDY));
     }
@@ -67,7 +59,7 @@ public class CandyEventHandlerIT {
         CandyEntry candy = getCandy();
         candy.setPrice(null);
 
-        eventHandler.on(getCandyCreatedEvent(candy));
+        eventHandler.on(new CandyCreatedEvent(candy));
     }
 
     @Test
@@ -87,7 +79,7 @@ public class CandyEventHandlerIT {
         CandyEntry candy = getCandy();
         candy.setId(UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c"));
 
-        eventHandler.on(getCandyUpdatedEvent(candy));
+        eventHandler.on(new CandyUpdatedEvent(candy));
     }
 
     @Test(expected = EntityNotFoundException.class)
@@ -96,7 +88,7 @@ public class CandyEventHandlerIT {
         CandyEntry candy = getCandy();
         candy.setId(newUUID());
 
-        eventHandler.on(getCandyUpdatedEvent(candy));
+        eventHandler.on(new CandyUpdatedEvent(candy));
     }
 
     @Test(expected = DataIntegrityViolationException.class)
@@ -106,6 +98,6 @@ public class CandyEventHandlerIT {
         candy.setId(UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c"));
         candy.setPrice(null);
 
-        eventHandler.on(getCandyUpdatedEvent(candy));
+        eventHandler.on(new CandyUpdatedEvent(candy));
     }
 }

@@ -1,6 +1,7 @@
 package ru.home.shop.query.candy;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Entity;
@@ -8,16 +9,17 @@ import javax.persistence.Id;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @Entity(name = "candy")
 public class CandyEntry {
 
     @Id
     @Type(type = "uuid-char")
-    UUID id;
-    String name;
-    String firm;
-    BigDecimal price;
-    double order;
-    Boolean active = true;
+    private UUID id;
+    private String name;
+    private String firm;
+    private BigDecimal price;
+    private Double order;
+    private Boolean active = true;
 }
