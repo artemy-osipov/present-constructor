@@ -1,44 +1,57 @@
 package ru.home.shop.domain;
 
-import org.axonframework.test.aggregate.AggregateTestFixture;
-import org.axonframework.test.aggregate.FixtureConfiguration;
 import org.junit.Test;
-import ru.home.shop.api.present.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.Arrays;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
 public class PresentTest {
 
-    private final FixtureConfiguration<Present> fixture = new AggregateTestFixture<>(Present.class);
-    private final CreatePresentCommand initCreateCommand = new CreatePresentCommand(
-            newUUID(),
-            "name",
-            BigDecimal.valueOf(123.12),
-            LocalDateTime.now(),
-            Arrays.asList(new PresentItem(newUUID(), newUUID(), 1), new PresentItem(newUUID(), newUUID(), 2)));
+    private Present getPresent() {
+        Present present = new Present();
+        present.setName("name");
+        present.setPrice(BigDecimal.valueOf(4.2));
 
-    @Test
-    public void testCreatePresentCommand() {
-        fixture.given()
-                .when(initCreateCommand)
-                .expectSuccessfulHandlerExecution()
-                .expectEvents(new PresentCreatedEvent(
-                        initCreateCommand.getPresentId(),
-                        initCreateCommand.getName(),
-                        initCreateCommand.getPrice(),
-                        initCreateCommand.getDate(),
-                        initCreateCommand.getItems()));
+        PresentItem item1 = new PresentItem();
+        item1.setCandy(new Candy());
+        item1.getCandy().setId(newUUID());
+        item1.getCandy().setName("name1");
+        item1.getCandy().setFirm("firm1");
+        item1.getCandy().setPrice(BigDecimal.valueOf(1.1));
+        item1.setCount(2);
+
+        PresentItem item2 = new PresentItem();
+        item2.setCandy(new Candy());
+        item2.getCandy().setId(newUUID());
+        item2.getCandy().setName("name2");
+        item2.getCandy().setFirm("firm2");
+        item2.getCandy().setPrice(BigDecimal.valueOf(2.2));
+        item2.setCount(6);
+
+        present.getItems().add(item1);
+        present.getItems().add(item2);
+
+        return present;
     }
 
     @Test
-    public void testRemovePresentCommand() {
-        fixture.givenCommands(initCreateCommand)
-                .when(new RemovePresentCommand(initCreateCommand.getPresentId()))
-                .expectSuccessfulHandlerExecution()
-                .expectEvents(new PresentRemovedEvent(initCreateCommand.getPresentId()));
+    public void emptyPresentShouldHasZeroCostPrice() {
+        Present emptyPresent = new Present();
+
+        BigDecimal costPrice = emptyPresent.computeCost();
+
+        assertThat(costPrice, equalTo(BigDecimal.ZERO));
+    }
+
+    @Test
+    public void testComputeCostPrice() {
+        Present present = getPresent();
+
+        BigDecimal costPrice = present.computeCost();
+
+        assertThat(costPrice, equalTo(new BigDecimal("15.4")));
     }
 }

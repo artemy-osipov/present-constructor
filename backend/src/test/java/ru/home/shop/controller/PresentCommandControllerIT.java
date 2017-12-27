@@ -1,7 +1,5 @@
 package ru.home.shop.controller;
 
-import org.axonframework.commandhandling.gateway.CommandGateway;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,23 +10,22 @@ import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.RequestBuilder;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import ru.home.shop.api.present.RemovePresentCommand;
 import ru.home.shop.controller.dto.AddPresentDTO;
 import ru.home.shop.controller.dto.EntityDTO;
 import ru.home.shop.controller.dto.PresentItemDTO;
 import ru.home.shop.exception.EntityNotFoundException;
+import ru.home.shop.service.command.present.PresentCommandHandler;
 
 import java.math.BigDecimal;
-import java.util.concurrent.CompletableFuture;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.mockito.Mockito.doThrow;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.home.shop.utils.JsonUtils.toJson;
 import static ru.home.shop.utils.UuidUtils.newUUID;
@@ -39,7 +36,7 @@ import static ru.home.shop.utils.UuidUtils.newUUID;
 public class PresentCommandControllerIT {
 
     @MockBean
-    private CommandGateway commandGateway;
+    private PresentCommandHandler commandHandler;
 
     @Autowired
     private MockMvc mockMvc;
@@ -64,11 +61,6 @@ public class PresentCommandControllerIT {
         return dto;
     }
 
-    @Before
-    public void mockInit() {
-        when(commandGateway.send(any())).thenReturn(CompletableFuture.completedFuture(null));
-    }
-
     @Test
     @WithAnonymousUser
     public void addPresentWithAnonymousUserShouldReturn401() throws Exception {
@@ -80,9 +72,9 @@ public class PresentCommandControllerIT {
 
     @Test
     public void addPresentWithValidEntityShouldReturnLocation() throws Exception {
-        mockMvc.perform(async(post("/api/presents")
+        mockMvc.perform(post("/api/presents")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(getUpdateDTO()))))
+                .content(toJson(getUpdateDTO())))
                 .andExpect(status().isNoContent())
                 .andExpect(header().string("Location", notNullValue()));
     }
@@ -98,26 +90,15 @@ public class PresentCommandControllerIT {
 
     @Test
     public void removePresentShouldReturn2xx() throws Exception {
-        mockMvc.perform(async(delete("/api/presents/{id}", newUUID())))
+        mockMvc.perform(delete("/api/presents/{id}", newUUID()))
                 .andExpect(status().isNoContent());
     }
 
     @Test
     public void removePresentWithNonexistentIdShouldReturn404() throws Exception {
-        when(commandGateway.send(any(RemovePresentCommand.class))).thenReturn(exceptionallyCompletedFuture(new EntityNotFoundException()));
+        doThrow(new EntityNotFoundException()).when(commandHandler).on(any(RemovePresentCommand.class));
 
-        mockMvc.perform(async(delete("/api/presents/{id}", newUUID())))
+        mockMvc.perform(delete("/api/presents/{id}", newUUID()))
                 .andExpect(status().isNotFound());
-    }
-
-    public static <T> CompletableFuture<T> exceptionallyCompletedFuture(Throwable throwable) {
-        CompletableFuture<T> future = new CompletableFuture<>();
-        future.completeExceptionally(throwable);
-        return future;
-    }
-
-    public RequestBuilder async(MockHttpServletRequestBuilder request) throws Exception {
-        return asyncDispatch(mockMvc.perform(request)
-                .andReturn());
     }
 }

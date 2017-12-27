@@ -9,10 +9,10 @@ import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.home.shop.query.candy.CandyQuery;
-import ru.home.shop.query.present.PresentItemQuery;
-import ru.home.shop.query.present.PresentQuery;
-import ru.home.shop.query.present.PresentQueryRepository;
+import ru.home.shop.service.query.candy.CandyQuery;
+import ru.home.shop.service.query.present.PresentItemQuery;
+import ru.home.shop.service.query.present.PresentQuery;
+import ru.home.shop.service.query.present.PresentQueryRepository;
 
 import java.math.BigDecimal;
 

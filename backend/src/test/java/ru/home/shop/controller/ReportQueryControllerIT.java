@@ -10,8 +10,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.home.shop.domain.Report;
-import ru.home.shop.query.present.PresentEntry;
-import ru.home.shop.query.present.PresentEntryRepository;
+import ru.home.shop.domain.Present;
+import ru.home.shop.service.command.present.PresentRepository;
 import ru.home.shop.service.ReportService;
 
 import java.math.BigDecimal;
@@ -31,15 +31,15 @@ public class ReportQueryControllerIT {
     @MockBean
     private ReportService reportService;
     @MockBean
-    private PresentEntryRepository repository;
+    private PresentRepository repository;
 
     @Autowired
     private MockMvc mockMvc;
 
     private final static String CONTENT_DISPOSITION = "form-data; name=\"attachment\"; filename*=UTF-8''name%202.4%20RUB.docx";
 
-    private PresentEntry getPresent() {
-        PresentEntry present = new PresentEntry();
+    private Present getPresent() {
+        Present present = new Present();
         present.setName("name");
         present.setPrice(BigDecimal.valueOf(2.4));
 
@@ -53,7 +53,7 @@ public class ReportQueryControllerIT {
     @Test
     @WithAnonymousUser
     public void publicReportWithWithAnonymousUserShouldReturn401() throws Exception {
-        PresentEntry present = getPresent();
+        Present present = getPresent();
         Report report = getReport();
 
         doReturn(present).when(repository).findOne(any());
@@ -65,7 +65,7 @@ public class ReportQueryControllerIT {
 
     @Test
     public void publicReportWithExistentIdShouldReturnReport() throws Exception {
-        PresentEntry present = getPresent();
+        Present present = getPresent();
         Report report = getReport();
 
         doReturn(present).when(repository).findOne(any());
@@ -87,7 +87,7 @@ public class ReportQueryControllerIT {
 
     @Test
     public void privateReportWithExistentIdShouldReturnReport() throws Exception {
-        PresentEntry present = getPresent();
+        Present present = getPresent();
         Report report = getReport();
 
         doReturn(present).when(repository).findOne(any());
