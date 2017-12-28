@@ -1,19 +1,16 @@
 package ru.home.shop.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.home.shop.domain.Present;
 import ru.home.shop.domain.Report;
 import ru.home.shop.exception.EntityNotFoundException;
-import ru.home.shop.domain.Present;
-import ru.home.shop.service.command.present.PresentRepository;
 import ru.home.shop.service.ReportService;
+import ru.home.shop.service.command.present.PresentRepository;
 
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
@@ -43,11 +40,8 @@ public class ReportQueryController {
     }
 
     private ResponseEntity<byte[]> report(UUID id, Function<Present, Report> makeReport) {
-        Present present = repository.findOne(id);
-
-        if (present == null) {
-            throw new EntityNotFoundException();
-        }
+        Present present = repository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
 
         Report report = makeReport.apply(present);
 
@@ -57,7 +51,11 @@ public class ReportQueryController {
     private ResponseEntity<byte[]> toDocumentEntity(Report report) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.wordprocessingml.document"));
-        headers.setContentDispositionFormData("attachment", report.getName(), StandardCharsets.UTF_8);
+        headers.setContentDispositionFormData("attachment", report.getName());
+        headers.setContentDisposition(ContentDisposition.builder("form-data")
+                .name("attachment")
+                .filename(report.getName(), StandardCharsets.UTF_8)
+                .build());
 
         return new ResponseEntity<>(report.getContent(), headers, HttpStatus.OK);
     }

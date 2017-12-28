@@ -33,11 +33,8 @@ public class CandyCommandHandler {
     }
 
     public void on(UpdateCandyCommand event) {
-        Candy candy = repository.findOne(event.getId());
-
-        if (candy == null) {
-            throw new EntityNotFoundException();
-        }
+        Candy candy = repository.findById(event.getId())
+                .orElseThrow(EntityNotFoundException::new);
 
         candy.setName(event.getName());
         candy.setFirm(event.getFirm());
@@ -48,11 +45,8 @@ public class CandyCommandHandler {
     }
 
     public void on(RemoveCandyCommand event) {
-        Candy candy = repository.findOne(event.getId());
-
-        if (candy == null) {
-            throw new EntityNotFoundException();
-        }
+        Candy candy = repository.findById(event.getId())
+                .orElseThrow(EntityNotFoundException::new);
 
         candy.setActive(false);
 

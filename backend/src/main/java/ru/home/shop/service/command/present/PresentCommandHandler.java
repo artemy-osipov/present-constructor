@@ -48,6 +48,6 @@ public class PresentCommandHandler {
     }
 
     public void on(RemovePresentCommand event) {
-        repository.delete(event.getId());
+        repository.deleteById(event.getId());
     }
 }
