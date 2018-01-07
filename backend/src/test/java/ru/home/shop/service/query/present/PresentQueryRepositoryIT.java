@@ -1,60 +1,68 @@
 package ru.home.shop.service.query.present;
 
-import org.flywaydb.test.annotation.FlywayTest;
-import org.flywaydb.test.junit.FlywayTestExecutionListener;
+import com.github.database.rider.core.api.dataset.DataSet;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import ru.home.shop.service.query.present.PresentItemQuery;
-import ru.home.shop.service.query.present.PresentQuery;
-import ru.home.shop.service.query.present.PresentQueryRepository;
+import ru.home.shop.service.DBRiderIT;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.UUID;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+import static ru.home.db.Tables.CANDY;
+import static ru.home.db.Tables.PRESENT;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@TestExecutionListeners({DependencyInjectionTestExecutionListener.class, FlywayTestExecutionListener.class })
-public class PresentQueryRepositoryIT {
+public class PresentQueryRepositoryIT extends DBRiderIT {
 
     @Autowired
     private PresentQueryRepository repository;
 
-    @Test
-    @FlywayTest
-    public void findAllShouldNotReturnEmptySet() {
-        assertFalse(repository.list().isEmpty());
+    public PresentQueryRepositoryIT() {
+        cleanDataAfterClass(PRESENT, CANDY);
     }
 
     @Test
-    @FlywayTest
+    @DataSet({"candy/candy_list.yml", "present/present.yml"})
+    public void listShouldReturnCorrectRecords() {
+        Collection<PresentQuery> presents = repository.list();
+        assertThat(presents, hasSize(1));
+        assertPresent(presents.iterator().next(), false);
+    }
+
+    @Test
+    @DataSet({"candy/candy_list.yml", "present/present.yml"})
     public void findByExistentIdShouldReturnValidEntry() {
-        PresentQuery fromDB = repository.findById(UUID.fromString("9744b2ea-2328-447c-b437-a4f8b57c9985"));
-
-        assertEquals("someName", fromDB.getName());
-        assertEquals(BigDecimal.valueOf(12.35).doubleValue(), fromDB.getPrice().doubleValue(), 0);
-
-        assertEquals(2, fromDB.getItems().size());
-
-        PresentItemQuery item1FromDB = fromDB.getItems().iterator().next();
-        assertEquals(6, item1FromDB.getCount().intValue());
-
-        assertEquals(UUID.fromString("b08871d2-cc84-4be0-9671-8c73bf8658ae"), item1FromDB.getCandy().getId());
-        assertEquals("someName3", item1FromDB.getCandy().getName());
-        assertEquals("someFirm3", item1FromDB.getCandy().getFirm());
-        assertEquals(BigDecimal.valueOf(13213.11), item1FromDB.getCandy().getPrice());
-        assertEquals(3, item1FromDB.getCandy().getOrder(), 0.001);
+        PresentQuery present = repository.findById(UUID.fromString("9744b2ea-2328-447c-b437-a4f8b57c9985"));
+        assertPresent(present, true);
     }
 
     @Test
     public void findByNonexistentIdShouldReturnNull() {
-        assertNull(repository.findById(newUUID()));
+        PresentQuery present = repository.findById(newUUID());
+        assertThat(present, nullValue());
+    }
+
+    private void assertPresent(PresentQuery present, boolean assertItems) {
+        assertThat(present.getId(), equalTo(UUID.fromString("9744b2ea-2328-447c-b437-a4f8b57c9985")));
+        assertThat(present.getName(), equalTo("name"));
+        assertThat(present.getPrice(), equalTo(new BigDecimal("12.35")));
+
+        if (assertItems) {
+            assertThat(present.getItems(), hasSize(2));
+            assertThat(present.getItems().get(0).getCandy().getId(), equalTo(UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c")));
+            assertThat(present.getItems().get(0).getCount(), equalTo(6));
+            assertThat(present.getItems().get(1).getCandy().getId(), equalTo(UUID.fromString("a764c765-483c-492b-ac63-4f2c4f6d2ff4")));
+            assertThat(present.getItems().get(1).getCount(), equalTo(2));
+        }
     }
 }
