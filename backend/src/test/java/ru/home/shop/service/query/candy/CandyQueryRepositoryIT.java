@@ -12,7 +12,6 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.UUID;
 
-import static java.util.UUID.fromString;
 import static org.assertj.core.api.Assertions.assertThat;
 import static ru.home.db.Tables.CANDY;
 import static ru.home.shop.utils.UuidUtils.newUUID;
@@ -21,7 +20,7 @@ import static ru.home.shop.utils.UuidUtils.newUUID;
 @SpringBootTest
 public class CandyQueryRepositoryIT extends DBRiderIT {
 
-    private static final UUID CANDY_ID = fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c");
+    private static final UUID CANDY_ID = UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c");
     private static final String CANDY_NAME = "name";
     private static final String CANDY_FIRM = "firm";
     private static final BigDecimal CANDY_PRICE = new BigDecimal("2.60");

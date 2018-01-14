@@ -16,7 +16,6 @@ import ru.home.shop.service.DBRiderIT;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-import static java.util.UUID.fromString;
 import static ru.home.db.Tables.CANDY;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
@@ -24,7 +23,7 @@ import static ru.home.shop.utils.UuidUtils.newUUID;
 @SpringBootTest
 public class CandyCommandHandlerIT extends DBRiderIT {
 
-    private static final UUID CANDY_ID = fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c");
+    private static final UUID CANDY_ID = UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c");
     private static final String CANDY_NAME = "name";
     private static final String CANDY_FIRM = "firm";
     private static final BigDecimal CANDY_PRICE = BigDecimal.valueOf(2.6);
@@ -69,7 +68,7 @@ public class CandyCommandHandlerIT extends DBRiderIT {
 
     @Test(expected = EntityNotFoundException.class)
     @DataSet("candy/candy_empty.yml")
-    public void updateNonexistentEntityShouldThrowError() {
+    public void updateNonexistentEntityShouldThrowException() {
         eventHandler.on(updateNotExistentCandyCommand());
     }
 
@@ -82,7 +81,7 @@ public class CandyCommandHandlerIT extends DBRiderIT {
 
     @Test(expected = EntityNotFoundException.class)
     @DataSet("candy/candy_empty.yml")
-    public void hideNonexistentEntityShouldThrowError() {
+    public void hideNonexistentEntityShouldThrowException() {
         eventHandler.on(new HideCandyCommand(newUUID()));
     }
 }
