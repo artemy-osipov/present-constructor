@@ -9,8 +9,7 @@ import ru.home.shop.domain.PresentItem;
 import java.math.BigDecimal;
 
 import static java.util.Arrays.asList;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
 public class ReportServiceIT {
@@ -51,15 +50,15 @@ public class ReportServiceIT {
     public void generatePublicReportShouldGenerateSomeReport() {
         Report report = reportService.generatePublicReport(getPresent());
 
-        assertThat(report.getName(), equalTo(REPORT_NAME));
-        assertThat(report.getContent().length, equalTo(PUBLIC_REPORT_LENGTH));
+        assertThat(report.getName()).isEqualTo(REPORT_NAME);
+        assertThat(report.getContent()).hasSize(PUBLIC_REPORT_LENGTH);
     }
 
     @Test
     public void generatePrivateReportShouldGenerateSomeReport() {
         Report report = reportService.generatePrivateReport(getPresent());
 
-        assertThat(report.getName(), equalTo(REPORT_NAME));
-        assertThat(report.getContent().length, equalTo(PRIVATE_REPORT_LENGTH));
+        assertThat(report.getName()).isEqualTo(REPORT_NAME);
+        assertThat(report.getContent()).hasSize(PRIVATE_REPORT_LENGTH);
     }
 }

@@ -6,9 +6,7 @@ import ru.home.db.tables.records.CandyRecord;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
 public class CandyMapperTest {
@@ -21,7 +19,7 @@ public class CandyMapperTest {
 
     private final CandyMapper mapper = new CandyMapper();
 
-    private CandyRecord getRecord() {
+    private CandyRecord record() {
         CandyRecord record = new CandyRecord();
         record.setId(ID);
         record.setName(NAME);
@@ -32,20 +30,26 @@ public class CandyMapperTest {
         return record;
     }
 
+    private CandyQuery candyQuery() {
+        CandyQuery candy = new CandyQuery();
+        candy.setId(ID);
+        candy.setName(NAME);
+        candy.setFirm(FIRM);
+        candy.setPrice(PRICE);
+        candy.setOrder(ORDER);
+
+        return candy;
+    }
+
     @Test
     public void nullShouldMapToNull() {
         CandyQuery mapped = mapper.map(null);
-        assertThat(mapped, nullValue());
+        assertThat(mapped).isNull();
     }
 
     @Test
     public void testFullInfoMap() {
-        CandyQuery candy = mapper.map(getRecord());
-
-        assertThat(candy.getId(), equalTo(ID));
-        assertThat(candy.getName(), equalTo(NAME));
-        assertThat(candy.getFirm(), equalTo(FIRM));
-        assertThat(candy.getPrice(), equalTo(PRICE));
-        assertThat(candy.getOrder(), equalTo(ORDER));
+        CandyQuery candy = mapper.map(record());
+        assertThat(candy).isEqualToComparingFieldByField(candyQuery());
     }
 }

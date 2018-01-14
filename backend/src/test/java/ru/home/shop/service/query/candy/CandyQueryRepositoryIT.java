@@ -13,11 +13,7 @@ import java.util.Collection;
 import java.util.UUID;
 
 import static java.util.UUID.fromString;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.hasSize;
+import static org.assertj.core.api.Assertions.assertThat;
 import static ru.home.db.Tables.CANDY;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
@@ -38,17 +34,28 @@ public class CandyQueryRepositoryIT extends DBRiderIT {
         cleanDataAfterClass(CANDY);
     }
 
+    private CandyQuery candyQuery() {
+        CandyQuery candy = new CandyQuery();
+        candy.setId(CANDY_ID);
+        candy.setName(CANDY_NAME);
+        candy.setFirm(CANDY_FIRM);
+        candy.setPrice(CANDY_PRICE);
+        candy.setOrder(CANDY_ORDER);
+
+        return candy;
+    }
+
     @Test
     @DataSet("candy/candy_empty.yml")
     public void listShouldReturnEmptyCollectionIfNoRecords() {
-        assertThat(repository.list(), empty());
+        assertThat(repository.list()).isEmpty();
     }
 
     @Test
     @DataSet("candy/candy_list.yml")
     public void listShouldReturnActiveCandies() {
         Collection<CandyQuery> candies = repository.list();
-        assertThat(candies, hasSize(1));
+        assertThat(candies).hasSize(1);
         assertCandy(candies.iterator().next());
     }
 
@@ -62,14 +69,10 @@ public class CandyQueryRepositoryIT extends DBRiderIT {
     @Test
     public void findByNonexistentIdShouldReturnNull() {
         CandyQuery candy = repository.findById(newUUID());
-        assertThat(candy, nullValue());
+        assertThat(candy).isNull();
     }
 
     private void assertCandy(CandyQuery candy) {
-        assertThat(candy.getId(), equalTo(CANDY_ID));
-        assertThat(candy.getName(), equalTo(CANDY_NAME));
-        assertThat(candy.getFirm(), equalTo(CANDY_FIRM));
-        assertThat(candy.getPrice(), equalTo(CANDY_PRICE));
-        assertThat(candy.getOrder(), equalTo(CANDY_ORDER));
+        assertThat(candy).isEqualToComparingFieldByField(candyQuery());
     }
 }

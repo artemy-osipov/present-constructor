@@ -4,8 +4,7 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
 public class PresentTest {
@@ -43,7 +42,7 @@ public class PresentTest {
 
         BigDecimal costPrice = emptyPresent.computeCost();
 
-        assertThat(costPrice, equalTo(BigDecimal.ZERO));
+        assertThat(costPrice).isEqualTo(BigDecimal.ZERO);
     }
 
     @Test
@@ -52,6 +51,6 @@ public class PresentTest {
 
         BigDecimal costPrice = present.computeCost();
 
-        assertThat(costPrice, equalTo(new BigDecimal("15.4")));
+        assertThat(costPrice).isEqualTo(new BigDecimal("15.4"));
     }
 }

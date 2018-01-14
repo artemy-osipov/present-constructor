@@ -6,9 +6,7 @@ import ru.home.db.tables.records.PresentRecord;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
 public class PresentMapperTest {
@@ -19,7 +17,7 @@ public class PresentMapperTest {
 
     private final PresentMapper mapper = new PresentMapper();
 
-    private PresentRecord getRecord() {
+    private PresentRecord record() {
         PresentRecord record = new PresentRecord();
         record.setId(ID);
         record.setName(NAME);
@@ -28,18 +26,24 @@ public class PresentMapperTest {
         return record;
     }
 
+    private PresentQuery presentQuery() {
+        PresentQuery present = new PresentQuery();
+        present.setId(ID);
+        present.setName(NAME);
+        present.setPrice(PRICE);
+
+        return present;
+    }
+
     @Test
     public void nullShouldMapToNull() {
         PresentQuery mapped = mapper.map(null);
-        assertThat(mapped, nullValue());
+        assertThat(mapped).isNull();
     }
 
     @Test
     public void testFullInfoMap() {
-        PresentQuery present = mapper.map(getRecord());
-
-        assertThat(present.getId(), equalTo(ID));
-        assertThat(present.getName(), equalTo(NAME));
-        assertThat(present.getPrice(), equalTo(PRICE));
+        PresentQuery present = mapper.map(record());
+        assertThat(present).isEqualToComparingFieldByField(presentQuery());
     }
 }
