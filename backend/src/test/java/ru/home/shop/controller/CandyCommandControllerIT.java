@@ -11,7 +11,7 @@ import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.home.shop.api.candy.RemoveCandyCommand;
+import ru.home.shop.api.candy.HideCandyCommand;
 import ru.home.shop.api.candy.UpdateCandyCommand;
 import ru.home.shop.controller.dto.CandyDTO;
 import ru.home.shop.exception.EntityNotFoundException;
@@ -112,7 +112,7 @@ public class CandyCommandControllerIT {
 
     @Test
     public void removeCandyWithNonExistentIdShouldReturn404() throws Exception {
-        doThrow(new EntityNotFoundException()).when(commandHandler).on(any(RemoveCandyCommand.class));
+        doThrow(new EntityNotFoundException()).when(commandHandler).on(any(HideCandyCommand.class));
 
         mockMvc.perform(delete("/api/candies/{id}", newUUID()))
                 .andExpect(status().isNotFound());

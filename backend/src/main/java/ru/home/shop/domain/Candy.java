@@ -22,4 +22,8 @@ public class Candy {
     private BigDecimal price;
     private Double order;
     private Boolean active = true;
+
+    public void hide() {
+        active = false;
+    }
 }

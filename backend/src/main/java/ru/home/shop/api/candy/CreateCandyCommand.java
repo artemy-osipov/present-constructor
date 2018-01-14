@@ -1,17 +1,11 @@
 package ru.home.shop.api.candy;
 
-import ru.home.shop.domain.Candy;
-
 import java.math.BigDecimal;
 import java.util.UUID;
 
 public class CreateCandyCommand extends AbstractCandyCommand {
 
-    public CreateCandyCommand(UUID candyId, String name, String firm, double order, BigDecimal price) {
-        super(candyId, name, firm, order, price);
-    }
-
-    public CreateCandyCommand(Candy candy) {
-        super(candy);
+    public CreateCandyCommand(UUID candyId, String name, String firm, BigDecimal price, Double order) {
+        super(candyId, name, firm, price, order);
     }
 }

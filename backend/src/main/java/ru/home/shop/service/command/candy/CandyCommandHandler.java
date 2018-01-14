@@ -3,7 +3,7 @@ package ru.home.shop.service.command.candy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.home.shop.api.candy.CreateCandyCommand;
-import ru.home.shop.api.candy.RemoveCandyCommand;
+import ru.home.shop.api.candy.HideCandyCommand;
 import ru.home.shop.api.candy.UpdateCandyCommand;
 import ru.home.shop.domain.Candy;
 import ru.home.shop.exception.EntityNotFoundException;
@@ -40,16 +40,12 @@ public class CandyCommandHandler {
         candy.setFirm(event.getFirm());
         candy.setPrice(event.getPrice());
         candy.setOrder(event.getOrder());
-
-        repository.save(candy);
     }
 
-    public void on(RemoveCandyCommand event) {
+    public void on(HideCandyCommand event) {
         Candy candy = repository.findById(event.getId())
                 .orElseThrow(EntityNotFoundException::new);
 
-        candy.setActive(false);
-
-        repository.save(candy);
+        candy.hide();
     }
 }

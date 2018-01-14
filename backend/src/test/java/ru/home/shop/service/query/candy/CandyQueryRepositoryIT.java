@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.UUID;
 
+import static java.util.UUID.fromString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -23,6 +24,12 @@ import static ru.home.shop.utils.UuidUtils.newUUID;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class CandyQueryRepositoryIT extends DBRiderIT {
+
+    private static final UUID CANDY_ID = fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c");
+    private static final String CANDY_NAME = "name";
+    private static final String CANDY_FIRM = "firm";
+    private static final BigDecimal CANDY_PRICE = new BigDecimal("2.60");
+    private static final Double CANDY_ORDER = 1.1;
 
     @Autowired
     private CandyQueryRepository repository;
@@ -47,8 +54,8 @@ public class CandyQueryRepositoryIT extends DBRiderIT {
 
     @Test
     @DataSet("candy/candy.yml")
-    public void findByExistentIdShouldReturnValidEntry() {
-        CandyQuery candy = repository.findById(UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c"));
+    public void findByExistentIdShouldReturnEntry() {
+        CandyQuery candy = repository.findById(CANDY_ID);
         assertCandy(candy);
     }
 
@@ -59,10 +66,10 @@ public class CandyQueryRepositoryIT extends DBRiderIT {
     }
 
     private void assertCandy(CandyQuery candy) {
-        assertThat(candy.getId(), equalTo(UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c")));
-        assertThat(candy.getName(), equalTo("name"));
-        assertThat(candy.getFirm(), equalTo("firm"));
-        assertThat(candy.getPrice(), equalTo(new BigDecimal("2.60")));
-        assertThat(candy.getOrder(), equalTo(1.1));
+        assertThat(candy.getId(), equalTo(CANDY_ID));
+        assertThat(candy.getName(), equalTo(CANDY_NAME));
+        assertThat(candy.getFirm(), equalTo(CANDY_FIRM));
+        assertThat(candy.getPrice(), equalTo(CANDY_PRICE));
+        assertThat(candy.getOrder(), equalTo(CANDY_ORDER));
     }
 }

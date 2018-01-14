@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.home.shop.api.candy.CreateCandyCommand;
-import ru.home.shop.api.candy.RemoveCandyCommand;
+import ru.home.shop.api.candy.HideCandyCommand;
 import ru.home.shop.api.candy.UpdateCandyCommand;
 import ru.home.shop.controller.dto.CandyDTO;
 import ru.home.shop.service.command.candy.CandyCommandHandler;
@@ -29,7 +29,7 @@ public class CandyCommandController {
     @PostMapping
     public ResponseEntity<?> addCandy(@RequestBody @Validated CandyDTO dto) {
         UUID newId = newUUID();
-        CreateCandyCommand command = new CreateCandyCommand(newId, dto.getName(), dto.getFirm(), dto.getOrder(), dto.getPrice());
+        CreateCandyCommand command = new CreateCandyCommand(newId, dto.getName(), dto.getFirm(), dto.getPrice(), dto.getOrder());
 
         commandHandler.on(command);
 
@@ -43,7 +43,7 @@ public class CandyCommandController {
     public ResponseEntity<?> editCandy(
             @PathVariable("id") UUID id,
             @RequestBody @Validated CandyDTO dto) {
-        UpdateCandyCommand command = new UpdateCandyCommand(id, dto.getName(), dto.getFirm(), dto.getOrder(), dto.getPrice());
+        UpdateCandyCommand command = new UpdateCandyCommand(id, dto.getName(), dto.getFirm(), dto.getPrice(), dto.getOrder());
 
         commandHandler.on(command);
 
@@ -53,7 +53,7 @@ public class CandyCommandController {
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<?> removeCandy(@PathVariable("id") UUID id) {
-        RemoveCandyCommand command = new RemoveCandyCommand(id);
+        HideCandyCommand command = new HideCandyCommand(id);
 
         commandHandler.on(command);
 
