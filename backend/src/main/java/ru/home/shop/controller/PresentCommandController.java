@@ -38,7 +38,7 @@ public class PresentCommandController {
                 dto.getPrice(),
                 LocalDateTime.now(),
                 dto.getItems().stream()
-                        .map(i -> new PresentItem(newUUID(), i.getCandy().getId(), i.getCount()))
+                        .map(i -> new PresentItem(i.getCandy().getId(), i.getCount()))
                         .collect(Collectors.toList())
         );
 

@@ -3,23 +3,25 @@ package ru.home.shop.service.command.present;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.home.shop.api.present.CreatePresentCommand;
+import ru.home.shop.api.present.PresentItem;
 import ru.home.shop.api.present.RemovePresentCommand;
 import ru.home.shop.domain.Candy;
 import ru.home.shop.domain.Present;
-import ru.home.shop.domain.PresentItem;
+import ru.home.shop.service.command.candy.CandyRepository;
 
 import javax.transaction.Transactional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class PresentCommandHandler {
 
-    private final PresentRepository repository;
+    private final PresentRepository presentRepository;
+    private final CandyRepository candyRepository;
 
     @Autowired
-    public PresentCommandHandler(PresentRepository repository) {
-        this.repository = repository;
+    public PresentCommandHandler(PresentRepository presentRepository, CandyRepository candyRepository) {
+        this.presentRepository = presentRepository;
+        this.candyRepository = candyRepository;
     }
 
     public void on(CreatePresentCommand event) {
@@ -28,26 +30,16 @@ public class PresentCommandHandler {
         present.setName(event.getName());
         present.setPrice(event.getPrice());
         present.setDate(event.getDate());
-        present.setItems(
-                event.getItems().stream()
-                        .map(this::map)
-                        .collect(Collectors.toList())
-        );
 
-        repository.save(present);
-    }
+        for (PresentItem item : event.getItems()) {
+            Candy candy = candyRepository.getOne(item.getCandyId());
+            present.getItems().put(candy, item.getCount());
+        }
 
-    private PresentItem map(ru.home.shop.api.present.PresentItem apiItem) {
-        PresentItem item = new PresentItem();
-        item.setId(apiItem.getId());
-        item.setCandy(new Candy());
-        item.getCandy().setId(apiItem.getCandyId());
-        item.setCount(apiItem.getCount());
-
-        return item;
+        presentRepository.save(present);
     }
 
     public void on(RemovePresentCommand event) {
-        repository.deleteById(event.getId());
+        presentRepository.deleteById(event.getId());
     }
 }

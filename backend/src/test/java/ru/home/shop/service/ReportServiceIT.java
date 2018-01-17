@@ -1,21 +1,20 @@
 package ru.home.shop.service;
 
 import org.junit.Test;
-import ru.home.shop.domain.Report;
 import ru.home.shop.domain.Candy;
 import ru.home.shop.domain.Present;
-import ru.home.shop.domain.PresentItem;
+import ru.home.shop.domain.Report;
 
 import java.math.BigDecimal;
 
-import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
 public class ReportServiceIT {
 
     private final static int PUBLIC_REPORT_LENGTH = 11632;
-    private final static int PRIVATE_REPORT_LENGTH = 14572;
+    private final static int PRIVATE_REPORT_LENGTH = 14575;
+    private final static int DELTA = 5;
     private final static String REPORT_NAME = "name 4.2 RUB.docx";
 
     private final ReportService reportService = new ReportService();
@@ -25,23 +24,21 @@ public class ReportServiceIT {
         present.setName("name");
         present.setPrice(BigDecimal.valueOf(4.2));
 
-        PresentItem item1 = new PresentItem();
-        item1.setCandy(new Candy());
-        item1.getCandy().setId(newUUID());
-        item1.getCandy().setName("name1");
-        item1.getCandy().setFirm("firm1");
-        item1.getCandy().setPrice(BigDecimal.valueOf(1.1));
-        item1.setCount(2);
+        Candy candy1 = new Candy();
+        candy1.setId(newUUID());
+        candy1.setName("name1");
+        candy1.setFirm("firm1");
+        candy1.setPrice(BigDecimal.valueOf(1.1));
 
-        PresentItem item2 = new PresentItem();
-        item2.setCandy(new Candy());
-        item2.getCandy().setId(newUUID());
-        item2.getCandy().setName("name2");
-        item2.getCandy().setFirm("firm2");
-        item2.getCandy().setPrice(BigDecimal.valueOf(2.2));
-        item2.setCount(6);
+        present.getItems().put(candy1, 2);
 
-        present.setItems(asList(item1, item2));
+        Candy candy2 = new Candy();
+        candy2.setId(newUUID());
+        candy2.setName("name2");
+        candy2.setFirm("firm2");
+        candy2.setPrice(BigDecimal.valueOf(2.2));
+
+        present.getItems().put(candy2, 6);
 
         return present;
     }
@@ -51,7 +48,7 @@ public class ReportServiceIT {
         Report report = reportService.generatePublicReport(getPresent());
 
         assertThat(report.getName()).isEqualTo(REPORT_NAME);
-        assertThat(report.getContent()).hasSize(PUBLIC_REPORT_LENGTH);
+        assertThat(report.getContent().length).isBetween(PUBLIC_REPORT_LENGTH - DELTA, PUBLIC_REPORT_LENGTH + DELTA);
     }
 
     @Test
@@ -59,6 +56,6 @@ public class ReportServiceIT {
         Report report = reportService.generatePrivateReport(getPresent());
 
         assertThat(report.getName()).isEqualTo(REPORT_NAME);
-        assertThat(report.getContent()).hasSize(PRIVATE_REPORT_LENGTH);
+        assertThat(report.getContent().length).isBetween(PRIVATE_REPORT_LENGTH - DELTA, PRIVATE_REPORT_LENGTH + DELTA);
     }
 }

@@ -7,8 +7,8 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Getter
@@ -24,13 +24,15 @@ public class Present {
     private BigDecimal price;
     private LocalDateTime date;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "present_id", nullable = false, updatable = false)
-    private List<PresentItem> items = new ArrayList<>();
+    @ElementCollection
+    @CollectionTable(name = "present_item")
+    @MapKeyJoinColumn(name = "candy_id")
+    @Column(name = "count")
+    private Map<Candy, Integer> items = new HashMap<>();
 
     public BigDecimal computeCost() {
-        return getItems().stream()
-                .map(item -> item.getCandy().getPrice().multiply(BigDecimal.valueOf(item.getCount())))
+        return items.entrySet().stream()
+                .map(e -> e.getKey().getPrice().multiply(BigDecimal.valueOf(e.getValue())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

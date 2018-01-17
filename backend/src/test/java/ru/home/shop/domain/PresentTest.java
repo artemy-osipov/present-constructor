@@ -14,24 +14,17 @@ public class PresentTest {
         present.setName("name");
         present.setPrice(BigDecimal.valueOf(4.2));
 
-        PresentItem item1 = new PresentItem();
-        item1.setCandy(new Candy());
-        item1.getCandy().setId(newUUID());
-        item1.getCandy().setName("name1");
-        item1.getCandy().setFirm("firm1");
-        item1.getCandy().setPrice(BigDecimal.valueOf(1.1));
-        item1.setCount(2);
+        Candy candy1 = new Candy();
+        candy1.setId(newUUID());
+        candy1.setPrice(BigDecimal.valueOf(1.1));
 
-        PresentItem item2 = new PresentItem();
-        item2.setCandy(new Candy());
-        item2.getCandy().setId(newUUID());
-        item2.getCandy().setName("name2");
-        item2.getCandy().setFirm("firm2");
-        item2.getCandy().setPrice(BigDecimal.valueOf(2.2));
-        item2.setCount(6);
+        present.getItems().put(candy1, 2);
 
-        present.getItems().add(item1);
-        present.getItems().add(item2);
+        Candy candy2 = new Candy();
+        candy2.setId(newUUID());
+        candy2.setPrice(BigDecimal.valueOf(2.2));
+
+        present.getItems().put(candy2, 6);
 
         return present;
     }

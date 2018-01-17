@@ -18,11 +18,10 @@ CREATE TABLE `present` (
 );
 
 CREATE TABLE `present_item` (
-    `id` CHAR(36) NOT NULL,
     `present_id` CHAR(36) NOT NULL,
     `candy_id` CHAR(36) NOT NULL,
     `count` INT NOT NULL,
-    PRIMARY KEY (`id`),
+    PRIMARY KEY (`present_id`, `candy_id`),
     FOREIGN KEY (`present_id`) REFERENCES `present` (`id`) ON DELETE CASCADE,
     FOREIGN KEY (`candy_id`) REFERENCES `candy` (`id`)
 );
