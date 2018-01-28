@@ -38,7 +38,7 @@
             </activation>
             <properties>
                 <db.driver>org.h2.Driver</db.driver>
-                <db.url>jdbc:mysql://127.0.0.1:3306/presents?useSSL=false</db.url>
+                <db.url>jdbc:mysql://127.0.0.1:3306/presents?useSSL=false&amp;useUnicode=yes&amp;characterEncoding=UTF-8</db.url>
                 <db.username>root</db.username>
                 <db.password>toor</db.password>
             </properties>
@@ -50,10 +50,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
 
         <!--security-->
@@ -80,10 +76,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-java8</artifactId>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
@@ -121,12 +113,6 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.flywaydb.flyway-test-extensions</groupId>
-            <artifactId>flyway-spring-test</artifactId>
-            <version>${flyway.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
