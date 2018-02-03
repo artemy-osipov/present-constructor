@@ -1,13 +1,13 @@
 package ru.home.shop.domain;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
-public class PresentTest {
+class PresentTest {
 
     private Present getPresent() {
         Present present = new Present();
@@ -30,7 +30,7 @@ public class PresentTest {
     }
 
     @Test
-    public void emptyPresentShouldHasZeroCostPrice() {
+    void emptyPresentShouldHasZeroCostPrice() {
         Present emptyPresent = new Present();
 
         BigDecimal costPrice = emptyPresent.computeCost();
@@ -39,7 +39,7 @@ public class PresentTest {
     }
 
     @Test
-    public void testComputeCostPrice() {
+    void testComputeCostPrice() {
         Present present = getPresent();
 
         BigDecimal costPrice = present.computeCost();

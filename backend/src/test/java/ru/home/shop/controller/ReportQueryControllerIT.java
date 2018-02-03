@@ -1,35 +1,33 @@
 package ru.home.shop.controller;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.home.shop.domain.Report;
 import ru.home.shop.domain.Present;
-import ru.home.shop.service.command.present.PresentRepository;
+import ru.home.shop.domain.Report;
 import ru.home.shop.service.ReportService;
+import ru.home.shop.service.command.present.PresentRepository;
 
 import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.hamcrest.core.Is.is;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @WebMvcTest(ReportQueryController.class)
 @WithMockUser
-public class ReportQueryControllerIT {
+class ReportQueryControllerIT {
 
     @MockBean
     private ReportService reportService;
@@ -53,10 +51,10 @@ public class ReportQueryControllerIT {
         return new Report("name 2.4 RUB.docx", new byte[]{1, 2, 3});
     }
 
-    @Ignore("migrate to spring security 5")
+    @Disabled("migrate to spring security 5")
     @Test
     @WithAnonymousUser
-    public void publicReportWithWithAnonymousUserShouldReturn401() throws Exception {
+    void publicReportWithWithAnonymousUserShouldReturn401() throws Exception {
         Present present = getPresent();
         Report report = getReport();
 
@@ -68,7 +66,7 @@ public class ReportQueryControllerIT {
     }
 
     @Test
-    public void publicReportWithExistentIdShouldReturnReport() throws Exception {
+    void publicReportWithExistentIdShouldReturnReport() throws Exception {
         Present present = getPresent();
         Report report = getReport();
 
@@ -82,7 +80,7 @@ public class ReportQueryControllerIT {
     }
 
     @Test
-    public void publicReportWithNonExistentIdShouldReturn404() throws Exception {
+    void publicReportWithNonExistentIdShouldReturn404() throws Exception {
         when(repository.findById(any())).thenReturn(Optional.empty());
 
         mockMvc.perform(get("/api/presents/{id}/public-report", newUUID()))
@@ -90,7 +88,7 @@ public class ReportQueryControllerIT {
     }
 
     @Test
-    public void privateReportWithExistentIdShouldReturnReport() throws Exception {
+    void privateReportWithExistentIdShouldReturnReport() throws Exception {
         Present present = getPresent();
         Report report = getReport();
 
@@ -104,7 +102,7 @@ public class ReportQueryControllerIT {
     }
 
     @Test
-    public void privateReportWithNonExistentIdShouldReturn404() throws Exception {
+    void privateReportWithNonExistentIdShouldReturn404() throws Exception {
         when(repository.findById(any())).thenReturn(Optional.empty());
 
         mockMvc.perform(get("/api/presents/{id}/private-report", newUUID()))

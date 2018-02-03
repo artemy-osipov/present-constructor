@@ -1,15 +1,15 @@
 package ru.home.shop.controller;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.home.shop.api.present.RemovePresentCommand;
 import ru.home.shop.controller.dto.AddPresentDTO;
@@ -31,10 +31,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static ru.home.shop.utils.JsonUtils.toJson;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @WebMvcTest(PresentCommandController.class)
 @WithMockUser
-public class PresentCommandControllerIT {
+class PresentCommandControllerIT {
 
     @MockBean
     private PresentCommandHandler commandHandler;
@@ -62,10 +62,10 @@ public class PresentCommandControllerIT {
         return dto;
     }
 
-    @Ignore("migrate to spring security 5")
+    @Disabled("migrate to spring security 5")
     @Test
     @WithAnonymousUser
-    public void addPresentWithAnonymousUserShouldReturn401() throws Exception {
+    void addPresentWithAnonymousUserShouldReturn401() throws Exception {
         mockMvc.perform(post("/api/presents")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJson(getUpdateDTO())))
@@ -73,7 +73,7 @@ public class PresentCommandControllerIT {
     }
 
     @Test
-    public void addPresentWithValidEntityShouldReturnLocation() throws Exception {
+    void addPresentWithValidEntityShouldReturnLocation() throws Exception {
         mockMvc.perform(post("/api/presents")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJson(getUpdateDTO())))
@@ -82,7 +82,7 @@ public class PresentCommandControllerIT {
     }
 
     @Test
-    public void addPresentWithNotValidEntityShouldReturnErrors() throws Exception {
+    void addPresentWithNotValidEntityShouldReturnErrors() throws Exception {
         mockMvc.perform(post("/api/presents")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{}"))
@@ -91,13 +91,13 @@ public class PresentCommandControllerIT {
     }
 
     @Test
-    public void removePresentShouldReturn2xx() throws Exception {
+    void removePresentShouldReturn2xx() throws Exception {
         mockMvc.perform(delete("/api/presents/{id}", newUUID()))
                 .andExpect(status().isNoContent());
     }
 
     @Test
-    public void removePresentWithNonexistentIdShouldReturn404() throws Exception {
+    void removePresentWithNonexistentIdShouldReturn404() throws Exception {
         doThrow(new EntityNotFoundException()).when(commandHandler).on(any(RemovePresentCommand.class));
 
         mockMvc.perform(delete("/api/presents/{id}", newUUID()))

@@ -1,14 +1,14 @@
 package ru.home.shop.controller;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.home.shop.service.query.candy.CandyQuery;
 import ru.home.shop.service.query.present.PresentItemQuery;
@@ -27,10 +27,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @WebMvcTest(value = PresentQueryController.class)
 @WithMockUser
-public class PresentQueryControllerIT {
+class PresentQueryControllerIT {
 
     @MockBean
     private PresentQueryRepository repository;
@@ -59,10 +59,10 @@ public class PresentQueryControllerIT {
         return present;
     }
 
-    @Ignore("migrate to spring security 5")
+    @Disabled("migrate to spring security 5")
     @Test
     @WithAnonymousUser
-    public void findWithAnonymousUserShouldReturn401() throws Exception {
+    void findWithAnonymousUserShouldReturn401() throws Exception {
         PresentQuery present = getPresent();
         doReturn(present).when(repository).findById(any());
 
@@ -71,7 +71,7 @@ public class PresentQueryControllerIT {
     }
 
     @Test
-    public void findExistentPresentShouldReturnIt() throws Exception {
+    void findExistentPresentShouldReturnIt() throws Exception {
         PresentQuery present = getPresent();
         doReturn(present).when(repository).findById(any());
 
@@ -87,7 +87,7 @@ public class PresentQueryControllerIT {
     }
 
     @Test
-    public void findNotExistentPresentReturn404() throws Exception {
+    void findNotExistentPresentReturn404() throws Exception {
         doReturn(null).when(repository).findById(any());
 
         mockMvc.perform(get("/api/presents/{id}", newUUID()))
@@ -95,7 +95,7 @@ public class PresentQueryControllerIT {
     }
 
     @Test
-    public void listPresentShouldReturnArray() throws Exception {
+    void listPresentShouldReturnArray() throws Exception {
         doReturn(asList(getPresent(), getPresent())).when(repository).list();
 
         mockMvc.perform(get("/api/presents"))

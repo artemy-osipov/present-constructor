@@ -1,6 +1,6 @@
 package ru.home.shop.service.query.present;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import ru.home.db.tables.records.PresentRecord;
 
 import java.math.BigDecimal;
@@ -9,7 +9,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
-public class PresentMapperTest {
+class PresentMapperTest {
 
     private static final UUID ID = newUUID();
     private static final String NAME = "name";
@@ -36,13 +36,13 @@ public class PresentMapperTest {
     }
 
     @Test
-    public void nullShouldMapToNull() {
+    void nullShouldMapToNull() {
         PresentQuery mapped = mapper.map(null);
         assertThat(mapped).isNull();
     }
 
     @Test
-    public void testFullInfoMap() {
+    void testFullInfoMap() {
         PresentQuery present = mapper.map(record());
         assertThat(present).isEqualToComparingFieldByField(presentQuery());
     }

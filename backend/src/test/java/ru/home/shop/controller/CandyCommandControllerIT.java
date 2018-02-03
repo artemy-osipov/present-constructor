@@ -1,15 +1,15 @@
 package ru.home.shop.controller;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.home.shop.api.candy.HideCandyCommand;
 import ru.home.shop.api.candy.UpdateCandyCommand;
@@ -28,10 +28,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static ru.home.shop.utils.JsonUtils.toJson;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @WebMvcTest(CandyCommandController.class)
 @WithMockUser
-public class CandyCommandControllerIT {
+class CandyCommandControllerIT {
 
     @MockBean
     private CandyCommandHandler commandHandler;
@@ -49,10 +49,10 @@ public class CandyCommandControllerIT {
         return dto;
     }
 
-    @Ignore("migrate to spring security 5")
+    @Disabled("migrate to spring security 5")
     @Test
     @WithAnonymousUser
-    public void addCandyWithAnonymousUserShouldReturn401() throws Exception {
+    void addCandyWithAnonymousUserShouldReturn401() throws Exception {
         mockMvc.perform(post("/api/candies")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJson(getUpdateDTO())))
@@ -60,7 +60,7 @@ public class CandyCommandControllerIT {
     }
 
     @Test
-    public void addCandyWithValidEntityShouldReturnLocation() throws Exception {
+    void addCandyWithValidEntityShouldReturnLocation() throws Exception {
         mockMvc.perform(post("/api/candies")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJson(getUpdateDTO())))
@@ -69,7 +69,7 @@ public class CandyCommandControllerIT {
     }
 
     @Test
-    public void addCandyWithNotValidEntityShouldReturnErrors() throws Exception {
+    void addCandyWithNotValidEntityShouldReturnErrors() throws Exception {
         mockMvc.perform(post("/api/candies")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{}"))
@@ -78,7 +78,7 @@ public class CandyCommandControllerIT {
     }
 
     @Test
-    public void editCandyWithValidEntityShouldReturn2xx() throws Exception {
+    void editCandyWithValidEntityShouldReturn2xx() throws Exception {
         mockMvc.perform(put("/api/candies/{id}", newUUID())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJson(getUpdateDTO())))
@@ -86,7 +86,7 @@ public class CandyCommandControllerIT {
     }
 
     @Test
-    public void editCandyWithNotValidEntityShouldReturnErrors() throws Exception {
+    void editCandyWithNotValidEntityShouldReturnErrors() throws Exception {
         mockMvc.perform(put("/api/candies/{id}", newUUID())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{}"))
@@ -95,7 +95,7 @@ public class CandyCommandControllerIT {
     }
 
     @Test
-    public void editCandyWithNonExistentIdShouldReturn404() throws Exception {
+    void editCandyWithNonExistentIdShouldReturn404() throws Exception {
         doThrow(new EntityNotFoundException()).when(commandHandler).on(any(UpdateCandyCommand.class));
 
         mockMvc.perform(put("/api/candies/{id}", newUUID())
@@ -105,13 +105,13 @@ public class CandyCommandControllerIT {
     }
 
     @Test
-    public void removeCandyWithValidIdShouldReturn2xx() throws Exception {
+    void removeCandyWithValidIdShouldReturn2xx() throws Exception {
         mockMvc.perform(delete("/api/candies/{id}", newUUID()))
                 .andExpect(status().isNoContent());
     }
 
     @Test
-    public void removeCandyWithNonExistentIdShouldReturn404() throws Exception {
+    void removeCandyWithNonExistentIdShouldReturn404() throws Exception {
         doThrow(new EntityNotFoundException()).when(commandHandler).on(any(HideCandyCommand.class));
 
         mockMvc.perform(delete("/api/candies/{id}", newUUID()))

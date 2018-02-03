@@ -1,6 +1,6 @@
 package ru.home.shop.service.query.candy;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import ru.home.db.tables.records.CandyRecord;
 
 import java.math.BigDecimal;
@@ -9,7 +9,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
-public class CandyMapperTest {
+class CandyMapperTest {
 
     private static final UUID ID = newUUID();
     private static final String NAME = "name";
@@ -42,13 +42,13 @@ public class CandyMapperTest {
     }
 
     @Test
-    public void nullShouldMapToNull() {
+    void nullShouldMapToNull() {
         CandyQuery mapped = mapper.map(null);
         assertThat(mapped).isNull();
     }
 
     @Test
-    public void testFullInfoMap() {
+    void testFullInfoMap() {
         CandyQuery candy = mapper.map(record());
         assertThat(candy).isEqualToComparingFieldByField(candyQuery());
     }

@@ -1,6 +1,6 @@
 package ru.home.shop.service;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import ru.home.shop.domain.Candy;
 import ru.home.shop.domain.Present;
 import ru.home.shop.domain.Report;
@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import static org.assertj.core.api.Assertions.assertThat;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
-public class ReportServiceIT {
+class ReportServiceIT {
 
     private final static int PUBLIC_REPORT_LENGTH = 11632;
     private final static int PRIVATE_REPORT_LENGTH = 14575;
@@ -44,7 +44,7 @@ public class ReportServiceIT {
     }
 
     @Test
-    public void generatePublicReportShouldGenerateSomeReport() {
+    void generatePublicReportShouldGenerateSomeReport() {
         Report report = reportService.generatePublicReport(getPresent());
 
         assertThat(report.getName()).isEqualTo(REPORT_NAME);
@@ -52,7 +52,7 @@ public class ReportServiceIT {
     }
 
     @Test
-    public void generatePrivateReportShouldGenerateSomeReport() {
+    void generatePrivateReportShouldGenerateSomeReport() {
         Report report = reportService.generatePrivateReport(getPresent());
 
         assertThat(report.getName()).isEqualTo(REPORT_NAME);
