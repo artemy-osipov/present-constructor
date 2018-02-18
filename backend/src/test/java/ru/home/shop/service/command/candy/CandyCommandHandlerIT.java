@@ -2,26 +2,30 @@ package ru.home.shop.service.command.candy;
 
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.core.api.dataset.ExpectedDataSet;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import ru.home.db.tables.Candy;
 import ru.home.shop.api.candy.CreateCandyCommand;
 import ru.home.shop.api.candy.HideCandyCommand;
 import ru.home.shop.api.candy.UpdateCandyCommand;
 import ru.home.shop.exception.EntityNotFoundException;
-import ru.home.shop.service.DBRiderIT;
+import ru.home.shop.service.CleanTables;
+import ru.home.shop.service.DBRider;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
-import static ru.home.db.Tables.CANDY;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class CandyCommandHandlerIT extends DBRiderIT {
+@DBRider
+@CleanTables(Candy.class)
+class CandyCommandHandlerIT {
 
     private static final UUID CANDY_ID = UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c");
     private static final String CANDY_NAME = "name";
@@ -31,10 +35,6 @@ public class CandyCommandHandlerIT extends DBRiderIT {
 
     @Autowired
     private CandyCommandHandler eventHandler;
-
-    public CandyCommandHandlerIT() {
-        cleanDataAfterClass(CANDY);
-    }
 
     private CreateCandyCommand createCandyCommand() {
         return new CreateCandyCommand(CANDY_ID, CANDY_NAME, CANDY_FIRM, CANDY_PRICE, CANDY_ORDER);
@@ -55,33 +55,33 @@ public class CandyCommandHandlerIT extends DBRiderIT {
     @Test
     @DataSet("candy/candy_empty.yml")
     @ExpectedDataSet("candy/candy.yml")
-    public void createCandyShouldInsertRecord() {
+    void createCandyShouldInsertRecord() {
         eventHandler.on(createCandyCommand());
     }
 
     @Test
     @DataSet("candy/candy.yml")
     @ExpectedDataSet("candy/candy.yml")
-    public void updateCandyUpdateRecord() {
+    void updateCandyUpdateRecord() {
         eventHandler.on(updateCandyCommand());
     }
 
-    @Test(expected = EntityNotFoundException.class)
+    @Test
     @DataSet("candy/candy_empty.yml")
-    public void updateNonexistentEntityShouldThrowException() {
-        eventHandler.on(updateNotExistentCandyCommand());
+    void updateNonexistentEntityShouldThrowException() {
+        assertThrows(EntityNotFoundException.class, () -> eventHandler.on(updateNotExistentCandyCommand()));
     }
 
     @Test
     @DataSet("candy/candy.yml")
     @ExpectedDataSet("candy/candy_not_active.yml")
-    public void hideCandyShouldUpdateRecord() {
+    void hideCandyShouldUpdateRecord() {
         eventHandler.on(new HideCandyCommand(CANDY_ID));
     }
 
-    @Test(expected = EntityNotFoundException.class)
+    @Test
     @DataSet("candy/candy_empty.yml")
-    public void hideNonexistentEntityShouldThrowException() {
-        eventHandler.on(new HideCandyCommand(newUUID()));
+    void hideNonexistentEntityShouldThrowException() {
+        assertThrows(EntityNotFoundException.class, () -> eventHandler.on(new HideCandyCommand(newUUID())));
     }
 }

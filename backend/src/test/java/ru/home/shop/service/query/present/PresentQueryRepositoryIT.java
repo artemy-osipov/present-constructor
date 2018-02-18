@@ -1,12 +1,15 @@
 package ru.home.shop.service.query.present;
 
 import com.github.database.rider.core.api.dataset.DataSet;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-import ru.home.shop.service.DBRiderIT;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import ru.home.db.tables.Candy;
+import ru.home.db.tables.Present;
+import ru.home.shop.service.CleanTables;
+import ru.home.shop.service.DBRider;
 import ru.home.shop.service.query.candy.CandyQuery;
 
 import java.math.BigDecimal;
@@ -17,22 +20,18 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static ru.home.db.Tables.CANDY;
-import static ru.home.db.Tables.PRESENT;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class PresentQueryRepositoryIT extends DBRiderIT {
+@DBRider
+@CleanTables({Present.class, Candy.class})
+class PresentQueryRepositoryIT {
 
     private static final UUID PRESENT_ID = UUID.fromString("9744b2ea-2328-447c-b437-a4f8b57c9985");
 
     @Autowired
     private PresentQueryRepository repository;
-
-    public PresentQueryRepositoryIT() {
-        cleanDataAfterClass(PRESENT, CANDY);
-    }
 
     private PresentQuery presentQuery() {
         PresentQuery present = new PresentQuery();
@@ -61,7 +60,7 @@ public class PresentQueryRepositoryIT extends DBRiderIT {
 
     @Test
     @DataSet({"candy/candy_list.yml", "present/present.yml"})
-    public void listShouldReturnCorrectRecords() {
+    void listShouldReturnCorrectRecords() {
         Collection<PresentQuery> presents = repository.list();
         assertThat(presents).hasSize(1);
         assertPresent(presents.iterator().next(), false);
@@ -69,13 +68,13 @@ public class PresentQueryRepositoryIT extends DBRiderIT {
 
     @Test
     @DataSet({"candy/candy_list.yml", "present/present.yml"})
-    public void findByExistentIdShouldReturnValidEntry() {
+    void findByExistentIdShouldReturnValidEntry() {
         PresentQuery present = repository.findById(PRESENT_ID);
         assertPresent(present, true);
     }
 
     @Test
-    public void findByNonexistentIdShouldReturnNull() {
+    void findByNonexistentIdShouldReturnNull() {
         PresentQuery present = repository.findById(newUUID());
         assertThat(present).isNull();
     }

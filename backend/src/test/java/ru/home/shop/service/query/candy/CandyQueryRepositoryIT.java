@@ -1,24 +1,27 @@
 package ru.home.shop.service.query.candy;
 
 import com.github.database.rider.core.api.dataset.DataSet;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-import ru.home.shop.service.DBRiderIT;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import ru.home.db.tables.Candy;
+import ru.home.shop.service.CleanTables;
+import ru.home.shop.service.DBRider;
 
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static ru.home.db.Tables.CANDY;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class CandyQueryRepositoryIT extends DBRiderIT {
+@DBRider
+@CleanTables(Candy.class)
+class CandyQueryRepositoryIT {
 
     private static final UUID CANDY_ID = UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c");
     private static final String CANDY_NAME = "name";
@@ -28,10 +31,6 @@ public class CandyQueryRepositoryIT extends DBRiderIT {
 
     @Autowired
     private CandyQueryRepository repository;
-
-    public CandyQueryRepositoryIT() {
-        cleanDataAfterClass(CANDY);
-    }
 
     private CandyQuery candyQuery() {
         CandyQuery candy = new CandyQuery();
@@ -46,13 +45,13 @@ public class CandyQueryRepositoryIT extends DBRiderIT {
 
     @Test
     @DataSet("candy/candy_empty.yml")
-    public void listShouldReturnEmptyCollectionIfNoRecords() {
+    void listShouldReturnEmptyCollectionIfNoRecords() {
         assertThat(repository.list()).isEmpty();
     }
 
     @Test
     @DataSet("candy/candy_list.yml")
-    public void listShouldReturnActiveCandies() {
+    void listShouldReturnActiveCandies() {
         Collection<CandyQuery> candies = repository.list();
         assertThat(candies).hasSize(1);
         assertCandy(candies.iterator().next());
@@ -60,13 +59,13 @@ public class CandyQueryRepositoryIT extends DBRiderIT {
 
     @Test
     @DataSet("candy/candy.yml")
-    public void findByExistentIdShouldReturnEntry() {
+    void findByExistentIdShouldReturnEntry() {
         CandyQuery candy = repository.findById(CANDY_ID);
         assertCandy(candy);
     }
 
     @Test
-    public void findByNonexistentIdShouldReturnNull() {
+    void findByNonexistentIdShouldReturnNull() {
         CandyQuery candy = repository.findById(newUUID());
         assertThat(candy).isNull();
     }

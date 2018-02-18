@@ -2,28 +2,34 @@ package ru.home.shop.service.command.present;
 
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.core.api.dataset.ExpectedDataSet;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import ru.home.db.tables.Candy;
+import ru.home.db.tables.Present;
 import ru.home.shop.api.present.CreatePresentCommand;
 import ru.home.shop.api.present.PresentItem;
 import ru.home.shop.api.present.RemovePresentCommand;
-import ru.home.shop.service.DBRiderIT;
+import ru.home.shop.service.CleanTables;
+import ru.home.shop.service.DBRider;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
-import static ru.home.db.Tables.CANDY;
-import static ru.home.db.Tables.PRESENT;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class PresentCommandHandlerIT extends DBRiderIT {
+@DBRider
+@CleanTables({Present.class, Candy.class})
+class PresentCommandHandlerIT {
 
     private static final UUID PRESENT_ID = UUID.fromString("9744b2ea-2328-447c-b437-a4f8b57c9985");
     private static final String PRESENT_NAME = "name";
@@ -32,10 +38,6 @@ public class PresentCommandHandlerIT extends DBRiderIT {
 
     @Autowired
     private PresentCommandHandler eventHandler;
-
-    public PresentCommandHandlerIT() {
-        cleanDataAfterClass(PRESENT, CANDY);
-    }
 
     private CreatePresentCommand createPresentCommand() {
         List<PresentItem> items = new ArrayList<>();
@@ -48,20 +50,20 @@ public class PresentCommandHandlerIT extends DBRiderIT {
     @Test
     @DataSet({"present/present_empty.yml", "candy/candy_list.yml"})
     @ExpectedDataSet("present/present.yml")
-    public void addPresentShouldInsertRecord() {
+    void addPresentShouldInsertRecord() {
         eventHandler.on(createPresentCommand());
     }
 
     @Test
     @DataSet({"candy/candy_list.yml", "present/present.yml"})
     @ExpectedDataSet("present/present_empty.yml")
-    public void removeExistentEntityShouldRemoveRecord() {
+    void removeExistentEntityShouldRemoveRecord() {
         eventHandler.on(new RemovePresentCommand(PRESENT_ID));
     }
 
-    @Test(expected = EmptyResultDataAccessException.class)
+    @Test
     @DataSet("present/present_empty.yml")
-    public void removeNonexistentEntityShouldThrowException() {
-        eventHandler.on(new RemovePresentCommand(newUUID()));
+    void removeNonexistentEntityShouldThrowException() {
+        assertThrows(EmptyResultDataAccessException.class, () -> eventHandler.on(new RemovePresentCommand(newUUID())));
     }
 }
