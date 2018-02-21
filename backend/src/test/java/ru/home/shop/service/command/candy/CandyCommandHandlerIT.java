@@ -5,15 +5,15 @@ import com.github.database.rider.core.api.dataset.ExpectedDataSet;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import ru.home.db.tables.Candy;
 import ru.home.shop.api.candy.CreateCandyCommand;
 import ru.home.shop.api.candy.HideCandyCommand;
 import ru.home.shop.api.candy.UpdateCandyCommand;
 import ru.home.shop.exception.EntityNotFoundException;
-import ru.home.shop.service.CleanTables;
-import ru.home.shop.service.DBRider;
+import ru.home.shop.utils.db.DBTest;
+import ru.home.shop.utils.db.DatabaseConfig;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -22,9 +22,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest
-@DBRider
-@CleanTables(Candy.class)
+@DBTest
+@ContextHierarchy({
+        @ContextConfiguration(classes = DatabaseConfig.class),
+        @ContextConfiguration(classes = CandyCommandHandler.class)
+})
 class CandyCommandHandlerIT {
 
     private static final UUID CANDY_ID = UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c");

@@ -4,12 +4,11 @@ import com.github.database.rider.core.api.dataset.DataSet;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import ru.home.db.tables.Candy;
-import ru.home.db.tables.Present;
-import ru.home.shop.service.CleanTables;
-import ru.home.shop.service.DBRider;
+import ru.home.shop.utils.db.DBTest;
+import ru.home.shop.utils.db.DatabaseConfig;
 import ru.home.shop.service.query.candy.CandyQuery;
 
 import java.math.BigDecimal;
@@ -23,9 +22,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest
-@DBRider
-@CleanTables({Present.class, Candy.class})
+@DBTest
+@ContextHierarchy({
+        @ContextConfiguration(classes = DatabaseConfig.class),
+        @ContextConfiguration(classes = PresentQueryRepository.class)
+})
 class PresentQueryRepositoryIT {
 
     private static final UUID PRESENT_ID = UUID.fromString("9744b2ea-2328-447c-b437-a4f8b57c9985");
