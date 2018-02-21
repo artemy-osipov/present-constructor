@@ -1,14 +1,11 @@
 package ru.home.shop.controller;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithAnonymousUser;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.home.shop.api.candy.HideCandyCommand;
@@ -30,7 +27,6 @@ import static ru.home.shop.utils.UuidUtils.newUUID;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(CandyCommandController.class)
-@WithMockUser
 class CandyCommandControllerIT {
 
     @MockBean
@@ -47,16 +43,6 @@ class CandyCommandControllerIT {
         dto.setOrder(51D);
 
         return dto;
-    }
-
-    @Disabled("migrate to spring security 5")
-    @Test
-    @WithAnonymousUser
-    void addCandyWithAnonymousUserShouldReturn401() throws Exception {
-        mockMvc.perform(post("/api/candies")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(getUpdateDTO())))
-                .andExpect(status().isUnauthorized());
     }
 
     @Test

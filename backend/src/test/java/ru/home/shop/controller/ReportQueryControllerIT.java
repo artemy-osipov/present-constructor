@@ -1,13 +1,10 @@
 package ru.home.shop.controller;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.test.context.support.WithAnonymousUser;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.home.shop.domain.Present;
@@ -19,14 +16,14 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.hamcrest.core.Is.is;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(ReportQueryController.class)
-@WithMockUser
 class ReportQueryControllerIT {
 
     @MockBean
@@ -49,20 +46,6 @@ class ReportQueryControllerIT {
 
     private Report getReport() {
         return new Report("name 2.4 RUB.docx", new byte[]{1, 2, 3});
-    }
-
-    @Disabled("migrate to spring security 5")
-    @Test
-    @WithAnonymousUser
-    void publicReportWithWithAnonymousUserShouldReturn401() throws Exception {
-        Present present = getPresent();
-        Report report = getReport();
-
-        doReturn(present).when(repository).findById(any());
-        doReturn(report).when(reportService).generatePublicReport(present);
-
-        mockMvc.perform(get("/api/presents/{id}/public-report", newUUID()))
-                .andExpect(status().isUnauthorized());
     }
 
     @Test

@@ -1,13 +1,10 @@
 package ru.home.shop.controller;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.test.context.support.WithAnonymousUser;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.home.shop.service.query.candy.CandyQuery;
@@ -27,7 +24,6 @@ import static ru.home.shop.utils.UuidUtils.newUUID;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(CandyQueryController.class)
-@WithMockUser
 class CandyQueryControllerIT {
 
     @MockBean
@@ -59,16 +55,6 @@ class CandyQueryControllerIT {
                 .andExpect(jsonPath("$.firm", equalTo(candy.getFirm())))
                 .andExpect(jsonPath("$.price", equalTo(candy.getPrice().doubleValue())))
                 .andExpect(jsonPath("$.order", equalTo(candy.getOrder())));
-    }
-
-    @Disabled("migrate to spring security 5")
-    @Test
-    @WithAnonymousUser
-    void findWithAnonymousUserShouldReturn401() throws Exception {
-        doReturn(null).when(repository).findById(any());
-
-        mockMvc.perform(get("/api/candies/{id}", newUUID()))
-                .andExpect(status().isUnauthorized());
     }
 
     @Test
