@@ -1,10 +1,10 @@
 package ru.home.shop.utils.db;
 
 import org.jooq.conf.Settings;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.testcontainers.containers.MySQLContainer;
 
 import javax.sql.DataSource;
@@ -15,7 +15,11 @@ public class DatabaseConfig {
     @Bean
     @Primary
     public DataSource dataSource(MySQLContainer mySQLContainer) {
-        return new DriverManagerDataSource(mySQLContainer.getJdbcUrl(), mySQLContainer.getUsername(), mySQLContainer.getPassword());
+        return DataSourceBuilder.create()
+                .url(mySQLContainer.getJdbcUrl() + "?useSSL=false")
+                .username(mySQLContainer.getUsername())
+                .password(mySQLContainer.getPassword())
+                .build();
     }
 
     @Bean(initMethod = "start", destroyMethod = "stop")
