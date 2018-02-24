@@ -14,6 +14,7 @@ import ru.home.shop.api.candy.UpdateCandyCommand;
 import ru.home.shop.exception.EntityNotFoundException;
 import ru.home.shop.utils.db.DBTest;
 import ru.home.shop.utils.db.DatabaseConfig;
+import ru.home.shop.utils.db.ExpectedQueryCount;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -42,10 +43,6 @@ class CandyCommandHandlerIT {
         return new CreateCandyCommand(CANDY_ID, CANDY_NAME, CANDY_FIRM, CANDY_PRICE, CANDY_ORDER);
     }
 
-    private UpdateCandyCommand updateCandyCommand() {
-        return updateCandyCommand(CANDY_ID);
-    }
-
     private UpdateCandyCommand updateNotExistentCandyCommand() {
         return updateCandyCommand(newUUID());
     }
@@ -57,19 +54,34 @@ class CandyCommandHandlerIT {
     @Test
     @DataSet("candy/candy_empty.yml")
     @ExpectedDataSet("candy/candy.yml")
+    @ExpectedQueryCount(
+            queries = {
+                    @ExpectedQueryCount.Query(type = ExpectedQueryCount.Type.SELECT, count = 1),
+                    @ExpectedQueryCount.Query(type = ExpectedQueryCount.Type.INSERT, count = 1)
+            })
     void createCandyShouldInsertRecord() {
         eventHandler.on(createCandyCommand());
     }
 
     @Test
     @DataSet("candy/candy.yml")
-    @ExpectedDataSet("candy/candy.yml")
+    @ExpectedDataSet("candy/candy_updated.yml")
+    @ExpectedQueryCount(
+            queries = {
+                    @ExpectedQueryCount.Query(type = ExpectedQueryCount.Type.SELECT, count = 1),
+                    @ExpectedQueryCount.Query(type = ExpectedQueryCount.Type.UPDATE, count = 1)
+            })
     void updateCandyUpdateRecord() {
-        eventHandler.on(updateCandyCommand());
+        eventHandler.on(new UpdateCandyCommand(CANDY_ID, "name_updated", "firm_updated", BigDecimal.valueOf(3.6), 2.2));
     }
 
     @Test
     @DataSet("candy/candy_empty.yml")
+    @ExpectedQueryCount(
+            queries = {
+                    @ExpectedQueryCount.Query(type = ExpectedQueryCount.Type.SELECT, count = 1),
+                    @ExpectedQueryCount.Query(type = ExpectedQueryCount.Type.UPDATE, count = 0)
+            })
     void updateNonexistentEntityShouldThrowException() {
         assertThrows(EntityNotFoundException.class, () -> eventHandler.on(updateNotExistentCandyCommand()));
     }
@@ -77,12 +89,22 @@ class CandyCommandHandlerIT {
     @Test
     @DataSet("candy/candy.yml")
     @ExpectedDataSet("candy/candy_not_active.yml")
+    @ExpectedQueryCount(
+            queries = {
+                    @ExpectedQueryCount.Query(type = ExpectedQueryCount.Type.SELECT, count = 1),
+                    @ExpectedQueryCount.Query(type = ExpectedQueryCount.Type.UPDATE, count = 1)
+            })
     void hideCandyShouldUpdateRecord() {
         eventHandler.on(new HideCandyCommand(CANDY_ID));
     }
 
     @Test
     @DataSet("candy/candy_empty.yml")
+    @ExpectedQueryCount(
+            queries = {
+                    @ExpectedQueryCount.Query(type = ExpectedQueryCount.Type.SELECT, count = 1),
+                    @ExpectedQueryCount.Query(type = ExpectedQueryCount.Type.UPDATE, count = 0)
+            })
     void hideNonexistentEntityShouldThrowException() {
         assertThrows(EntityNotFoundException.class, () -> eventHandler.on(new HideCandyCommand(newUUID())));
     }

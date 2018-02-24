@@ -1,5 +1,7 @@
 package ru.home.shop.utils.db;
 
+import net.ttddyy.dsproxy.listener.logging.SLF4JLogLevel;
+import net.ttddyy.dsproxy.support.ProxyDataSourceBuilder;
 import org.jooq.conf.Settings;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -15,10 +17,16 @@ public class DatabaseConfig {
     @Bean
     @Primary
     public DataSource dataSource(MySQLContainer mySQLContainer) {
-        return DataSourceBuilder.create()
+        DataSource dataSource = DataSourceBuilder.create()
                 .url(mySQLContainer.getJdbcUrl() + "?useSSL=false")
                 .username(mySQLContainer.getUsername())
                 .password(mySQLContainer.getPassword())
+                .build();
+
+        return ProxyDataSourceBuilder.create(dataSource)
+                .logQueryBySlf4j(SLF4JLogLevel.INFO)
+                .multiline()
+                .countQuery()
                 .build();
     }
 

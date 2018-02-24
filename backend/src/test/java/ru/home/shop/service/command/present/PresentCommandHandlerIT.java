@@ -14,6 +14,7 @@ import ru.home.shop.api.present.PresentItem;
 import ru.home.shop.api.present.RemovePresentCommand;
 import ru.home.shop.utils.db.DBTest;
 import ru.home.shop.utils.db.DatabaseConfig;
+import ru.home.shop.utils.db.ExpectedQueryCount;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -51,6 +52,11 @@ class PresentCommandHandlerIT {
     @Test
     @DataSet({"present/present_empty.yml", "candy/candy_list.yml"})
     @ExpectedDataSet("present/present.yml")
+    @ExpectedQueryCount(
+            queries = {
+                    @ExpectedQueryCount.Query(type = ExpectedQueryCount.Type.SELECT, count = 3),
+                    @ExpectedQueryCount.Query(type = ExpectedQueryCount.Type.INSERT, count = 2)
+            })
     void addPresentShouldInsertRecord() {
         eventHandler.on(createPresentCommand());
     }
@@ -58,12 +64,22 @@ class PresentCommandHandlerIT {
     @Test
     @DataSet({"candy/candy_list.yml", "present/present.yml"})
     @ExpectedDataSet("present/present_empty.yml")
+    @ExpectedQueryCount(
+            queries = {
+                    @ExpectedQueryCount.Query(type = ExpectedQueryCount.Type.SELECT, count = 1),
+                    @ExpectedQueryCount.Query(type = ExpectedQueryCount.Type.DELETE, count = 2)
+            })
     void removeExistentEntityShouldRemoveRecord() {
         eventHandler.on(new RemovePresentCommand(PRESENT_ID));
     }
 
     @Test
     @DataSet("present/present_empty.yml")
+    @ExpectedQueryCount(
+            queries = {
+                    @ExpectedQueryCount.Query(type = ExpectedQueryCount.Type.SELECT, count = 1),
+                    @ExpectedQueryCount.Query(type = ExpectedQueryCount.Type.DELETE, count = 0)
+            })
     void removeNonexistentEntityShouldThrowException() {
         assertThrows(EmptyResultDataAccessException.class, () -> eventHandler.on(new RemovePresentCommand(newUUID())));
     }

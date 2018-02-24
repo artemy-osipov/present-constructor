@@ -13,9 +13,15 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@TestExecutionListeners(value = {AutoFlushTestExecutionListener.class, DBRiderTestExecutionListener.class}, mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS)
 @DataJpaTest
 @JooqTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@TestExecutionListeners(
+        value = {
+                AutoFlushTestExecutionListener.class,
+                ExpectedQueryCountTestExecutionListener.class,
+                DBRiderTestExecutionListener.class
+        },
+        mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS)
 public @interface DBTest {
 }
