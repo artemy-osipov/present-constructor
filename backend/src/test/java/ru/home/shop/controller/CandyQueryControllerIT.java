@@ -11,6 +11,7 @@ import ru.home.shop.service.query.candy.CandyQuery;
 import ru.home.shop.service.query.candy.CandyQueryRepository;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -46,7 +47,7 @@ class CandyQueryControllerIT {
     @Test
     void findExistentCandyReturnIt() throws Exception {
         CandyQuery candy = getCandy();
-        doReturn(candy).when(repository).findById(any());
+        doReturn(Optional.of(candy)).when(repository).findById(any());
 
         mockMvc.perform(get("/api/candies/{id}", candy.getId()))
                 .andExpect(status().isOk())
@@ -59,7 +60,7 @@ class CandyQueryControllerIT {
 
     @Test
     void findNotExistentCandyShouldReturn404() throws Exception {
-        doReturn(null).when(repository).findById(any());
+        doReturn(Optional.empty()).when(repository).findById(any());
 
         mockMvc.perform(get("/api/candies/{id}", newUUID()))
                 .andExpect(status().isNotFound());

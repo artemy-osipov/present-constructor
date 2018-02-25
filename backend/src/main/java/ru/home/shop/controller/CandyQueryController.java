@@ -25,13 +25,8 @@ public class CandyQueryController {
 
     @GetMapping(value = "/{id}")
     public CandyQuery findCandy(@PathVariable("id") UUID id) {
-        CandyQuery candy = repository.findById(id);
-
-        if (candy != null) {
-            return candy;
-        } else {
-            throw new EntityNotFoundException();
-        }
+        return repository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     @GetMapping

@@ -11,7 +11,6 @@ import ru.home.shop.utils.db.DBTest;
 import ru.home.shop.utils.db.DatabaseConfig;
 
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -54,25 +53,22 @@ class CandyQueryRepositoryIT {
     @Test
     @DataSet("candy/candy_list.yml")
     void listShouldReturnActiveCandies() {
-        Collection<CandyQuery> candies = repository.list();
-        assertThat(candies).hasSize(1);
-        assertCandy(candies.iterator().next());
+        assertThat(repository.list())
+                .hasSize(1)
+                .first().isEqualToComparingFieldByField(candyQuery());
     }
 
     @Test
     @DataSet("candy/candy.yml")
     void findByExistentIdShouldReturnEntry() {
-        CandyQuery candy = repository.findById(CANDY_ID);
-        assertCandy(candy);
+        assertThat(repository.findById(CANDY_ID))
+                .isNotEmpty()
+                .get().isEqualToComparingFieldByField(candyQuery());
     }
 
     @Test
     void findByNonexistentIdShouldReturnNull() {
-        CandyQuery candy = repository.findById(newUUID());
-        assertThat(candy).isNull();
-    }
-
-    private void assertCandy(CandyQuery candy) {
-        assertThat(candy).isEqualToComparingFieldByField(candyQuery());
+        assertThat(repository.findById(newUUID()))
+                .isEmpty();
     }
 }

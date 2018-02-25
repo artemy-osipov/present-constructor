@@ -70,14 +70,14 @@ class PresentQueryRepositoryIT {
     @Test
     @DataSet({"candy/candy_list.yml", "present/present.yml"})
     void findByExistentIdShouldReturnValidEntry() {
-        PresentQuery present = repository.findById(PRESENT_ID);
+        PresentQuery present = repository.findById(PRESENT_ID).get();
         assertPresent(present, true);
     }
 
     @Test
     void findByNonexistentIdShouldReturnNull() {
-        PresentQuery present = repository.findById(newUUID());
-        assertThat(present).isNull();
+        assertThat(repository.findById(newUUID()))
+                .isEmpty();
     }
 
     private void assertPresent(PresentQuery actual, boolean assertItems) {
@@ -86,13 +86,9 @@ class PresentQueryRepositoryIT {
         assertThat(actual).isEqualToIgnoringGivenFields(expected, "items");
 
         if (assertItems) {
-            assertThat(actual.getItems()).hasSize(2);
-            assertPresentItem(actual.getItems().get(0), expected.getItems().get(0));
-            assertPresentItem(actual.getItems().get(1), expected.getItems().get(1));
+            assertThat(actual.getItems())
+                    .hasSize(2)
+                    .usingElementComparatorOnFields("candy.id", "count").containsExactlyElementsOf(expected.getItems());
         }
-    }
-
-    private void assertPresentItem(PresentItemQuery actual, PresentItemQuery expected) {
-        assertThat(actual).isEqualToComparingOnlyGivenFields(expected, "candy.id", "count");
     }
 }

@@ -13,6 +13,7 @@ import ru.home.shop.service.query.present.PresentQuery;
 import ru.home.shop.service.query.present.PresentQueryRepository;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -58,7 +59,7 @@ class PresentQueryControllerIT {
     @Test
     void findExistentPresentShouldReturnIt() throws Exception {
         PresentQuery present = getPresent();
-        doReturn(present).when(repository).findById(any());
+        doReturn(Optional.of(present)).when(repository).findById(any());
 
         mockMvc.perform(get("/api/presents/{id}", newUUID()))
                 .andExpect(status().isOk())
@@ -73,7 +74,7 @@ class PresentQueryControllerIT {
 
     @Test
     void findNotExistentPresentReturn404() throws Exception {
-        doReturn(null).when(repository).findById(any());
+        doReturn(Optional.empty()).when(repository).findById(any());
 
         mockMvc.perform(get("/api/presents/{id}", newUUID()))
                 .andExpect(status().isNotFound());

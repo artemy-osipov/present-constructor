@@ -25,13 +25,8 @@ public class PresentQueryController {
 
     @GetMapping(value = "/{id}")
     public PresentQuery findPresent(@PathVariable("id") UUID id) {
-        PresentQuery present = repository.findById(id);
-
-        if (present != null) {
-            return present;
-        } else {
-            throw new EntityNotFoundException();
-        }
+        return repository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     @GetMapping

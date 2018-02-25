@@ -7,6 +7,7 @@ import ru.home.shop.service.query.candy.CandyMapper;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static ru.home.db.Tables.*;
@@ -26,14 +27,14 @@ public class PresentQueryRepository {
                 .fetch(new PresentMapper());
     }
 
-    public PresentQuery findById(UUID id) {
-        PresentQuery present = dsl.selectFrom(PRESENT)
+    public Optional<PresentQuery> findById(UUID id) {
+        Optional<PresentQuery> present = dsl.selectFrom(PRESENT)
                 .where(PRESENT.ID.eq(id))
-                .fetchOne(new PresentMapper());
+                .fetchOptional(new PresentMapper());
 
-        if (present != null) {
-            present.setItems(listPresentItem(id));
-        }
+        present.ifPresent(
+                p -> p.setItems(listPresentItem(id))
+        );
 
         return present;
     }
