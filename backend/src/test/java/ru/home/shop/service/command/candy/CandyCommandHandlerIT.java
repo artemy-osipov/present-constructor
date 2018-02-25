@@ -11,11 +11,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.home.shop.api.candy.CreateCandyCommand;
 import ru.home.shop.api.candy.HideCandyCommand;
 import ru.home.shop.api.candy.UpdateCandyCommand;
-import ru.home.shop.exception.EntityNotFoundException;
 import ru.home.shop.utils.db.DBTest;
 import ru.home.shop.utils.db.DatabaseConfig;
 import ru.home.shop.utils.db.ExpectedQueryCount;
 
+import javax.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.util.UUID;
 

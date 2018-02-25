@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.home.shop.service.query.candy.CandyQuery;
-import ru.home.shop.exception.EntityNotFoundException;
 import ru.home.shop.service.query.candy.CandyQueryRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Collection;
 import java.util.UUID;
 

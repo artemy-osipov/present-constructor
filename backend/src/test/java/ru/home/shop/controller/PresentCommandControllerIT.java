@@ -12,9 +12,9 @@ import ru.home.shop.api.present.RemovePresentCommand;
 import ru.home.shop.controller.dto.AddPresentDTO;
 import ru.home.shop.controller.dto.EntityDTO;
 import ru.home.shop.controller.dto.PresentItemDTO;
-import ru.home.shop.exception.EntityNotFoundException;
 import ru.home.shop.service.command.present.PresentCommandHandler;
 
+import javax.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 
 import static java.util.Arrays.asList;

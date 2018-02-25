@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.home.shop.service.query.present.PresentQuery;
-import ru.home.shop.exception.EntityNotFoundException;
 import ru.home.shop.service.query.present.PresentQueryRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Collection;
 import java.util.UUID;
 

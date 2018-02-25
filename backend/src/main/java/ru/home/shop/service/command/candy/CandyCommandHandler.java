@@ -6,8 +6,8 @@ import ru.home.shop.api.candy.CreateCandyCommand;
 import ru.home.shop.api.candy.HideCandyCommand;
 import ru.home.shop.api.candy.UpdateCandyCommand;
 import ru.home.shop.domain.Candy;
-import ru.home.shop.exception.EntityNotFoundException;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 @Service

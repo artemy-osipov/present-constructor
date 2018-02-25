@@ -1,61 +1,75 @@
 package ru.home.shop.service;
 
+import com.github.database.rider.core.api.dataset.DataSet;
 import org.junit.jupiter.api.Test;
-import ru.home.shop.domain.Candy;
-import ru.home.shop.domain.Present;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.ContextHierarchy;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.home.shop.domain.Report;
+import ru.home.shop.utils.db.DBTest;
+import ru.home.shop.utils.db.DatabaseConfig;
+import ru.home.shop.utils.db.ExpectedQueryCount;
 
-import java.math.BigDecimal;
+import javax.persistence.EntityNotFoundException;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
+@ExtendWith(SpringExtension.class)
+@DBTest
+@ContextHierarchy({
+        @ContextConfiguration(classes = DatabaseConfig.class),
+        @ContextConfiguration(classes = ReportService.class)
+})
 class ReportServiceIT {
 
     private final static int PUBLIC_REPORT_LENGTH = 11632;
     private final static int PRIVATE_REPORT_LENGTH = 14575;
     private final static int DELTA = 5;
-    private final static String REPORT_NAME = "name 4.2 RUB.docx";
+    private final static String REPORT_NAME = "name 12.35 RUB.docx";
 
-    private final ReportService reportService = new ReportService();
+    private final static UUID PRESENT_ID = UUID.fromString("9744b2ea-2328-447c-b437-a4f8b57c9985");
 
-    private Present getPresent() {
-        Present present = new Present();
-        present.setName("name");
-        present.setPrice(BigDecimal.valueOf(4.2));
+    @Autowired
+    private ReportService reportService;
 
-        Candy candy1 = new Candy();
-        candy1.setId(newUUID());
-        candy1.setName("name1");
-        candy1.setFirm("firm1");
-        candy1.setPrice(BigDecimal.valueOf(1.1));
-
-        present.getItems().put(candy1, 2);
-
-        Candy candy2 = new Candy();
-        candy2.setId(newUUID());
-        candy2.setName("name2");
-        candy2.setFirm("firm2");
-        candy2.setPrice(BigDecimal.valueOf(2.2));
-
-        present.getItems().put(candy2, 6);
-
-        return present;
+    @Test
+    @ExpectedQueryCount(
+            queries = {
+                    @ExpectedQueryCount.Query(type = ExpectedQueryCount.Type.SELECT, count = 1)
+            })
+    void generateReportWithNonExistentIdShouldThrowException() {
+        assertThrows(EntityNotFoundException.class, () -> reportService.generatePrivateReport(newUUID()));
     }
 
     @Test
+    @DataSet({"candy/candy_list.yml", "present/present.yml"})
+    @ExpectedQueryCount(
+            queries = {
+                    @ExpectedQueryCount.Query(type = ExpectedQueryCount.Type.SELECT, count = 2)
+            })
     void generatePublicReportShouldGenerateSomeReport() {
-        Report report = reportService.generatePublicReport(getPresent());
-
-        assertThat(report.getName()).isEqualTo(REPORT_NAME);
-        assertThat(report.getContent().length).isBetween(PUBLIC_REPORT_LENGTH - DELTA, PUBLIC_REPORT_LENGTH + DELTA);
+        Report report = reportService.generatePublicReport(PRESENT_ID);
+        assertReport(report, REPORT_NAME, PUBLIC_REPORT_LENGTH);
     }
 
     @Test
+    @DataSet({"candy/candy_list.yml", "present/present.yml"})
+    @ExpectedQueryCount(
+            queries = {
+                    @ExpectedQueryCount.Query(type = ExpectedQueryCount.Type.SELECT, count = 2)
+            })
     void generatePrivateReportShouldGenerateSomeReport() {
-        Report report = reportService.generatePrivateReport(getPresent());
+        Report report = reportService.generatePrivateReport(PRESENT_ID);
+        assertReport(report, REPORT_NAME, PRIVATE_REPORT_LENGTH);
+    }
 
-        assertThat(report.getName()).isEqualTo(REPORT_NAME);
-        assertThat(report.getContent().length).isBetween(PRIVATE_REPORT_LENGTH - DELTA, PRIVATE_REPORT_LENGTH + DELTA);
+    private void assertReport(Report report, String name, int size) {
+        assertThat(report.getName()).isEqualTo(name);
+        assertThat(report.getContent().length).isBetween(size - DELTA, size + DELTA);
     }
 }

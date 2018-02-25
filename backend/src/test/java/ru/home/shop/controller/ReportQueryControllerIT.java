@@ -7,13 +7,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.home.shop.domain.Present;
 import ru.home.shop.domain.Report;
 import ru.home.shop.service.ReportService;
-import ru.home.shop.service.command.present.PresentRepository;
 
-import java.math.BigDecimal;
-import java.util.Optional;
+import javax.persistence.EntityNotFoundException;
 
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.any;
@@ -28,21 +25,11 @@ class ReportQueryControllerIT {
 
     @MockBean
     private ReportService reportService;
-    @MockBean
-    private PresentRepository repository;
 
     @Autowired
     private MockMvc mockMvc;
 
     private final static String CONTENT_DISPOSITION = "form-data; name=\"attachment\"; filename*=UTF-8''name%202.4%20RUB.docx";
-
-    private Present getPresent() {
-        Present present = new Present();
-        present.setName("name");
-        present.setPrice(BigDecimal.valueOf(2.4));
-
-        return present;
-    }
 
     private Report getReport() {
         return new Report("name 2.4 RUB.docx", new byte[]{1, 2, 3});
@@ -50,11 +37,9 @@ class ReportQueryControllerIT {
 
     @Test
     void publicReportWithExistentIdShouldReturnReport() throws Exception {
-        Present present = getPresent();
         Report report = getReport();
 
-        when(repository.findById(any())).thenReturn(Optional.of(present));
-        when(reportService.generatePublicReport(present)).thenReturn(report);
+        when(reportService.generatePublicReport(any())).thenReturn(report);
 
         mockMvc.perform(get("/api/presents/{id}/public-report", newUUID()))
                 .andExpect(status().isOk())
@@ -64,7 +49,7 @@ class ReportQueryControllerIT {
 
     @Test
     void publicReportWithNonExistentIdShouldReturn404() throws Exception {
-        when(repository.findById(any())).thenReturn(Optional.empty());
+        when(reportService.generatePublicReport(any())).thenThrow(EntityNotFoundException.class);
 
         mockMvc.perform(get("/api/presents/{id}/public-report", newUUID()))
                 .andExpect(status().isNotFound());
@@ -72,11 +57,9 @@ class ReportQueryControllerIT {
 
     @Test
     void privateReportWithExistentIdShouldReturnReport() throws Exception {
-        Present present = getPresent();
         Report report = getReport();
 
-        when(repository.findById(any())).thenReturn(Optional.of(present));
-        when(reportService.generatePrivateReport(present)).thenReturn(report);
+        when(reportService.generatePrivateReport(any())).thenReturn(report);
 
         mockMvc.perform(get("/api/presents/{id}/private-report", newUUID()))
                 .andExpect(status().isOk())
@@ -86,7 +69,7 @@ class ReportQueryControllerIT {
 
     @Test
     void privateReportWithNonExistentIdShouldReturn404() throws Exception {
-        when(repository.findById(any())).thenReturn(Optional.empty());
+        when(reportService.generatePrivateReport(any())).thenThrow(EntityNotFoundException.class);
 
         mockMvc.perform(get("/api/presents/{id}/private-report", newUUID()))
                 .andExpect(status().isNotFound());

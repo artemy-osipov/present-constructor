@@ -11,9 +11,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import ru.home.shop.api.candy.HideCandyCommand;
 import ru.home.shop.api.candy.UpdateCandyCommand;
 import ru.home.shop.controller.dto.CandyDTO;
-import ru.home.shop.exception.EntityNotFoundException;
 import ru.home.shop.service.command.candy.CandyCommandHandler;
 
+import javax.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
