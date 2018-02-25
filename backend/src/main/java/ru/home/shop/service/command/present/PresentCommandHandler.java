@@ -6,6 +6,7 @@ import ru.home.shop.api.present.CreatePresentCommand;
 import ru.home.shop.api.present.PresentItem;
 import ru.home.shop.api.present.RemovePresentCommand;
 import ru.home.shop.domain.Candy;
+import ru.home.shop.domain.Item;
 import ru.home.shop.domain.Present;
 import ru.home.shop.service.command.candy.CandyRepository;
 
@@ -33,7 +34,7 @@ public class PresentCommandHandler {
 
         for (PresentItem item : event.getItems()) {
             Candy candy = candyRepository.getOne(item.getCandyId());
-            present.getItems().put(candy, item.getCount());
+            present.getItems().add(new Item(candy, item.getCount()));
         }
 
         presentRepository.save(present);

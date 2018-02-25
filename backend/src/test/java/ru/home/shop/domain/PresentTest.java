@@ -18,13 +18,13 @@ class PresentTest {
         candy1.setId(newUUID());
         candy1.setPrice(BigDecimal.valueOf(1.1));
 
-        present.getItems().put(candy1, 2);
+        present.getItems().add(new Item(candy1, 2));
 
         Candy candy2 = new Candy();
         candy2.setId(newUUID());
         candy2.setPrice(BigDecimal.valueOf(2.2));
 
-        present.getItems().put(candy2, 6);
+        present.getItems().add(new Item(candy2, 6));
 
         return present;
     }

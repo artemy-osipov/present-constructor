@@ -54,7 +54,7 @@ class PresentCommandHandlerIT {
     @ExpectedDataSet("present/present.yml")
     @ExpectedQueryCount(
             queries = {
-                    @ExpectedQueryCount.Query(type = ExpectedQueryCount.Type.SELECT, count = 3),
+                    @ExpectedQueryCount.Query(type = ExpectedQueryCount.Type.SELECT, count = 2),
                     @ExpectedQueryCount.Query(type = ExpectedQueryCount.Type.INSERT, count = 2)
             })
     void addPresentShouldInsertRecord() {

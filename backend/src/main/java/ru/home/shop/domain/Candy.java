@@ -1,8 +1,8 @@
 package ru.home.shop.domain;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Entity;
@@ -12,8 +12,8 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@EqualsAndHashCode(of = "id")
 @Entity
+@BatchSize(size = 10)
 public class Candy {
 
     @Id
