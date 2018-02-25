@@ -5,13 +5,17 @@ import fr.opensagres.xdocreport.document.IXDocReport;
 import fr.opensagres.xdocreport.document.registry.XDocReportRegistry;
 import fr.opensagres.xdocreport.template.IContext;
 import fr.opensagres.xdocreport.template.TemplateEngineKind;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.home.shop.domain.Report;
-import ru.home.shop.query.present.PresentEntry;
+import ru.home.shop.domain.Present;
+import ru.home.shop.service.command.present.PresentRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.UUID;
 
 @Service
 public class ReportService {
@@ -19,26 +23,36 @@ public class ReportService {
     private final static String PUBLIC_REPORT_PATH = "templates/publicReport.docx";
     private final static String PRIVATE_REPORT_PATH = "templates/privateReport.docx";
 
-    public Report generatePublicReport(PresentEntry present) {
-        return generateReport(present, PUBLIC_REPORT_PATH);
+    private final PresentRepository presentRepository;
+
+    @Autowired
+    public ReportService(PresentRepository presentRepository) {
+        this.presentRepository = presentRepository;
     }
 
-    public Report generatePrivateReport(PresentEntry present) {
-        return generateReport(present, PRIVATE_REPORT_PATH);
+    public Report generatePublicReport(UUID presentId) {
+        return generateReport(presentId, PUBLIC_REPORT_PATH);
     }
 
-    private Report generateReport(PresentEntry present, String templatePath) {
+    public Report generatePrivateReport(UUID presentId) {
+        return generateReport(presentId, PRIVATE_REPORT_PATH);
+    }
+
+    private Report generateReport(UUID presentId, String templatePath) {
+        Present present = presentRepository.findById(presentId)
+                .orElseThrow(EntityNotFoundException::new);
+
         String name = formatReportName(present);
         byte[] content = generateReportContent(present, templatePath);
 
         return new Report(name, content);
     }
 
-    private String formatReportName(PresentEntry present) {
+    private String formatReportName(Present present) {
         return String.format("%s %s RUB.docx", present.getName(), present.getPrice());
     }
 
-    private byte[] generateReportContent(PresentEntry present, String templateName) {
+    private byte[] generateReportContent(Present present, String templateName) {
         try (InputStream templateStream = getClass().getClassLoader().getResourceAsStream(templateName)) {
             IXDocReport report = XDocReportRegistry.getRegistry().loadReport(templateStream, TemplateEngineKind.Freemarker);
 

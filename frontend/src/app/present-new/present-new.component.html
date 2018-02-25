@@ -48,6 +48,6 @@
   </div>
 
   <div class="col-md-6 panel">
-    <app-present-new-select-candy [present]="present" (onSelect)="addItem($event)" (onUnselect)="removeItem($event)"></app-present-new-select-candy>
+    <app-present-new-select-candy [selectedCandies]="present.candies" (selected)="addItem($event)" (unselected)="removeItem($event)"></app-present-new-select-candy>
   </div>
 </div>

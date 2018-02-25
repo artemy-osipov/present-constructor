@@ -12,18 +12,18 @@ import java.math.BigDecimal;
 public class CandyDTO {
     @NotNull
     @Size(min = 1, max = 50)
-    private String name;
+    String name;
 
     @NotNull
     @Size(min = 1, max = 50)
-    private String firm;
+    String firm;
 
     @NotNull
     @Min(1)
     @Digits(integer = 5, fraction = 2)
-    private BigDecimal price;
+    BigDecimal price;
 
     @NotNull
     @Min(1)
-    private Double order;
+    Double order;
 }

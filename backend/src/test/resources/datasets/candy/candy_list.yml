@@ -1,0 +1,13 @@
+candy:
+  - id: "7a8d3659-81e8-49aa-80fb-3121fee7c29c"
+    active: 1
+    name: "name"
+    firm: "firm"
+    price: "2.6"
+    order: "1.1"
+  - id: "a764c765-483c-492b-ac63-4f2c4f6d2ff4"
+    active: 0
+    name: "name2"
+    firm: "firm2"
+    price: "2.5"
+    order: "7.4"

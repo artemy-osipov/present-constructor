@@ -1,6 +1,5 @@
 package ru.home.shop.controller;
 
-import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -9,14 +8,12 @@ import ru.home.shop.api.present.CreatePresentCommand;
 import ru.home.shop.api.present.PresentItem;
 import ru.home.shop.api.present.RemovePresentCommand;
 import ru.home.shop.controller.dto.AddPresentDTO;
-import ru.home.shop.domain.Present;
+import ru.home.shop.service.command.present.PresentCommandHandler;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
-import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequestUri;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
@@ -24,15 +21,15 @@ import static ru.home.shop.utils.UuidUtils.newUUID;
 @RequestMapping("/api/presents")
 public class PresentCommandController {
 
-    private final CommandGateway commandGateway;
+    private final PresentCommandHandler commandHandler;
 
     @Autowired
-    public PresentCommandController(CommandGateway commandGateway) {
-        this.commandGateway = commandGateway;
+    public PresentCommandController(PresentCommandHandler commandHandler) {
+        this.commandHandler = commandHandler;
     }
 
     @PostMapping
-    public Future<ResponseEntity<Present>> addPresent(@RequestBody @Validated AddPresentDTO dto) {
+    public ResponseEntity<?> addPresent(@RequestBody @Validated AddPresentDTO dto) {
         UUID newId = newUUID();
 
         CreatePresentCommand command = new CreatePresentCommand(
@@ -45,18 +42,21 @@ public class PresentCommandController {
                         .collect(Collectors.toList())
         );
 
-        return commandGateway.send(command)
-                .thenApply(o -> noContent()
-                        .location(fromCurrentRequestUri()
+        commandHandler.on(command);
+
+        return ResponseEntity.noContent()
+                .location(fromCurrentRequestUri()
                         .path("/{id}").buildAndExpand(newId).toUri())
-                        .build());
+                .build();
     }
 
     @DeleteMapping(value = "/{id}")
-    public Future<ResponseEntity<?>> removePresent(@PathVariable("id") UUID id) {
+    public ResponseEntity<?> removePresent(@PathVariable("id") UUID id) {
         RemovePresentCommand command = new RemovePresentCommand(id);
 
-        return commandGateway.send(command)
-                .thenApply(o -> noContent().build());
+        commandHandler.on(command);
+
+        return ResponseEntity.noContent()
+                .build();
     }
 }

@@ -5,10 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.home.shop.exception.EntityNotFoundException;
-import ru.home.shop.query.present.PresentEntry;
-import ru.home.shop.query.present.PresentEntryRepository;
+import ru.home.shop.service.query.present.PresentQuery;
+import ru.home.shop.service.query.present.PresentQueryRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -16,26 +16,21 @@ import java.util.UUID;
 @RequestMapping("/api/presents")
 public class PresentQueryController {
 
-    private final PresentEntryRepository repository;
+    private final PresentQueryRepository repository;
 
     @Autowired
-    public PresentQueryController(PresentEntryRepository repository) {
+    public PresentQueryController(PresentQueryRepository repository) {
         this.repository = repository;
     }
 
     @GetMapping(value = "/{id}")
-    public PresentEntry findPresent(@PathVariable("id") UUID id) {
-        PresentEntry present = repository.findById(id);
-
-        if (present != null) {
-            return present;
-        } else {
-            throw new EntityNotFoundException();
-        }
+    public PresentQuery findPresent(@PathVariable("id") UUID id) {
+        return repository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     @GetMapping
-    public Collection<PresentEntry> listPresent() {
+    public Collection<PresentQuery> listPresent() {
         return repository.list();
     }
 }

@@ -1,18 +1,12 @@
 package ru.home.shop.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.home.shop.domain.Report;
-import ru.home.shop.exception.EntityNotFoundException;
-import ru.home.shop.query.present.PresentEntry;
-import ru.home.shop.query.present.PresentEntryRepository;
 import ru.home.shop.service.ReportService;
 
 import java.nio.charset.StandardCharsets;
@@ -23,12 +17,10 @@ import java.util.function.Function;
 @RequestMapping("/api/presents")
 public class ReportQueryController {
 
-    private final PresentEntryRepository repository;
     private final ReportService reportService;
 
     @Autowired
-    public ReportQueryController(PresentEntryRepository repository, ReportService reportService) {
-        this.repository = repository;
+    public ReportQueryController(ReportService reportService) {
         this.reportService = reportService;
     }
 
@@ -42,22 +34,19 @@ public class ReportQueryController {
         return report(id, reportService::generatePrivateReport);
     }
 
-    private ResponseEntity<byte[]> report(UUID id, Function<PresentEntry, Report> makeReport) {
-        PresentEntry present = repository.findById(id);
-
-        if (present == null) {
-            throw new EntityNotFoundException();
-        }
-
-        Report report = makeReport.apply(present);
-
+    private ResponseEntity<byte[]> report(UUID id, Function<UUID, Report> makeReport) {
+        Report report = makeReport.apply(id);
         return toDocumentEntity(report);
     }
 
     private ResponseEntity<byte[]> toDocumentEntity(Report report) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.wordprocessingml.document"));
-        headers.setContentDispositionFormData("attachment", report.getName(), StandardCharsets.UTF_8);
+        headers.setContentDispositionFormData("attachment", report.getName());
+        headers.setContentDisposition(ContentDisposition.builder("form-data")
+                .name("attachment")
+                .filename(report.getName(), StandardCharsets.UTF_8)
+                .build());
 
         return new ResponseEntity<>(report.getContent(), headers, HttpStatus.OK);
     }

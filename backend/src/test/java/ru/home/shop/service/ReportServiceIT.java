@@ -1,65 +1,75 @@
 package ru.home.shop.service;
 
-import org.junit.Test;
+import com.github.database.rider.core.api.dataset.DataSet;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.ContextHierarchy;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.home.shop.domain.Report;
-import ru.home.shop.query.candy.CandyEntry;
-import ru.home.shop.query.present.PresentEntry;
-import ru.home.shop.query.present.PresentItem;
+import ru.home.shop.utils.db.DBTest;
+import ru.home.shop.utils.db.DatabaseConfig;
+import ru.home.shop.utils.db.ExpectedQueryCount;
 
-import java.math.BigDecimal;
+import javax.persistence.EntityNotFoundException;
+import java.util.UUID;
 
-import static java.util.Arrays.asList;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
-public class ReportServiceIT {
+@ExtendWith(SpringExtension.class)
+@DBTest
+@ContextHierarchy({
+        @ContextConfiguration(classes = DatabaseConfig.class),
+        @ContextConfiguration(classes = ReportService.class)
+})
+class ReportServiceIT {
 
     private final static int PUBLIC_REPORT_LENGTH = 11632;
-    private final static int PRIVATE_REPORT_LENGTH = 14572;
-    private final static String REPORT_NAME = "name 4.2 RUB.docx";
+    private final static int PRIVATE_REPORT_LENGTH = 14575;
+    private final static int DELTA = 5;
+    private final static String REPORT_NAME = "name 12.35 RUB.docx";
 
-    private final ReportService reportService = new ReportService();
+    private final static UUID PRESENT_ID = UUID.fromString("9744b2ea-2328-447c-b437-a4f8b57c9985");
 
-    private PresentEntry getPresent() {
-        PresentEntry present = new PresentEntry();
-        present.setName("name");
-        present.setPrice(BigDecimal.valueOf(4.2));
+    @Autowired
+    private ReportService reportService;
 
-        PresentItem item1 = new PresentItem();
-        item1.setCandy(new CandyEntry());
-        item1.getCandy().setId(newUUID());
-        item1.getCandy().setName("name1");
-        item1.getCandy().setFirm("firm1");
-        item1.getCandy().setPrice(BigDecimal.valueOf(1.1));
-        item1.setCount(2);
-
-        PresentItem item2 = new PresentItem();
-        item2.setCandy(new CandyEntry());
-        item2.getCandy().setId(newUUID());
-        item2.getCandy().setName("name2");
-        item2.getCandy().setFirm("firm2");
-        item2.getCandy().setPrice(BigDecimal.valueOf(2.2));
-        item2.setCount(6);
-
-        present.setItems(asList(item1, item2));
-
-        return present;
+    @Test
+    @ExpectedQueryCount(
+            queries = {
+                    @ExpectedQueryCount.Query(type = ExpectedQueryCount.Type.SELECT, count = 1)
+            })
+    void generateReportWithNonExistentIdShouldThrowException() {
+        assertThrows(EntityNotFoundException.class, () -> reportService.generatePrivateReport(newUUID()));
     }
 
     @Test
-    public void generatePublicReportShouldGenerateSomeReport() {
-        Report report = reportService.generatePublicReport(getPresent());
-
-        assertThat(report.getName(), equalTo(REPORT_NAME));
-        assertThat(report.getContent().length, equalTo(PUBLIC_REPORT_LENGTH));
+    @DataSet({"candy/candy_list.yml", "present/present.yml"})
+    @ExpectedQueryCount(
+            queries = {
+                    @ExpectedQueryCount.Query(type = ExpectedQueryCount.Type.SELECT, count = 2)
+            })
+    void generatePublicReportShouldGenerateSomeReport() {
+        Report report = reportService.generatePublicReport(PRESENT_ID);
+        assertReport(report, REPORT_NAME, PUBLIC_REPORT_LENGTH);
     }
 
     @Test
-    public void generatePrivateReportShouldGenerateSomeReport() {
-        Report report = reportService.generatePrivateReport(getPresent());
+    @DataSet({"candy/candy_list.yml", "present/present.yml"})
+    @ExpectedQueryCount(
+            queries = {
+                    @ExpectedQueryCount.Query(type = ExpectedQueryCount.Type.SELECT, count = 2)
+            })
+    void generatePrivateReportShouldGenerateSomeReport() {
+        Report report = reportService.generatePrivateReport(PRESENT_ID);
+        assertReport(report, REPORT_NAME, PRIVATE_REPORT_LENGTH);
+    }
 
-        assertThat(report.getName(), equalTo(REPORT_NAME));
-        assertThat(report.getContent().length, equalTo(PRIVATE_REPORT_LENGTH));
+    private void assertReport(Report report, String name, int size) {
+        assertThat(report.getName()).isEqualTo(name);
+        assertThat(report.getContent().length).isBetween(size - DELTA, size + DELTA);
     }
 }

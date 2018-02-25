@@ -1,51 +1,31 @@
 package ru.home.shop.domain;
 
-import org.axonframework.commandhandling.CommandHandler;
-import org.axonframework.commandhandling.model.AggregateIdentifier;
-import org.axonframework.eventhandling.EventHandler;
-import org.axonframework.spring.stereotype.Aggregate;
-import ru.home.shop.api.candy.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import java.math.BigDecimal;
 import java.util.UUID;
 
-import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
-import static org.axonframework.commandhandling.model.AggregateLifecycle.markDeleted;
-
-@Aggregate
+@Getter
+@Setter
+@Entity
+@BatchSize(size = 10)
 public class Candy {
 
-    @AggregateIdentifier
+    @Id
+    @Type(type = "uuid-char")
     private UUID id;
+    private String name;
+    private String firm;
+    private BigDecimal price;
+    private Double order;
+    private Boolean active = true;
 
-    private Candy() {
-    }
-
-    public Candy(UUID id) {
-        this.id = id;
-    }
-
-    @CommandHandler
-    public Candy(CreateCandyCommand command) {
-        apply(new CandyCreatedEvent(command.getCandyId(), command.getName(), command.getFirm(), command.getOrder(), command.getPrice()));
-    }
-
-    @CommandHandler
-    public void update(UpdateCandyCommand command) {
-        apply(new CandyUpdatedEvent(id, command.getName(), command.getFirm(), command.getOrder(), command.getPrice()));
-    }
-
-    @CommandHandler
-    public void remove(RemoveCandyCommand command) {
-        apply(new CandyRemovedEvent(id));
-    }
-
-    @EventHandler
-    private void on(CandyCreatedEvent event) {
-        this.id = event.getId();
-    }
-
-    @EventHandler
-    private void on(CandyRemovedEvent event) {
-        markDeleted();
+    public void hide() {
+        active = false;
     }
 }

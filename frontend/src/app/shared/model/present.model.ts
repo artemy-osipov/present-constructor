@@ -26,10 +26,8 @@ export class Present {
       .toFixed(2);
   }
 
-  hasCandy(candy: Candy): boolean {
-    return this.items.find(item => {
-      return item.candy.id === candy.id;
-    }) !== undefined;
+  get candies(): Candy[] {
+    return this.items.map(i => i.candy);
   }
 }
 

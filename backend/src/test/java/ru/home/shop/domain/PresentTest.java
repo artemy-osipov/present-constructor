@@ -1,44 +1,49 @@
 package ru.home.shop.domain;
 
-import org.axonframework.test.aggregate.AggregateTestFixture;
-import org.axonframework.test.aggregate.FixtureConfiguration;
-import org.junit.Test;
-import ru.home.shop.api.present.*;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.Arrays;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static ru.home.shop.utils.UuidUtils.newUUID;
 
-public class PresentTest {
+class PresentTest {
 
-    private FixtureConfiguration<Present> fixture = new AggregateTestFixture<>(Present.class);
-    private CreatePresentCommand initCreateCommand = new CreatePresentCommand(
-            newUUID(),
-            "name",
-            BigDecimal.valueOf(123.12),
-            LocalDateTime.now(),
-            Arrays.asList(new PresentItem(newUUID(), 1), new PresentItem(newUUID(), 2)));
+    private Present getPresent() {
+        Present present = new Present();
+        present.setName("name");
+        present.setPrice(BigDecimal.valueOf(4.2));
 
-    @Test
-    public void testCreatePresentCommand() {
-        fixture.given()
-                .when(initCreateCommand)
-                .expectSuccessfulHandlerExecution()
-                .expectEvents(new PresentCreatedEvent(
-                        initCreateCommand.getPresentId(),
-                        initCreateCommand.getName(),
-                        initCreateCommand.getPrice(),
-                        initCreateCommand.getDate(),
-                        initCreateCommand.getItems()));
+        Candy candy1 = new Candy();
+        candy1.setId(newUUID());
+        candy1.setPrice(BigDecimal.valueOf(1.1));
+
+        present.getItems().add(new Item(candy1, 2));
+
+        Candy candy2 = new Candy();
+        candy2.setId(newUUID());
+        candy2.setPrice(BigDecimal.valueOf(2.2));
+
+        present.getItems().add(new Item(candy2, 6));
+
+        return present;
     }
 
     @Test
-    public void testRemovePresentCommand() {
-        fixture.givenCommands(initCreateCommand)
-                .when(new RemovePresentCommand(initCreateCommand.getPresentId()))
-                .expectSuccessfulHandlerExecution()
-                .expectEvents(new PresentRemovedEvent(initCreateCommand.getPresentId()));
+    void emptyPresentShouldHasZeroCostPrice() {
+        Present emptyPresent = new Present();
+
+        BigDecimal costPrice = emptyPresent.computeCost();
+
+        assertThat(costPrice).isEqualTo(BigDecimal.ZERO);
+    }
+
+    @Test
+    void testComputeCostPrice() {
+        Present present = getPresent();
+
+        BigDecimal costPrice = present.computeCost();
+
+        assertThat(costPrice).isEqualTo(new BigDecimal("15.4"));
     }
 }
