@@ -23,7 +23,7 @@ public class WebConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", cors);
 
-        FilterRegistrationBean filter = new FilterRegistrationBean(new CorsFilter(source));
+        FilterRegistrationBean<CorsFilter> filter = new FilterRegistrationBean<>(new CorsFilter(source));
         filter.setOrder(Ordered.HIGHEST_PRECEDENCE);
 
         return filter;
