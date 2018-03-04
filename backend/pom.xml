@@ -6,16 +6,20 @@
 
     <groupId>ru.home.shop</groupId>
     <artifactId>present-constructor-backend</artifactId>
-    <version>1.4.0</version>
+    <version>1.4.1</version>
     <packaging>jar</packaging>
 
     <name>presents</name>
     <description>Present constructor</description>
 
+    <prerequisites>
+        <maven>3.0.3</maven>
+    </prerequisites>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.0.0.RC2</version>
+        <version>2.0.0.RELEASE</version>
         <relativePath/>
     </parent>
 
@@ -390,17 +394,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <repositories>
-        <repository>
-            <id>spring-milestones</id>
-            <url>http://repo.spring.io/milestone</url>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>spring-milestones</id>
-            <url>http://repo.spring.io/milestone</url>
-        </pluginRepository>
-    </pluginRepositories>
 </project>
