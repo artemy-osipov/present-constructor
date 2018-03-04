@@ -12,7 +12,7 @@ services:
       - frontend
       - backend
   frontend:
-    image: ir2sora/present-constructor-frontend:1.4.1
+    image: ir2sora/present-constructor-frontend:1.5.0-SNAPSHOT
     depends_on:
       - backend
     labels:
@@ -20,7 +20,7 @@ services:
       - "traefik.frontend.rule=PathPrefix:/"
       - "traefik.port=80"
   backend:
-    image: ir2sora/present-constructor-backend:1.4.1
+    image: ir2sora/present-constructor-backend:1.5.0-SNAPSHOT
     depends_on:
       - backend_mysql
     links:
