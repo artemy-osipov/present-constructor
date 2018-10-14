@@ -6,8 +6,8 @@ present:
 
 present_item:
   - present_id: "9744b2ea-2328-447c-b437-a4f8b57c9985"
-    candy_id: "7a8d3659-81e8-49aa-80fb-3121fee7c29c"
-    count: "6"
-  - present_id: "9744b2ea-2328-447c-b437-a4f8b57c9985"
     candy_id: "a764c765-483c-492b-ac63-4f2c4f6d2ff4"
     count: "2"
+  - present_id: "9744b2ea-2328-447c-b437-a4f8b57c9985"
+    candy_id: "7a8d3659-81e8-49aa-80fb-3121fee7c29c"
+    count: "6"
