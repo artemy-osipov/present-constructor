@@ -7,7 +7,6 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
-import org.testcontainers.containers.MySQLContainer;
 
 import javax.sql.DataSource;
 
@@ -16,24 +15,16 @@ public class DatabaseConfig {
 
     @Bean
     @Primary
-    public DataSource dataSource(MySQLContainer mySQLContainer) {
-        DataSource dataSource = DataSourceBuilder.create()
-                .url(mySQLContainer.getJdbcUrl() + "?useSSL=false")
-                .username(mySQLContainer.getUsername())
-                .password(mySQLContainer.getPassword())
+    public DataSource dataSource() {
+        DataSource ds = DataSourceBuilder.create()
+                .url("jdbc:h2:mem:test")
                 .build();
 
-        return ProxyDataSourceBuilder.create(dataSource)
+        return ProxyDataSourceBuilder.create(ds)
                 .logQueryBySlf4j(SLF4JLogLevel.INFO)
                 .multiline()
                 .countQuery()
                 .build();
-    }
-
-    @Bean(initMethod = "start", destroyMethod = "stop")
-    public MySQLContainer mySQLContainer() {
-        return new MySQLContainer("mysql:5.7.21")
-                .withDatabaseName("presents-test");
     }
 
     @Bean
