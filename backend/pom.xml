@@ -45,7 +45,7 @@
             </activation>
             <properties>
                 <db.url>
-                    jdbc:mysql://127.0.0.1:3306/presents?useSSL=false&amp;useUnicode=yes&amp;characterEncoding=UTF-8
+                    jdbc:h2:file:~/presents/db-dev/presents;AUTO_SERVER=TRUE
                 </db.url>
                 <db.username>root</db.username>
                 <db.password>toor</db.password>

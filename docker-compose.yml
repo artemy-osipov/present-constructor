@@ -21,25 +21,14 @@ services:
       - "traefik.port=80"
   backend:
     image: ir2sora/present-constructor-backend:1.5.0-SNAPSHOT
-    depends_on:
-      - backend_mysql
-    links:
-      - "backend_mysql:mysql"
     environment:
       - DB_USER=${DB_USER}
       - DB_PASS=${DB_PASS}
     ports:
       - "8080:8080"
+    volumes:
+      - ${DB_DATA_PATH}:/opt/h2-data
     labels:
       - "traefik.backend=backend"
       - "traefik.frontend.rule=PathPrefix:/api/,/oauth/"
       - "traefik.port=8080"
-  backend_mysql:
-      image: mysql:5.7.21
-      environment:
-        - MYSQL_USER=${DB_USER}
-        - MYSQL_PASSWORD=${DB_PASS}
-      ports:
-        - "3307:3306"
-      volumes:
-        - ${DB_DATA_PATH}:/var/lib/mysql
