@@ -46,7 +46,7 @@ jobs:
           key: present-constructor-backend-{{ checksum "build.gradle" }}
 
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
-      - run: ./gradlew jibDockerBuild -i
+      - run: ./gradlew jib -i
 
       - save_cache:
           paths:
