@@ -1,22 +1,15 @@
 package ru.home.shop.service.query.present;
 
 import org.jooq.RecordMapper;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import ru.home.db.tables.records.PresentRecord;
+import ru.home.shop.config.MapStructConfig;
 
-class PresentMapper implements RecordMapper<PresentRecord, PresentQuery> {
+@Mapper(config = MapStructConfig.class)
+public interface PresentMapper extends RecordMapper<PresentRecord, PresentQuery> {
 
     @Override
-    public PresentQuery map(PresentRecord record) {
-        if (record == null) {
-            return null;
-        }
-
-        PresentQuery bean = new PresentQuery();
-        bean.setId(record.getId());
-        bean.setName(record.getName());
-        bean.setPrice(record.getPrice());
-        bean.setDate(record.getDate());
-
-        return bean;
-    }
+    @Mapping(target = "items", ignore = true)
+    PresentQuery map(PresentRecord record);
 }

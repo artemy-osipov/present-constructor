@@ -1,6 +1,6 @@
 package ru.home.shop.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,14 +15,10 @@ import java.util.function.Function;
 
 @RestController
 @RequestMapping("/api/presents")
+@RequiredArgsConstructor
 public class ReportQueryController {
 
     private final ReportService reportService;
-
-    @Autowired
-    public ReportQueryController(ReportService reportService) {
-        this.reportService = reportService;
-    }
 
     @GetMapping(value = "/{id}/public-report")
     public ResponseEntity<byte[]> publicReport(@PathVariable("id") UUID id) {

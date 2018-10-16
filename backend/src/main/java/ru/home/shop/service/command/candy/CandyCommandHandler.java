@@ -1,6 +1,6 @@
 package ru.home.shop.service.command.candy;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.home.shop.api.candy.CreateCandyCommand;
 import ru.home.shop.api.candy.HideCandyCommand;
@@ -12,14 +12,10 @@ import javax.transaction.Transactional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class CandyCommandHandler {
 
     private final CandyRepository repository;
-
-    @Autowired
-    public CandyCommandHandler(CandyRepository repository) {
-        this.repository = repository;
-    }
 
     public void on(CreateCandyCommand event) {
         Candy candy = new Candy();

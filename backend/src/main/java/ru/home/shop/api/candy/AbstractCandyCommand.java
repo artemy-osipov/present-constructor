@@ -1,6 +1,5 @@
 package ru.home.shop.api.candy;
 
-import lombok.AllArgsConstructor;
 import lombok.Value;
 import lombok.experimental.NonFinal;
 
@@ -9,7 +8,6 @@ import java.util.UUID;
 
 @NonFinal
 @Value
-@AllArgsConstructor
 class AbstractCandyCommand {
 
     private UUID id;

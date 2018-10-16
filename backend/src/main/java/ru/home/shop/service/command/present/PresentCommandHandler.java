@@ -1,9 +1,9 @@
 package ru.home.shop.service.command.present;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.home.shop.api.present.CreatePresentCommand;
-import ru.home.shop.api.present.PresentItem;
+import ru.home.shop.api.present.CreatePresentCommand.PresentItem;
 import ru.home.shop.api.present.RemovePresentCommand;
 import ru.home.shop.domain.Candy;
 import ru.home.shop.domain.Item;
@@ -14,16 +14,11 @@ import javax.transaction.Transactional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class PresentCommandHandler {
 
     private final PresentRepository presentRepository;
     private final CandyRepository candyRepository;
-
-    @Autowired
-    public PresentCommandHandler(PresentRepository presentRepository, CandyRepository candyRepository) {
-        this.presentRepository = presentRepository;
-        this.candyRepository = candyRepository;
-    }
 
     public void on(CreatePresentCommand event) {
         Present present = new Present();

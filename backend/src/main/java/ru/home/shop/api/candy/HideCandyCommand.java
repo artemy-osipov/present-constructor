@@ -7,5 +7,5 @@ import java.util.UUID;
 @Value
 public class HideCandyCommand {
 
-    UUID id;
+    private UUID id;
 }

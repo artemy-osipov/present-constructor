@@ -5,7 +5,7 @@ import fr.opensagres.xdocreport.document.IXDocReport;
 import fr.opensagres.xdocreport.document.registry.XDocReportRegistry;
 import fr.opensagres.xdocreport.template.IContext;
 import fr.opensagres.xdocreport.template.TemplateEngineKind;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.home.shop.domain.Report;
 import ru.home.shop.domain.Present;
@@ -18,17 +18,13 @@ import java.io.InputStream;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class ReportService {
 
-    private final static String PUBLIC_REPORT_PATH = "templates/publicReport.docx";
-    private final static String PRIVATE_REPORT_PATH = "templates/privateReport.docx";
+    private static final String PUBLIC_REPORT_PATH = "templates/publicReport.docx";
+    private static final String PRIVATE_REPORT_PATH = "templates/privateReport.docx";
 
     private final PresentRepository presentRepository;
-
-    @Autowired
-    public ReportService(PresentRepository presentRepository) {
-        this.presentRepository = presentRepository;
-    }
 
     public Report generatePublicReport(UUID presentId) {
         return generateReport(presentId, PUBLIC_REPORT_PATH);

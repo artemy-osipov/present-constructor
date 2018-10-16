@@ -12,9 +12,17 @@ import java.util.UUID;
 @AllArgsConstructor
 public class CreatePresentCommand {
 
-    UUID id;
-    String name;
-    BigDecimal price;
-    LocalDateTime date;
-    List<PresentItem> items;
+    private UUID id;
+    private String name;
+    private BigDecimal price;
+    private LocalDateTime date;
+    private List<PresentItem> items;
+
+
+    @Value
+    public static class PresentItem {
+
+        private UUID candyId;
+        private Integer count;
+    }
 }

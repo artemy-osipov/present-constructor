@@ -1,6 +1,6 @@
 package ru.home.shop.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,14 +14,10 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/presents")
+@RequiredArgsConstructor
 public class PresentQueryController {
 
     private final PresentQueryRepository repository;
-
-    @Autowired
-    public PresentQueryController(PresentQueryRepository repository) {
-        this.repository = repository;
-    }
 
     @GetMapping(value = "/{id}")
     public PresentQuery findPresent(@PathVariable("id") UUID id) {

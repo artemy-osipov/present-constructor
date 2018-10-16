@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import ru.home.shop.service.query.candy.CandyMapperImpl;
 import ru.home.shop.utils.db.DBTest;
 import ru.home.shop.utils.db.DatabaseConfig;
 import ru.home.shop.service.query.candy.CandyQuery;
@@ -25,7 +26,7 @@ import static ru.home.shop.utils.UuidUtils.newUUID;
 @DBTest
 @ContextHierarchy({
         @ContextConfiguration(classes = DatabaseConfig.class),
-        @ContextConfiguration(classes = PresentQueryRepository.class)
+        @ContextConfiguration(classes = {PresentQueryRepository.class, CandyMapperImpl.class, PresentMapperImpl.class})
 })
 class PresentQueryRepositoryIT {
 

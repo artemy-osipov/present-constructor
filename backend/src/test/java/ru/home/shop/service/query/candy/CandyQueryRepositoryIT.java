@@ -20,7 +20,7 @@ import static ru.home.shop.utils.UuidUtils.newUUID;
 @DBTest
 @ContextHierarchy({
         @ContextConfiguration(classes = DatabaseConfig.class),
-        @ContextConfiguration(classes = CandyQueryRepository.class)
+        @ContextConfiguration(classes = {CandyQueryRepository.class, CandyMapperImpl.class})
 })
 class CandyQueryRepositoryIT {
 

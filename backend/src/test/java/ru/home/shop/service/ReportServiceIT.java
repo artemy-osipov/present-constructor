@@ -27,12 +27,12 @@ import static ru.home.shop.utils.UuidUtils.newUUID;
 })
 class ReportServiceIT {
 
-    private final static int PUBLIC_REPORT_LENGTH = 11632;
-    private final static int PRIVATE_REPORT_LENGTH = 14575;
-    private final static int DELTA = 5;
-    private final static String REPORT_NAME = "name 12.35 RUB.docx";
+    private static final int PUBLIC_REPORT_LENGTH = 11632;
+    private static final  int PRIVATE_REPORT_LENGTH = 14575;
+    private static final int DELTA = 5;
+    private static final String REPORT_NAME = "name 12.35 RUB.docx";
 
-    private final static UUID PRESENT_ID = UUID.fromString("9744b2ea-2328-447c-b437-a4f8b57c9985");
+    private static final UUID PRESENT_ID = UUID.fromString("9744b2ea-2328-447c-b437-a4f8b57c9985");
 
     @Autowired
     private ReportService reportService;

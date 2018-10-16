@@ -32,7 +32,10 @@ dependencies {
     compile 'com.fasterxml.uuid:java-uuid-generator:3.1.5'
     compile 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.document.docx:2.0.1'
     compile 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.template.freemarker:2.0.1'
+    compile 'org.mapstruct:mapstruct-jdk8:1.2.0.Final'
 
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.2.0.Final'
+    annotationProcessor 'org.projectlombok:lombok'
     compileOnly 'org.projectlombok:lombok'
 
     testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test') {
@@ -46,6 +49,14 @@ dependencies {
     }
 
     jooqRuntime 'com.h2database:h2'
+}
+
+compileJava {
+    options.compilerArgs = [
+            '-Xlint:all',
+            '-Amapstruct.defaultComponentModel=spring',
+            '-Amapstruct.unmappedTargetPolicy=ERROR'
+    ]
 }
 
 test {
@@ -62,7 +73,7 @@ jib {
     }
 }
 
-def jooqDbUrl = "jdbc:h2:file:${projectDir}/build/db-jooq/presents;AUTO_SERVER=TRUE"
+def jooqDbUrl = "jdbc:h2:file:$projectDir/build/db-jooq/presents;AUTO_SERVER=TRUE"
 
 flyway {
     url = jooqDbUrl

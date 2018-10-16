@@ -1,11 +1,11 @@
 package ru.home.shop.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.home.shop.api.present.CreatePresentCommand;
-import ru.home.shop.api.present.PresentItem;
+import ru.home.shop.api.present.CreatePresentCommand.PresentItem;
 import ru.home.shop.api.present.RemovePresentCommand;
 import ru.home.shop.controller.dto.AddPresentDTO;
 import ru.home.shop.service.command.present.PresentCommandHandler;
@@ -19,21 +19,15 @@ import static ru.home.shop.utils.UuidUtils.newUUID;
 
 @RestController
 @RequestMapping("/api/presents")
+@RequiredArgsConstructor
 public class PresentCommandController {
 
     private final PresentCommandHandler commandHandler;
 
-    @Autowired
-    public PresentCommandController(PresentCommandHandler commandHandler) {
-        this.commandHandler = commandHandler;
-    }
-
     @PostMapping
-    public ResponseEntity<?> addPresent(@RequestBody @Validated AddPresentDTO dto) {
-        UUID newId = newUUID();
-
+    public ResponseEntity addPresent(@RequestBody @Validated AddPresentDTO dto) {
         CreatePresentCommand command = new CreatePresentCommand(
-                newId,
+                newUUID(),
                 dto.getName(),
                 dto.getPrice(),
                 LocalDateTime.now(),
@@ -46,12 +40,12 @@ public class PresentCommandController {
 
         return ResponseEntity.noContent()
                 .location(fromCurrentRequestUri()
-                        .path("/{id}").buildAndExpand(newId).toUri())
+                        .path("/{id}").buildAndExpand(command.getId()).toUri())
                 .build();
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> removePresent(@PathVariable("id") UUID id) {
+    public ResponseEntity removePresent(@PathVariable("id") UUID id) {
         RemovePresentCommand command = new RemovePresentCommand(id);
 
         commandHandler.on(command);

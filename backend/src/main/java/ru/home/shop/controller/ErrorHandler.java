@@ -19,7 +19,7 @@ import java.util.List;
 public class ErrorHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<?> processEntityNotFound(EntityNotFoundException ex) {
+    public ResponseEntity processEntityNotFound(EntityNotFoundException ex) {
         return ResponseEntity.notFound().build();
     }
 
