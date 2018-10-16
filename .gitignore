@@ -1,9 +1,17 @@
 *.iml
 .idea
 .env
+.DS_Store
 
 backend/.idea
-backend/target
+backend/.classpath
+backend/.gradle
+backend/.gradletasknamecache
+backend/.project
+backend/.settings
+backend/bin
+backend/build
+backend/out
 
 # compiled output
 frontend/dist

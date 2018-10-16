@@ -20,10 +20,11 @@ services:
       - "traefik.frontend.rule=PathPrefix:/"
       - "traefik.port=80"
   backend:
-    image: ir2sora/present-constructor-backend:1.5.0-SNAPSHOT
+    image: temp
     environment:
-      - DB_USER=${DB_USER}
-      - DB_PASS=${DB_PASS}
+      - SPRING_DATASOURCE_URL=jdbc:h2:file:/opt/h2-data/presents;AUTO_SERVER=TRUE
+      - SPRING_DATASOURCE_USERNAME=$DB_USER
+      - SPRING_DATASOURCE_PASSWORD=$DB_PASS
     ports:
       - "8080:8080"
     volumes:

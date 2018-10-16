@@ -19,16 +19,14 @@ jobs:
       - checkout:
           path: ~/present-constructor
       - restore_cache:
-          key: present-constructor-backend-{{ checksum "pom.xml" }}
+          key: present-constructor-backend-{{ checksum "build.gradle" }}
 
-      - run: mvn dependency:go-offline
+      - run: ./gradlew test -i
 
       - save_cache:
           paths:
-            - ~/.m2
-          key: present-constructor-backend-{{ checksum "pom.xml" }}
-
-      - run: mvn integration-test
+            - ~/.gradle
+          key: present-constructor-backend-{{ checksum "build.gradle" }}
 
       - persist_to_workspace:
           root: ~/present-constructor/backend
@@ -45,18 +43,15 @@ jobs:
           at: ~/present-constructor/backend
 
       - restore_cache:
-          keys:
-          - present-constructor-backend-{{ checksum "pom.xml" }}
+          key: present-constructor-backend-{{ checksum "build.gradle" }}
 
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
-      - run: mvn dockerfile:build
-      - run: mvn dockerfile:push
+      - run: ./gradlew jibDockerBuild -i
 
       - save_cache:
           paths:
-            - ~/.m2
-          key: present-constructor-backend-{{ checksum "pom.xml" }}
-
+            - ~/.gradle
+          key: present-constructor-backend-{{ checksum "build.gradle" }}
 
   build_frontend:
     <<: *frontend

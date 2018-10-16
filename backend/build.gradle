@@ -1,0 +1,95 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.0.5.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.6.RELEASE'
+    id 'com.google.cloud.tools.jib' version '0.9.12'
+    id 'nu.studer.jooq' version '3.0.2'
+    id 'org.flywaydb.flyway' version '5.2.0'
+}
+
+group = 'ru.home.shop'
+version = '1.5.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+repositories {
+    jcenter()
+}
+
+ext['lombok.version'] = '1.18.2'
+ext['jooq.version'] = '3.11.5'
+
+dependencies {
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-jooq'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile 'com.h2database:h2'
+    compile 'org.flywaydb:flyway-core'
+    compile 'com.fasterxml.uuid:java-uuid-generator:3.1.5'
+    compile 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.document.docx:2.0.1'
+    compile 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.template.freemarker:2.0.1'
+
+    compileOnly 'org.projectlombok:lombok'
+
+    testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test') {
+        exclude(module: 'junit')
+    }
+    testCompile 'org.junit.jupiter:junit-jupiter-engine'
+    testCompile 'net.ttddyy:datasource-proxy:1.4.7'
+    testCompile(group: 'com.github.database-rider', name: 'rider-spring', version: '1.2.7') {
+        exclude(module: 'junit')
+        exclude(module: 'slf4j-simple')
+    }
+
+    jooqRuntime 'com.h2database:h2'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jib {
+    to {
+        image = "ir2sora/${project.name}"
+        tags = [project.version]
+    }
+    container {
+        ports = ['8080']
+    }
+}
+
+def jooqDbUrl = "jdbc:h2:file:${projectDir}/build/db-jooq/presents;AUTO_SERVER=TRUE"
+
+flyway {
+    url = jooqDbUrl
+}
+
+jooq {
+    presents(sourceSets.main) {
+        jdbc {
+            url = jooqDbUrl
+        }
+        generator {
+            generate {
+                javaTimeTypes = true
+            }
+            database {
+                inputSchema = 'PUBLIC'
+                schemaVersionProvider = """
+                    SELECT :schema_name || '_' || MAX("version") FROM "flyway_schema_history"
+                """
+            }
+            target {
+                packageName = 'ru.home.db'
+                directory = 'src/main/java'
+            }
+        }
+    }
+}
+
+generatePresentsJooqSchemaSource.dependsOn flywayMigrate
+compileJava.dependsOn.remove('generatePresentsJooqSchemaSource')
