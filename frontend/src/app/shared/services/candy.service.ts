@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Candy } from 'app/shared/model/candy.model';
@@ -14,7 +14,7 @@ export class CandyService {
 
   add(candy: Candy): Observable<string> {
     return this.http.post(this.candyResource, candy, { observe: 'response' })
-      .map(resp => this.getIdFromLocation(resp.headers.get('Location'))
+      .pipe(map(resp => this.getIdFromLocation(resp.headers.get('Location')))
     );
   }
 
@@ -26,12 +26,12 @@ export class CandyService {
 
   get(id: string): Observable<Candy> {
     return this.http.get(this.candyResource + id)
-      .map(res => new Candy(res));
+      .pipe(map(res => new Candy(res)));
   }
 
   list(): Observable<Candy[]> {
     return this.http.get<Object[]>(this.candyResource)
-      .map(res => res.map(data => new Candy(data)));
+      .pipe(map(res => res.map(data => new Candy(data))));
   }
 
   update(candy: Candy): Observable<Object> {

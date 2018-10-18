@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { Present } from 'app/shared/model/present.model';
 import { environment } from 'environments/environment';
@@ -13,7 +14,7 @@ export class PresentService {
 
   add(present: Present): Observable<string> {
     return this.http.post(this.presentResource, present, { observe: 'response' })
-      .map(resp => this.getIdFromLocation(resp.headers.get('Location')));
+      .pipe(map(resp => this.getIdFromLocation(resp.headers.get('Location'))));
   }
 
   private getIdFromLocation(location: string): string {
@@ -24,12 +25,12 @@ export class PresentService {
 
   get(id: string): Observable<Present> {
     return this.http.get<Present>(this.presentResource + id)
-      .map(data => new Present(data));
+      .pipe(map(data => new Present(data)));
   }
 
   list(): Observable<Present[]> {
     return this.http.get<Object[]>(this.presentResource)
-      .map(res => res.map(data => new Present(data)));
+      .pipe(map(res => res.map(data => new Present(data))));
   }
 
   delete(present: Present): Observable<Object> {

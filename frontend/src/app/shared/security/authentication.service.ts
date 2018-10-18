@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import 'rxjs/add/operator/map';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { environment } from 'environments/environment';
 
@@ -21,6 +21,6 @@ export class AuthenticationService {
 
     return this.http.post(this.authTokenResource, body, {
       headers: headers
-    }).map((res: any) => res.access_token);
+    }).pipe(map((res: any) => res.access_token));
   }
 }

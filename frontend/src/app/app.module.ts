@@ -43,13 +43,13 @@ import { ValidationModule } from 'app/shared/validation';
     ConfirmationDeleteComponent
   ],
   imports: [
+    AppRoutingModule,
     BrowserModule,
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
     MobxAngularModule,
     NgbModule.forRoot(),
-    AppRoutingModule,
     SecurityModule,
     ValidationModule
   ],
