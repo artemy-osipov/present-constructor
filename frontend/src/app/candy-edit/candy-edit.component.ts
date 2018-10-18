@@ -7,6 +7,10 @@ import { CandyService } from 'app/shared/services/candy.service';
 import { CandyStore } from 'app/shared/services/candy.store';
 import { FormHelper, NumberValidators, StringValidators } from 'app/shared/validation';
 
+enum Action {
+  Add, Update
+}
+
 @Component({
   selector: 'app-candy-edit',
   templateUrl: './candy-edit.component.html'
@@ -75,8 +79,4 @@ export class CandyEditComponent {
       () => this.candyStore.update(candy)
     );
   }
-}
-
-enum Action {
-  Add, Update
 }

@@ -1,5 +1,12 @@
 import { Candy } from 'app/shared/model/candy.model';
 
+export class PresentItem {
+  constructor(
+    public candy: Candy,
+    public count: number) {
+  }
+}
+
 export class Present {
   id: string;
   name: string;
@@ -28,12 +35,5 @@ export class Present {
 
   get candies(): Candy[] {
     return this.items.map(i => i.candy);
-  }
-}
-
-export class PresentItem {
-  constructor(
-    public candy: Candy,
-    public count: number) {
   }
 }

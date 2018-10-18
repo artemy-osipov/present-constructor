@@ -1,5 +1,5 @@
+import { DOCUMENT } from '@angular/common';
 import { Component, Inject } from '@angular/core';
-import { DOCUMENT } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-link-border',
