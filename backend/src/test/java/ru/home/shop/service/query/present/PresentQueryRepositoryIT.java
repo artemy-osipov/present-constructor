@@ -4,13 +4,13 @@ import com.github.database.rider.core.api.dataset.DataSet;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.ContextHierarchy;
+import org.springframework.boot.test.autoconfigure.jooq.JooqTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import ru.home.shop.service.query.candy.CandyMapperImpl;
-import ru.home.shop.utils.db.DBTest;
-import ru.home.shop.utils.db.DatabaseConfig;
+import ru.home.shop.service.query.candy.CandyMapper;
 import ru.home.shop.service.query.candy.CandyQuery;
+import ru.home.shop.utils.db.DBTest;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -24,10 +24,9 @@ import static ru.home.shop.utils.UuidUtils.newUUID;
 
 @ExtendWith(SpringExtension.class)
 @DBTest
-@ContextHierarchy({
-        @ContextConfiguration(classes = DatabaseConfig.class),
-        @ContextConfiguration(classes = {PresentQueryRepository.class, CandyMapperImpl.class, PresentMapperImpl.class})
-})
+@JooqTest(includeFilters = @ComponentScan.Filter(
+        type = FilterType.ASSIGNABLE_TYPE,
+        classes = {PresentQueryRepository.class, CandyMapper.class, PresentMapper.class}))
 class PresentQueryRepositoryIT {
 
     private static final UUID PRESENT_ID = UUID.fromString("9744b2ea-2328-447c-b437-a4f8b57c9985");

@@ -4,11 +4,11 @@ import com.github.database.rider.core.api.dataset.DataSet;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.ContextHierarchy;
+import org.springframework.boot.test.autoconfigure.jooq.JooqTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.home.shop.utils.db.DBTest;
-import ru.home.shop.utils.db.DatabaseConfig;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -18,10 +18,9 @@ import static ru.home.shop.utils.UuidUtils.newUUID;
 
 @ExtendWith(SpringExtension.class)
 @DBTest
-@ContextHierarchy({
-        @ContextConfiguration(classes = DatabaseConfig.class),
-        @ContextConfiguration(classes = {CandyQueryRepository.class, CandyMapperImpl.class})
-})
+@JooqTest(includeFilters = @ComponentScan.Filter(
+        type = FilterType.ASSIGNABLE_TYPE,
+        classes = {CandyQueryRepository.class, CandyMapper.class}))
 class CandyQueryRepositoryIT {
 
     private static final UUID CANDY_ID = UUID.fromString("7a8d3659-81e8-49aa-80fb-3121fee7c29c");

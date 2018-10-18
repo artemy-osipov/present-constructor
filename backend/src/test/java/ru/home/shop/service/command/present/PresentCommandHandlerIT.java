@@ -5,14 +5,14 @@ import com.github.database.rider.core.api.dataset.ExpectedDataSet;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.home.shop.api.present.CreatePresentCommand;
 import ru.home.shop.api.present.RemovePresentCommand;
 import ru.home.shop.utils.db.DBTest;
-import ru.home.shop.utils.db.DatabaseConfig;
 import ru.home.shop.utils.db.ExpectedQueryCount;
 
 import java.math.BigDecimal;
@@ -26,10 +26,8 @@ import static ru.home.shop.utils.UuidUtils.newUUID;
 
 @ExtendWith(SpringExtension.class)
 @DBTest
-@ContextHierarchy({
-        @ContextConfiguration(classes = DatabaseConfig.class),
-        @ContextConfiguration(classes = PresentCommandHandler.class)
-})
+@DataJpaTest(includeFilters = @ComponentScan.Filter(
+        type = FilterType.ASSIGNABLE_TYPE, classes = PresentCommandHandler.class))
 class PresentCommandHandlerIT {
 
     private static final UUID PRESENT_ID = UUID.fromString("9744b2ea-2328-447c-b437-a4f8b57c9985");

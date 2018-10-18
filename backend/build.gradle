@@ -1,8 +1,8 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.0.5.RELEASE'
+    id 'org.springframework.boot' version '2.0.6.RELEASE'
     id 'io.spring.dependency-management' version '1.0.6.RELEASE'
-    id 'com.google.cloud.tools.jib' version '0.9.12'
+    id 'com.google.cloud.tools.jib' version '0.9.13'
     id 'nu.studer.jooq' version '3.0.2'
     id 'org.flywaydb.flyway' version '5.2.0'
 }
@@ -42,7 +42,7 @@ dependencies {
         exclude(module: 'junit')
     }
     testCompile 'org.junit.jupiter:junit-jupiter-engine'
-    testCompile 'net.ttddyy:datasource-proxy:1.4.7'
+    testCompile 'net.ttddyy:datasource-proxy:1.4.9'
     testCompile(group: 'com.github.database-rider', name: 'rider-spring', version: '1.2.7') {
         exclude(module: 'junit')
         exclude(module: 'slf4j-simple')

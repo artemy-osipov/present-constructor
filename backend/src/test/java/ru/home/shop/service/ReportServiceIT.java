@@ -4,12 +4,12 @@ import com.github.database.rider.core.api.dataset.DataSet;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.ContextHierarchy;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.home.shop.domain.Report;
 import ru.home.shop.utils.db.DBTest;
-import ru.home.shop.utils.db.DatabaseConfig;
 import ru.home.shop.utils.db.ExpectedQueryCount;
 
 import javax.persistence.EntityNotFoundException;
@@ -21,10 +21,7 @@ import static ru.home.shop.utils.UuidUtils.newUUID;
 
 @ExtendWith(SpringExtension.class)
 @DBTest
-@ContextHierarchy({
-        @ContextConfiguration(classes = DatabaseConfig.class),
-        @ContextConfiguration(classes = ReportService.class)
-})
+@DataJpaTest(includeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = ReportService.class))
 class ReportServiceIT {
 
     private static final int PUBLIC_REPORT_LENGTH = 11632;
