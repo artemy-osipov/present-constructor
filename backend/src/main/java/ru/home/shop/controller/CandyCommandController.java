@@ -23,7 +23,7 @@ public class CandyCommandController {
     private final CandyCommandHandler commandHandler;
 
     @PostMapping
-    public ResponseEntity addCandy(@RequestBody @Validated CandyDTO dto) {
+    public ResponseEntity<Void> addCandy(@RequestBody @Validated CandyDTO dto) {
         CreateCandyCommand command = new CreateCandyCommand(
                 newUUID(),
                 dto.getName(),
@@ -33,14 +33,14 @@ public class CandyCommandController {
 
         commandHandler.on(command);
 
-        return ResponseEntity.noContent()
-                .location(fromCurrentRequestUri()
+        return ResponseEntity
+                .created(fromCurrentRequestUri()
                         .path("/{id}").buildAndExpand(command.getId()).toUri())
                 .build();
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity editCandy(
+    public ResponseEntity<Void> editCandy(
             @PathVariable("id") UUID id,
             @RequestBody @Validated CandyDTO dto) {
         UpdateCandyCommand command = new UpdateCandyCommand(
@@ -57,7 +57,7 @@ public class CandyCommandController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity removeCandy(@PathVariable("id") UUID id) {
+    public ResponseEntity<Void> removeCandy(@PathVariable("id") UUID id) {
         HideCandyCommand command = new HideCandyCommand(id);
 
         commandHandler.on(command);

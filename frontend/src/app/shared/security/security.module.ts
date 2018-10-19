@@ -39,6 +39,6 @@ import { TOKEN_NAME, UserService } from './user.service';
 })
 export class SecurityModule { }
 
-export function getJwtToken(): string {
+export function getJwtToken(): string | null {
   return localStorage.getItem(TOKEN_NAME);
 }

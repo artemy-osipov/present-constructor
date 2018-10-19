@@ -50,7 +50,7 @@ class CandyCommandControllerIT {
         mockMvc.perform(post("/api/candies")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJson(getUpdateDTO())))
-                .andExpect(status().isNoContent())
+                .andExpect(status().isCreated())
                 .andExpect(header().string("Location", notNullValue()));
     }
 

@@ -19,6 +19,8 @@ export class ValidationDirective {
       this.control = formControl;
     } else if (formArray !== null) {
       this.control = formArray;
+    } else {
+      throw new Error('no control to validate');
     }
 
     const factory = resolver.resolveComponentFactory(ValidationErrorComponent);
@@ -28,11 +30,11 @@ export class ValidationDirective {
 
   @HostBinding('class.is-valid')
   get valid(): boolean {
-    return this.control.dirty && this.control.valid;
+    return this.control.dirty && this.control.valid || false;
   }
 
   @HostBinding('class.is-invalid')
   get invalid(): boolean {
-    return this.control.dirty && this.control.invalid;
+    return this.control.dirty && this.control.invalid || false;
   }
 }

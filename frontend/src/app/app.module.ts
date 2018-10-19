@@ -18,9 +18,9 @@ import { PresentNewComponent } from 'app/present-new/present-new.component';
 import { PresentNewSelectCandyComponent } from 'app/present-new/select-candy/present-new-select-candy.component';
 import { ConfirmationDeleteComponent } from 'app/shared/confirmation-delete/confirmation-delete.component';
 import { SecurityModule } from 'app/shared/security';
-import { CandyService } from 'app/shared/services/candy.service';
+import { CandyApi } from 'app/shared/services/candy.api.service';
 import { CandyStore } from 'app/shared/services/candy.store';
-import { PresentService } from 'app/shared/services/present.service';
+import { PresentApi } from 'app/shared/services/present.api.service';
 import { PresentStore } from 'app/shared/services/present.store';
 import { ValidationModule } from 'app/shared/validation';
 
@@ -49,14 +49,14 @@ import { ValidationModule } from 'app/shared/validation';
     HttpClientModule,
     ReactiveFormsModule,
     MobxAngularModule,
-    NgbModule.forRoot(),
+    NgbModule,
     SecurityModule,
     ValidationModule
   ],
   providers: [
-    CandyService,
+    CandyApi,
     CandyStore,
-    PresentService,
+    PresentApi,
     PresentStore
   ],
   bootstrap: [AppComponent]

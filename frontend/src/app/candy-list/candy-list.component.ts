@@ -4,7 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CandyEditComponent } from 'app/candy-edit/candy-edit.component';
 import { ConfirmationDeleteComponent } from 'app/shared/confirmation-delete/confirmation-delete.component';
 import { Candy } from 'app/shared/model/candy.model';
-import { CandyService } from 'app/shared/services/candy.service';
+import { CandyApi } from 'app/shared/services/candy.api.service';
 import { CandyStore } from 'app/shared/services/candy.store';
 
 @Component({
@@ -13,10 +13,8 @@ import { CandyStore } from 'app/shared/services/candy.store';
 })
 export class CandyListComponent {
 
-  constructor(private modalService: NgbModal, private candyService: CandyService, private candyStore: CandyStore) {
-    this.candyService.list().subscribe(
-      candies => this.candyStore.candies = candies
-    );
+  constructor(private modalService: NgbModal, private candyService: CandyApi, private candyStore: CandyStore) {
+    this.candyStore.fetch();
   }
 
   openAddForm() {

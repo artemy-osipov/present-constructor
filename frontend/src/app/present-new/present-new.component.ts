@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { Candy } from 'app/shared/model/candy.model';
 import { Present, PresentItem } from 'app/shared/model/present.model';
-import { PresentService } from 'app/shared/services/present.service';
+import { PresentApi } from 'app/shared/services/present.api.service';
 import { FormHelper, NumberValidators, StringValidators } from 'app/shared/validation';
 
 @Component({
@@ -16,7 +16,7 @@ export class PresentNewComponent {
   form: FormGroup;
   successAdd = false;
 
-  constructor(private route: ActivatedRoute, private fb: FormBuilder, private presentService: PresentService) {
+  constructor(private route: ActivatedRoute, private fb: FormBuilder, private presentService: PresentApi) {
     this.form = this.buildForm();
 
     this.route.params.subscribe(params => {
@@ -39,7 +39,7 @@ export class PresentNewComponent {
 
   private buildForm() {
     return this.fb.group({
-      name: ['', [StringValidators.notEmpty, StringValidators.maxLength(50)]],
+      name: ['', [StringValidators.notEmpty(), StringValidators.maxLength(50)]],
       price: ['', [Validators.required, Validators.min(1), NumberValidators.maxFractionLength(2)]],
       items: this.fb.array([], Validators.required)
     });

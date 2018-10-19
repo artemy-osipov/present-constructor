@@ -14,16 +14,12 @@ export class Present {
   date: Date;
   items: PresentItem[] = [];
 
-  constructor(obj?: Object) {
-    if (obj === undefined) {
-      return;
-    }
-
-    this.id = obj['id'];
-    this.name = obj['name'] && obj['name'].trim();
-    this.price = +obj['price'];
-    this.date = obj['date'] && new Date(obj['date']);
-    this.items = obj['items'] && obj['items'].map(i => new PresentItem(new Candy(i.candy), i.count));
+  constructor(src: any) {
+    this.id = src.id;
+    this.name = src.name && src.name.trim();
+    this.price = +src.price;
+    this.date = src.date && new Date(src.date);
+    this.items = src.items && src.items.map((item: any) => new PresentItem(new Candy(item.candy), item.count));
   }
 
   get cost(): number {

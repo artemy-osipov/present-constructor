@@ -1,8 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { Candy } from 'app/shared/model/candy.model';
-import { Present } from 'app/shared/model/present.model';
-import { CandyService } from 'app/shared/services/candy.service';
 import { CandyStore } from 'app/shared/services/candy.store';
 
 @Component({
@@ -14,10 +12,8 @@ export class PresentNewSelectCandyComponent {
   @Output() selected = new EventEmitter<Candy>();
   @Output() unselected = new EventEmitter<Candy>();
 
-  constructor(private candyService: CandyService, private candyStore: CandyStore) {
-    this.candyService.list().subscribe(
-      candies => this.candyStore.candies = candies
-    );
+  constructor(private candyStore: CandyStore) {
+    this.candyStore.fetch();
   }
 
   select(candy: Candy): void {

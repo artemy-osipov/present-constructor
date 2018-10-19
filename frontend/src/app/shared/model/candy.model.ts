@@ -5,15 +5,11 @@ export class Candy {
   price: number;
   order: number;
 
-  constructor(obj?: Object) {
-    if (obj === undefined) {
-      return;
-    }
-
-    this.id = obj['id'];
-    this.name = obj['name'] && obj['name'].trim();
-    this.firm = obj['firm'] && obj['firm'].trim();
-    this.price = +obj['price'];
-    this.order = +obj['order'];
+  constructor(src: any) {
+    this.id = src.id;
+    this.name = src.name && src.name.trim();
+    this.firm = src.firm && src.firm.trim();
+    this.price = +src.price;
+    this.order = +src.order;
   }
 }

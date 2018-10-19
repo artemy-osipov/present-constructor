@@ -3,7 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ConfirmationDeleteComponent } from 'app/shared/confirmation-delete/confirmation-delete.component';
 import { Present } from 'app/shared/model/present.model';
-import { PresentService } from 'app/shared/services/present.service';
+import { PresentApi } from 'app/shared/services/present.api.service';
 import { PresentStore } from 'app/shared/services/present.store';
 
 @Component({
@@ -12,7 +12,7 @@ import { PresentStore } from 'app/shared/services/present.store';
 })
 export class PresentListComponent {
 
-  constructor(private modalService: NgbModal, private presentService: PresentService, private presentStore: PresentStore) {
+  constructor(private modalService: NgbModal, private presentService: PresentApi, private presentStore: PresentStore) {
     this.presentService.list().subscribe(
       presents => this.presentStore.presents = presents
     );

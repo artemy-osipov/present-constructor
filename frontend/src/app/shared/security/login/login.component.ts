@@ -12,7 +12,7 @@ import { UserService } from '../user.service';
 })
 export class LoginComponent implements OnInit {
   loading = false;
-  error = null;
+  error: string | null = null;
   redirectUrl: string;
   form: FormGroup;
 

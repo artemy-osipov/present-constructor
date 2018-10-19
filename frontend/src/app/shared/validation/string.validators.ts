@@ -1,17 +1,19 @@
-import { AbstractControl, ValidatorFn } from '@angular/forms';
+import { ValidatorFn } from '@angular/forms';
 
 export class StringValidators {
 
-  static notEmpty(control: AbstractControl): {[key: string]: boolean} {
-    if (control.value === null || control.value.trim().length === 0) {
-      return { notEmpty: true };
-    }
+  static notEmpty(): ValidatorFn {
+    return control => {
+      if (control.value === null || control.value.trim().length === 0) {
+        return { notEmpty: true };
+      }
 
-    return null;
+      return null;
+    };
   }
 
   static maxLength(maxLength: number): ValidatorFn {
-    return (control: AbstractControl): {[key: string]: boolean} => {
+    return control => {
       if (control.value !== null && control.value.trim().length > maxLength) {
         return { maxLength: true };
       }

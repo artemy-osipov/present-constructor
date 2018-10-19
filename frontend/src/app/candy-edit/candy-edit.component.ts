@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { Candy } from 'app/shared/model/candy.model';
-import { CandyService } from 'app/shared/services/candy.service';
+import { CandyApi } from 'app/shared/services/candy.api.service';
 import { CandyStore } from 'app/shared/services/candy.store';
 import { FormHelper, NumberValidators, StringValidators } from 'app/shared/validation';
 
@@ -17,14 +17,14 @@ enum Action {
 })
 export class CandyEditComponent {
   Action = Action;
-  action: Action;
+  action?: Action;
   form: FormGroup;
-  candy: Candy;
+  candy?: Candy;
 
-  constructor(public modal: NgbActiveModal, private fb: FormBuilder, private candyService: CandyService, private candyStore: CandyStore) {
+  constructor(public modal: NgbActiveModal, private fb: FormBuilder, private candyService: CandyApi, private candyStore: CandyStore) {
     this.form = fb.group({
-      name: ['', [StringValidators.notEmpty, StringValidators.maxLength(50)]],
-      firm: ['', [StringValidators.notEmpty, StringValidators.maxLength(50)]],
+      name: ['', [StringValidators.notEmpty(), StringValidators.maxLength(50)]],
+      firm: ['', [StringValidators.notEmpty(), StringValidators.maxLength(50)]],
       price: ['', [Validators.required, Validators.min(1), NumberValidators.maxFractionLength(2)]],
       order: ['', Validators.required]
     });
@@ -59,7 +59,7 @@ export class CandyEditComponent {
   private candyFromForm(): Candy {
     const candy = new Candy(this.form.value);
 
-    if (this.action === Action.Update) {
+    if (this.action === Action.Update && this.candy) {
       candy.id = this.candy.id;
     }
 

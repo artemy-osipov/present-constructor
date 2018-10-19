@@ -5,22 +5,17 @@ import { map } from 'rxjs/operators';
 
 import { Present } from 'app/shared/model/present.model';
 import { environment } from 'environments/environment';
+import { ApiHelper } from './api-helper.service';
 
 @Injectable()
-export class PresentService {
+export class PresentApi {
   presentResource = environment.apiUrl + 'api/presents/';
 
   constructor(private http: HttpClient) { }
 
   add(present: Present): Observable<string> {
     return this.http.post(this.presentResource, present, { observe: 'response' })
-      .pipe(map(resp => this.getIdFromLocation(resp.headers.get('Location'))));
-  }
-
-  private getIdFromLocation(location: string): string {
-    if (location.search(this.presentResource) === 0) {
-      return location.substring(this.presentResource.length);
-    }
+      .pipe(map(resp => ApiHelper.extractNewId(resp.headers, this.presentResource)));
   }
 
   get(id: string): Observable<Present> {

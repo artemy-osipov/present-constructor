@@ -25,7 +25,7 @@ public class PresentCommandController {
     private final PresentCommandHandler commandHandler;
 
     @PostMapping
-    public ResponseEntity addPresent(@RequestBody @Validated AddPresentDTO dto) {
+    public ResponseEntity<Void> addPresent(@RequestBody @Validated AddPresentDTO dto) {
         CreatePresentCommand command = new CreatePresentCommand(
                 newUUID(),
                 dto.getName(),
@@ -38,14 +38,14 @@ public class PresentCommandController {
 
         commandHandler.on(command);
 
-        return ResponseEntity.noContent()
-                .location(fromCurrentRequestUri()
+        return ResponseEntity
+                .created(fromCurrentRequestUri()
                         .path("/{id}").buildAndExpand(command.getId()).toUri())
                 .build();
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity removePresent(@PathVariable("id") UUID id) {
+    public ResponseEntity<Void> removePresent(@PathVariable("id") UUID id) {
         RemovePresentCommand command = new RemovePresentCommand(id);
 
         commandHandler.on(command);

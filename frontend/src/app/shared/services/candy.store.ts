@@ -2,10 +2,20 @@ import { Injectable } from '@angular/core';
 import { action, computed, observable } from 'mobx-angular';
 
 import { Candy } from 'app/shared/model/candy.model';
+import { CandyApi } from './candy.api.service';
 
 @Injectable()
 export class CandyStore {
   @observable candies: Candy[] = [];
+
+  constructor(private candyApi: CandyApi) {
+  }
+
+  @action fetch() {
+    this.candyApi.list().subscribe(
+      candies => this.candies = candies
+    );
+  }
 
   @computed get orderedCandies(): Candy[] {
     return this.candies.sort((x, y) => x.order - y.order);
