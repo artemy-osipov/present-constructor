@@ -3,7 +3,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ConfirmationDeleteComponent } from 'app/shared/confirmation-delete/confirmation-delete.component';
 import { Present } from 'app/shared/model/present.model';
-import { PresentApi } from 'app/shared/services/present.api.service';
 import { PresentStore } from 'app/shared/services/present.store';
 
 @Component({
@@ -12,10 +11,8 @@ import { PresentStore } from 'app/shared/services/present.store';
 })
 export class PresentListComponent {
 
-  constructor(private modalService: NgbModal, private presentService: PresentApi, private presentStore: PresentStore) {
-    this.presentService.list().subscribe(
-      presents => this.presentStore.presents = presents
-    );
+  constructor(private modalService: NgbModal, private presentStore: PresentStore) {
+    this.presentStore.fetch();
   }
 
   openDeleteForm(present: Present) {
@@ -23,15 +20,9 @@ export class PresentListComponent {
     modalRef.result
       .then(res => {
         if (res) {
-          this.delete(present);
+          this.presentStore.delete(present);
         }
       })
       .catch(e => { });
-  }
-
-  private delete(present: Present) {
-    this.presentService.delete(present).subscribe(
-      () => this.presentStore.delete(present)
-    );
   }
 }

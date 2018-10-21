@@ -22,14 +22,22 @@ export class CandyStore {
   }
 
   @action add(candy: Candy) {
-    this.candies.push(candy);
+    this.candyApi.add(candy).subscribe(
+      (id) => this.candyApi.get(id).subscribe(
+        added => this.candies.push(added)
+      )
+    );
   }
 
   @action update(candy: Candy) {
-    this.candies = this.candies.map(c => c.id === candy.id ? candy : c);
+    this.candyApi.update(candy).subscribe(
+      () => this.candies = this.candies.map(c => c.id === candy.id ? candy : c)
+    );
   }
 
   @action delete(candy: Candy) {
-    this.candies = this.candies.filter(c => c.id !== candy.id);
+    this.candyApi.delete(candy).subscribe(
+      () => this.candies = this.candies.filter(c => c.id !== candy.id)
+    );
   }
 }

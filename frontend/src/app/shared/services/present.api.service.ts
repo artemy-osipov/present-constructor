@@ -24,7 +24,7 @@ export class PresentApi {
   }
 
   list(): Observable<Present[]> {
-    return this.http.get<Object[]>(this.presentResource)
+    return this.http.get<Present[]>(this.presentResource)
       .pipe(map(res => res.map(data => new Present(data))));
   }
 

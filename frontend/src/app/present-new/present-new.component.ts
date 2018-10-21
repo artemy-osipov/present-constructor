@@ -3,7 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
 import { Candy } from 'app/shared/model/candy.model';
-import { Present, PresentItem } from 'app/shared/model/present.model';
+import { Present } from 'app/shared/model/present.model';
 import { PresentApi } from 'app/shared/services/present.api.service';
 import { FormHelper, NumberValidators, StringValidators } from 'app/shared/validation';
 
@@ -16,13 +16,13 @@ export class PresentNewComponent {
   form: FormGroup;
   successAdd = false;
 
-  constructor(private route: ActivatedRoute, private fb: FormBuilder, private presentService: PresentApi) {
+  constructor(private route: ActivatedRoute, private fb: FormBuilder, private presentApi: PresentApi) {
     this.form = this.buildForm();
 
     this.route.params.subscribe(params => {
       const source = params['source'];
       if (source) {
-        this.presentService.get(source).subscribe(
+        this.presentApi.get(source).subscribe(
           present => present.items.forEach(item => this.addItem(item.candy, item.count))
         );
       }
@@ -73,7 +73,7 @@ export class PresentNewComponent {
   }
 
   private add(present: Present) {
-    this.presentService.add(present).subscribe(
+    this.presentApi.add(present).subscribe(
       () => {
         this.form.reset();
         this.form.controls['items'] = this.fb.array([]);
