@@ -13,7 +13,7 @@
       </div>
       <div class="form-group">
         <button type="submit" class="btn btn-outline-dark">
-          <i class="fa fa-plus" aria-hidden="true"></i> Добавить
+          <i class="fas fa-plus" aria-hidden="true"></i> Добавить
         </button>
       </div>
       <div class="form-group">
@@ -33,7 +33,7 @@
             <th>Цена</th>
             <th>Кол-во</th>
           </tr>
-  
+
           <tr *ngFor="let item of itemsForm.controls; let i = index" [formGroupName]="i">
             <td>{{item.controls.candy.controls.name.value}}</td>
             <td>{{item.controls.candy.controls.firm.value}}</td>

@@ -2,7 +2,7 @@
 <div class="row">
   <div class="col-md-6">
     <button class="btn btn-outline-dark" type="button" routerLink="/presents/new">
-      <i class="fa fa-plus" aria-hidden="true"></i> Добавить
+      <i class="fas fa-plus" aria-hidden="true"></i> Добавить
     </button>
   </div>
 </div>
@@ -20,13 +20,13 @@
       <td>{{present.price}}</td>
       <td>
         <button class="btn btn-icon btn-outline-dark" ngbTooltip="Открыть" type="button" [routerLink]="['/presents/show', present.id]">
-          <i class="fa fa-eye" aria-hidden="true"></i>
+          <i class="fas fa-eye" aria-hidden="true"></i>
         </button>
         <button class="btn btn-icon btn-outline-dark" ngbTooltip="Создать на основе" type="button" [routerLink]="['/presents/new', {source: present.id}]">
-          <i class="fa fa-files-o" aria-hidden="true"></i>
+          <i class="fas fa-copy" aria-hidden="true"></i>
         </button>
         <button class="btn btn-icon btn-outline-dark" ngbTooltip="Удалить" type="button" (click)="openDeleteForm(present)">
-          <i class="fa fa-trash" aria-hidden="true"></i>
+          <i class="fas fa-trash" aria-hidden="true"></i>
         </button>
       </td>
     </tr>
