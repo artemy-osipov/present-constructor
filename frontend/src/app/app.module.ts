@@ -18,9 +18,9 @@ import { PresentNewComponent } from 'app/present-new/present-new.component';
 import { PresentNewSelectCandyComponent } from 'app/present-new/select-candy/present-new-select-candy.component';
 import { ConfirmationDeleteComponent } from 'app/shared/confirmation-delete/confirmation-delete.component';
 import { SecurityModule } from 'app/shared/security';
-import { CandyService } from 'app/shared/services/candy.service';
+import { CandyApi } from 'app/shared/services/candy.api.service';
 import { CandyStore } from 'app/shared/services/candy.store';
-import { PresentService } from 'app/shared/services/present.service';
+import { PresentApi } from 'app/shared/services/present.api.service';
 import { PresentStore } from 'app/shared/services/present.store';
 import { ValidationModule } from 'app/shared/validation';
 
@@ -38,27 +38,19 @@ import { ValidationModule } from 'app/shared/validation';
     PresentNewComponent,
     PresentNewSelectCandyComponent
   ],
-  entryComponents: [
-    CandyEditComponent,
-    ConfirmationDeleteComponent
-  ],
+  entryComponents: [CandyEditComponent, ConfirmationDeleteComponent],
   imports: [
+    AppRoutingModule,
     BrowserModule,
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
     MobxAngularModule,
-    NgbModule.forRoot(),
-    AppRoutingModule,
+    NgbModule,
     SecurityModule,
     ValidationModule
   ],
-  providers: [
-    CandyService,
-    CandyStore,
-    PresentService,
-    PresentStore
-  ],
+  providers: [CandyApi, CandyStore, PresentApi, PresentStore],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

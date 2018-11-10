@@ -1,11 +1,9 @@
-defaults: &backend
+backend_defaults: &backend_defaults
   docker:
     - image: circleci/openjdk:8-jdk
   working_directory: ~/present-constructor/backend
-  environment:
-    MAVEN_OPTS: -Xmx3200m
 
-defaults: &frontend
+frontend_defaults: &frontend_defaults
   docker:
     - image: circleci/node:8.9.1-browsers
   working_directory: ~/present-constructor/frontend
@@ -13,7 +11,7 @@ defaults: &frontend
 version: 2
 jobs:
   build_backend:
-    <<: *backend
+    <<: *backend_defaults
 
     steps:
       - checkout:
@@ -34,7 +32,7 @@ jobs:
             - ./*
 
   build_backend_docker:
-    <<: *backend
+    <<: *backend_defaults
 
     steps:
       - setup_remote_docker
@@ -54,23 +52,25 @@ jobs:
           key: present-constructor-backend-{{ checksum "build.gradle" }}
 
   build_frontend:
-    <<: *frontend
+    <<: *frontend_defaults
 
     steps:
       - checkout:
           path: ~/present-constructor
 
       - restore_cache:
-          key: present-constructor-frontend-{{ checksum "package.json" }}
+          key: present-constructor-frontend-{{ checksum "yarn.lock" }}
 
-      - run: npm install
+      - run: yarn install
 
       - save_cache:
-          key: present-constructor-frontend-{{ checksum "package.json" }}
+          key: present-constructor-frontend-{{ checksum "yarn.lock" }}
           paths:
             - "node_modules"
 
-      - run: npm run build -- --prod
+      - run: yarn run test
+      - run: yarn run lint
+      - run: yarn run build --prod
 
       - persist_to_workspace:
           root: ~/present-constructor/frontend
@@ -78,7 +78,7 @@ jobs:
             - ./*
 
   build_frontend_docker:
-    <<: *frontend
+    <<: *frontend_defaults
 
     steps:
       - setup_remote_docker
@@ -87,8 +87,8 @@ jobs:
           at: ~/present-constructor/frontend
 
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
-      - run: npm run docker-build
-      - run: npm run docker-push
+      - run: yarn run docker-build
+      - run: yarn run docker-push
 
 workflows:
   version: 2

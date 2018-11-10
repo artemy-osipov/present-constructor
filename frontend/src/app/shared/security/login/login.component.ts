@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { FormHelper, StringValidators } from 'app/shared/validation';
@@ -12,7 +12,7 @@ import { UserService } from '../user.service';
 })
 export class LoginComponent implements OnInit {
   loading = false;
-  error = null;
+  error: string | null = null;
   redirectUrl: string;
   form: FormGroup;
 
@@ -21,7 +21,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private authenticationService: AuthenticationService,
-    private userService: UserService) {
+    private userService: UserService
+  ) {
     this.redirectUrl = this.activatedRoute.snapshot.queryParams['redirectTo'];
 
     this.form = fb.group({
@@ -46,8 +47,8 @@ export class LoginComponent implements OnInit {
   login(login: string, password: string) {
     this.loading = true;
 
-    this.authenticationService.login(login, password)
-      .subscribe(token => {
+    this.authenticationService.login(login, password).subscribe(
+      token => {
         this.error = null;
         this.loading = false;
         this.userService.login(token);
@@ -56,7 +57,8 @@ export class LoginComponent implements OnInit {
       error => {
         this.error = 'Логин или пароль неверны';
         this.loading = false;
-      });
+      }
+    );
   }
 
   private navigateAfterSuccess() {
@@ -67,4 +69,3 @@ export class LoginComponent implements OnInit {
     }
   }
 }
-

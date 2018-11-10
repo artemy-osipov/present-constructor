@@ -63,7 +63,7 @@ class PresentCommandControllerIT {
         mockMvc.perform(post("/api/presents")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJson(getUpdateDTO())))
-                .andExpect(status().isNoContent())
+                .andExpect(status().isCreated())
                 .andExpect(header().string("Location", notNullValue()));
     }
 

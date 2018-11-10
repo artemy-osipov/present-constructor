@@ -5,18 +5,9 @@ import { ValidationErrorComponent } from './validation-error/validation-error.co
 import { ValidationDirective } from './validation.directive';
 
 @NgModule({
-  declarations: [
-    ValidationDirective,
-    ValidationErrorComponent
-  ],
-  entryComponents: [
-    ValidationErrorComponent
-  ],
-  imports: [
-    CommonModule
-  ],
-  exports: [
-    ValidationDirective
-  ]
+  declarations: [ValidationDirective, ValidationErrorComponent],
+  entryComponents: [ValidationErrorComponent],
+  imports: [CommonModule],
+  exports: [ValidationDirective]
 })
-export class ValidationModule { }
+export class ValidationModule {}
