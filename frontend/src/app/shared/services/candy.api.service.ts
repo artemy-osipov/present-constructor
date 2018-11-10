@@ -11,20 +11,25 @@ import { ApiHelper } from './api-helper.service';
 export class CandyApi {
   candyResource = environment.apiUrl + 'api/candies/';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   add(candy: Candy): Observable<string> {
-    return this.http.post(this.candyResource, candy, { observe: 'response' })
-      .pipe(map(resp => ApiHelper.extractNewId(resp.headers, this.candyResource)));
+    return this.http
+      .post(this.candyResource, candy, { observe: 'response' })
+      .pipe(
+        map(resp => ApiHelper.extractNewId(resp.headers, this.candyResource))
+      );
   }
 
   get(id: string): Observable<Candy> {
-    return this.http.get<Candy>(this.candyResource + id)
+    return this.http
+      .get<Candy>(this.candyResource + id)
       .pipe(map(res => new Candy(res)));
   }
 
   list(): Observable<Candy[]> {
-    return this.http.get<Candy[]>(this.candyResource)
+    return this.http
+      .get<Candy[]>(this.candyResource)
       .pipe(map(res => res.map(data => new Candy(data))));
   }
 

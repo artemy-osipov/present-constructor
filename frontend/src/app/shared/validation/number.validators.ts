@@ -1,10 +1,12 @@
 import { ValidatorFn } from '@angular/forms';
 
 export class NumberValidators {
-
   static maxFractionLength(maxFractionLength: number): ValidatorFn {
     return control => {
-      if (control.value !== null && NumberValidators.getFractionLength(control.value) > maxFractionLength) {
+      if (
+        control.value !== null &&
+        NumberValidators.getFractionLength(control.value) > maxFractionLength
+      ) {
         return { maxFractionLength: true };
       }
 

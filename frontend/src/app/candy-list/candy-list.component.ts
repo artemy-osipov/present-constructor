@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { CandyEditComponent } from 'app/candy-edit/candy-edit.component';
@@ -8,10 +8,10 @@ import { CandyStore } from 'app/shared/services/candy.store';
 
 @Component({
   selector: 'app-candy-list',
-  templateUrl: './candy-list.component.html'
+  templateUrl: './candy-list.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CandyListComponent {
-
   constructor(private modalService: NgbModal, private candyStore: CandyStore) {
     this.candyStore.fetch();
   }
@@ -34,6 +34,6 @@ export class CandyListComponent {
           this.candyStore.delete(candy);
         }
       })
-      .catch(e => { });
+      .catch(e => {});
   }
 }

@@ -6,24 +6,27 @@ import { PresentApi } from './present.api.service';
 
 @Injectable()
 export class PresentStore {
-  @observable presents: Present[] = [];
+  @observable
+  presents: Present[] = [];
 
-  constructor(private presentApi: PresentApi) {
+  constructor(private presentApi: PresentApi) {}
+
+  @action
+  fetch() {
+    this.presentApi.list().subscribe(presents => (this.presents = presents));
   }
 
-  @action fetch() {
-    this.presentApi.list().subscribe(
-      presents => this.presents = presents
-    );
-  }
-
-  @computed get orderedPresents(): Present[] {
+  @computed
+  get orderedPresents(): Present[] {
     return this.presents.sort((x, y) => x.date.getTime() - y.date.getTime());
   }
 
-  @action delete(present: Present) {
-    this.presentApi.delete(present).subscribe(
-      () => this.presents = this.presents.filter(c => c.id !== present.id)
-    );
+  @action
+  delete(present: Present) {
+    this.presentApi
+      .delete(present)
+      .subscribe(
+        () => (this.presents = this.presents.filter(c => c.id !== present.id))
+      );
   }
 }

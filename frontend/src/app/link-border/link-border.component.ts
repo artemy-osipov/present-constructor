@@ -7,8 +7,7 @@ import { Component, Inject } from '@angular/core';
   styleUrls: ['./link-border.component.css']
 })
 export class LinkBorderComponent {
-
-  constructor(@Inject(DOCUMENT) private document: Document) { }
+  constructor(@Inject(DOCUMENT) private document: Document) {}
 
   scrollToTop() {
     this.document.body.scrollIntoView(true);

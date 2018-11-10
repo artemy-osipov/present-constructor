@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ConfirmationDeleteComponent } from 'app/shared/confirmation-delete/confirmation-delete.component';
@@ -7,11 +7,14 @@ import { PresentStore } from 'app/shared/services/present.store';
 
 @Component({
   selector: 'app-present-list',
-  templateUrl: './present-list.component.html'
+  templateUrl: './present-list.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PresentListComponent {
-
-  constructor(private modalService: NgbModal, private presentStore: PresentStore) {
+  constructor(
+    private modalService: NgbModal,
+    private presentStore: PresentStore
+  ) {
     this.presentStore.fetch();
   }
 
@@ -23,6 +26,6 @@ export class PresentListComponent {
           this.presentStore.delete(present);
         }
       })
-      .catch(e => { });
+      .catch(e => {});
   }
 }

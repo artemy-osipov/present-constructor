@@ -14,14 +14,25 @@ const routes: Routes = [
   { path: 'about', component: AboutComponent },
   { path: 'login', component: LoginComponent },
   { path: 'candies', component: CandyListComponent, canActivate: [AuthGuard] },
-  { path: 'presents', component: PresentListComponent, canActivate: [AuthGuard] },
-  { path: 'presents/new', component: PresentNewComponent, canActivate: [AuthGuard] },
-  { path: 'presents/show/:id', component: PresentDetailComponent, canActivate: [AuthGuard] }
+  {
+    path: 'presents',
+    component: PresentListComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'presents/new',
+    component: PresentNewComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'presents/show/:id',
+    component: PresentDetailComponent,
+    canActivate: [AuthGuard]
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}

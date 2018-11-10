@@ -1,16 +1,26 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output
+} from '@angular/core';
 
 import { Candy } from 'app/shared/model/candy.model';
 import { CandyStore } from 'app/shared/services/candy.store';
 
 @Component({
   selector: 'app-present-new-select-candy',
-  templateUrl: './present-new-select-candy.component.html'
+  templateUrl: './present-new-select-candy.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PresentNewSelectCandyComponent {
-  @Input() selectedCandies: Candy[] = [];
-  @Output() selected = new EventEmitter<Candy>();
-  @Output() unselected = new EventEmitter<Candy>();
+  @Input()
+  selectedCandies: Candy[] = [];
+  @Output()
+  selected = new EventEmitter<Candy>();
+  @Output()
+  unselected = new EventEmitter<Candy>();
 
   constructor(private candyStore: CandyStore) {
     this.candyStore.fetch();

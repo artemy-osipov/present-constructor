@@ -1,10 +1,7 @@
 import { Candy } from 'app/shared/model/candy.model';
 
 export class PresentItem {
-  constructor(
-    public candy: Candy,
-    public count: number) {
-  }
+  constructor(public candy: Candy, public count: number) {}
 }
 
 export class Present {
@@ -19,7 +16,11 @@ export class Present {
     this.name = src.name && src.name.trim();
     this.price = +src.price;
     this.date = src.date && new Date(src.date);
-    this.items = src.items && src.items.map((item: any) => new PresentItem(new Candy(item.candy), item.count));
+    this.items =
+      src.items &&
+      src.items.map(
+        (item: any) => new PresentItem(new Candy(item.candy), item.count)
+      );
   }
 
   get cost(): number {

@@ -13,8 +13,9 @@ export class PresentDetailComponent {
 
   constructor(private route: ActivatedRoute, public presentApi: PresentApi) {
     this.route.params.subscribe(params => {
-      presentApi.get(params['id'])
-        .subscribe(present => this.present = present);
+      presentApi
+        .get(params['id'])
+        .subscribe(present => (this.present = present));
     });
   }
 }

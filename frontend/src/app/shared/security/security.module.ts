@@ -14,9 +14,7 @@ import { LoginComponent } from './login/login.component';
 import { TOKEN_NAME, UserService } from './user.service';
 
 @NgModule({
-  declarations: [
-    LoginComponent
-  ],
+  declarations: [LoginComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -31,13 +29,9 @@ import { TOKEN_NAME, UserService } from './user.service';
     NgbModule,
     ValidationModule
   ],
-  providers: [
-    AuthGuard,
-    AuthenticationService,
-    UserService
-  ]
+  providers: [AuthGuard, AuthenticationService, UserService]
 })
-export class SecurityModule { }
+export class SecurityModule {}
 
 export function getJwtToken(): string | null {
   return localStorage.getItem(TOKEN_NAME);

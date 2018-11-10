@@ -7,8 +7,7 @@ export const TOKEN_NAME = 'access_token';
 export class UserService {
   token?: string;
 
-  constructor(private jwtHelper: JwtHelperService) {
-  }
+  constructor(private jwtHelper: JwtHelperService) {}
 
   login(token: string) {
     this.token = token;

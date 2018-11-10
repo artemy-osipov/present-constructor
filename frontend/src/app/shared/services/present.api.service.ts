@@ -11,20 +11,25 @@ import { ApiHelper } from './api-helper.service';
 export class PresentApi {
   presentResource = environment.apiUrl + 'api/presents/';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   add(present: Present): Observable<string> {
-    return this.http.post(this.presentResource, present, { observe: 'response' })
-      .pipe(map(resp => ApiHelper.extractNewId(resp.headers, this.presentResource)));
+    return this.http
+      .post(this.presentResource, present, { observe: 'response' })
+      .pipe(
+        map(resp => ApiHelper.extractNewId(resp.headers, this.presentResource))
+      );
   }
 
   get(id: string): Observable<Present> {
-    return this.http.get<Present>(this.presentResource + id)
+    return this.http
+      .get<Present>(this.presentResource + id)
       .pipe(map(data => new Present(data)));
   }
 
   list(): Observable<Present[]> {
-    return this.http.get<Present[]>(this.presentResource)
+    return this.http
+      .get<Present[]>(this.presentResource)
       .pipe(map(res => res.map(data => new Present(data))));
   }
 

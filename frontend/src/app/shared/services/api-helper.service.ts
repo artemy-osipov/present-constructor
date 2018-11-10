@@ -1,7 +1,6 @@
 import { HttpHeaders } from '@angular/common/http';
 
 export class ApiHelper {
-
   static extractNewId(headers: HttpHeaders, resource: string): string {
     const location = headers.get('Location');
     if (location && location.search(resource) === 0) {

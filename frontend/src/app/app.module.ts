@@ -38,10 +38,7 @@ import { ValidationModule } from 'app/shared/validation';
     PresentNewComponent,
     PresentNewSelectCandyComponent
   ],
-  entryComponents: [
-    CandyEditComponent,
-    ConfirmationDeleteComponent
-  ],
+  entryComponents: [CandyEditComponent, ConfirmationDeleteComponent],
   imports: [
     AppRoutingModule,
     BrowserModule,
@@ -53,12 +50,7 @@ import { ValidationModule } from 'app/shared/validation';
     SecurityModule,
     ValidationModule
   ],
-  providers: [
-    CandyApi,
-    CandyStore,
-    PresentApi,
-    PresentStore
-  ],
+  providers: [CandyApi, CandyStore, PresentApi, PresentStore],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
