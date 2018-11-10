@@ -68,7 +68,7 @@ jobs:
           paths:
             - "node_modules"
 
-      - run: yarn run test
+      - run: yarn run test --no-watch
       - run: yarn run lint
       - run: yarn run build --prod
 
