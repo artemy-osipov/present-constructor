@@ -2,8 +2,22 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MobxAngularModule } from 'mobx-angular';
+
+import { library } from '@fortawesome/fontawesome-svg-core';
+import {
+  faAngleDown,
+  faAngleUp,
+  faCopy,
+  faEye,
+  faFile,
+  faPencilAlt,
+  faPlus,
+  faTimes,
+  faTrash
+} from '@fortawesome/free-solid-svg-icons';
 
 import { AboutComponent } from 'app/about/about.component';
 import { AppRoutingModule } from 'app/app-routing.module';
@@ -24,6 +38,18 @@ import { PresentApi } from 'app/shared/services/present.api.service';
 import { PresentStore } from 'app/shared/services/present.store';
 import { ValidationModule } from 'app/shared/validation';
 
+library.add(
+  faAngleDown,
+  faAngleUp,
+  faCopy,
+  faEye,
+  faFile,
+  faPencilAlt,
+  faPlus,
+  faTimes,
+  faTrash
+);
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,6 +68,7 @@ import { ValidationModule } from 'app/shared/validation';
   imports: [
     AppRoutingModule,
     BrowserModule,
+    FontAwesomeModule,
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
