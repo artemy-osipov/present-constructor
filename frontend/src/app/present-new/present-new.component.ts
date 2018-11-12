@@ -49,7 +49,7 @@ export class PresentNewComponent {
 
   private buildForm() {
     return this.fb.group({
-      name: ['', [StringValidators.notEmpty(), StringValidators.maxLength(50)]],
+      name: ['', [StringValidators.notEmpty, StringValidators.maxLength(50)]],
       price: [
         '',
         [

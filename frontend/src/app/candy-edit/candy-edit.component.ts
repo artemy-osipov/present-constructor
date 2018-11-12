@@ -32,8 +32,8 @@ export class CandyEditComponent {
     private candyStore: CandyStore
   ) {
     this.form = fb.group({
-      name: ['', [StringValidators.notEmpty(), StringValidators.maxLength(50)]],
-      firm: ['', [StringValidators.notEmpty(), StringValidators.maxLength(50)]],
+      name: ['', [StringValidators.notEmpty, StringValidators.maxLength(50)]],
+      firm: ['', [StringValidators.notEmpty, StringValidators.maxLength(50)]],
       price: [
         '',
         [
