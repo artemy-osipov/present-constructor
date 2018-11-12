@@ -22,15 +22,15 @@
       <div class="row">
         <div class="col-6">
           <button *ngIf="action === Action.Add" type="submit" class="btn btn-outline-dark float-left">
-            <i class="fa fa-plus" aria-hidden="true"></i> Добавить
+            <fa-icon icon="plus"></fa-icon> Добавить
           </button>
           <button *ngIf="action === Action.Update" type="submit" class="btn btn-outline-dark float-left">
-            <i class="fa fa-pencil" aria-hidden="true"></i> Сохранить
+            <fa-icon icon="pencil-alt"></fa-icon> Сохранить
           </button>
         </div>
         <div class="col-6">
           <button type="button" class="btn btn-outline-secondary float-right" (click)="modal.dismiss()">
-            <i class="fa fa-times" aria-hidden="true"></i> Отмена
+            <fa-icon icon="times"></fa-icon> Отмена
           </button>
         </div>
       </div>

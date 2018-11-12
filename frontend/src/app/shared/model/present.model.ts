@@ -17,10 +17,11 @@ export class Present {
     this.price = +src.price;
     this.date = src.date && new Date(src.date);
     this.items =
-      src.items &&
-      src.items.map(
-        (item: any) => new PresentItem(new Candy(item.candy), item.count)
-      );
+      (src.items &&
+        src.items.map(
+          (item: any) => new PresentItem(new Candy(item.candy), item.count)
+        )) ||
+      [];
   }
 
   get cost(): number {

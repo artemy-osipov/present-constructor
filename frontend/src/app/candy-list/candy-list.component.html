@@ -2,7 +2,7 @@
 <div class="row">
   <div class="col-md-6">
     <button class="btn btn-outline-dark" type="button" (click)="openAddForm()">
-      <i class="fa fa-plus" aria-hidden="true"></i> Добавить
+      <fa-icon icon="plus"></fa-icon> Добавить
     </button>
   </div>
 </div>
@@ -24,10 +24,10 @@
       <td>{{candy.order}}</td>
       <td>
         <button class="btn btn-icon btn-outline-dark" ngbTooltip="Изменить" type="button" (click)="openUpdateForm(candy)">
-          <i class="fa fa-pencil" aria-hidden="true"></i>
+          <fa-icon icon="pencil-alt"></fa-icon>
         </button>
         <button class="btn btn-icon btn-outline-dark" ngbTooltip="Удалить" type="button" (click)="openDeleteForm(candy)">
-          <i class="fa fa-trash" aria-hidden="true"></i>
+          <fa-icon icon="trash"></fa-icon>
         </button>
       </td>
     </tr>
