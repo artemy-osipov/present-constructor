@@ -17,8 +17,7 @@ export class CandyListComponent {
   }
 
   openAddForm() {
-    const modal = this.modalService.open(CandyEditComponent);
-    modal.componentInstance.initAddForm();
+    this.modalService.open(CandyEditComponent);
   }
 
   openUpdateForm(candy: Candy) {

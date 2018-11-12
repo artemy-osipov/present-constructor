@@ -10,21 +10,14 @@ import {
   StringValidators
 } from 'app/shared/validation';
 
-enum Action {
-  Add,
-  Update
-}
-
 @Component({
   selector: 'app-candy-edit',
   templateUrl: './candy-edit.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CandyEditComponent {
-  Action = Action;
-  action?: Action;
   form: FormGroup;
-  candy?: Candy;
+  editedCandy?: Candy;
 
   constructor(
     public modal: NgbActiveModal,
@@ -46,26 +39,21 @@ export class CandyEditComponent {
     });
   }
 
-  initAddForm() {
-    this.action = Action.Add;
-  }
-
   initUpdateForm(candy: Candy) {
-    this.action = Action.Update;
-    this.candy = candy;
+    this.editedCandy = candy;
     this.form.patchValue(candy);
   }
 
   onSubmit() {
     if (this.form.valid) {
-      switch (this.action) {
-        case Action.Add:
-          this.candyStore.add(this.candyFromForm());
-          break;
-        case Action.Update:
-          this.candyStore.update(this.candyFromForm());
-          break;
+      const candyFromForm = this.candyFromForm();
+
+      if (this.editedCandy) {
+        this.candyStore.update(candyFromForm);
+      } else {
+        this.candyStore.add(candyFromForm);
       }
+
       this.modal.close();
     } else {
       FormHelper.markFormContolsAsDirty(this.form);
@@ -75,8 +63,8 @@ export class CandyEditComponent {
   private candyFromForm(): Candy {
     const candy = new Candy(this.form.value);
 
-    if (this.action === Action.Update && this.candy) {
-      candy.id = this.candy.id;
+    if (this.editedCandy) {
+      candy.id = this.editedCandy.id;
     }
 
     return candy;

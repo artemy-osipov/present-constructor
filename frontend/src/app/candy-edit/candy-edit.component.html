@@ -21,10 +21,10 @@
     <div class="container">
       <div class="row">
         <div class="col-6">
-          <button *ngIf="action === Action.Add" type="submit" class="btn btn-outline-dark float-left">
+          <button *ngIf="editedCandy === undefined" type="submit" class="btn btn-outline-dark float-left">
             <fa-icon icon="plus"></fa-icon> Добавить
           </button>
-          <button *ngIf="action === Action.Update" type="submit" class="btn btn-outline-dark float-left">
+          <button *ngIf="editedCandy !== undefined" type="submit" class="btn btn-outline-dark float-left">
             <fa-icon icon="pencil-alt"></fa-icon> Сохранить
           </button>
         </div>
