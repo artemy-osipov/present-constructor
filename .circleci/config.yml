@@ -28,7 +28,7 @@ jobs:
             - ~/.m2
           key: present-constructor-backend-{{ checksum "pom.xml" }}
 
-      - run: mvn integration-test
+      - run: mvn install -DskipTests
 
       - persist_to_workspace:
           root: ~/present-constructor/backend
