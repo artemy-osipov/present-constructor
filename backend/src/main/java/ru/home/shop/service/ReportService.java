@@ -7,6 +7,7 @@ import fr.opensagres.xdocreport.template.IContext;
 import fr.opensagres.xdocreport.template.TemplateEngineKind;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.home.shop.domain.Item;
 import ru.home.shop.domain.Report;
 import ru.home.shop.domain.Present;
 import ru.home.shop.service.command.present.PresentRepository;
@@ -15,6 +16,8 @@ import javax.persistence.EntityNotFoundException;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.UUID;
 
 @Service
@@ -43,6 +46,7 @@ public class ReportService {
                 .orElseThrow(EntityNotFoundException::new);
 
         String name = formatReportName(present);
+        Collections.sort(present.getItems(), Comparator.comparing((Item i) -> i.getCandy().getOrder()));
         byte[] content = generateReportContent(present, templatePath);
 
         return new Report(name, content);

@@ -24,7 +24,7 @@ public class Present {
 
     @ElementCollection
     @CollectionTable(name = "present_item", joinColumns = @JoinColumn(name = "present_id"))
-    private Collection<Item> items = new ArrayList<>();
+    private List<Item> items = new ArrayList<>();
 
     public BigDecimal computeCost() {
         return items.stream()
