@@ -1,8 +1,5 @@
 import { Candy } from 'app/shared/model/candy.model';
-
-export class PresentItem {
-  constructor(public candy: Candy, public count: number) {}
-}
+import { PresentItem } from 'app/shared/model/present-item.model';
 
 export class Present {
   id: string;
