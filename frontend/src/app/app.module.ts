@@ -38,6 +38,7 @@ import {
   faFile,
   faPencilAlt,
   faPlus,
+  faRubleSign,
   faTimes,
   faTrash
 } from '@fortawesome/free-solid-svg-icons';
@@ -50,6 +51,7 @@ library.add(
   faFile,
   faPencilAlt,
   faPlus,
+  faRubleSign,
   faTimes,
   faTrash
 );

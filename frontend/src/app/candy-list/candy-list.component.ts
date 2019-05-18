@@ -9,6 +9,7 @@ import { CandyStore } from 'app/shared/services/candy.store';
 @Component({
   selector: 'app-candy-list',
   templateUrl: './candy-list.component.html',
+  styleUrls: ['./candy-list.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CandyListComponent {
