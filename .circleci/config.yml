@@ -1,11 +1,11 @@
 backend_defaults: &backend_defaults
   docker:
-    - image: circleci/openjdk:8-jdk
+    - image: circleci/openjdk:11.0.2
   working_directory: ~/present-constructor/backend
 
 frontend_defaults: &frontend_defaults
   docker:
-    - image: circleci/node:8.9.1-browsers
+    - image: circleci/node:10.16.0-browsers
   working_directory: ~/present-constructor/frontend
 
 version: 2
