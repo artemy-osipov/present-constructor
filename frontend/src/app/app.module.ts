@@ -3,21 +3,12 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { MobxAngularModule } from 'mobx-angular';
-
-import { library } from '@fortawesome/fontawesome-svg-core';
 import {
-  faAngleDown,
-  faAngleUp,
-  faCopy,
-  faEye,
-  faFile,
-  faPencilAlt,
-  faPlus,
-  faTimes,
-  faTrash
-} from '@fortawesome/free-solid-svg-icons';
+  NgbAlertModule,
+  NgbModalModule,
+  NgbTooltipModule
+} from '@ng-bootstrap/ng-bootstrap';
+import { MobxAngularModule } from 'mobx-angular';
 
 import { AboutComponent } from 'app/about/about.component';
 import { AppRoutingModule } from 'app/app-routing.module';
@@ -38,6 +29,20 @@ import { PresentApi } from 'app/shared/services/present.api.service';
 import { PresentStore } from 'app/shared/services/present.store';
 import { ValidationModule } from 'app/shared/validation';
 
+import { library } from '@fortawesome/fontawesome-svg-core';
+import {
+  faAngleDown,
+  faAngleUp,
+  faCopy,
+  faEye,
+  faFile,
+  faPencilAlt,
+  faPlus,
+  faRubleSign,
+  faTimes,
+  faTrash
+} from '@fortawesome/free-solid-svg-icons';
+
 library.add(
   faAngleDown,
   faAngleUp,
@@ -46,6 +51,7 @@ library.add(
   faFile,
   faPencilAlt,
   faPlus,
+  faRubleSign,
   faTimes,
   faTrash
 );
@@ -71,9 +77,11 @@ library.add(
     FontAwesomeModule,
     FormsModule,
     HttpClientModule,
-    ReactiveFormsModule,
     MobxAngularModule,
-    NgbModule,
+    NgbAlertModule,
+    NgbModalModule,
+    NgbTooltipModule,
+    ReactiveFormsModule,
     SecurityModule,
     ValidationModule
   ],

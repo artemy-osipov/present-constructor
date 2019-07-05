@@ -9,6 +9,7 @@ import { CandyStore } from 'app/shared/services/candy.store';
 @Component({
   selector: 'app-candy-list',
   templateUrl: './candy-list.component.html',
+  styleUrls: ['./candy-list.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CandyListComponent {
@@ -17,8 +18,7 @@ export class CandyListComponent {
   }
 
   openAddForm() {
-    const modal = this.modalService.open(CandyEditComponent);
-    modal.componentInstance.initAddForm();
+    this.modalService.open(CandyEditComponent);
   }
 
   openUpdateForm(candy: Candy) {

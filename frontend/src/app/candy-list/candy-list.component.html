@@ -6,32 +6,26 @@
     </button>
   </div>
 </div>
-<table class="table table-striped" *mobxAutorun>
-  <thead>
-    <tr>
-      <th>Название</th>
-      <th>Производитель</th>
-      <th>Цена</th>
-      <th>Порядок</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let candy of candyStore.orderedCandies">
-      <td>{{candy.name}}</td>
-      <td>{{candy.firm}}</td>
-      <td>{{candy.price}}</td>
-      <td>{{candy.order}}</td>
-      <td>
-        <button class="btn btn-icon btn-outline-dark" ngbTooltip="Изменить" type="button" (click)="openUpdateForm(candy)">
+
+<div class="container">
+  <div class="row" *mobxAutorun>
+    <div *ngFor="let candy of candyStore.orderedCandies" class="card col-4 mb-3">
+      <div class="candy-order text-muted">{{candy.order}}</div>
+      <div class="card-body">
+        <h5 class="card-title">{{candy.name}}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">{{candy.firm}}</h6>
+        <p class="card-text">{{candy.price}} <fa-icon icon="ruble-sign"></fa-icon></p>
+        <button class="btn btn-icon btn-outline-dark" ngbTooltip="Изменить" type="button"
+          (click)="openUpdateForm(candy)">
           <fa-icon icon="pencil-alt"></fa-icon>
         </button>
-        <button class="btn btn-icon btn-outline-dark" ngbTooltip="Удалить" type="button" (click)="openDeleteForm(candy)">
+        <button class="btn btn-icon btn-outline-dark" ngbTooltip="Удалить" type="button"
+          (click)="openDeleteForm(candy)">
           <fa-icon icon="trash"></fa-icon>
         </button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+      </div>
+    </div>
+  </div>
+</div>
 
 <app-link-border></app-link-border>
