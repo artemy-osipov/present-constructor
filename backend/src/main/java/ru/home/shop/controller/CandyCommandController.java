@@ -24,12 +24,13 @@ public class CandyCommandController {
 
     @PostMapping
     public ResponseEntity<Void> addCandy(@RequestBody @Validated CandyDTO dto) {
-        CreateCandyCommand command = new CreateCandyCommand(
-                newUUID(),
-                dto.getName(),
-                dto.getFirm(),
-                dto.getPrice(),
-                dto.getOrder());
+        CreateCandyCommand command = CreateCandyCommand.builder()
+                .id(newUUID())
+                .name(dto.getName())
+                .firm(dto.getFirm())
+                .price(dto.getPrice())
+                .order(dto.getOrder())
+                .build();
 
         commandHandler.on(command);
 
@@ -43,12 +44,13 @@ public class CandyCommandController {
     public ResponseEntity<Void> editCandy(
             @PathVariable("id") UUID id,
             @RequestBody @Validated CandyDTO dto) {
-        UpdateCandyCommand command = new UpdateCandyCommand(
-                id,
-                dto.getName(),
-                dto.getFirm(),
-                dto.getPrice(),
-                dto.getOrder());
+        UpdateCandyCommand command = UpdateCandyCommand.builder()
+                .id(id)
+                .name(dto.getName())
+                .firm(dto.getFirm())
+                .price(dto.getPrice())
+                .order(dto.getOrder())
+                .build();
 
         commandHandler.on(command);
 

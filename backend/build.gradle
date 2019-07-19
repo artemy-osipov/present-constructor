@@ -51,11 +51,7 @@ dependencies {
 }
 
 compileJava {
-    options.compilerArgs = [
-            '-Xlint:all',
-            '-Amapstruct.defaultComponentModel=spring',
-            '-Amapstruct.unmappedTargetPolicy=ERROR'
-    ]
+    options.compilerArgs = ['-Xlint:all']
 }
 
 test {

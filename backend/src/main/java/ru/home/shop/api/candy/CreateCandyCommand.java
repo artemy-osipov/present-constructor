@@ -1,11 +1,20 @@
 package ru.home.shop.api.candy;
 
+import lombok.Builder;
+import lombok.RequiredArgsConstructor;
+import lombok.Value;
+
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public class CreateCandyCommand extends AbstractCandyCommand {
+@Builder
+@Value
+@RequiredArgsConstructor
+public class CreateCandyCommand {
 
-    public CreateCandyCommand(UUID candyId, String name, String firm, BigDecimal price, Double order) {
-        super(candyId, name, firm, price, order);
-    }
+    private UUID id;
+    private String name;
+    private String firm;
+    private BigDecimal price;
+    private Double order;
 }

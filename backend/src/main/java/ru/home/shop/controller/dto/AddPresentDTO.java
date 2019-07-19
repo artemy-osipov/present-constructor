@@ -1,6 +1,8 @@
 package ru.home.shop.controller.dto;
 
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.experimental.FieldDefaults;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Digits;
@@ -12,7 +14,9 @@ import java.math.BigDecimal;
 import java.util.Collection;
 
 @Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class AddPresentDTO {
+
     @NotNull
     @Size(min = 1, max = 50)
     String name;

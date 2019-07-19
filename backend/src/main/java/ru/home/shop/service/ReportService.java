@@ -1,22 +1,20 @@
 package ru.home.shop.service;
 
-import fr.opensagres.xdocreport.core.XDocReportException;
 import fr.opensagres.xdocreport.document.IXDocReport;
 import fr.opensagres.xdocreport.document.registry.XDocReportRegistry;
 import fr.opensagres.xdocreport.template.IContext;
 import fr.opensagres.xdocreport.template.TemplateEngineKind;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import ru.home.shop.domain.Item;
-import ru.home.shop.domain.Report;
 import ru.home.shop.domain.Present;
+import ru.home.shop.domain.Report;
 import ru.home.shop.service.command.present.PresentRepository;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.UUID;
 
@@ -38,11 +36,10 @@ public class ReportService {
     }
 
     private Report generateReport(UUID presentId, String templatePath) {
-        Present present = presentRepository.findById(presentId)
-                .orElseThrow(EntityNotFoundException::new);
+        Present present = presentRepository.findById(presentId).orElseThrow(EntityNotFoundException::new);
 
         String name = formatReportName(present);
-        Collections.sort(present.getItems(), Comparator.comparing((Item i) -> i.getCandy().getOrder()));
+        present.getItems().sort(Comparator.comparing((Item i) -> i.getCandy().getOrder()));
         byte[] content = generateReportContent(present, templatePath);
 
         return new Report(name, content);
@@ -52,9 +49,11 @@ public class ReportService {
         return String.format("%s %s RUB.docx", present.getName(), present.getPrice());
     }
 
+    @SneakyThrows
     private byte[] generateReportContent(Present present, String templateName) {
         try (InputStream templateStream = getClass().getClassLoader().getResourceAsStream(templateName)) {
-            IXDocReport report = XDocReportRegistry.getRegistry().loadReport(templateStream, TemplateEngineKind.Freemarker);
+            IXDocReport report = XDocReportRegistry.getRegistry()
+                    .loadReport(templateStream, TemplateEngineKind.Freemarker);
 
             IContext context = report.createContext();
             context.put("present", present);
@@ -64,8 +63,6 @@ public class ReportService {
             report.process(context, bout);
 
             return bout.toByteArray();
-        } catch (XDocReportException | IOException e) {
-            throw new RuntimeException(e);
         }
     }
 }

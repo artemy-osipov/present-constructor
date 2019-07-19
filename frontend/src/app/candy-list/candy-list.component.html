@@ -1,20 +1,22 @@
 <h1>Конфеты</h1>
-<div class="row">
-  <div class="col-md-6">
-    <button class="btn btn-outline-dark" type="button" (click)="openAddForm()">
-      <fa-icon icon="plus"></fa-icon> Добавить
-    </button>
-  </div>
-</div>
 
 <div class="container">
+  <div class="row row mb-3">
+    <div class="col-md-6">
+      <button class="btn btn-outline-dark" type="button" (click)="openAddForm()">
+        <fa-icon icon="plus"></fa-icon> Добавить
+      </button>
+    </div>
+  </div>
+
   <div class="row" *mobxAutorun>
-    <div *ngFor="let candy of candyStore.orderedCandies" class="card col-4 mb-3">
+    <div *ngFor="let candy of candyStore.orderedCandies" class="candy card col-4 mb-3">
       <div class="candy-order text-muted">{{candy.order}}</div>
       <div class="card-body">
         <h5 class="card-title">{{candy.name}}</h5>
         <h6 class="card-subtitle mb-2 text-muted">{{candy.firm}}</h6>
-        <p class="card-text">{{candy.price}} <fa-icon icon="ruble-sign"></fa-icon></p>
+        <p class="card-text">{{candy.price}} <fa-icon icon="ruble-sign"></fa-icon>
+        </p>
         <button class="btn btn-icon btn-outline-dark" ngbTooltip="Изменить" type="button"
           (click)="openUpdateForm(candy)">
           <fa-icon icon="pencil-alt"></fa-icon>
