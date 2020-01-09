@@ -7,6 +7,5 @@ body {
   border-style: none;
 }
 
-.tooltip.show {
-  opacity: .7;
-}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

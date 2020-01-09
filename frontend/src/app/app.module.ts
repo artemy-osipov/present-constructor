@@ -2,12 +2,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import {
-  NgbAlertModule,
-  NgbModalModule,
-  NgbTooltipModule
-} from '@ng-bootstrap/ng-bootstrap';
+import { MatDialogModule } from '@angular/material/dialog';
+import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MobxAngularModule } from 'mobx-angular';
 
 import { AboutComponent } from 'app/about/about.component';
@@ -29,7 +25,6 @@ import { PresentApi } from 'app/shared/services/present.api.service';
 import { PresentStore } from 'app/shared/services/present.store';
 import { ValidationModule } from 'app/shared/validation';
 
-import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faAngleDown,
   faAngleUp,
@@ -42,19 +37,7 @@ import {
   faTimes,
   faTrash
 } from '@fortawesome/free-solid-svg-icons';
-
-library.add(
-  faAngleDown,
-  faAngleUp,
-  faCopy,
-  faEye,
-  faFile,
-  faPencilAlt,
-  faPlus,
-  faRubleSign,
-  faTimes,
-  faTrash
-);
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -77,15 +60,30 @@ library.add(
     FontAwesomeModule,
     FormsModule,
     HttpClientModule,
+    MatDialogModule,
     MobxAngularModule,
-    NgbAlertModule,
-    NgbModalModule,
-    NgbTooltipModule,
     ReactiveFormsModule,
     SecurityModule,
-    ValidationModule
+    ValidationModule,
+    NoopAnimationsModule
   ],
   providers: [CandyApi, CandyStore, PresentApi, PresentStore],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+
+  constructor(library: FaIconLibrary) {
+    library.addIcons(
+      faAngleDown,
+      faAngleUp,
+      faCopy,
+      faEye,
+      faFile,
+      faPencilAlt,
+      faPlus,
+      faRubleSign,
+      faTimes,
+      faTrash
+    );
+  }
+}

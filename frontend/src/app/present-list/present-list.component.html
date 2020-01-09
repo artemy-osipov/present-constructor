@@ -19,14 +19,14 @@
       <td>{{present.name}}</td>
       <td>{{present.price}}</td>
       <td>
-        <button class="btn btn-icon btn-outline-dark" ngbTooltip="Открыть" type="button" [routerLink]="['/presents/show', present.id]">
-          <fa-icon icon="eye"></fa-icon>
+        <button class="btn btn-icon btn-outline-dark" type="button" [routerLink]="['/presents/show', present.id]">
+          <fa-icon icon="eye"></fa-icon> Открыть
         </button>
-        <button class="btn btn-icon btn-outline-dark" ngbTooltip="Создать на основе" type="button" [routerLink]="['/presents/new', {source: present.id}]">
-          <fa-icon icon="copy"></fa-icon>
+        <button class="btn btn-icon btn-outline-dark" type="button" [routerLink]="['/presents/new', {source: present.id}]">
+          <fa-icon icon="copy"></fa-icon> Создать на основе
         </button>
-        <button class="btn btn-icon btn-outline-dark" ngbTooltip="Удалить" type="button" (click)="openDeleteForm(present)">
-          <fa-icon icon="trash"></fa-icon>
+        <button class="btn btn-icon btn-outline-dark" type="button" (click)="openDeleteForm(present)">
+          <fa-icon icon="trash"></fa-icon> Удалить
         </button>
       </td>
     </tr>

@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-6 panel">
     <h1>Добавление подарка</h1>
-    <ngb-alert *ngIf="successAdd" type="success" (close)="successAdd = null">Добавлено</ngb-alert>
+    <p *ngIf="successAdd" type="success">Добавлено</p>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="name">Название</label>

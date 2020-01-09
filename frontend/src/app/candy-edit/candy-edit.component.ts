@@ -39,10 +39,10 @@ export class CandyEditComponent {
       order: ['', Validators.required]
     });
 
-    candyStore.fetch()
-    this.route.params.subscribe(params => {  
+    candyStore.fetch();
+    this.route.params.subscribe(params => {
       if (params['id']) {
-        this.editedCandy = candyStore.candy(params['id'])
+        this.editedCandy = candyStore.candy(params['id']);
 
         if (this.editedCandy) {
           this.form.patchValue(this.editedCandy);

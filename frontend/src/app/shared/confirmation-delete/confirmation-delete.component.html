@@ -1,19 +1,11 @@
-<div class="modal-body">
+<div mat-dialog-content>
   <p>Удалить?</p>
 </div>
-<div class="modal-footer">
-  <div class="container">
-    <div class="row">
-      <div class="col-6">
-        <button type="button" class="btn btn-outline-dark float-left" (click)="delete()">
-            <fa-icon icon="trash"></fa-icon> Да
-          </button>
-      </div>
-      <div class="col-6">
-        <button type="button" class="btn btn-outline-secondary float-right" (click)="modal.dismiss()">
-            <fa-icon icon="times"></fa-icon> Отмена
-          </button>
-      </div>
-    </div>
-  </div>
+<div mat-dialog-actions>
+  <button type="button" class="btn btn-outline-dark float-left" [mat-dialog-close]="true">
+    <fa-icon icon="trash"></fa-icon> Да
+  </button>
+  <button type="button" class="btn btn-outline-secondary float-right" [mat-dialog-close]="false">
+    <fa-icon icon="times"></fa-icon> Отмена
+  </button>
 </div>

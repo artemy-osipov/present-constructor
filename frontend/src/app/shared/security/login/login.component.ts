@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
   ) {
     this.redirectUrl = this.activatedRoute.snapshot.queryParams['redirectTo'];
 
-    this.form = fb.group({
+    this.form = this.fb.group({
       login: ['', StringValidators.notEmpty],
       password: ['', StringValidators.notEmpty]
     });

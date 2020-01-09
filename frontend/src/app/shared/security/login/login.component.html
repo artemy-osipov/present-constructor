@@ -1,5 +1,5 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <ngb-alert *ngIf="error !== null" type="danger" (close)="error = null">{{ error }}</ngb-alert>
+  <p *ngIf="error !== null" type="danger">{{ error }}</p>
   <div class="form-group">
     <label for="login">Логин</label>
     <input class="form-control" id="login" formControlName="login" appFormControl>
