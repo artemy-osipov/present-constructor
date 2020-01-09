@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { CandyEditComponent } from 'app/candy-edit/candy-edit.component';
 import { ConfirmationDeleteComponent } from 'app/shared/confirmation-delete/confirmation-delete.component';
 import { Candy } from 'app/shared/model/candy.model';
 import { CandyStore } from 'app/shared/services/candy.store';
@@ -13,17 +13,20 @@ import { CandyStore } from 'app/shared/services/candy.store';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CandyListComponent {
-  constructor(private modalService: NgbModal, private candyStore: CandyStore) {
+  constructor(
+    private router: Router,
+    private modalService: NgbModal,
+    private candyStore: CandyStore
+  ) {
     this.candyStore.fetch();
   }
 
   openAddForm() {
-    this.modalService.open(CandyEditComponent);
+    this.router.navigate(['/candies/new'])
   }
 
   openUpdateForm(candy: Candy) {
-    const modal = this.modalService.open(CandyEditComponent);
-    modal.componentInstance.initUpdateForm(candy);
+    this.router.navigate(['/candies', candy.id])
   }
 
   openDeleteForm(candy: Candy) {
@@ -34,6 +37,6 @@ export class CandyListComponent {
           this.candyStore.delete(candy);
         }
       })
-      .catch(e => {});
+      .catch(e => { });
   }
 }

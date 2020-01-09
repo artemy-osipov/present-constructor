@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Candy } from 'app/shared/model/candy.model';
 import { CandyStore } from 'app/shared/services/candy.store';
@@ -20,8 +20,9 @@ export class CandyEditComponent {
   editedCandy?: Candy;
 
   constructor(
-    public modal: NgbActiveModal,
     fb: FormBuilder,
+    private router: Router,
+    private route: ActivatedRoute,
     private candyStore: CandyStore
   ) {
     this.form = fb.group({
@@ -37,11 +38,21 @@ export class CandyEditComponent {
       ],
       order: ['', Validators.required]
     });
+
+    candyStore.fetch()
+    this.route.params.subscribe(params => {  
+      if (params['id']) {
+        this.editedCandy = candyStore.candy(params['id'])
+
+        if (this.editedCandy) {
+          this.form.patchValue(this.editedCandy);
+        }
+      }
+    });
   }
 
-  initUpdateForm(candy: Candy) {
-    this.editedCandy = candy;
-    this.form.patchValue(candy);
+  isEdit() {
+    return this.editedCandy !== undefined;
   }
 
   onSubmit() {
@@ -53,8 +64,7 @@ export class CandyEditComponent {
       } else {
         this.candyStore.add(candyFromForm);
       }
-
-      this.modal.close();
+      this.router.navigate(['/candies']);
     } else {
       FormHelper.markFormContolsAsDirty(this.form);
     }

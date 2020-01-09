@@ -2,6 +2,7 @@
 .idea
 .env
 .DS_Store
+Thumbs.db
 
 backend/.idea
 backend/.classpath
@@ -49,7 +50,3 @@ frontend/typings
 # e2e
 frontend/e2e/*.js
 frontend/e2e/*.map
-
-#System Files
-frontend/.DS_Store
-frontend/Thumbs.db

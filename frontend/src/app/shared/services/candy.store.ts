@@ -21,6 +21,10 @@ export class CandyStore {
     return this.candies.sort((x, y) => x.order - y.order);
   }
 
+  candy(id: String): Candy | undefined {
+    return this.candies.find(candy => candy.id === id);
+  }
+
   @action
   add(candy: Candy) {
     this.candyApi

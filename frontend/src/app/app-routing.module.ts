@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AboutComponent } from 'app/about/about.component';
 import { CandyListComponent } from 'app/candy-list/candy-list.component';
+import { CandyEditComponent } from 'app/candy-edit/candy-edit.component';
 import { PresentDetailComponent } from 'app/present-detail/present-detail.component';
 import { PresentListComponent } from 'app/present-list/present-list.component';
 import { PresentNewComponent } from 'app/present-new/present-new.component';
@@ -13,7 +14,21 @@ const routes: Routes = [
   { path: '', redirectTo: '/about', pathMatch: 'full' },
   { path: 'about', component: AboutComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'candies', component: CandyListComponent, canActivate: [AuthGuard] },
+  {
+    path: 'candies',
+    component: CandyListComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'candies/new',
+    component: CandyEditComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'candies/:id',
+    component: CandyEditComponent,
+    canActivate: [AuthGuard]
+  },
   {
     path: 'presents',
     component: PresentListComponent,
@@ -35,4 +50,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
