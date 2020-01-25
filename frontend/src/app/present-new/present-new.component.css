@@ -1,6 +1,0 @@
-.panel {
-  max-height: 85vh;
-  overflow-y: auto;
-  overflow-x: visible;
-  -webkit-overflow-scrolling: touch;
-}

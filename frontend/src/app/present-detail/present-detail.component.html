@@ -1,44 +1,70 @@
-<h1>Подарок</h1>
+<h1 class="title">Подарок: {{present.name}}</h1>
 
-<a class="btn btn-outline-dark" href="{{ presentApi.privateReportLocation(present.id) }}" role="button">
-  <fa-icon icon="file"></fa-icon> Прайс
-</a>
-
-<a class="btn btn-outline-dark" href="{{ presentApi.publicReportLocation(present.id) }}" role="button">
-  <fa-icon icon="file"></fa-icon> Прайс для розницы
-</a>
-
-<div>
-  <b>Название</b>
-</div>
-<div>{{present.name}}</div>
-
-<div>
-  <b>Цена</b>
-</div>
-<div>{{present.price}}</div>
-
-<div>
-  <b>Себестоимость</b>
-</div>
-<div>{{present.cost}}</div>
-
-<div>
-  <b>Состав</b>
+<div class="field">
+  <label class="label">Цена</label>
+  <div>{{present.price}}</div>
 </div>
 
-<table class="table table-sm table-bordered table-striped">
-  <tr>
-    <th>Название</th>
-    <th>Производитель</th>
-    <th>Цена</th>
-    <th>Количество</th>
-  </tr>
+<div class="field">
+  <label class="label">Себестоимость</label>
+  <div>{{present.cost}}</div>
+</div>
 
-  <tr *ngFor="let item of present.items">
-    <td>{{item.candy.name}}</td>
-    <td>{{item.candy.firm}}</td>
-    <td>{{item.candy.price}}</td>
-    <td>{{item.count}}</td>
-  </tr>
-</table>
+<div class="field is-grouped">
+  <div class="control">
+    <a class="button is-outlined is-dark" href="{{ presentApi.privateReportLocation(present.id) }}">
+      <span class="icon">
+        <fa-icon icon="file"></fa-icon>
+      </span>
+      <span>Прайс</span>
+    </a>
+  </div>
+  <div class="control">
+    <a class="button is-outlined is-dark" href="{{ presentApi.publicReportLocation(present.id) }}">
+      <span class="icon">
+        <fa-icon icon="file"></fa-icon>
+      </span>
+      <span>Прайс для розницы</span>
+    </a>
+  </div>
+  <div class="control">
+    <button type="button" class="button is-outlined is-dark" [routerLink]="['/presents/new', {source: present.id}]">
+      <span class="icon">
+        <fa-icon icon="copy"></fa-icon>
+      </span>
+      <span>Создать на основе</span>
+    </button>
+  </div>
+  <div class="control">
+    <button type="button" class="button is-outlined is-dark" (click)="openDeleteForm(present)">
+      <span class="icon">
+        <fa-icon icon="trash"></fa-icon>
+      </span>
+      <span>Удалить</span>
+    </button>
+  </div>
+</div>
+
+<div class="field">
+  <label class="label">Состав</label>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Название</th>
+        <th>Производитель</th>
+        <th>Цена</th>
+        <th>Количество</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let item of present.items">
+        <td>{{item.candy.name}}</td>
+        <td>{{item.candy.firm}}</td>
+        <td>{{item.candy.price}}</td>
+        <td>{{item.count}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

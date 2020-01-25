@@ -1,4 +1,5 @@
-import { HttpHeaders } from '@angular/common/http';
+import { HttpHeaders, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { MockBackendInterceptor } from './mock-backend.interceptor';
 
 export class ApiHelper {
   static extractNewId(headers: HttpHeaders, resource: string): string {
@@ -10,3 +11,10 @@ export class ApiHelper {
     }
   }
 }
+
+export const fakeBackendProvider = {
+  // use fake backend in place of Http service for backend-less development
+  provide: HTTP_INTERCEPTORS,
+  useClass: MockBackendInterceptor,
+  multi: true
+};

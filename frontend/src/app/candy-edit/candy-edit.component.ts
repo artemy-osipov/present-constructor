@@ -1,7 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 
+import { ConfirmationDeleteComponent } from 'app/shared/confirmation-delete/confirmation-delete.component';
 import { Candy } from 'app/shared/model/candy.model';
 import { CandyStore } from 'app/shared/services/candy.store';
 import {
@@ -12,8 +14,7 @@ import {
 
 @Component({
   selector: 'app-candy-edit',
-  templateUrl: './candy-edit.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  templateUrl: './candy-edit.component.html'
 })
 export class CandyEditComponent {
   form: FormGroup;
@@ -21,6 +22,7 @@ export class CandyEditComponent {
 
   constructor(
     fb: FormBuilder,
+    private dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute,
     private candyStore: CandyStore
@@ -68,6 +70,17 @@ export class CandyEditComponent {
     } else {
       FormHelper.markFormContolsAsDirty(this.form);
     }
+  }
+
+  openDeleteForm() {
+    const dialogRef = this.dialog.open(ConfirmationDeleteComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.candyStore.delete(this.editedCandy!);
+        this.router.navigate(['/candies']);
+      }
+    });
   }
 
   private candyFromForm(): Candy {

@@ -1,6 +1,7 @@
 .link-to-top, .link-to-down {
   position: fixed;
   right: 1rem;
+  border-width: 0px;
 }
 
 .link-to-top {

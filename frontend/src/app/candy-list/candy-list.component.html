@@ -1,32 +1,25 @@
-<h1>Конфеты</h1>
+<h1 class="title">
+  Конфеты
+  <button class="button is-outlined is-dark" [routerLink]="['/candies/new']">
+    <fa-icon icon="plus"></fa-icon>
+  </button>
+</h1>
 
-<div class="container">
-  <div class="row row mb-3">
-    <div class="col-md-6">
-      <button class="btn btn-outline-dark" type="button" (click)="openAddForm()">
-        <fa-icon icon="plus"></fa-icon> Добавить
-      </button>
-    </div>
-  </div>
-
-  <div class="row" *mobxAutorun>
-    <div *ngFor="let candy of candyStore.orderedCandies" class="candy card col-4 mb-3">
-      <div class="candy-order text-muted">{{candy.order}}</div>
-      <div class="card-body">
-        <h5 class="card-title">{{candy.name}}</h5>
-        <h6 class="card-subtitle mb-2 text-muted">{{candy.firm}}</h6>
-        <p class="card-text">{{candy.price}} <fa-icon icon="ruble-sign"></fa-icon>
-        </p>
-        <button class="btn btn-icon btn-outline-dark" type="button"
-          (click)="openUpdateForm(candy)">
-          <fa-icon icon="pencil-alt"></fa-icon> Изменить
-        </button>
-        <button class="btn btn-icon btn-outline-dark" type="button"
-          (click)="openDeleteForm(candy)">
-          <fa-icon icon="trash"></fa-icon> Удалить
-        </button>
+<div class="columns is-multiline">
+  <div class="column is-one-fifth-desktop is-half-tablet" *ngFor="let candy of candyStore.orderedCandies">
+    <a [routerLink]="['/candies', candy.id]">
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title">{{candy.name}}</p>
+        </header>
+        <div class="card-content">
+          <div class="content">
+            <p>{{candy.firm}}</p>
+            <p>{{candy.price}} <fa-icon icon="ruble-sign"></fa-icon></p>
+          </div>
+        </div>
       </div>
-    </div>
+    </a>
   </div>
 </div>
 

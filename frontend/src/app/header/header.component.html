@@ -1,24 +1,15 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-  <a class="navbar-brand" routerLink="/">
-    <img src="/assets/presents.svg" width="30" height="30" alt="">
-  </a>
+<nav class="navbar is-fixed-top is-dark" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" routerLink="/">
+      <img src="/assets/presents.svg" width="30" height="30">
+    </a>
+  </div>
 
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#header-navbar-collapse"
-    aria-controls="header-navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="collapse navbar-collapse" id="header-navbar-collapse">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/about" routerLinkActive="active">Справка</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/candies" routerLinkActive="active">Конфеты</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/presents" routerLinkActive="active">Подарки</a>
-      </li>
-    </ul>
+  <div class="navbar-menu">
+    <div class="navbar-start">
+      <a class="navbar-item" routerLink="/about" routerLinkActive="is-active">Справка</a>
+      <a class="navbar-item" routerLink="/candies" routerLinkActive="is-active">Конфеты</a>
+      <a class="navbar-item" routerLink="/presents" routerLinkActive="is-active">Подарки</a>
+    </div>
   </div>
 </nav>

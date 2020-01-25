@@ -40,7 +40,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'presents/show/:id',
+    path: 'presents/:id',
     component: PresentDetailComponent,
     canActivate: [AuthGuard]
   }

@@ -13,8 +13,7 @@ import {
 
 @Component({
   selector: 'app-present-new',
-  templateUrl: './present-new.component.html',
-  styleUrls: ['./present-new.component.css']
+  templateUrl: './present-new.component.html'
 })
 export class PresentNewComponent {
   form: FormGroup;

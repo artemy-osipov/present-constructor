@@ -11,7 +11,7 @@ import { ApiHelper } from './api-helper.service';
 export class CandyApi {
   candyResource = environment.apiUrl + 'api/candies/';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   add(candy: Candy): Observable<string> {
     return this.http

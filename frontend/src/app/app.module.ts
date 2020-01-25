@@ -19,6 +19,7 @@ import { PresentNewComponent } from 'app/present-new/present-new.component';
 import { PresentNewSelectCandyComponent } from 'app/present-new/select-candy/present-new-select-candy.component';
 import { ConfirmationDeleteComponent } from 'app/shared/confirmation-delete/confirmation-delete.component';
 import { SecurityModule } from 'app/shared/security';
+import { fakeBackendProvider } from 'app/shared/services/api-helper.service';
 import { CandyApi } from 'app/shared/services/candy.api.service';
 import { CandyStore } from 'app/shared/services/candy.store';
 import { PresentApi } from 'app/shared/services/present.api.service';
@@ -67,7 +68,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     ValidationModule,
     NoopAnimationsModule
   ],
-  providers: [CandyApi, CandyStore, PresentApi, PresentStore],
+  providers: [CandyApi, CandyStore, PresentApi, PresentStore, fakeBackendProvider],
   bootstrap: [AppComponent]
 })
 export class AppModule {

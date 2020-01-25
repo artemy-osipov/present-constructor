@@ -1,36 +1,25 @@
-<h1>Подарки</h1>
-<div class="row">
-  <div class="col-md-6">
-    <button class="btn btn-outline-dark" type="button" routerLink="/presents/new">
-      <fa-icon icon="plus"></fa-icon> Добавить
-    </button>
+<h1 class="title">
+  Подарки
+  <button class="button is-outlined is-dark" [routerLink]="['/presents/new']">
+    <fa-icon icon="plus"></fa-icon>
+  </button>
+</h1>
+
+<div class="columns is-multiline">
+  <div class="column is-one-third-desktop is-half-tablet" *ngFor="let present of presentStore.orderedPresents">
+    <a [routerLink]="['/presents', present.id]">
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title">{{present.name}}</p>
+        </header>
+        <div class="card-content">
+          <div class="content">
+            <p>{{present.price}} <fa-icon icon="ruble-sign"></fa-icon></p>
+          </div>
+        </div>
+      </div>
+    </a>
   </div>
 </div>
-<table class="table table-striped" *mobxAutorun>
-  <thead>
-    <tr>
-      <th>Название</th>
-      <th>Цена</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let present of presentStore.orderedPresents">
-      <td>{{present.name}}</td>
-      <td>{{present.price}}</td>
-      <td>
-        <button class="btn btn-icon btn-outline-dark" type="button" [routerLink]="['/presents/show', present.id]">
-          <fa-icon icon="eye"></fa-icon> Открыть
-        </button>
-        <button class="btn btn-icon btn-outline-dark" type="button" [routerLink]="['/presents/new', {source: present.id}]">
-          <fa-icon icon="copy"></fa-icon> Создать на основе
-        </button>
-        <button class="btn btn-icon btn-outline-dark" type="button" (click)="openDeleteForm(present)">
-          <fa-icon icon="trash"></fa-icon> Удалить
-        </button>
-      </td>
-    </tr>
-  </tbody>
-</table>
 
 <app-link-border></app-link-border>

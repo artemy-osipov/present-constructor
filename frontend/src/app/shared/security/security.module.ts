@@ -3,7 +3,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JwtModule } from '@auth0/angular-jwt';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { ValidationModule } from 'app/shared/validation';
 import { environment } from 'environments/environment';
@@ -26,7 +25,6 @@ import { TOKEN_NAME, UserService } from './user.service';
         whitelistedDomains: [environment.apiHost]
       }
     }),
-    NgbModule,
     ValidationModule
   ],
   providers: [AuthGuard, AuthenticationService, UserService]

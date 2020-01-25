@@ -1,11 +1,8 @@
-body {
-  padding-top: 5rem;
+html {
+  height: 100%;
   background-color: #e2e2e2;
 }
 
-.btn-icon {
-  border-style: none;
+body {
+  min-height: 100%;
 }
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
