@@ -33,7 +33,7 @@
 
   <div class="field is-grouped">
     <div *ngIf="!isEdit()" class="control">
-      <button type="submit" class="button is-outlined is-dark">
+      <button type="submit" class="button is-primary">
         <span class="icon">
           <fa-icon icon="plus"></fa-icon>
         </span>
@@ -41,7 +41,7 @@
       </button>
     </div>
     <div *ngIf="isEdit()" class="control">
-      <button type="submit" class="button is-outlined is-dark">
+      <button type="submit" class="button is-primary">
         <span class="icon">
           <fa-icon icon="pencil-alt"></fa-icon>
         </span>
@@ -49,7 +49,7 @@
       </button>
     </div>
     <div *ngIf="isEdit()" class="control">
-      <button type="button" class="button is-outlined is-dark" (click)="openDeleteForm()">
+      <button type="button" class="button" (click)="openDeleteForm()">
         <span class="icon">
           <fa-icon icon="trash"></fa-icon>
         </span>
@@ -57,7 +57,7 @@
       </button>
     </div>
     <div class="control">
-      <button type="button" class="button is-outlined is-dark" routerLink="/candies">
+      <button type="button" class="button" routerLink="/candies">
         <span class="icon">
           <fa-icon icon="times"></fa-icon>
         </span>

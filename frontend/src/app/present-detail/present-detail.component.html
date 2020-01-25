@@ -12,7 +12,7 @@
 
 <div class="field is-grouped">
   <div class="control">
-    <a class="button is-outlined is-dark" href="{{ presentApi.privateReportLocation(present.id) }}">
+    <a class="button is-link" href="{{ presentApi.privateReportLocation(present.id) }}">
       <span class="icon">
         <fa-icon icon="file"></fa-icon>
       </span>
@@ -20,7 +20,7 @@
     </a>
   </div>
   <div class="control">
-    <a class="button is-outlined is-dark" href="{{ presentApi.publicReportLocation(present.id) }}">
+    <a class="button is-link" href="{{ presentApi.publicReportLocation(present.id) }}">
       <span class="icon">
         <fa-icon icon="file"></fa-icon>
       </span>
@@ -28,7 +28,7 @@
     </a>
   </div>
   <div class="control">
-    <button type="button" class="button is-outlined is-dark" [routerLink]="['/presents/new', {source: present.id}]">
+    <button type="button" class="button" [routerLink]="['/presents/new', {source: present.id}]">
       <span class="icon">
         <fa-icon icon="copy"></fa-icon>
       </span>
@@ -36,7 +36,7 @@
     </button>
   </div>
   <div class="control">
-    <button type="button" class="button is-outlined is-dark" (click)="openDeleteForm(present)">
+    <button type="button" class="button" (click)="openDeleteForm(present)">
       <span class="icon">
         <fa-icon icon="trash"></fa-icon>
       </span>
@@ -48,7 +48,7 @@
 <div class="field">
   <label class="label">Состав</label>
 
-  <table class="table">
+  <table class="table is-striped is-hoverable">
     <thead>
       <tr>
         <th>Название</th>
