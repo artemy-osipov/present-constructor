@@ -9,6 +9,6 @@ export interface PresentState extends EntityState<Present> { }
 @StoreConfig({ name: 'presents' })
 export class PresentStore extends EntityStore<PresentState, Present> {
   constructor() {
-    super({})
+    super({});
   }
 }

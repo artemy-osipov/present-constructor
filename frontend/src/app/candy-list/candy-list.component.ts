@@ -10,13 +10,13 @@ import { CandyQuery, CandyService } from 'app/shared/services/candy';
 })
 export class CandyListComponent implements OnInit {
   candies$: Observable<Candy[]> = this.candyQuery.sortedList();
-  
+
   constructor(
     private candyService: CandyService,
     private candyQuery: CandyQuery
   ) { }
 
   ngOnInit() {
-    this.candyService.list().subscribe()
+    this.candyService.list().subscribe();
   }
 }

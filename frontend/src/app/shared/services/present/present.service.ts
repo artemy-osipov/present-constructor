@@ -1,11 +1,11 @@
-import { Injectable } from "@angular/core";
-import { ID } from "@datorama/akita";
-import { Observable } from "rxjs";
-import { tap, map } from "rxjs/operators";
+import { Injectable } from '@angular/core';
+import { ID } from '@datorama/akita';
+import { Observable } from 'rxjs';
+import { tap, map } from 'rxjs/operators';
 
-import { Present } from "app/shared/model/present.model";
-import { PresentStore } from "./present.store";
-import { PresentGateway } from "./present.gateway";
+import { Present } from 'app/shared/model/present.model';
+import { PresentStore } from './present.store';
+import { PresentGateway } from './present.gateway';
 
 @Injectable({ providedIn: 'root' })
 export class PresentService {
@@ -30,10 +30,10 @@ export class PresentService {
   add(present: Present): Observable<Present> {
     return this.gateway.add(present).pipe(
       map(id => {
-        present.id = id
-        this.store.upsert(id, present)
+        present.id = id;
+        this.store.upsert(id, present);
 
-        return present
+        return present;
       })
     );
   }

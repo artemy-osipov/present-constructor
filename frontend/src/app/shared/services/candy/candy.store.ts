@@ -9,6 +9,6 @@ export interface CandyState extends EntityState<Candy> { }
 @StoreConfig({ name: 'candies' })
 export class CandyStore extends EntityStore<CandyState, Candy> {
     constructor() {
-        super({})
+        super({});
     }
  }

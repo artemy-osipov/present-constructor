@@ -1,11 +1,11 @@
-import { Injectable } from "@angular/core";
-import { ID } from "@datorama/akita";
-import { Observable } from "rxjs";
-import { tap, map } from "rxjs/operators";
+import { Injectable } from '@angular/core';
+import { ID } from '@datorama/akita';
+import { Observable } from 'rxjs';
+import { tap, map } from 'rxjs/operators';
 
-import { Candy } from "app/shared/model/candy.model";
-import { CandyStore } from "./candy.store";
-import { CandyGateway } from "./candy.gateway";
+import { Candy } from 'app/shared/model/candy.model';
+import { CandyStore } from './candy.store';
+import { CandyGateway } from './candy.gateway';
 
 @Injectable({ providedIn: 'root' })
 export class CandyService {
@@ -30,10 +30,10 @@ export class CandyService {
   add(candy: Candy): Observable<Candy> {
     return this.gateway.add(candy).pipe(
       map(id => {
-        candy.id = id
-        this.store.upsert(id, candy)
+        candy.id = id;
+        this.store.upsert(id, candy);
 
-        return candy
+        return candy;
       })
     );
   }

@@ -1,9 +1,9 @@
-import { Injectable } from "@angular/core";
-import { QueryEntity, ID } from "@datorama/akita";
-import { Observable } from "rxjs";
+import { Injectable } from '@angular/core';
+import { QueryEntity, ID } from '@datorama/akita';
+import { Observable } from 'rxjs';
 
-import { PresentState, PresentStore } from "./present.store";
-import { Present } from "app/shared/model/present.model";
+import { PresentState, PresentStore } from './present.store';
+import { Present } from 'app/shared/model/present.model';
 
 @Injectable({ providedIn: 'root' })
 export class PresentQuery extends QueryEntity<PresentState, Present> {
@@ -17,6 +17,6 @@ export class PresentQuery extends QueryEntity<PresentState, Present> {
   }
 
   sortedList(): Observable<Present[]> {
-    return this.selectAll({ sortBy: "date" })
+    return this.selectAll({ sortBy: 'date' });
   }
 }
