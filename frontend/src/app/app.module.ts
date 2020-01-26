@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { MobxAngularModule } from 'mobx-angular';
 
 import { AboutComponent } from 'app/about/about.component';
 import { AppRoutingModule } from 'app/app-routing.module';
@@ -20,10 +19,6 @@ import { PresentNewComponent } from 'app/present-new/present-new.component';
 import { PresentNewSelectCandyComponent } from 'app/present-new/select-candy/present-new-select-candy.component';
 import { SecurityModule } from 'app/shared/security';
 import { fakeBackendProvider } from 'app/shared/services/api-helper.service';
-import { CandyApi } from 'app/shared/services/candy.api.service';
-import { CandyStore } from 'app/shared/services/candy.store';
-import { PresentApi } from 'app/shared/services/present.api.service';
-import { PresentStore } from 'app/shared/services/present.store';
 import { ValidationModule } from 'app/shared/validation';
 
 import {
@@ -54,7 +49,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     PresentNewComponent,
     PresentNewSelectCandyComponent
   ],
-  entryComponents: [CandyEditComponent, ConfirmationDeleteComponent],
+  entryComponents: [ConfirmationDeleteComponent],
   imports: [
     AppRoutingModule,
     BrowserModule,
@@ -62,13 +57,12 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     FormsModule,
     HttpClientModule,
     MatDialogModule,
-    MobxAngularModule,
     ReactiveFormsModule,
     SecurityModule,
     ValidationModule,
     NoopAnimationsModule
   ],
-  providers: [CandyApi, CandyStore, PresentApi, PresentStore, fakeBackendProvider],
+  providers: [fakeBackendProvider],
   bootstrap: [AppComponent]
 })
 export class AppModule {

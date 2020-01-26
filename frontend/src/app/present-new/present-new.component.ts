@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { ID } from '@datorama/akita';
 
 import { Candy } from 'app/shared/model/candy.model';
 import { Present } from 'app/shared/model/present.model';
-import { PresentApi } from 'app/shared/services/present.api.service';
+import { PresentService } from 'app/shared/services/present';
 import {
   FormHelper,
   NumberValidators,
@@ -15,27 +16,12 @@ import {
   selector: 'app-present-new',
   templateUrl: './present-new.component.html'
 })
-export class PresentNewComponent {
+export class PresentNewComponent implements OnInit {
   form: FormGroup;
   successAdd = false;
 
-  constructor(
-    private route: ActivatedRoute,
-    private fb: FormBuilder,
-    private presentApi: PresentApi
-  ) {
-    this.form = this.buildForm();
-
-    this.route.params.subscribe(params => {
-      const source = params['source'];
-      if (source) {
-        this.presentApi
-          .get(source)
-          .subscribe(present =>
-            present.items.forEach(item => this.addItem(item.candy, item.count))
-          );
-      }
-    });
+  get sourceId(): ID {
+    return this.route.snapshot.params.source;
   }
 
   get itemsForm(): FormArray {
@@ -46,8 +32,12 @@ export class PresentNewComponent {
     return new Present(this.form.value);
   }
 
-  private buildForm() {
-    return this.fb.group({
+  constructor(
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private presentService: PresentService
+  ) {
+    this.form = fb.group({
       name: ['', [StringValidators.notEmpty, StringValidators.maxLength(50)]],
       price: [
         '',
@@ -57,8 +47,16 @@ export class PresentNewComponent {
           NumberValidators.maxFractionLength(2)
         ]
       ],
-      items: this.fb.array([], Validators.required)
+      items: fb.array([], Validators.required)
     });
+  }
+
+  ngOnInit() {
+    if (this.sourceId) {
+      this.presentService.getPresent(this.sourceId).subscribe(
+        present => present.items.forEach(item => this.addItem(item.candy, item.count))
+      );
+    }
   }
 
   private buildItemForm(candy: Candy, count: number) {
@@ -96,7 +94,7 @@ export class PresentNewComponent {
   }
 
   private add(present: Present) {
-    this.presentApi.add(present).subscribe(() => {
+    this.presentService.add(present).subscribe(() => {
       this.form.reset();
       this.form.controls['items'] = this.fb.array([]);
 

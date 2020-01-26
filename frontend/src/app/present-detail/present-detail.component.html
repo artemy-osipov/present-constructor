@@ -1,18 +1,18 @@
-<h1 class="title">Подарок: {{present.name}}</h1>
+<h1 class="title">Подарок: {{(present$ | async).name}}</h1>
 
 <div class="field">
   <label class="label">Цена</label>
-  <div>{{present.price}}</div>
+  <div>{{(present$ | async).price}}</div>
 </div>
 
 <div class="field">
   <label class="label">Себестоимость</label>
-  <div>{{present.cost}}</div>
+  <div>{{(present$ | async).cost}}</div>
 </div>
 
 <div class="field is-grouped">
   <div class="control">
-    <a class="button is-link" href="{{ presentApi.privateReportLocation(present.id) }}">
+    <a class="button is-link" href="{{ privateReportLink }}">
       <span class="icon">
         <fa-icon icon="file"></fa-icon>
       </span>
@@ -20,7 +20,7 @@
     </a>
   </div>
   <div class="control">
-    <a class="button is-link" href="{{ presentApi.publicReportLocation(present.id) }}">
+    <a class="button is-link" href="{{ publicReportLink }}">
       <span class="icon">
         <fa-icon icon="file"></fa-icon>
       </span>
@@ -28,7 +28,7 @@
     </a>
   </div>
   <div class="control">
-    <button type="button" class="button" [routerLink]="['/presents/new', {source: present.id}]">
+    <button type="button" class="button" [routerLink]="['/presents/new', {source: (present$ | async).id}]">
       <span class="icon">
         <fa-icon icon="copy"></fa-icon>
       </span>
@@ -36,7 +36,7 @@
     </button>
   </div>
   <div class="control">
-    <button type="button" class="button" (click)="openDeleteForm(present)">
+    <button type="button" class="button" (click)="openDeleteForm()">
       <span class="icon">
         <fa-icon icon="trash"></fa-icon>
       </span>
@@ -59,7 +59,7 @@
     </thead>
 
     <tbody>
-      <tr *ngFor="let item of present.items">
+      <tr *ngFor="let item of (present$ | async).items">
         <td>{{item.candy.name}}</td>
         <td>{{item.candy.firm}}</td>
         <td>{{item.candy.price}}</td>

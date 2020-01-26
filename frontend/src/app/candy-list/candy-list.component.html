@@ -6,7 +6,7 @@
 </h1>
 
 <div class="columns is-multiline">
-  <div class="column is-one-fifth-desktop is-half-tablet" *ngFor="let candy of candyStore.orderedCandies">
+  <div class="column is-one-fifth-desktop is-half-tablet" *ngFor="let candy of candies$ | async">
     <a [routerLink]="['/candies', candy.id]">
       <div class="card">
         <header class="card-header">

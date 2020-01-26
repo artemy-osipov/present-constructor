@@ -1,29 +1,35 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
-  Output
+  Output,
+  OnInit
 } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { Candy } from 'app/shared/model/candy.model';
-import { CandyStore } from 'app/shared/services/candy.store';
+import { CandyQuery, CandyService } from 'app/shared/services/candy';
 
 @Component({
   selector: 'app-present-new-select-candy',
-  templateUrl: './present-new-select-candy.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  templateUrl: './present-new-select-candy.component.html'
 })
-export class PresentNewSelectCandyComponent {
+export class PresentNewSelectCandyComponent implements OnInit {
   @Input()
   selectedCandies: Candy[] = [];
   @Output()
   selected = new EventEmitter<Candy>();
   @Output()
   unselected = new EventEmitter<Candy>();
+  candies$: Observable<Candy[]> = this.candyQuery.sortedList();
 
-  constructor(private candyStore: CandyStore) {
-    this.candyStore.fetch();
+  constructor(
+    private candyService: CandyService,
+    private candyQuery: CandyQuery
+  ) { }
+
+  ngOnInit() {
+    this.candyService.list().subscribe();
   }
 
   select(candy: Candy): void {

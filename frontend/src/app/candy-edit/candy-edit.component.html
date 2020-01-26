@@ -1,5 +1,5 @@
-<h1 class="title" *ngIf="!isEdit()">Новая конфета</h1>
-<h1 class="title" *ngIf="isEdit()">{{editedCandy.name}}</h1>
+<h1 class="title" *ngIf="!isEdit">Новая конфета</h1>
+<h1 class="title" *ngIf="isEdit">{{(editedCandy$ | async).name}}</h1>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
@@ -32,7 +32,7 @@
   </div>
 
   <div class="field is-grouped">
-    <div *ngIf="!isEdit()" class="control">
+    <div *ngIf="!isEdit" class="control">
       <button type="submit" class="button is-primary">
         <span class="icon">
           <fa-icon icon="plus"></fa-icon>
@@ -40,7 +40,7 @@
         <span>Добавить</span>
       </button>
     </div>
-    <div *ngIf="isEdit()" class="control">
+    <div *ngIf="isEdit" class="control">
       <button type="submit" class="button is-primary">
         <span class="icon">
           <fa-icon icon="pencil-alt"></fa-icon>
@@ -48,7 +48,7 @@
         <span>Сохранить</span>
       </button>
     </div>
-    <div *ngIf="isEdit()" class="control">
+    <div *ngIf="isEdit" class="control">
       <button type="button" class="button" (click)="openDeleteForm()">
         <span class="icon">
           <fa-icon icon="trash"></fa-icon>

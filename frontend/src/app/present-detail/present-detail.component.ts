@@ -1,39 +1,50 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+import { ID } from '@datorama/akita';
+import { Observable } from 'rxjs';
 
 import { ConfirmationDeleteComponent } from 'app/confirmation-delete/confirmation-delete.component';
 import { Present } from 'app/shared/model/present.model';
-import { PresentApi } from 'app/shared/services/present.api.service';
-import { PresentStore } from 'app/shared/services/present.store';
+import { PresentQuery, PresentService } from 'app/shared/services/present';
 
 @Component({
   selector: 'app-present-detail',
   templateUrl: './present-detail.component.html'
 })
-export class PresentDetailComponent {
-  present: Present = new Present({});
+export class PresentDetailComponent implements OnInit {
+  present$: Observable<Present> = this.presentQuery.present(this.presentId);
+
+  get presentId(): ID {
+    return this.route.snapshot.params.id;
+  }
+
+  get publicReportLink(): string {
+    return this.presentService.publicReportLocation(this.presentId);
+  }
+
+  get privateReportLink(): string {
+    return this.presentService.privateReportLocation(this.presentId);
+  }
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private dialog: MatDialog,
-    private presentApi: PresentApi,
-    private presentStore: PresentStore,
-  ) {
-    this.route.params.subscribe(params => {
-      this.presentApi
-        .get(params['id'])
-        .subscribe(present => (this.present = present));
-    });
+    private presentService: PresentService,
+    private presentQuery: PresentQuery
+  ) { }
+
+  ngOnInit() {
+    this.presentService.getPresent(this.presentId).subscribe();
   }
 
-  openDeleteForm(present: Present) {
+  openDeleteForm() {
     const dialogRef = this.dialog.open(ConfirmationDeleteComponent);
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.presentStore.delete(present);
+        this.presentService.delete(this.presentId);
         this.router.navigate(['/presents']);
       }
     });

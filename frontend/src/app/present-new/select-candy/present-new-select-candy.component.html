@@ -1,6 +1,6 @@
 <h1 class="title">Выбор конфет</h1>
 
-<table class="table is-striped is-hoverable is-fullwidth" *mobxAutorun>
+<table class="table is-striped is-hoverable is-fullwidth">
   <thead>
     <tr>
       <th>Название</th>
@@ -10,7 +10,7 @@
   </thead>
 
   <tbody>
-    <tr *ngFor="let candy of candyStore.orderedCandies" (click)="select(candy)" [class.has-background-primary]="isSelected(candy)">
+    <tr *ngFor="let candy of candies$ | async" (click)="select(candy)" [class.has-background-primary]="isSelected(candy)">
       <td>{{candy.name}}</td>
       <td>{{candy.firm}}</td>
       <td>{{candy.price}}</td>

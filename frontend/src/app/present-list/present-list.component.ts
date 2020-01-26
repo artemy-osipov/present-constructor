@@ -1,15 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import { PresentStore } from 'app/shared/services/present.store';
+import { PresentQuery, PresentService } from 'app/shared/services/present';
+import { Observable } from 'rxjs';
+import { Present } from 'app/shared/model/present.model';
 
 @Component({
   selector: 'app-present-list',
   templateUrl: './present-list.component.html'
 })
-export class PresentListComponent {
+export class PresentListComponent implements OnInit {
+  presents$: Observable<Present[]> = this.presentQuery.sortedList();
+
   constructor(
-    private presentStore: PresentStore
-  ) {
-    this.presentStore.fetch();
+    private presentService: PresentService,
+    private presentQuery: PresentQuery
+  ) { }
+
+  ngOnInit() {
+    this.presentService.list().subscribe();
   }
 }

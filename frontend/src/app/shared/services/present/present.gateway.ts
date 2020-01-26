@@ -1,14 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Present } from 'app/shared/model/present.model';
+import { ApiHelper } from 'app/shared/services/api-helper.service';
 import { environment } from 'environments/environment';
-import { ApiHelper } from './api-helper.service';
 
-@Injectable()
-export class PresentApi {
+@Injectable({ providedIn: 'root' })
+export class PresentGateway {
   presentResource = environment.apiUrl + 'api/presents/';
 
   constructor(private http: HttpClient) {}
@@ -21,7 +22,7 @@ export class PresentApi {
       );
   }
 
-  get(id: string): Observable<Present> {
+  get(id: ID): Observable<Present> {
     return this.http
       .get<Present>(this.presentResource + id)
       .pipe(map(data => new Present(data)));
@@ -33,15 +34,15 @@ export class PresentApi {
       .pipe(map(res => res.map(data => new Present(data))));
   }
 
-  delete(present: Present): Observable<Object> {
-    return this.http.delete(this.presentResource + present.id);
+  delete(id: ID): Observable<Object> {
+    return this.http.delete(this.presentResource + id);
   }
 
-  publicReportLocation(id: string) {
+  publicReportLocation(id: ID) {
     return this.presentResource + id + '/public-report';
   }
 
-  privateReportLocation(id: string) {
+  privateReportLocation(id: ID) {
     return this.presentResource + id + '/private-report';
   }
 }

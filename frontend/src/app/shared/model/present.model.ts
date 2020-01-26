@@ -20,7 +20,7 @@ export class Present {
     this.items =
       (src.items &&
         src.items.map(
-          (item: any) => <PresentItem>{ candy: new Candy(item.candy), count: item.count }
+          (item: any) => <PresentItem>{ candy: item.candy, count: item.count }
         )) ||
       [];
   }

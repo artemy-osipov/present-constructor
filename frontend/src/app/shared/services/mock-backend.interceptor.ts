@@ -23,13 +23,13 @@ export class MockBackendInterceptor implements HttpInterceptor {
     }
 
     sampleCandy(id: string): Candy {
-        return new Candy({
+        return {
             id: id,
             name: 'some name ' + id,
             firm: 'some firm ' + id,
             price: 123.32,
             order: parseInt(id, 10)
-        });
+        };
     }
 
     samplePresent(id: string): Present {
