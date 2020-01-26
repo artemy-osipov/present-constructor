@@ -38,12 +38,12 @@ export class ValidationDirective {
     comp.instance.control = this.control;
   }
 
-  @HostBinding('class.is-valid')
+  @HostBinding('class.is-success')
   get valid(): boolean {
     return (this.control.dirty && this.control.valid) || false;
   }
 
-  @HostBinding('class.is-invalid')
+  @HostBinding('class.is-danger')
   get invalid(): boolean {
     return (this.control.dirty && this.control.invalid) || false;
   }

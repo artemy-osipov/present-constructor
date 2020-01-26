@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
-import { ConfirmationDeleteComponent } from 'app/shared/confirmation-delete/confirmation-delete.component';
+import { ConfirmationDeleteComponent } from 'app/confirmation-delete/confirmation-delete.component';
 import { Present } from 'app/shared/model/present.model';
 import { PresentApi } from 'app/shared/services/present.api.service';
 import { PresentStore } from 'app/shared/services/present.store';

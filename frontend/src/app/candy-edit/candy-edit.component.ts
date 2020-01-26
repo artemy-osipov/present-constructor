@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
-import { ConfirmationDeleteComponent } from 'app/shared/confirmation-delete/confirmation-delete.component';
+import { ConfirmationDeleteComponent } from 'app/confirmation-delete/confirmation-delete.component';
 import { Candy } from 'app/shared/model/candy.model';
 import { CandyStore } from 'app/shared/services/candy.store';
 import {
@@ -76,8 +76,8 @@ export class CandyEditComponent {
     const dialogRef = this.dialog.open(ConfirmationDeleteComponent);
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.candyStore.delete(this.editedCandy!);
+      if (result && this.editedCandy) {
+        this.candyStore.delete(this.editedCandy);
         this.router.navigate(['/candies']);
       }
     });

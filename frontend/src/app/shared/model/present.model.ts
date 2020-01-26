@@ -1,7 +1,8 @@
 import { Candy } from 'app/shared/model/candy.model';
 
-export class PresentItem {
-  constructor(public candy: Candy, public count: number) {}
+export interface PresentItem {
+  candy: Candy;
+  count: number;
 }
 
 export class Present {
@@ -19,7 +20,7 @@ export class Present {
     this.items =
       (src.items &&
         src.items.map(
-          (item: any) => new PresentItem(new Candy(item.candy), item.count)
+          (item: any) => <PresentItem>{ candy: new Candy(item.candy), count: item.count }
         )) ||
       [];
   }

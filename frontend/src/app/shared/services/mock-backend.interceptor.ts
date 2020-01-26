@@ -144,8 +144,8 @@ export class MockBackendInterceptor implements HttpInterceptor {
             return ok();
         }
 
-        function ok(body?: any) {
-            return of(new HttpResponse({ status: 200, body }));
+        function ok(content?: any) {
+            return of(new HttpResponse({ status: 200, body: content }));
         }
 
         function added(id: string) {
