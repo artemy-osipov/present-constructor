@@ -40,7 +40,7 @@ export class PresentNewSelectCandyComponent implements OnInit {
     }
   }
 
-  private isSelected(candy: Candy): boolean {
+  isSelected(candy: Candy): boolean {
     return this.selectedCandies.find(this.sameId(candy)) !== undefined;
   }
 
