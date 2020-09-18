@@ -17,7 +17,6 @@ import { PresentDetailComponent } from 'app/present-detail/present-detail.compon
 import { PresentListComponent } from 'app/present-list/present-list.component';
 import { PresentNewComponent } from 'app/present-new/present-new.component';
 import { PresentNewSelectCandyComponent } from 'app/present-new/select-candy/present-new-select-candy.component';
-import { SecurityModule } from 'app/shared/security';
 import { fakeBackendProvider } from 'app/shared/services/api-helper.service';
 import { ValidationModule } from 'app/shared/validation';
 
@@ -58,7 +57,6 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     HttpClientModule,
     MatDialogModule,
     ReactiveFormsModule,
-    SecurityModule,
     ValidationModule,
     NoopAnimationsModule
   ],

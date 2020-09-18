@@ -8,42 +8,15 @@ import { PresentDetailComponent } from 'app/present-detail/present-detail.compon
 import { PresentListComponent } from 'app/present-list/present-list.component';
 import { PresentNewComponent } from 'app/present-new/present-new.component';
 
-import { AuthGuard, LoginComponent } from 'app/shared/security';
-
 const routes: Routes = [
   { path: '', redirectTo: '/about', pathMatch: 'full' },
   { path: 'about', component: AboutComponent },
-  { path: 'login', component: LoginComponent },
-  {
-    path: 'candies',
-    component: CandyListComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'candies/new',
-    component: CandyEditComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'candies/:id',
-    component: CandyEditComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'presents',
-    component: PresentListComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'presents/new',
-    component: PresentNewComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'presents/:id',
-    component: PresentDetailComponent,
-    canActivate: [AuthGuard]
-  }
+  { path: 'candies', component: CandyListComponent },
+  { path: 'candies/new', component: CandyEditComponent },
+  { path: 'candies/:id', component: CandyEditComponent },
+  { path: 'presents', component: PresentListComponent },
+  { path: 'presents/new', component: PresentNewComponent },
+  { path: 'presents/:id', component: PresentDetailComponent }
 ];
 
 @NgModule({
