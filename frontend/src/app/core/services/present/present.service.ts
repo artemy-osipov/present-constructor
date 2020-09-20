@@ -3,7 +3,7 @@ import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
 
-import { Present } from 'app/shared/model/present.model';
+import { Present } from 'app/core/models/present.model';
 import { PresentStore } from './present.store';
 import { PresentGateway } from './present.gateway';
 

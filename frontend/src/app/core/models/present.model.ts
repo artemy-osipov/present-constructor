@@ -1,4 +1,4 @@
-import { Candy } from 'app/shared/model/candy.model';
+import { Candy } from 'app/core/models/candy.model';
 
 export interface PresentItem {
   candy: Candy;

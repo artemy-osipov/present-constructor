@@ -3,7 +3,7 @@ import { QueryEntity, ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 
 import { PresentState, PresentStore } from './present.store';
-import { Present } from 'app/shared/model/present.model';
+import { Present } from 'app/core/models/present.model';
 
 @Injectable({ providedIn: 'root' })
 export class PresentQuery extends QueryEntity<PresentState, Present> {
@@ -12,7 +12,7 @@ export class PresentQuery extends QueryEntity<PresentState, Present> {
     super(store);
   }
 
-  present(id: ID): Observable<Present> {
+  present(id: ID): Observable<Present | undefined> {
     return this.selectEntity(id);
   }
 

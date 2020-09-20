@@ -3,7 +3,7 @@ import { QueryEntity, ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 
 import { CandyState, CandyStore } from './candy.store';
-import { Candy } from 'app/shared/model/candy.model';
+import { Candy } from 'app/core/models/candy.model';
 
 @Injectable({ providedIn: 'root' })
 export class CandyQuery extends QueryEntity<CandyState, Candy> {
@@ -12,7 +12,7 @@ export class CandyQuery extends QueryEntity<CandyState, Candy> {
     super(store);
   }
 
-  candy(id: ID): Observable<Candy> {
+  candy(id: ID): Observable<Candy | undefined> {
     return this.selectEntity(id);
   }
 

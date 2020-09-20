@@ -6,8 +6,8 @@ import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 
 import { ConfirmationDeleteComponent } from 'app/confirmation-delete/confirmation-delete.component';
-import { Candy } from 'app/shared/model/candy.model';
-import { CandyQuery, CandyService } from 'app/shared/services/candy';
+import { Candy } from 'app/core/models/candy.model';
+import { CandyQuery, CandyService } from 'app/core/services/candy';
 import {
   FormHelper,
   NumberValidators,
@@ -20,7 +20,7 @@ import {
 })
 export class CandyEditComponent implements OnInit {
   form: FormGroup;
-  editedCandy$: Observable<Candy> = this.candyQuery.candy(this.candyId);
+  editedCandy$: Observable<Candy | undefined> = this.candyQuery.candy(this.candyId);
 
   get candyId(): ID {
     return this.route.snapshot.params.id;
@@ -57,7 +57,7 @@ export class CandyEditComponent implements OnInit {
     if (this.isEdit) {
       this.candyService.getCandy(this.candyId);
 
-      this.editedCandy$.subscribe(candy => this.form.patchValue(candy));
+      this.editedCandy$.subscribe(candy => this.form.patchValue(candy || {}));
     }
   }
 

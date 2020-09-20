@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { EntityState, StoreConfig, EntityStore } from '@datorama/akita';
 
-import { Present } from 'app/shared/model/present.model';
+import { Present } from 'app/core/models/present.model';
 
 export interface PresentState extends EntityState<Present> { }
 

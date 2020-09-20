@@ -5,15 +5,15 @@ import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 
 import { ConfirmationDeleteComponent } from 'app/confirmation-delete/confirmation-delete.component';
-import { Present } from 'app/shared/model/present.model';
-import { PresentQuery, PresentService } from 'app/shared/services/present';
+import { Present } from 'app/core/models/present.model';
+import { PresentQuery, PresentService } from 'app/core/services/present';
 
 @Component({
   selector: 'app-present-detail',
   templateUrl: './present-detail.component.html'
 })
 export class PresentDetailComponent implements OnInit {
-  present$: Observable<Present> = this.presentQuery.present(this.presentId);
+  present$: Observable<Present | undefined> = this.presentQuery.present(this.presentId);
 
   get presentId(): ID {
     return this.route.snapshot.params.id;

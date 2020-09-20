@@ -3,7 +3,7 @@ import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
 
-import { Candy } from 'app/shared/model/candy.model';
+import { Candy } from 'app/core/models/candy.model';
 import { CandyStore } from './candy.store';
 import { CandyGateway } from './candy.gateway';
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { EntityState, StoreConfig, EntityStore } from '@datorama/akita';
 
-import { Candy } from 'app/shared/model/candy.model';
+import { Candy } from 'app/core/models/candy.model';
 
 export interface CandyState extends EntityState<Candy> { }
 

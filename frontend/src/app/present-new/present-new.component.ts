@@ -3,9 +3,9 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ID } from '@datorama/akita';
 
-import { Candy } from 'app/shared/model/candy.model';
-import { Present } from 'app/shared/model/present.model';
-import { PresentService } from 'app/shared/services/present';
+import { Candy } from 'app/core/models/candy.model';
+import { Present } from 'app/core/models/present.model';
+import { PresentService } from 'app/core/services/present';
 import {
   FormHelper,
   NumberValidators,

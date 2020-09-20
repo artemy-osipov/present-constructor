@@ -4,21 +4,26 @@ import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Present } from 'app/shared/model/present.model';
-import { ApiHelper } from 'app/shared/services/api-helper.service';
+import { Present } from 'app/core/models/present.model';
 import { environment } from 'environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class PresentGateway {
   presentResource = environment.apiUrl + 'api/presents/';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   add(present: Present): Observable<string> {
     return this.http
       .post(this.presentResource, present, { observe: 'response' })
       .pipe(
-        map(resp => ApiHelper.extractNewId(resp.headers, this.presentResource))
+        map(resp => {
+          if (resp.body) {
+            return resp.body.toString()
+          } else {
+            throw new Error('id is not returned')
+          }
+        })
       );
   }
 

@@ -1,9 +1,11 @@
 import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
+import { CoreModule } from 'app/core/core.module'
 
 import { AboutComponent } from 'app/about/about.component';
 import { AppRoutingModule } from 'app/app-routing.module';
@@ -11,13 +13,11 @@ import { AppComponent } from 'app/app.component';
 import { CandyEditComponent } from 'app/candy-edit/candy-edit.component';
 import { CandyListComponent } from 'app/candy-list/candy-list.component';
 import { ConfirmationDeleteComponent } from 'app/confirmation-delete/confirmation-delete.component';
-import { HeaderComponent } from 'app/header/header.component';
 import { LinkBorderComponent } from 'app/link-border/link-border.component';
 import { PresentDetailComponent } from 'app/present-detail/present-detail.component';
 import { PresentListComponent } from 'app/present-list/present-list.component';
 import { PresentNewComponent } from 'app/present-new/present-new.component';
 import { PresentNewSelectCandyComponent } from 'app/present-new/select-candy/present-new-select-candy.component';
-import { fakeBackendProvider } from 'app/shared/services/api-helper.service';
 import { ValidationModule } from 'app/shared/validation';
 
 import {
@@ -32,13 +32,11 @@ import {
   faTimes,
   faTrash
 } from '@fortawesome/free-solid-svg-icons';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
     AppComponent,
     AboutComponent,
-    HeaderComponent,
     CandyListComponent,
     CandyEditComponent,
     ConfirmationDeleteComponent,
@@ -50,17 +48,16 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
   ],
   entryComponents: [ConfirmationDeleteComponent],
   imports: [
+    CoreModule,
+    CommonModule,
     AppRoutingModule,
-    BrowserModule,
     FontAwesomeModule,
     FormsModule,
     HttpClientModule,
     MatDialogModule,
     ReactiveFormsModule,
-    ValidationModule,
-    NoopAnimationsModule
+    ValidationModule
   ],
-  providers: [fakeBackendProvider],
   bootstrap: [AppComponent]
 })
 export class AppModule {

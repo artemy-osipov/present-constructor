@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-import { PresentQuery, PresentService } from 'app/shared/services/present';
+import { PresentQuery, PresentService } from 'app/core/services/present';
 import { Observable } from 'rxjs';
-import { Present } from 'app/shared/model/present.model';
+import { Present } from 'app/core/models/present.model';
 
 @Component({
   selector: 'app-present-list',

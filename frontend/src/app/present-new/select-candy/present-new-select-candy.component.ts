@@ -7,8 +7,8 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { Candy } from 'app/shared/model/candy.model';
-import { CandyQuery, CandyService } from 'app/shared/services/candy';
+import { Candy } from 'app/core/models/candy.model';
+import { CandyQuery, CandyService } from 'app/core/services/candy';
 
 @Component({
   selector: 'app-present-new-select-candy',

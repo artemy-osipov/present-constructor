@@ -4,8 +4,7 @@ import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Candy } from 'app/shared/model/candy.model';
-import { ApiHelper } from 'app/shared/services/api-helper.service';
+import { Candy } from 'app/core/models/candy.model';
 import { environment } from 'environments/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -18,7 +17,13 @@ export class CandyGateway {
     return this.http
       .post(this.candyResource, candy, { observe: 'response' })
       .pipe(
-        map(resp => ApiHelper.extractNewId(resp.headers, this.candyResource))
+        map(resp => {
+          if (resp.body) {
+            return resp.body.toString()
+          } else {
+            throw new Error('id is not returned')
+          }
+        })
       );
   }
 
