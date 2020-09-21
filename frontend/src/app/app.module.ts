@@ -1,24 +1,27 @@
-import { HttpClientModule } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatDialogModule } from '@angular/material/dialog';
-import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { HttpClientModule } from '@angular/common/http'
+import { CommonModule } from '@angular/common'
+import { NgModule } from '@angular/core'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
+import { MatDialogModule } from '@angular/material/dialog'
+import {
+  FaIconLibrary,
+  FontAwesomeModule,
+} from '@fortawesome/angular-fontawesome'
 
 import { CoreModule } from 'app/core/core.module'
 
-import { AboutComponent } from 'app/about/about.component';
-import { AppRoutingModule } from 'app/app-routing.module';
-import { AppComponent } from 'app/app.component';
-import { CandyEditComponent } from 'app/candy-edit/candy-edit.component';
-import { CandyListComponent } from 'app/candy-list/candy-list.component';
-import { ConfirmationDeleteComponent } from 'app/confirmation-delete/confirmation-delete.component';
-import { LinkBorderComponent } from 'app/link-border/link-border.component';
-import { PresentDetailComponent } from 'app/present-detail/present-detail.component';
-import { PresentListComponent } from 'app/present-list/present-list.component';
-import { PresentNewComponent } from 'app/present-new/present-new.component';
-import { PresentNewSelectCandyComponent } from 'app/present-new/select-candy/present-new-select-candy.component';
-import { ValidationModule } from 'app/shared/validation';
+import { AboutComponent } from 'app/about/about.component'
+import { AppRoutingModule } from 'app/app-routing.module'
+import { AppComponent } from 'app/app.component'
+import { CandyEditComponent } from 'app/candy-edit/candy-edit.component'
+import { CandyListComponent } from 'app/candy-list/candy-list.component'
+import { ConfirmationDeleteComponent } from 'app/confirmation-delete/confirmation-delete.component'
+import { LinkBorderComponent } from 'app/link-border/link-border.component'
+import { PresentDetailComponent } from 'app/present-detail/present-detail.component'
+import { PresentListComponent } from 'app/present-list/present-list.component'
+import { PresentNewComponent } from 'app/present-new/present-new.component'
+import { PresentNewSelectCandyComponent } from 'app/present-new/select-candy/present-new-select-candy.component'
+import { ValidationModule } from 'app/shared/validation'
 
 import {
   faAngleDown,
@@ -30,8 +33,8 @@ import {
   faPlus,
   faRubleSign,
   faTimes,
-  faTrash
-} from '@fortawesome/free-solid-svg-icons';
+  faTrash,
+} from '@fortawesome/free-solid-svg-icons'
 
 @NgModule({
   declarations: [
@@ -44,7 +47,7 @@ import {
     PresentListComponent,
     PresentDetailComponent,
     PresentNewComponent,
-    PresentNewSelectCandyComponent
+    PresentNewSelectCandyComponent,
   ],
   entryComponents: [ConfirmationDeleteComponent],
   imports: [
@@ -56,12 +59,11 @@ import {
     HttpClientModule,
     MatDialogModule,
     ReactiveFormsModule,
-    ValidationModule
+    ValidationModule,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {
-
   constructor(library: FaIconLibrary) {
     library.addIcons(
       faAngleDown,
@@ -74,6 +76,6 @@ export class AppModule {
       faRubleSign,
       faTimes,
       faTrash
-    );
+    )
   }
 }

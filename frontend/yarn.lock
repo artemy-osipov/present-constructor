@@ -9129,16 +9129,27 @@ fsevents@~2.1.2:
     karma-coverage-istanbul-reporter: ~3.0.3
     karma-jasmine: ~4.0.1
     karma-jasmine-html-reporter: ^1.5.4
+    prettier: ^2.1.2
     protractor: ~7.0.0
     rxjs: ~6.6.3
     ts-node: ~8.3.0
     tslib: ^2.0.1
     tslint: ~6.1.3
     tslint-angular: ^3.0.3
+    tslint-config-prettier: ^1.18.0
     typescript: ~4.0.3
     zone.js: ~0.10.3
   languageName: unknown
   linkType: soft
+
+"prettier@npm:^2.1.2":
+  version: 2.1.2
+  resolution: "prettier@npm:2.1.2"
+  bin:
+    prettier: bin-prettier.js
+  checksum: bedc24c568efbcfe45f255558900777e2fabb36bf28ed4c22d2456eb22dfb012d12e566a46472ea5b857a4e9f263e888f7e316527d00bb58188f1820b0b0031a
+  languageName: node
+  linkType: hard
 
 "process-nextick-args@npm:~2.0.0":
   version: 2.0.1
@@ -11266,6 +11277,15 @@ fsevents@~2.1.2:
     codelyzer: ">=5.0.0"
     tslint: ">=5.16.0"
   checksum: 53bd856c8e1e8903f3c66c8159066affb4e61f6e0a64bd101a86aa74e23a0ee77e890e059422a8e4e960f0c3913022ca4f4d955360371f1d61312bb4f2a0a10b
+  languageName: node
+  linkType: hard
+
+"tslint-config-prettier@npm:^1.18.0":
+  version: 1.18.0
+  resolution: "tslint-config-prettier@npm:1.18.0"
+  bin:
+    tslint-config-prettier-check: bin/check.js
+  checksum: 12478d1d0c1982b430938a99810eb59486b0177564c13b86e7c3536410318cfb0a92b3c528cfa99f599956ce470c0afa509696901d2850ebd523d44cc256aaf3
   languageName: node
   linkType: hard
 

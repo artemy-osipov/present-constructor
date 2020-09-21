@@ -8,13 +8,19 @@
       <div class="field">
         <label class="label">Название</label>
         <div class="control">
-          <input class="input" formControlName="name" appFormControl>
+          <input class="input" formControlName="name" appFormControl />
         </div>
       </div>
       <div class="field">
         <label class="label">Цена</label>
         <div class="control">
-          <input class="input" type="number" placeholder="Пример: 123.12" formControlName="price" appFormControl>
+          <input
+            class="input"
+            type="number"
+            placeholder="Пример: 123.12"
+            formControlName="price"
+            appFormControl
+          />
         </div>
       </div>
       <div class="field">
@@ -33,11 +39,11 @@
           <tbody>
             <tr>
               <td colspan="3">Количество</td>
-              <td>{{present.items.length}}</td>
+              <td>{{ present.items.length }}</td>
             </tr>
             <tr>
               <td colspan="3">Сумма</td>
-              <td>{{present.cost}}</td>
+              <td>{{ present.cost }}</td>
             </tr>
             <tr>
               <th>Название</th>
@@ -45,13 +51,22 @@
               <th>Цена</th>
               <th>Кол-во</th>
             </tr>
-  
-            <tr *ngFor="let item of itemsForm.controls; let i = index" [formGroupName]="i">
-              <td>{{item.controls.candy.controls.name.value}}</td>
-              <td>{{item.controls.candy.controls.firm.value}}</td>
-              <td>{{item.controls.candy.controls.price.value}}</td>
+
+            <tr
+              *ngFor="let item of itemsForm.controls; let i = index"
+              [formGroupName]="i"
+            >
+              <td>{{ item.controls.candy.controls.name.value }}</td>
+              <td>{{ item.controls.candy.controls.firm.value }}</td>
+              <td>{{ item.controls.candy.controls.price.value }}</td>
               <td>
-                <input type="number" min="1" class="form-control" formControlName="count" appFormControl>
+                <input
+                  type="number"
+                  min="1"
+                  class="form-control"
+                  formControlName="count"
+                  appFormControl
+                />
               </td>
             </tr>
           </tbody>
@@ -61,7 +76,10 @@
   </div>
 
   <div class="column">
-    <app-present-new-select-candy [selectedCandies]="present.candies" (selected)="addItem($event)"
-      (unselected)="removeItem($event)"></app-present-new-select-candy>
+    <app-present-new-select-candy
+      [selectedCandies]="present.candies"
+      (selected)="addItem($event)"
+      (unselected)="removeItem($event)"
+    ></app-present-new-select-candy>
   </div>
 </div>

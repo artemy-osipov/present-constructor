@@ -4,7 +4,10 @@
 <div *ngIf="hasError && control!.errors!.min" class="help is-danger">
   Меньше допустимого
 </div>
-<div *ngIf="hasError && control!.errors!.maxFractionLength" class="help is-danger">
+<div
+  *ngIf="hasError && control!.errors!.maxFractionLength"
+  class="help is-danger"
+>
   Неверный формат
 </div>
 <div *ngIf="hasError && control!.errors!.notEmpty" class="help is-danger">

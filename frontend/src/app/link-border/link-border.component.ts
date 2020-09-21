@@ -1,19 +1,19 @@
-import { DOCUMENT } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { DOCUMENT } from '@angular/common'
+import { Component, Inject } from '@angular/core'
 
 @Component({
   selector: 'app-link-border',
   templateUrl: './link-border.component.html',
-  styleUrls: ['./link-border.component.css']
+  styleUrls: ['./link-border.component.css'],
 })
 export class LinkBorderComponent {
   constructor(@Inject(DOCUMENT) private document: Document) {}
 
   scrollToTop() {
-    this.document.body.scrollIntoView(true);
+    this.document.body.scrollIntoView(true)
   }
 
   scrollToBottom() {
-    this.document.body.scrollIntoView(false);
+    this.document.body.scrollIntoView(false)
   }
 }

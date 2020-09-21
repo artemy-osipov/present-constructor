@@ -1,2 +1,2 @@
-export * from './present.query';
-export * from './present.service';
+export * from './present.query'
+export * from './present.service'

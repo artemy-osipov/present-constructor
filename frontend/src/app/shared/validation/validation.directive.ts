@@ -3,21 +3,21 @@ import {
   Directive,
   HostBinding,
   Optional,
-  ViewContainerRef
-} from '@angular/core';
+  ViewContainerRef,
+} from '@angular/core'
 import {
   AbstractControlDirective,
   FormArrayName,
-  NgControl
-} from '@angular/forms';
+  NgControl,
+} from '@angular/forms'
 
-import { ValidationErrorComponent } from './validation-error/validation-error.component';
+import { ValidationErrorComponent } from './validation-error/validation-error.component'
 
 @Directive({
-  selector: '[appFormControl]'
+  selector: '[appFormControl]',
 })
 export class ValidationDirective {
-  control: AbstractControlDirective;
+  control: AbstractControlDirective
 
   constructor(
     viewContainer: ViewContainerRef,
@@ -26,25 +26,25 @@ export class ValidationDirective {
     @Optional() formArray: FormArrayName
   ) {
     if (formControl !== null) {
-      this.control = formControl;
+      this.control = formControl
     } else if (formArray !== null) {
-      this.control = formArray;
+      this.control = formArray
     } else {
-      throw new Error('no control to validate');
+      throw new Error('no control to validate')
     }
 
-    const factory = resolver.resolveComponentFactory(ValidationErrorComponent);
-    const comp = viewContainer.createComponent(factory);
-    comp.instance.control = this.control;
+    const factory = resolver.resolveComponentFactory(ValidationErrorComponent)
+    const comp = viewContainer.createComponent(factory)
+    comp.instance.control = this.control
   }
 
   @HostBinding('class.is-success')
   get valid(): boolean {
-    return (this.control.dirty && this.control.valid) || false;
+    return (this.control.dirty && this.control.valid) || false
   }
 
   @HostBinding('class.is-danger')
   get invalid(): boolean {
-    return (this.control.dirty && this.control.invalid) || false;
+    return (this.control.dirty && this.control.invalid) || false
   }
 }

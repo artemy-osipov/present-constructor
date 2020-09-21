@@ -1,33 +1,44 @@
 <h1 class="title" *ngIf="!isEdit">Новая конфета</h1>
-<h1 class="title" *ngIf="isEdit">{{(editedCandy$ | async).name}}</h1>
+<h1 class="title" *ngIf="isEdit">{{ (editedCandy$ | async).name }}</h1>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-
   <div class="field">
     <label class="label">Название</label>
     <div class="control">
-      <input class="input" formControlName="name" appFormControl>
+      <input class="input" formControlName="name" appFormControl />
     </div>
   </div>
 
   <div class="field">
     <label class="label">Производитель</label>
     <div class="control">
-      <input class="input" formControlName="firm" appFormControl>
+      <input class="input" formControlName="firm" appFormControl />
     </div>
   </div>
 
   <div class="field">
     <label class="label">Цена</label>
     <div class="control">
-      <input type="number" class="input" placeholder="Пример: 123.12" formControlName="price" appFormControl>
+      <input
+        type="number"
+        class="input"
+        placeholder="Пример: 123.12"
+        formControlName="price"
+        appFormControl
+      />
     </div>
   </div>
 
   <div class="field">
     <label class="label">Порядок</label>
     <div class="control">
-      <input type="number" class="input" placeholder="Пример: 123.1" formControlName="order" appFormControl>
+      <input
+        type="number"
+        class="input"
+        placeholder="Пример: 123.1"
+        formControlName="order"
+        appFormControl
+      />
     </div>
   </div>
 

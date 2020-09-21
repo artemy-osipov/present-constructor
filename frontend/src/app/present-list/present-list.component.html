@@ -6,15 +6,18 @@
 </h1>
 
 <div class="columns is-multiline">
-  <div class="column is-one-third-desktop is-half-tablet" *ngFor="let present of presents$ | async">
+  <div
+    class="column is-one-third-desktop is-half-tablet"
+    *ngFor="let present of presents$ | async"
+  >
     <a [routerLink]="['/presents', present.id]">
       <div class="card">
         <header class="card-header">
-          <p class="card-header-title">{{present.name}}</p>
+          <p class="card-header-title">{{ present.name }}</p>
         </header>
         <div class="card-content">
           <div class="content">
-            <p>{{present.price}} <fa-icon icon="ruble-sign"></fa-icon></p>
+            <p>{{ present.price }} <fa-icon icon="ruble-sign"></fa-icon></p>
           </div>
         </div>
       </div>

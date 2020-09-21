@@ -10,10 +10,14 @@
   </thead>
 
   <tbody>
-    <tr *ngFor="let candy of candies$ | async" (click)="select(candy)" [class.has-background-primary]="isSelected(candy)">
-      <td>{{candy.name}}</td>
-      <td>{{candy.firm}}</td>
-      <td>{{candy.price}}</td>
+    <tr
+      *ngFor="let candy of candies$ | async"
+      (click)="select(candy)"
+      [class.has-background-primary]="isSelected(candy)"
+    >
+      <td>{{ candy.name }}</td>
+      <td>{{ candy.firm }}</td>
+      <td>{{ candy.price }}</td>
     </tr>
   </tbody>
 </table>

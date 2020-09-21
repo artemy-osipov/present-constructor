@@ -1,6 +1,7 @@
 {
   "extends": [
-    "tslint-angular"
+    "tslint-angular",
+    "tslint-config-prettier"
   ],
   "rules": {
     "use-component-view-encapsulation": false

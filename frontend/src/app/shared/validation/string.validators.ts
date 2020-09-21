@@ -1,21 +1,21 @@
-import { ValidatorFn } from '@angular/forms';
+import { ValidatorFn } from '@angular/forms'
 
 export class StringValidators {
-  static notEmpty: ValidatorFn = control => {
+  static notEmpty: ValidatorFn = (control) => {
     if (control.value === null || control.value.trim().length === 0) {
-      return { notEmpty: true };
+      return { notEmpty: true }
     }
 
-    return null;
+    return null
   }
 
   static maxLength(maxLength: number): ValidatorFn {
-    return control => {
+    return (control) => {
       if (control.value !== null && control.value.trim().length > maxLength) {
-        return { maxLength: true };
+        return { maxLength: true }
       }
 
-      return null;
-    };
+      return null
+    }
   }
 }

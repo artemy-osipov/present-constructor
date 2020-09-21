@@ -1,30 +1,32 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
-import { ID } from '@datorama/akita';
-import { Observable } from 'rxjs';
+import { Component, OnInit } from '@angular/core'
+import { ActivatedRoute, Router } from '@angular/router'
+import { MatDialog } from '@angular/material/dialog'
+import { ID } from '@datorama/akita'
+import { Observable } from 'rxjs'
 
-import { ConfirmationDeleteComponent } from 'app/confirmation-delete/confirmation-delete.component';
-import { Present } from 'app/core/models/present.model';
-import { PresentQuery, PresentService } from 'app/core/services/present';
+import { ConfirmationDeleteComponent } from 'app/confirmation-delete/confirmation-delete.component'
+import { Present } from 'app/core/models/present.model'
+import { PresentQuery, PresentService } from 'app/core/services/present'
 
 @Component({
   selector: 'app-present-detail',
-  templateUrl: './present-detail.component.html'
+  templateUrl: './present-detail.component.html',
 })
 export class PresentDetailComponent implements OnInit {
-  present$: Observable<Present | undefined> = this.presentQuery.present(this.presentId);
+  present$: Observable<Present | undefined> = this.presentQuery.present(
+    this.presentId
+  )
 
   get presentId(): ID {
-    return this.route.snapshot.params.id;
+    return this.route.snapshot.params.id
   }
 
   get publicReportLink(): string {
-    return this.presentService.publicReportLocation(this.presentId);
+    return this.presentService.publicReportLocation(this.presentId)
   }
 
   get privateReportLink(): string {
-    return this.presentService.privateReportLocation(this.presentId);
+    return this.presentService.privateReportLocation(this.presentId)
   }
 
   constructor(
@@ -33,20 +35,20 @@ export class PresentDetailComponent implements OnInit {
     private dialog: MatDialog,
     private presentService: PresentService,
     private presentQuery: PresentQuery
-  ) { }
+  ) {}
 
   ngOnInit() {
-    this.presentService.getPresent(this.presentId).subscribe();
+    this.presentService.getPresent(this.presentId).subscribe()
   }
 
   openDeleteForm() {
-    const dialogRef = this.dialog.open(ConfirmationDeleteComponent);
+    const dialogRef = this.dialog.open(ConfirmationDeleteComponent)
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.presentService.delete(this.presentId);
-        this.router.navigate(['/presents']);
+        this.presentService.delete(this.presentId)
+        this.router.navigate(['/presents'])
       }
-    });
+    })
   }
 }
