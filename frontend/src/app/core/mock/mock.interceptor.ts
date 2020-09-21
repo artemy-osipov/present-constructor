@@ -3,12 +3,17 @@ import { HttpRequest, HttpResponse, HttpHandler, HttpEvent, HttpInterceptor, HTT
 import { Observable, of } from 'rxjs';
 import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
 
-import { mock } from './mock.data';
+import { Mock } from './mock.data';
+import { ID } from '@datorama/akita';
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
+
+  private mock = new Mock()
+
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const { url, method, body } = request;
+    const self = this;
 
     return of(null)
       .pipe(mergeMap(handleRoute))
@@ -42,11 +47,11 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     }
 
     function getCandies() {
-      return ok(mock.candies);
+      return ok(self.mock.candies);
     }
 
     function getCandyById() {
-      const candy = mock.candies.find(x => x.id === idFromUrl());
+      const candy = self.mock.getCandy(idFromUrl());
 
       if (candy) {
         return ok(candy);
@@ -56,29 +61,26 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     }
 
     function addCandy() {
-      mock.candies.push(body);
-
-      return added(Math.random().toString(36));
+      const id = self.mock.addCandy(body);
+      return added(id);
     }
 
     function updateCandy() {
-      const index = mock.candies.findIndex(x => x.id === idFromUrl());
-      mock.candies[index] = body;
-
+      self.mock.updateCandy(body);
       return ok();
     }
 
     function deleteCandy() {
-      mock.candies = mock.candies.filter(x => x.id !== idFromUrl());
+      self.mock.deleteCandy(idFromUrl());
       return ok();
     }
 
     function getPresents() {
-      return ok(mock.presents);
+      return ok(self.mock.presents);
     }
 
     function getPresentById() {
-      const present = mock.presents.find(x => x.id === idFromUrl());
+      const present = self.mock.getPresent(idFromUrl());
 
       if (present) {
         return ok(present);
@@ -88,13 +90,12 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     }
 
     function addPresent() {
-      mock.presents.push(body);
-
-      return added(Math.random().toString(36));
+      const id = self.mock.addPresent(body);
+      return added(id);
     }
 
     function deletePresent() {
-      mock.presents = mock.presents.filter(x => x.id !== idFromUrl());
+      self.mock.deletePresent(idFromUrl());
       return ok();
     }
 
@@ -102,7 +103,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       return of(new HttpResponse({ status: 200, body: content }));
     }
 
-    function added(id: string) {
+    function added(id: ID) {
       return of(new HttpResponse({ status: 201, body: id }));
     }
 
