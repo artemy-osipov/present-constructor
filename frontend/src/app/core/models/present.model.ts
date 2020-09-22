@@ -1,4 +1,3 @@
-import { ID } from '@datorama/akita'
 import { Candy } from 'app/core/models/candy.model'
 
 export interface PresentItem {
@@ -7,7 +6,7 @@ export interface PresentItem {
 }
 
 export class Present {
-  id: ID
+  id: string
   name: string
   price: number
   date: Date

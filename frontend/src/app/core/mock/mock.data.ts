@@ -1,4 +1,3 @@
-import { ID } from '@datorama/akita'
 import { Candy } from 'app/core/models/candy.model'
 import { Present } from 'app/core/models/present.model'
 
@@ -17,7 +16,7 @@ export class Mock {
 
   newCandy(id: number): Candy {
     return {
-      id: id,
+      id: id.toString(),
       name: 'some name ' + id,
       firm: 'some firm ' + id,
       price: 123.32,
@@ -48,12 +47,12 @@ export class Mock {
     })
   }
 
-  getCandy(id: ID): Candy | undefined {
+  getCandy(id: string): Candy | undefined {
     return this.candies.find((x) => x.id === id)
   }
 
-  addCandy(candy: Candy): ID {
-    const newId = Math.max(...this.candies.map((x) => x.id as number)) + 1
+  addCandy(candy: Candy): string {
+    const newId = (Math.max(...this.candies.map((x) => +x.id)) + 1).toString()
     candy.id = newId
     this.candies.push(candy)
     return newId
@@ -64,22 +63,22 @@ export class Mock {
     this.candies[index] = candy
   }
 
-  deleteCandy(id: ID) {
+  deleteCandy(id: string) {
     this.candies = this.candies.filter((x) => x.id !== id)
   }
 
-  getPresent(id: ID): Present | undefined {
+  getPresent(id: string): Present | undefined {
     return this.presents.find((x) => x.id === id)
   }
 
   addPresent(present: Present) {
-    const newId = Math.max(...this.presents.map((x) => x.id as number)) + 1
+    const newId = (Math.max(...this.presents.map((x) => +x.id)) + 1).toString()
     present.id = newId
     this.presents.push(present)
     return newId
   }
 
-  deletePresent(id: ID) {
+  deletePresent(id: string) {
     this.presents = this.presents.filter((x) => x.id !== id)
   }
 }

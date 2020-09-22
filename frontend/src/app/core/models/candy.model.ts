@@ -1,7 +1,5 @@
-import { ID } from '@datorama/akita'
-
 export interface Candy {
-  id: ID
+  id: string
   name: string
   firm: string
   price: number

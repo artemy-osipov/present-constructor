@@ -40,6 +40,12 @@ export class CandyGateway {
   }
 
   delete(id: ID): Observable<Object> {
-    return this.http.delete(this.candyResource + id)
+    console.log('DSADFASF')
+    var a = this.http.delete(this.candyResource + id)
+    a.subscribe(
+      x => console.log("x " + x),
+      err => console.log("err " + err)
+    )
+    return a
   }
 }

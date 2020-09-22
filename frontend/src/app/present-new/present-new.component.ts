@@ -7,10 +7,9 @@ import { Candy } from 'app/core/models/candy.model'
 import { Present } from 'app/core/models/present.model'
 import { PresentService } from 'app/core/services/present'
 import {
-  FormHelper,
   NumberValidators,
   StringValidators,
-} from 'app/shared/validation'
+} from 'app/core/services/validators'
 
 @Component({
   selector: 'app-present-new',
@@ -88,10 +87,9 @@ export class PresentNewComponent implements OnInit {
   }
 
   onSubmit() {
+    this.form.markAllAsTouched()
     if (this.form.valid) {
       this.add(this.present)
-    } else {
-      FormHelper.markFormContolsAsDirty(this.form)
     }
   }
 

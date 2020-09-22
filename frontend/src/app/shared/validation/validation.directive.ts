@@ -11,7 +11,7 @@ import {
   NgControl,
 } from '@angular/forms'
 
-import { ValidationErrorComponent } from './validation-error/validation-error.component'
+import { ValidationErrorComponent } from './validation-error.component'
 
 @Directive({
   selector: '[appFormControl]',
@@ -40,11 +40,11 @@ export class ValidationDirective {
 
   @HostBinding('class.is-success')
   get valid(): boolean {
-    return (this.control.dirty && this.control.valid) || false
+    return (this.control.touched && this.control.valid) || false
   }
 
   @HostBinding('class.is-danger')
   get invalid(): boolean {
-    return (this.control.dirty && this.control.invalid) || false
+    return (this.control.touched && this.control.invalid) || false
   }
 }

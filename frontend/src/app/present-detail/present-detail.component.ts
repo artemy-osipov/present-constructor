@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog'
 import { ID } from '@datorama/akita'
 import { Observable } from 'rxjs'
 
-import { ConfirmationDeleteComponent } from 'app/confirmation-delete/confirmation-delete.component'
+import { ConfirmationDeleteComponent } from 'app/shared/components/confirmation-delete/confirmation-delete.component'
 import { Present } from 'app/core/models/present.model'
 import { PresentQuery, PresentService } from 'app/core/services/present'
 

@@ -5,14 +5,13 @@ import { MatDialog } from '@angular/material/dialog'
 import { ID } from '@datorama/akita'
 import { Observable } from 'rxjs'
 
-import { ConfirmationDeleteComponent } from 'app/confirmation-delete/confirmation-delete.component'
+import { ConfirmationDeleteComponent } from 'app/shared/components/confirmation-delete/confirmation-delete.component'
 import { Candy } from 'app/core/models/candy.model'
 import { CandyQuery, CandyService } from 'app/core/services/candy'
 import {
-  FormHelper,
   NumberValidators,
   StringValidators,
-} from 'app/shared/validation'
+} from 'app/core/services/validators'
 
 @Component({
   selector: 'app-candy-edit',
@@ -58,12 +57,15 @@ export class CandyEditComponent implements OnInit {
   ngOnInit() {
     if (this.isEdit) {
       this.candyService.getCandy(this.candyId)
-
-      this.editedCandy$.subscribe((candy) => this.form.patchValue(candy || {}))
+      this.editedCandy$.subscribe((candy) => {
+        this.form.patchValue(candy || {})
+        this.form.markAllAsTouched()
+      })
     }
   }
 
   onSubmit() {
+    this.form.markAllAsTouched()
     if (this.form.valid) {
       const candyFromForm = this.candyFromForm()
 
@@ -73,8 +75,6 @@ export class CandyEditComponent implements OnInit {
         this.candyService.add(candyFromForm)
       }
       this.router.navigate(['/candies'])
-    } else {
-      FormHelper.markFormContolsAsDirty(this.form)
     }
   }
 

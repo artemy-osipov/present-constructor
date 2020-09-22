@@ -1,0 +1,5 @@
+<ng-container *ngIf="hasError">
+  <div *ngFor="let error of errors" class="help is-danger">
+    {{ resolveErrorMessage(error) }}
+  </div>
+</ng-container>
