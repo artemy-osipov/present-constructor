@@ -24,9 +24,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     const { url, method, body } = request
     const self = this
 
-    console.log("url " + url)
-    console.log("method " + method)
-
     return of(null)
       .pipe(mergeMap(handleRoute))
       .pipe(materialize())
