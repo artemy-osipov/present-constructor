@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { MatDialog } from '@angular/material/dialog'
-import { Observable } from 'rxjs'
+import { Observable, of } from 'rxjs'
 
 import { ConfirmationDeleteComponent } from 'app/shared/components/confirmation-delete/confirmation-delete.component'
 import { Candy } from 'app/core/models/candy.model'
 import { CandyQuery, CandyService } from 'app/core/services/candy'
 import { NumberValidators, StringValidators } from 'app/core/utils'
+import { filter, switchMap } from 'rxjs/operators'
 
 @Component({
   selector: 'app-candy-edit',
@@ -63,26 +64,29 @@ export class CandyEditComponent implements OnInit {
   onSubmit() {
     this.form.markAllAsTouched()
     if (this.form.valid) {
-      const candyFromForm = this.candyFromForm()
-
-      if (this.isEdit) {
-        this.candyService.update(candyFromForm)
-      } else {
-        this.candyService.add(candyFromForm)
-      }
-      this.router.navigate(['/candies'])
+      of(this.candyFromForm())
+        .pipe(
+          switchMap((candy) => {
+            if (this.isEdit) {
+              return this.candyService.update(candy)
+            } else {
+              return this.candyService.add(candy)
+            }
+          })
+        )
+        .subscribe((_) => this.router.navigate(['/candies']))
     }
   }
 
   openDeleteForm() {
-    const dialogRef = this.dialog.open(ConfirmationDeleteComponent)
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.candyService.delete(this.candyId)
-        this.router.navigate(['/candies'])
-      }
-    })
+    this.dialog
+      .open(ConfirmationDeleteComponent)
+      .afterClosed()
+      .pipe(
+        filter(Boolean),
+        switchMap((_) => this.candyService.delete(this.candyId))
+      )
+      .subscribe((_) => this.router.navigate(['/candies']))
   }
 
   private candyFromForm(): Candy {

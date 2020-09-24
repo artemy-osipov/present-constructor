@@ -32,18 +32,34 @@ export class Mock {
       date: new Date(),
       items: [
         {
-          candy: this.newCandy(1),
+          candy: this.candies[this.randomInt(0, this.candies.length)],
           count: 1,
         },
         {
-          candy: this.newCandy(3),
+          candy: this.candies[this.randomInt(0, this.candies.length)],
           count: 3,
         },
         {
-          candy: this.newCandy(10),
+          candy: this.candies[this.randomInt(0, this.candies.length)],
           count: 10,
         },
       ],
+    })
+  }
+
+  randomInt(min: number, max: number) {
+    min = Math.ceil(min)
+    max = Math.floor(max)
+    return Math.floor(Math.random() * (max - min)) + min
+  }
+
+  uuid(): string {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (
+      c
+    ) {
+      var r = (Math.random() * 16) | 0,
+        v = c == 'x' ? r : (r & 0x3) | 0x8
+      return v.toString(16)
     })
   }
 
@@ -52,10 +68,9 @@ export class Mock {
   }
 
   addCandy(candy: Candy): string {
-    const newId = (Math.max(...this.candies.map((x) => +x.id)) + 1).toString()
-    candy.id = newId
+    candy.id = this.uuid()
     this.candies.push(candy)
-    return newId
+    return candy.id
   }
 
   updateCandy(candy: Candy) {
@@ -72,10 +87,9 @@ export class Mock {
   }
 
   addPresent(present: Present) {
-    const newId = (Math.max(...this.presents.map((x) => +x.id)) + 1).toString()
-    present.id = newId
+    present.id = this.uuid()
     this.presents.push(present)
-    return newId
+    return present.id
   }
 
   deletePresent(id: Present['id']) {
