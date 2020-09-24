@@ -9,7 +9,7 @@ import { PresentService } from 'app/core/services/present'
 import {
   NumberValidators,
   StringValidators,
-} from 'app/core/services/validators'
+} from 'app/core/utils'
 
 @Component({
   selector: 'app-present-new',

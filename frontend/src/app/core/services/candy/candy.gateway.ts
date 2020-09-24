@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
-import { ID } from '@datorama/akita'
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 
@@ -15,11 +14,11 @@ export class CandyGateway {
 
   add(candy: Candy): Observable<string> {
     return this.http
-      .post(this.candyResource, candy, { observe: 'response' })
+      .post<string>(this.candyResource, candy, { observe: 'response' })
       .pipe(
         map((resp) => {
           if (resp.body) {
-            return resp.body.toString()
+            return resp.body
           } else {
             throw new Error('id is not returned')
           }
@@ -27,7 +26,7 @@ export class CandyGateway {
       )
   }
 
-  get(id: ID): Observable<Candy> {
+  get(id: string): Observable<Candy> {
     return this.http.get<Candy>(this.candyResource + id)
   }
 
@@ -39,13 +38,7 @@ export class CandyGateway {
     return this.http.put(this.candyResource + candy.id, candy)
   }
 
-  delete(id: ID): Observable<Object> {
-    console.log('DSADFASF')
-    var a = this.http.delete(this.candyResource + id)
-    a.subscribe(
-      x => console.log("x " + x),
-      err => console.log("err " + err)
-    )
-    return a
+  delete(id: string): Observable<Object> {
+    return this.http.delete(this.candyResource + id)
   }
 }

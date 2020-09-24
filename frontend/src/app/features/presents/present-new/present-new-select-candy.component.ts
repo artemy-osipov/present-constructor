@@ -23,7 +23,7 @@ export class PresentNewSelectCandyComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.candyService.list().subscribe()
+    this.candyService.fetchList().subscribe()
   }
 
   select(candy: Candy): void {

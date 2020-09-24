@@ -47,7 +47,7 @@ export class Mock {
     })
   }
 
-  getCandy(id: string): Candy | undefined {
+  getCandy(id: Candy['id']): Candy | undefined {
     return this.candies.find((x) => x.id === id)
   }
 
@@ -63,11 +63,11 @@ export class Mock {
     this.candies[index] = candy
   }
 
-  deleteCandy(id: string) {
+  deleteCandy(id: Candy['id']) {
     this.candies = this.candies.filter((x) => x.id !== id)
   }
 
-  getPresent(id: string): Present | undefined {
+  getPresent(id: Present['id']): Present | undefined {
     return this.presents.find((x) => x.id === id)
   }
 
@@ -78,7 +78,7 @@ export class Mock {
     return newId
   }
 
-  deletePresent(id: string) {
+  deletePresent(id: Present['id']) {
     this.presents = this.presents.filter((x) => x.id !== id)
   }
 }

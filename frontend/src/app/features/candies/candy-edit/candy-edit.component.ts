@@ -2,16 +2,12 @@ import { Component, OnInit } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { MatDialog } from '@angular/material/dialog'
-import { ID } from '@datorama/akita'
 import { Observable } from 'rxjs'
 
 import { ConfirmationDeleteComponent } from 'app/shared/components/confirmation-delete/confirmation-delete.component'
 import { Candy } from 'app/core/models/candy.model'
 import { CandyQuery, CandyService } from 'app/core/services/candy'
-import {
-  NumberValidators,
-  StringValidators,
-} from 'app/core/services/validators'
+import { NumberValidators, StringValidators } from 'app/core/utils'
 
 @Component({
   selector: 'app-candy-edit',
@@ -19,11 +15,9 @@ import {
 })
 export class CandyEditComponent implements OnInit {
   form: FormGroup
-  editedCandy$: Observable<Candy | undefined> = this.candyQuery.candy(
-    this.candyId
-  )
+  editedCandy$: Observable<Candy> = this.candyQuery.candy(this.candyId)
 
-  get candyId(): ID {
+  get candyId(): string {
     return this.route.snapshot.params.id
   }
 
@@ -56,9 +50,11 @@ export class CandyEditComponent implements OnInit {
 
   ngOnInit() {
     if (this.isEdit) {
-      this.candyService.getCandy(this.candyId)
+      if (!this.candyQuery.hasEntity(this.candyId)) {
+        this.candyService.fetchCandy(this.candyId).subscribe()
+      }
       this.editedCandy$.subscribe((candy) => {
-        this.form.patchValue(candy || {})
+        this.form.patchValue(candy)
         this.form.markAllAsTouched()
       })
     }

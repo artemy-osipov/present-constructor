@@ -1,5 +1,8 @@
 <h1 class="title" *ngIf="!isEdit">Новая конфета</h1>
-<h1 class="title" *ngIf="isEdit">{{ (editedCandy$ | async).name }}</h1>
+
+<h1 class="title" *ngIf="isEdit && (editedCandy$ | async) as candy">
+  {{ candy.name }}
+</h1>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="field">

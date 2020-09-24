@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core'
-import { ID } from '@datorama/akita'
 import { Observable } from 'rxjs'
 import { tap, map } from 'rxjs/operators'
 
@@ -11,11 +10,11 @@ import { CandyGateway } from './candy.gateway'
 export class CandyService {
   constructor(private store: CandyStore, private gateway: CandyGateway) {}
 
-  list(): Observable<Candy[]> {
+  fetchList(): Observable<Candy[]> {
     return this.gateway.list().pipe(tap((candies) => this.store.set(candies)))
   }
 
-  getCandy(id: ID): Observable<Candy> {
+  fetchCandy(id: Candy['id']): Observable<Candy> {
     return this.gateway
       .get(id)
       .pipe(tap((candy) => this.store.upsert(id, candy)))
@@ -38,7 +37,7 @@ export class CandyService {
       .pipe(tap((_) => this.store.update(candy.id, candy)))
   }
 
-  delete(id: ID): Observable<Object> {
+  delete(id: Candy['id']): Observable<Object> {
     return this.gateway.delete(id).pipe(tap((_) => this.store.remove(id)))
   }
 }

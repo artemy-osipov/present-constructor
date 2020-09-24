@@ -18,12 +18,12 @@ import { ConfirmationDeleteComponent } from './components/confirmation-delete/co
   ],
   imports: [CommonModule, FontModule, MatDialogModule],
   exports: [
-    //vendor
+    // vendor
     CommonModule,
     ReactiveFormsModule,
-    //material
+    // material
     MatDialogModule,
-    //local
+    // local
     FontModule,
     ConfirmationDeleteComponent,
     LinkBorderComponent,

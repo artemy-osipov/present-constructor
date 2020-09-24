@@ -17,6 +17,6 @@ export class CandyListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.candyService.list().subscribe()
+    this.candyService.fetchList().subscribe()
   }
 }
