@@ -3,6 +3,7 @@
   position: fixed;
   right: 1rem;
   border-width: 0px;
+  background-color: transparent;
 }
 
 .link-to-top {

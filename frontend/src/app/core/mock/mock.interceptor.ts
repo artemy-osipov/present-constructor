@@ -34,21 +34,21 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       switch (true) {
         case url.endsWith('/api/candies/') && method === 'GET':
           return getCandies()
-        case url.match(/\/api\/candies\/\d+$/) && method === 'GET':
+        case url.match(/\/api\/candies\/[\w-]+$/) && method === 'GET':
           return getCandyById()
         case url.endsWith('/api/candies/') && method === 'POST':
           return addCandy()
-        case url.match(/\/api\/candies\/\d+$/) && method === 'PUT':
+        case url.match(/\/api\/candies\/[\w-]+$/) && method === 'PUT':
           return updateCandy()
-        case url.match(/\/api\/candies\/\d+$/) && method === 'DELETE':
+        case url.match(/\/api\/candies\/[\w-]+$/) && method === 'DELETE':
           return deleteCandy()
         case url.endsWith('/api/presents/') && method === 'GET':
           return getPresents()
-        case url.match(/\/api\/presents\/\d+$/) && method === 'GET':
+        case url.match(/\/api\/presents\/[\w-]+$/) && method === 'GET':
           return getPresentById()
         case url.endsWith('/api/presents/') && method === 'POST':
           return addPresent()
-        case url.match(/\/api\/presents\/\d+$/) && method === 'DELETE':
+        case url.match(/\/api\/presents\/[\w-]+$/) && method === 'DELETE':
           return deletePresent()
         default:
           return next.handle(request)

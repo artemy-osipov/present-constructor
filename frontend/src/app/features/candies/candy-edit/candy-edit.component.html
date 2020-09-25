@@ -45,32 +45,26 @@
     </div>
   </div>
 
-  <div class="field is-grouped">
-    <div *ngIf="!isEdit" class="control">
-      <button type="submit" class="button is-primary">
+  <div class="field">
+    <div class="buttons">
+      <button *ngIf="!isEdit" type="submit" class="button is-primary">
         <span class="icon">
           <fa-icon icon="plus"></fa-icon>
         </span>
         <span>Добавить</span>
       </button>
-    </div>
-    <div *ngIf="isEdit" class="control">
-      <button type="submit" class="button is-primary">
+      <button *ngIf="isEdit" type="submit" class="button is-primary">
         <span class="icon">
           <fa-icon icon="pencil-alt"></fa-icon>
         </span>
         <span>Сохранить</span>
       </button>
-    </div>
-    <div *ngIf="isEdit" class="control">
-      <button type="button" class="button" (click)="openDeleteForm()">
+      <button *ngIf="isEdit" type="button" class="button" (click)="openDeleteForm()">
         <span class="icon">
           <fa-icon icon="trash"></fa-icon>
         </span>
         <span>Удалить</span>
       </button>
-    </div>
-    <div class="control">
       <button type="button" class="button" routerLink="/candies">
         <span class="icon">
           <fa-icon icon="times"></fa-icon>

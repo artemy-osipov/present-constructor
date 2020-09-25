@@ -13,6 +13,7 @@ import { filter, switchMap } from 'rxjs/operators'
 @Component({
   selector: 'app-candy-edit',
   templateUrl: './candy-edit.component.html',
+  styleUrls: ['./candy-edit.component.css'],
 })
 export class CandyEditComponent implements OnInit {
   form: FormGroup
