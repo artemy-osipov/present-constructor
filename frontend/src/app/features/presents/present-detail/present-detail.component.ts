@@ -7,6 +7,7 @@ import { filter, switchMap } from 'rxjs/operators'
 import { ConfirmationDeleteComponent } from 'app/shared/components/confirmation-delete/confirmation-delete.component'
 import { Present } from 'app/features/presents/service/present.model'
 import { PresentService } from 'app/features/presents/service/present.service'
+import { PresentGateway } from 'app/core/api/present.gateway'
 
 @Component({
   selector: 'app-present-detail',
@@ -22,18 +23,19 @@ export class PresentDetailComponent {
   }
 
   get publicReportLink(): string {
-    return this.presentService.publicReportLocation(this.presentId)
+    return this.presentGateway.publicReportLocation(this.presentId)
   }
 
   get privateReportLink(): string {
-    return this.presentService.privateReportLocation(this.presentId)
+    return this.presentGateway.privateReportLocation(this.presentId)
   }
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private dialog: MatDialog,
-    private presentService: PresentService
+    private presentService: PresentService,
+    private presentGateway: PresentGateway
   ) {}
 
   openDeleteForm() {
@@ -42,7 +44,7 @@ export class PresentDetailComponent {
       .afterClosed()
       .pipe(
         filter(Boolean),
-        switchMap((_) => this.presentService.delete(this.presentId))
+        switchMap((_) => this.presentGateway.delete(this.presentId))
       )
       .subscribe((_) => this.router.navigate(['/presents']))
   }

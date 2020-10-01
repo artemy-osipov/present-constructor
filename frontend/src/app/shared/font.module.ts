@@ -11,7 +11,6 @@ import {
   faFile,
   faPencilAlt,
   faPlus,
-  faRubleSign,
   faTimes,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons'
@@ -29,7 +28,6 @@ export class FontModule {
       faFile,
       faPencilAlt,
       faPlus,
-      faRubleSign,
       faTimes,
       faTrash
     )

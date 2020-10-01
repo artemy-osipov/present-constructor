@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core'
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router'
 
-import { Candy } from 'app/core/api/candy.dto'
+import { Candy } from 'app/core/api/candy.gateway'
 import { Present } from 'app/features/presents/service/present.model'
 import { PresentService } from 'app/features/presents/service/present.service'
 import {
@@ -27,7 +27,7 @@ export class PresentNewComponent implements OnInit {
   }
 
   get present(): Present {
-    return new Present(this.form.value)
+    return new Present(this.form.value, [])
   }
 
   constructor(

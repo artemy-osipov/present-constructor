@@ -6,7 +6,7 @@ import { Observable, of } from 'rxjs'
 import { filter, switchMap } from 'rxjs/operators'
 
 import { ConfirmationDeleteComponent } from 'app/shared/components/confirmation-delete/confirmation-delete.component'
-import { Candy } from 'app/core/api/candy.dto'
+import { Candy } from 'app/core/api/candy.gateway'
 import { CandyQuery, CandyService } from 'app/features/candies/state'
 import { NumberValidators, StringValidators } from 'app/core/utils'
 
@@ -91,9 +91,8 @@ export class CandyEditComponent implements OnInit {
   }
 
   private candyFromForm(): Candy {
-    const candy = this.form.value
+    const candy: Candy = this.form.value
     candy.id = this.candyId
-
     return candy
   }
 }

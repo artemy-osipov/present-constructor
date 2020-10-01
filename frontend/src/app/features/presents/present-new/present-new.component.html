@@ -43,7 +43,7 @@
             </tr>
             <tr>
               <td colspan="3">Сумма</td>
-              <td>{{ present.cost }}</td>
+              <td>{{ present.cost | price }}</td>
             </tr>
             <tr>
               <th>Название</th>
@@ -58,7 +58,7 @@
             >
               <td>{{ item.controls.candy.controls.name.value }}</td>
               <td>{{ item.controls.candy.controls.firm.value }}</td>
-              <td>{{ item.controls.candy.controls.price.value }}</td>
+              <td>{{ item.controls.candy.controls.price.value | price }}</td>
               <td>
                 <input
                   type="number"

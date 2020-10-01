@@ -19,7 +19,7 @@
     <tr *ngFor="let candy of candies$ | async">
       <td>{{ candy.name }}</td>
       <td>{{ candy.firm }}</td>
-      <td>{{ candy.price }} <fa-icon icon="ruble-sign"></fa-icon></td>
+      <td>{{ candy.price | price }}</td>
       <td>{{ candy.order }}</td>
       <td>
         <a [routerLink]="['/candies', candy.id]" class="button is-text">
@@ -45,7 +45,7 @@
         <div class="card-content">
           <div class="content">
             <p>{{ candy.firm }}</p>
-            <p>{{ candy.price }} <fa-icon icon="ruble-sign"></fa-icon></p>
+            <p>{{ candy.price | price }}</p>
           </div>
         </div>
       </div>

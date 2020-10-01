@@ -1,10 +1,23 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs'
-import { map } from 'rxjs/operators'
 
 import { environment } from 'environments/environment'
-import { Present } from './present.dto'
+
+export interface PresentItem {
+  candyId: string
+  count: number
+}
+
+export interface Present {
+  id: string
+  name: string
+  price: number
+  date: string
+  items: PresentItem[]
+}
+
+export type NewPresentRequest = Exclude<Present, 'id'>
 
 @Injectable({ providedIn: 'root' })
 export class PresentGateway {
@@ -12,18 +25,8 @@ export class PresentGateway {
 
   constructor(private http: HttpClient) {}
 
-  add(present: Present): Observable<string> {
-    return this.http
-      .post(this.presentResource, present, { observe: 'response' })
-      .pipe(
-        map((resp) => {
-          if (resp.body) {
-            return resp.body.toString()
-          } else {
-            throw new Error('id is not returned')
-          }
-        })
-      )
+  add(req: NewPresentRequest): Observable<string> {
+    return this.http.post<string>(this.presentResource, req)
   }
 
   get(id: string): Observable<Present> {
@@ -34,7 +37,7 @@ export class PresentGateway {
     return this.http.get<Present[]>(this.presentResource)
   }
 
-  delete(id: string): Observable<Object> {
+  delete(id: string): Observable<unknown> {
     return this.http.delete(this.presentResource + id)
   }
 

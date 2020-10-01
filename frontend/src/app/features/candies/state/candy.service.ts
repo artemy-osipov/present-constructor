@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs'
 import { tap, map } from 'rxjs/operators'
 
-import { CandyGateway } from 'app/core/api/candy.gateway'
-import { Candy } from 'app/core/api/candy.dto'
+import { CandyGateway, Candy } from 'app/core/api/candy.gateway'
 import { CandyStore } from './candy.store'
 
 @Injectable({ providedIn: 'root' })
@@ -31,13 +30,13 @@ export class CandyService {
     )
   }
 
-  update(candy: Candy): Observable<Object> {
+  update(candy: Candy): Observable<unknown> {
     return this.gateway
       .update(candy)
       .pipe(tap((_) => this.store.update(candy.id, candy)))
   }
 
-  delete(id: Candy['id']): Observable<Object> {
+  delete(id: Candy['id']): Observable<unknown> {
     return this.gateway.delete(id).pipe(tap((_) => this.store.remove(id)))
   }
 }

@@ -8,11 +8,13 @@ import { ValidationErrorComponent } from './validation/validation-error.componen
 import { ValidationDirective } from './validation/validation.directive'
 import { MatDialogModule } from '@angular/material/dialog'
 import { ConfirmationDeleteComponent } from './components/confirmation-delete/confirmation-delete.component'
+import { PricePipe } from './pipes/price.pipe'
 
 @NgModule({
   declarations: [
     ConfirmationDeleteComponent,
     LinkBorderComponent,
+    PricePipe,
     ValidationDirective,
     ValidationErrorComponent,
   ],
@@ -27,6 +29,7 @@ import { ConfirmationDeleteComponent } from './components/confirmation-delete/co
     FontModule,
     ConfirmationDeleteComponent,
     LinkBorderComponent,
+    PricePipe,
     ValidationDirective,
     ValidationErrorComponent,
   ],

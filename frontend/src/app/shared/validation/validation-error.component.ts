@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core'
-import { AbstractControlDirective, ValidationErrors } from '@angular/forms'
+import { AbstractControlDirective } from '@angular/forms'
 
 @Component({
   selector: 'app-validation-error',
@@ -18,7 +18,7 @@ export class ValidationErrorComponent {
     )
   }
 
-  get errors(): ValidationErrors {
+  get errors(): string[] {
     return Object.keys(this.control?.errors || {})
   }
 

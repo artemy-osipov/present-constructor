@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { Observable } from 'rxjs'
 
-import { Candy } from 'app/core/api/candy.dto'
+import { Candy } from 'app/core/api/candy.gateway'
 import { CandyQuery, CandyService } from 'app/features/candies/state'
 
 @Component({

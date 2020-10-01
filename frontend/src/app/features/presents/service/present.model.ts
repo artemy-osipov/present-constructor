@@ -1,4 +1,6 @@
-import { Candy } from 'app/core/api/candy.dto'
+import { Candy } from 'app/core/api/candy.gateway'
+import { Present as PresentDTO } from 'app/core/api/present.gateway'
+import { toMap } from 'app/core/utils'
 
 export interface PresentItem {
   candy: Candy
@@ -9,27 +11,28 @@ export class Present {
   id: string
   name: string
   price: number
-  date: Date
   items: PresentItem[] = []
 
-  constructor(src: any) {
+  constructor(src: PresentDTO, candies: Candy[]) {
     this.id = src.id
-    this.name = src.name && src.name.trim()
-    this.price = +src.price
-    this.date = src.date && new Date(src.date)
+    this.name = src.name
+    this.price = src.price
+
+    const grouppedCandies = toMap(candies, (c) => c.id)
     this.items =
-      (src.items &&
-        src.items.map(
-          (item: any) => <PresentItem>{ candy: item.candy, count: item.count }
-        )) ||
-      []
+      src.items?.map(
+        (item) =>
+          <PresentItem>{
+            candy: grouppedCandies.get(item.candyId),
+            count: item.count,
+          }
+      ) || []
   }
 
   get cost(): number {
-    return +this.items
+    return this.items
       .map((i) => i.candy.price * i.count)
       .reduce((a, b) => a + b, 0)
-      .toFixed(2)
   }
 
   get candies(): Candy[] {

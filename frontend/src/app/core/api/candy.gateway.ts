@@ -1,10 +1,22 @@
-import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpParams } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs'
-import { map } from 'rxjs/operators'
 
 import { environment } from 'environments/environment'
-import { Candy } from './candy.dto'
+
+export interface Candy {
+  id: string
+  name: string
+  firm: string
+  price: number
+  order: number
+}
+
+export type NewCandyRequest = Exclude<Candy, 'id'>
+
+export interface Filter {
+  ids: string[]
+}
 
 @Injectable({ providedIn: 'root' })
 export class CandyGateway {
@@ -12,33 +24,27 @@ export class CandyGateway {
 
   constructor(private http: HttpClient) {}
 
-  add(candy: Candy): Observable<string> {
-    return this.http
-      .post<string>(this.candyResource, candy, { observe: 'response' })
-      .pipe(
-        map((resp) => {
-          if (resp.body) {
-            return resp.body
-          } else {
-            throw new Error('id is not returned')
-          }
-        })
-      )
+  add(req: NewCandyRequest): Observable<string> {
+    return this.http.post<string>(this.candyResource, req)
   }
 
   get(id: string): Observable<Candy> {
     return this.http.get<Candy>(this.candyResource + id)
   }
 
-  list(): Observable<Candy[]> {
-    return this.http.get<Candy[]>(this.candyResource)
+  list(filter?: Filter): Observable<Candy[]> {
+    const params = new HttpParams()
+    if (filter) {
+      params.set('ids', filter.ids.join(','))
+    }
+    return this.http.get<Candy[]>(this.candyResource, { params: params })
   }
 
-  update(candy: Candy): Observable<Object> {
-    return this.http.put(this.candyResource + candy.id, candy)
+  update(candy: Candy): Observable<undefined> {
+    return this.http.put<undefined>(this.candyResource + candy.id, candy)
   }
 
-  delete(id: string): Observable<Object> {
-    return this.http.delete(this.candyResource + id)
+  delete(id: string): Observable<undefined> {
+    return this.http.delete<undefined>(this.candyResource + id)
   }
 }

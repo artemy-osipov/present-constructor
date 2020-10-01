@@ -3,7 +3,7 @@ import { QueryEntity } from '@datorama/akita'
 import { Observable } from 'rxjs'
 import { filter } from 'rxjs/operators'
 
-import { Candy } from 'app/core/api/candy.dto'
+import { Candy } from 'app/core/api/candy.gateway'
 import { CandyState, CandyStore } from './candy.store'
 import { nonNullable } from 'app/core/utils'
 

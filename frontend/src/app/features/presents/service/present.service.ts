@@ -1,41 +1,40 @@
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs'
-import { map } from 'rxjs/operators'
+import { map, switchMap } from 'rxjs/operators'
 
-import { PresentGateway } from 'app/core/api/present.gateway'
-import { Present as PresentDTO } from 'app/core/api/present.dto'
+import {
+  PresentGateway,
+  Present as PresentDTO,
+} from 'app/core/api/present.gateway'
+import { CandyGateway, Filter } from 'app/core/api/candy.gateway'
 import { Present } from './present.model'
 
 @Injectable({ providedIn: 'root' })
 export class PresentService {
-  constructor(private gateway: PresentGateway) {}
-
-  list(): Observable<Present[]> {
-    return this.gateway.list().pipe(map((ps) => ps.map((p) => new Present(p))))
-  }
+  constructor(
+    private presentGateway: PresentGateway,
+    private candyGateway: CandyGateway
+  ) {}
 
   getPresent(id: string): Observable<Present> {
-    return this.gateway.get(id).pipe(map((p) => new Present(p)))
+    return this.presentGateway.get(id).pipe(switchMap(this.fetchCandies))
+  }
+
+  private fetchCandies(p: PresentDTO): Observable<Present> {
+    const candiesFilter: Filter = {
+      ids: p.items.map((i) => i.candyId),
+    }
+    return this.candyGateway
+      .list(candiesFilter)
+      .pipe(map((cs) => new Present(p, cs)))
   }
 
   add(present: PresentDTO): Observable<string> {
-    return this.gateway.add(present).pipe(
+    return this.presentGateway.add(present).pipe(
       map((id) => {
         present.id = id
         return id
       })
     )
-  }
-
-  delete(id: string): Observable<Object> {
-    return this.gateway.delete(id)
-  }
-
-  publicReportLocation(id: string) {
-    return this.gateway.publicReportLocation(id)
-  }
-
-  privateReportLocation(id: string) {
-    return this.gateway.privateReportLocation(id)
   }
 }

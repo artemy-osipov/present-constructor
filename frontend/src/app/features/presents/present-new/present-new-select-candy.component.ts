@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core'
 import { Observable } from 'rxjs'
 
-import { Candy } from 'app/core/api/candy.dto'
-import { CandyGateway } from 'app/core/api/candy.gateway'
+import { CandyGateway, Candy } from 'app/core/api/candy.gateway'
 
 @Component({
   selector: 'app-present-new-select-candy',

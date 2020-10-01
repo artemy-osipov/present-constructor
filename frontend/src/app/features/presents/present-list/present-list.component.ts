@@ -1,8 +1,7 @@
 import { Component } from '@angular/core'
 import { Observable } from 'rxjs'
 
-import { PresentGateway } from 'app/core/api/present.gateway'
-import { Present } from 'app/core/api/present.dto'
+import { PresentGateway, Present } from 'app/core/api/present.gateway'
 
 @Component({
   selector: 'app-present-list',
