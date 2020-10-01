@@ -1,4 +1,4 @@
-import { Candy } from 'app/core/models/candy.model'
+import { Candy } from 'app/core/api/candy.dto'
 
 export interface PresentItem {
   candy: Candy

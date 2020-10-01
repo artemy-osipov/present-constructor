@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core'
 import { QueryEntity } from '@datorama/akita'
 import { Observable } from 'rxjs'
-
-import { CandyState, CandyStore } from './candy.store'
-import { Candy } from 'app/core/models/candy.model'
 import { filter } from 'rxjs/operators'
+
+import { Candy } from 'app/core/api/candy.dto'
+import { CandyState, CandyStore } from './candy.store'
 import { nonNullable } from 'app/core/utils'
 
 @Injectable({ providedIn: 'root' })

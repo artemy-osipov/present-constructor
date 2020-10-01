@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 
-import { Candy } from 'app/core/models/candy.model'
 import { environment } from 'environments/environment'
+import { Candy } from './candy.dto'
 
 @Injectable({ providedIn: 'root' })
 export class CandyGateway {

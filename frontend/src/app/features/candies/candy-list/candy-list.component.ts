@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core'
 import { Observable } from 'rxjs'
 
-import { Candy } from 'app/core/models/candy.model'
-import { CandyQuery, CandyService } from 'app/core/services/candy'
+import { Candy } from 'app/core/api/candy.dto'
+import { CandyQuery, CandyService } from 'app/features/candies/state'
 
 @Component({
   selector: 'app-candy-list',

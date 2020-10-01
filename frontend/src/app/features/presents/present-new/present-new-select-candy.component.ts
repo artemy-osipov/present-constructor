@@ -1,30 +1,23 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core'
+import { Component, EventEmitter, Input, Output } from '@angular/core'
 import { Observable } from 'rxjs'
 
-import { Candy } from 'app/core/models/candy.model'
-import { CandyQuery, CandyService } from 'app/core/services/candy'
+import { Candy } from 'app/core/api/candy.dto'
+import { CandyGateway } from 'app/core/api/candy.gateway'
 
 @Component({
   selector: 'app-present-new-select-candy',
   templateUrl: './present-new-select-candy.component.html',
 })
-export class PresentNewSelectCandyComponent implements OnInit {
+export class PresentNewSelectCandyComponent {
   @Input()
   selectedCandies: Candy[] = []
   @Output()
   selected = new EventEmitter<Candy>()
   @Output()
   unselected = new EventEmitter<Candy>()
-  candies$: Observable<Candy[]> = this.candyQuery.sortedList()
+  candies$: Observable<Candy[]> = this.candyGateway.list()
 
-  constructor(
-    private candyService: CandyService,
-    private candyQuery: CandyQuery
-  ) {}
-
-  ngOnInit() {
-    this.candyService.fetchList().subscribe()
-  }
+  constructor(private candyGateway: CandyGateway) {}
 
   select(candy: Candy): void {
     if (this.isSelected(candy)) {

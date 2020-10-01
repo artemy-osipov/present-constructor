@@ -1,23 +1,23 @@
-import { Component, OnInit } from '@angular/core'
+import { Component } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { MatDialog } from '@angular/material/dialog'
-import { ID } from '@datorama/akita'
 import { Observable } from 'rxjs'
+import { filter, switchMap } from 'rxjs/operators'
 
 import { ConfirmationDeleteComponent } from 'app/shared/components/confirmation-delete/confirmation-delete.component'
-import { Present } from 'app/core/models/present.model'
-import { PresentQuery, PresentService } from 'app/core/services/present'
+import { Present } from 'app/features/presents/service/present.model'
+import { PresentService } from 'app/features/presents/service/present.service'
 
 @Component({
   selector: 'app-present-detail',
   templateUrl: './present-detail.component.html',
 })
-export class PresentDetailComponent implements OnInit {
-  present$: Observable<Present | undefined> = this.presentQuery.present(
+export class PresentDetailComponent {
+  present$: Observable<Present> = this.presentService.getPresent(
     this.presentId
   )
 
-  get presentId(): ID {
+  get presentId(): string {
     return this.route.snapshot.params.id
   }
 
@@ -33,22 +33,17 @@ export class PresentDetailComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private dialog: MatDialog,
-    private presentService: PresentService,
-    private presentQuery: PresentQuery
+    private presentService: PresentService
   ) {}
 
-  ngOnInit() {
-    this.presentService.getPresent(this.presentId).subscribe()
-  }
-
   openDeleteForm() {
-    const dialogRef = this.dialog.open(ConfirmationDeleteComponent)
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.presentService.delete(this.presentId)
-        this.router.navigate(['/presents'])
-      }
-    })
+    this.dialog
+      .open(ConfirmationDeleteComponent)
+      .afterClosed()
+      .pipe(
+        filter(Boolean),
+        switchMap((_) => this.presentService.delete(this.presentId))
+      )
+      .subscribe((_) => this.router.navigate(['/presents']))
   }
 }

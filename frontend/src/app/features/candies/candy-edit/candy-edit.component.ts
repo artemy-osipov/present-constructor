@@ -3,12 +3,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { MatDialog } from '@angular/material/dialog'
 import { Observable, of } from 'rxjs'
+import { filter, switchMap } from 'rxjs/operators'
 
 import { ConfirmationDeleteComponent } from 'app/shared/components/confirmation-delete/confirmation-delete.component'
-import { Candy } from 'app/core/models/candy.model'
-import { CandyQuery, CandyService } from 'app/core/services/candy'
+import { Candy } from 'app/core/api/candy.dto'
+import { CandyQuery, CandyService } from 'app/features/candies/state'
 import { NumberValidators, StringValidators } from 'app/core/utils'
-import { filter, switchMap } from 'rxjs/operators'
 
 @Component({
   selector: 'app-candy-edit',

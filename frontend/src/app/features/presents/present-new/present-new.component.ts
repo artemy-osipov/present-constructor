@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core'
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router'
-import { ID } from '@datorama/akita'
 
-import { Candy } from 'app/core/models/candy.model'
-import { Present } from 'app/core/models/present.model'
-import { PresentService } from 'app/core/services/present'
+import { Candy } from 'app/core/api/candy.dto'
+import { Present } from 'app/features/presents/service/present.model'
+import { PresentService } from 'app/features/presents/service/present.service'
 import {
   NumberValidators,
   StringValidators,
@@ -19,7 +18,7 @@ export class PresentNewComponent implements OnInit {
   form: FormGroup
   successAdd = false
 
-  get sourceId(): ID {
+  get sourceId(): string {
     return this.route.snapshot.params.source
   }
 
@@ -94,7 +93,7 @@ export class PresentNewComponent implements OnInit {
   }
 
   private add(present: Present) {
-    this.presentService.add(present).subscribe(() => {
+    this.presentService.add(present as any).subscribe(() => {
       this.form.reset()
       this.form.controls['items'] = this.fb.array([])
 

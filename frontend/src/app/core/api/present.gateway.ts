@@ -1,11 +1,10 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
-import { ID } from '@datorama/akita'
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 
-import { Present } from 'app/core/models/present.model'
 import { environment } from 'environments/environment'
+import { Present } from './present.dto'
 
 @Injectable({ providedIn: 'root' })
 export class PresentGateway {
@@ -27,27 +26,23 @@ export class PresentGateway {
       )
   }
 
-  get(id: ID): Observable<Present> {
-    return this.http
-      .get<Present>(this.presentResource + id)
-      .pipe(map((data) => new Present(data)))
+  get(id: string): Observable<Present> {
+    return this.http.get<Present>(this.presentResource + id)
   }
 
   list(): Observable<Present[]> {
-    return this.http
-      .get<Present[]>(this.presentResource)
-      .pipe(map((res) => res.map((data) => new Present(data))))
+    return this.http.get<Present[]>(this.presentResource)
   }
 
-  delete(id: ID): Observable<Object> {
+  delete(id: string): Observable<Object> {
     return this.http.delete(this.presentResource + id)
   }
 
-  publicReportLocation(id: ID) {
+  publicReportLocation(id: string) {
     return this.presentResource + id + '/public-report'
   }
 
-  privateReportLocation(id: ID) {
+  privateReportLocation(id: string) {
     return this.presentResource + id + '/private-report'
   }
 }

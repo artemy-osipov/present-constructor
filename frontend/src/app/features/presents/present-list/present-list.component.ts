@@ -1,22 +1,15 @@
-import { Component, OnInit } from '@angular/core'
-
-import { PresentQuery, PresentService } from 'app/core/services/present'
+import { Component } from '@angular/core'
 import { Observable } from 'rxjs'
-import { Present } from 'app/core/models/present.model'
+
+import { PresentGateway } from 'app/core/api/present.gateway'
+import { Present } from 'app/core/api/present.dto'
 
 @Component({
   selector: 'app-present-list',
   templateUrl: './present-list.component.html',
 })
-export class PresentListComponent implements OnInit {
-  presents$: Observable<Present[]> = this.presentQuery.sortedList()
+export class PresentListComponent {
+  presents$: Observable<Present[]> = this.presentGateway.list()
 
-  constructor(
-    private presentService: PresentService,
-    private presentQuery: PresentQuery
-  ) {}
-
-  ngOnInit() {
-    this.presentService.list().subscribe()
-  }
+  constructor(private presentGateway: PresentGateway) {}
 }

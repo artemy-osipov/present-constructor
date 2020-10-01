@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs'
 import { tap, map } from 'rxjs/operators'
 
-import { Candy } from 'app/core/models/candy.model'
+import { CandyGateway } from 'app/core/api/candy.gateway'
+import { Candy } from 'app/core/api/candy.dto'
 import { CandyStore } from './candy.store'
-import { CandyGateway } from './candy.gateway'
 
 @Injectable({ providedIn: 'root' })
 export class CandyService {

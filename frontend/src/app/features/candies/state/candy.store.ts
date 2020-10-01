@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core'
 import { EntityState, StoreConfig, EntityStore } from '@datorama/akita'
 
-import { Candy } from 'app/core/models/candy.model'
+import { Candy } from 'app/core/api/candy.dto'
 
 export interface CandyState extends EntityState<Candy, Candy['id']> {}
 
