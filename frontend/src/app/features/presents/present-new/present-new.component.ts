@@ -6,12 +6,13 @@ import { Candy } from 'app/core/api/candy.gateway'
 import {
   PresentGateway,
   NewPresentRequest,
-  PresentItem as PresentItemDTO,
 } from 'app/core/api/present.gateway'
-import { Present } from 'app/features/presents/service/present.model'
+import {
+  Present,
+  PresentItem,
+} from 'app/features/presents/service/present.model'
 import { PresentService } from 'app/features/presents/service/present.service'
 import { NumberValidators, StringValidators } from 'app/core/utils'
-import { Observable } from 'rxjs'
 
 @Component({
   selector: 'app-present-new',
@@ -20,7 +21,6 @@ import { Observable } from 'rxjs'
 export class PresentNewComponent implements OnInit {
   form: FormGroup
   successAdd = false
-  present$?: Observable<Present>
 
   get sourceId(): string {
     return this.route.snapshot.params.source
@@ -30,8 +30,12 @@ export class PresentNewComponent implements OnInit {
     return this.form.get('items') as FormArray
   }
 
+  get selectedCandies(): Candy[] {
+    return (this.itemsForm.value as PresentItem[]).map((i) => i.candy)
+  }
+
   get present(): Present {
-    return new Present(this.form.value, [])
+    return new Present(this.form.value, this.selectedCandies)
   }
 
   constructor(
@@ -78,13 +82,14 @@ export class PresentNewComponent implements OnInit {
           NumberValidators.maxFractionLength(0),
         ],
       ],
+      candyId: candy.id,
       candy: this.fb.group(candy),
     })
   }
 
   removeItem(candy: Candy) {
     const index = this.itemsForm.controls.findIndex((item) => {
-      return item.value.candy.id === candy.id
+      return item.value.candyId === candy.id
     })
 
     this.itemsForm.removeAt(index)
@@ -93,23 +98,20 @@ export class PresentNewComponent implements OnInit {
   onSubmit() {
     this.form.markAllAsTouched()
     if (this.form.valid) {
-      this.add(this.present)
+      this.add(this.form.value)
     }
   }
 
-  private add(present: Present) {
-    const addReq: NewPresentRequest = {
-      ...present,
-      items: present.items.map(
-        (i) => <PresentItemDTO>{ candyId: i.candy.id, count: i.count }
-      ),
-    }
+  private add(addReq: NewPresentRequest) {
     this.presentGateway.add(addReq).subscribe(() => {
+      this.notifyAdd()
+      this.itemsForm.clear()
       this.form.reset()
-      this.form.controls['items'] = this.fb.array([])
-
-      this.successAdd = true
-      setTimeout(() => (this.successAdd = false), 5000)
     })
+  }
+
+  private notifyAdd() {
+    this.successAdd = true
+    setTimeout(() => (this.successAdd = false), 5000)
   }
 }

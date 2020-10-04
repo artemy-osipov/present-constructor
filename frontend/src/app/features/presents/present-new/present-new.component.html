@@ -2,7 +2,7 @@
   <div class="column is-two-fifths">
     <h1 class="title">Новый подарок</h1>
 
-    <p *ngIf="successAdd" type="success">Добавлено</p>
+    <div *ngIf="successAdd" class="notification is-primary">Добавлено</div>
 
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="field">
@@ -39,10 +39,10 @@
           <tbody>
             <tr>
               <td colspan="3">Количество</td>
-              <td>{{ present.items.length }}</td>
+              <td>{{ itemsForm.controls.length }}</td>
             </tr>
             <tr>
-              <td colspan="3">Сумма</td>
+              <td colspan="3">Себестоимость</td>
               <td>{{ present.cost | price }}</td>
             </tr>
             <tr>
@@ -56,9 +56,9 @@
               *ngFor="let item of itemsForm.controls; let i = index"
               [formGroupName]="i"
             >
-              <td>{{ item.controls.candy.controls.name.value }}</td>
-              <td>{{ item.controls.candy.controls.firm.value }}</td>
-              <td>{{ item.controls.candy.controls.price.value | price }}</td>
+              <td>{{ item.value.candy.name }}</td>
+              <td>{{ item.value.candy.firm }}</td>
+              <td>{{ item.value.candy.price | price }}</td>
               <td>
                 <input
                   type="number"
@@ -77,7 +77,7 @@
 
   <div class="column">
     <app-present-new-select-candy
-      [selectedCandies]="present.candies"
+      [selectedCandies]="selectedCandies"
       (selected)="addItem($event)"
       (unselected)="removeItem($event)"
     ></app-present-new-select-candy>

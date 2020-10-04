@@ -34,8 +34,4 @@ export class Present {
       .map((i) => i.candy.price * i.count)
       .reduce((a, b) => a + b, 0)
   }
-
-  get candies(): Candy[] {
-    return this.items.map((i) => i.candy)
-  }
 }
