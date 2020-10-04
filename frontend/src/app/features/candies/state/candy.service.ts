@@ -5,7 +5,7 @@ import { tap, map } from 'rxjs/operators'
 import { CandyGateway, Candy } from 'app/core/api/candy.gateway'
 import { CandyStore } from './candy.store'
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class CandyService {
   constructor(private store: CandyStore, private gateway: CandyGateway) {}
 

@@ -5,7 +5,7 @@ import { Candy } from 'app/core/api/candy.gateway'
 
 export interface CandyState extends EntityState<Candy, Candy['id']> {}
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 @StoreConfig({ name: 'candies' })
 export class CandyStore extends EntityStore<CandyState, Candy> {
   constructor() {

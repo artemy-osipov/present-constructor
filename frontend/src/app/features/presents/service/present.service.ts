@@ -9,7 +9,7 @@ import {
 import { CandyGateway, Filter } from 'app/core/api/candy.gateway'
 import { Present } from './present.model'
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class PresentService {
   constructor(
     private presentGateway: PresentGateway,
@@ -17,24 +17,15 @@ export class PresentService {
   ) {}
 
   getPresent(id: string): Observable<Present> {
-    return this.presentGateway.get(id).pipe(switchMap(this.fetchCandies))
+    return this.presentGateway.get(id).pipe(switchMap(p => this.fetchCandies(p)))
   }
 
-  private fetchCandies(p: PresentDTO): Observable<Present> {
+  private fetchCandies(present: PresentDTO): Observable<Present> {
     const candiesFilter: Filter = {
-      ids: p.items.map((i) => i.candyId),
+      ids: present.items.map((i) => i.candyId),
     }
     return this.candyGateway
       .list(candiesFilter)
-      .pipe(map((cs) => new Present(p, cs)))
-  }
-
-  add(present: PresentDTO): Observable<string> {
-    return this.presentGateway.add(present).pipe(
-      map((id) => {
-        present.id = id
-        return id
-      })
-    )
+      .pipe(map((cs) => new Present(present, cs)))
   }
 }

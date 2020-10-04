@@ -7,7 +7,7 @@ import { Candy } from 'app/core/api/candy.gateway'
 import { CandyState, CandyStore } from './candy.store'
 import { nonNullable } from 'app/core/utils'
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class CandyQuery extends QueryEntity<CandyState, Candy> {
   constructor(protected store: CandyStore) {
     super(store)

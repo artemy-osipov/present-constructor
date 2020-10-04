@@ -12,7 +12,7 @@ export interface Candy {
   order: number
 }
 
-export type NewCandyRequest = Exclude<Candy, 'id'>
+export type NewCandyRequest = Omit<Candy, 'id'>
 
 export interface Filter {
   ids: string[]

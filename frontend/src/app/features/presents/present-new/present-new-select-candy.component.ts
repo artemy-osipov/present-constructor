@@ -27,12 +27,6 @@ export class PresentNewSelectCandyComponent {
   }
 
   isSelected(candy: Candy): boolean {
-    return this.selectedCandies.find(this.sameId(candy)) !== undefined
-  }
-
-  private sameId(candy: Candy): (c: Candy) => boolean {
-    return (c) => {
-      return c.id === candy.id
-    }
+    return this.selectedCandies.find((c) => c.id === candy.id) !== undefined
   }
 }

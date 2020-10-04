@@ -17,7 +17,7 @@ export interface Present {
   items: PresentItem[]
 }
 
-export type NewPresentRequest = Exclude<Present, 'id'>
+export type NewPresentRequest = Omit<Present, 'id' | 'date'>
 
 @Injectable({ providedIn: 'root' })
 export class PresentGateway {

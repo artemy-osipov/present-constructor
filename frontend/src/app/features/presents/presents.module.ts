@@ -7,6 +7,7 @@ import { PresentDetailComponent } from './present-detail/present-detail.componen
 import { PresentListComponent } from './present-list/present-list.component'
 import { PresentNewComponent } from './present-new/present-new.component'
 import { PresentNewSelectCandyComponent } from './present-new/present-new-select-candy.component'
+import { PresentService } from './service/present.service'
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { PresentNewSelectCandyComponent } from './present-new/present-new-select
     PresentNewComponent,
     PresentNewSelectCandyComponent,
   ],
+  providers: [PresentService],
   imports: [SharedModule, PresentsRoutingModule],
 })
 export class PresentsModule {}

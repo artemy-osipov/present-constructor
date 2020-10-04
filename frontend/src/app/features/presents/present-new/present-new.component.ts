@@ -3,12 +3,15 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router'
 
 import { Candy } from 'app/core/api/candy.gateway'
+import {
+  PresentGateway,
+  NewPresentRequest,
+  PresentItem as PresentItemDTO,
+} from 'app/core/api/present.gateway'
 import { Present } from 'app/features/presents/service/present.model'
 import { PresentService } from 'app/features/presents/service/present.service'
-import {
-  NumberValidators,
-  StringValidators,
-} from 'app/core/utils'
+import { NumberValidators, StringValidators } from 'app/core/utils'
+import { Observable } from 'rxjs'
 
 @Component({
   selector: 'app-present-new',
@@ -17,6 +20,7 @@ import {
 export class PresentNewComponent implements OnInit {
   form: FormGroup
   successAdd = false
+  present$?: Observable<Present>
 
   get sourceId(): string {
     return this.route.snapshot.params.source
@@ -33,7 +37,8 @@ export class PresentNewComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private presentService: PresentService
+    private presentService: PresentService,
+    private presentGateway: PresentGateway
   ) {
     this.form = fb.group({
       name: ['', [StringValidators.notEmpty, StringValidators.maxLength(50)]],
@@ -59,6 +64,10 @@ export class PresentNewComponent implements OnInit {
     }
   }
 
+  addItem(candy: Candy, count?: number) {
+    this.itemsForm.push(this.buildItemForm(candy, count || 1))
+  }
+
   private buildItemForm(candy: Candy, count: number) {
     return this.fb.group({
       count: [
@@ -71,10 +80,6 @@ export class PresentNewComponent implements OnInit {
       ],
       candy: this.fb.group(candy),
     })
-  }
-
-  addItem(candy: Candy, count?: number) {
-    this.itemsForm.push(this.buildItemForm(candy, count || 1))
   }
 
   removeItem(candy: Candy) {
@@ -93,7 +98,13 @@ export class PresentNewComponent implements OnInit {
   }
 
   private add(present: Present) {
-    this.presentService.add(present as any).subscribe(() => {
+    const addReq: NewPresentRequest = {
+      ...present,
+      items: present.items.map(
+        (i) => <PresentItemDTO>{ candyId: i.candy.id, count: i.count }
+      ),
+    }
+    this.presentGateway.add(addReq).subscribe(() => {
       this.form.reset()
       this.form.controls['items'] = this.fb.array([])
 
