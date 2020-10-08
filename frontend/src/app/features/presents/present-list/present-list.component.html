@@ -5,11 +5,33 @@
   </button>
 </h1>
 
-<div class="columns is-multiline">
-  <div
-    class="column is-one-third-desktop is-half-tablet"
-    *ngFor="let present of presents$ | async"
-  >
+<table class="is-hidden-mobile table is-fullwidth is-striped is-hoverable">
+  <thead>
+    <tr>
+      <th>Название</th>
+      <th>Цена</th>
+      <th>Позиций</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let present of presents$ | async">
+      <td>{{ present.name }}</td>
+      <td>{{ present.price | price }}</td>
+      <td>{{ present.items.length }}</td>
+      <td>
+        <a [routerLink]="['/presents', present.id]" class="button is-text">
+          <span class="icon">
+            <fa-icon icon="eye"></fa-icon>
+          </span>
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="is-hidden-tablet columns is-multiline">
+  <div class="column" *ngFor="let present of presents$ | async">
     <a [routerLink]="['/presents', present.id]">
       <div class="card">
         <header class="card-header">
@@ -17,7 +39,8 @@
         </header>
         <div class="card-content">
           <div class="content">
-            <p>{{ present.price | price }}</p>
+            <p><strong>Цена: </strong>{{ present.price | price }}</p>
+            <p><strong>Позиций: </strong>{{ present.items.length }}</p>
           </div>
         </div>
       </div>

@@ -14,9 +14,7 @@ import { PresentGateway } from 'app/core/api/present.gateway'
   templateUrl: './present-detail.component.html',
 })
 export class PresentDetailComponent {
-  present$: Observable<Present> = this.presentService.getPresent(
-    this.presentId
-  )
+  present$: Observable<Present> = this.presentService.getPresent(this.presentId)
 
   get presentId(): string {
     return this.route.snapshot.params.id

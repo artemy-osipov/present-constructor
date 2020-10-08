@@ -34,7 +34,7 @@
 
 <div class="is-hidden-tablet columns is-multiline">
   <div
-    class="column is-one-fifth-desktop is-half-tablet"
+    class="column"
     *ngFor="let candy of candies$ | async"
   >
     <a [routerLink]="['/candies', candy.id]">
@@ -44,8 +44,8 @@
         </header>
         <div class="card-content">
           <div class="content">
-            <p>{{ candy.firm }}</p>
-            <p>{{ candy.price | price }}</p>
+            <p><strong>Производитель: </strong>{{ candy.firm }}</p>
+            <p><strong>Цена: </strong>{{ candy.price | price }}</p>
           </div>
         </div>
       </div>
