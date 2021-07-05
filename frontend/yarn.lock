@@ -207,19 +207,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/cdk@npm:~11.2.9":
-  version: 11.2.9
-  resolution: "@angular/cdk@npm:11.2.9"
+"@angular/cdk@npm:~12.1.1":
+  version: 12.1.1
+  resolution: "@angular/cdk@npm:12.1.1"
   dependencies:
     parse5: ^5.0.0
-    tslib: ^2.0.0
+    tslib: ^2.2.0
   peerDependencies:
-    "@angular/common": ^11.0.0 || ^12.0.0-0
-    "@angular/core": ^11.0.0 || ^12.0.0-0
+    "@angular/common": ^12.0.0 || ^13.0.0-0
+    "@angular/core": ^12.0.0 || ^13.0.0-0
+    rxjs: ^6.5.3
   dependenciesMeta:
     parse5:
       optional: true
-  checksum: 26f3bbb1a7876801be7b925923b7e74d953bec4657a1efa76a103639673c6f7ce3e60426c4dd29e2f6382885b5bc967496c421c207e63a9a2a17b477cf3f7fcd
+  checksum: 46960d169451c8181fd173ae743f32e85b1d59d4059646503dbbf51dc08b8ef76334f079fbf5ef8d3bcddb3eedfb207869e0009e326b9b53d4697e995017653b
   languageName: node
   linkType: hard
 
@@ -349,18 +350,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/material@npm:~11.2.9":
-  version: 11.2.9
-  resolution: "@angular/material@npm:11.2.9"
+"@angular/material@npm:~12.1.1":
+  version: 12.1.1
+  resolution: "@angular/material@npm:12.1.1"
   dependencies:
-    tslib: ^2.0.0
+    tslib: ^2.2.0
   peerDependencies:
-    "@angular/animations": ^11.0.0 || ^12.0.0-0
-    "@angular/cdk": 11.2.9
-    "@angular/common": ^11.0.0 || ^12.0.0-0
-    "@angular/core": ^11.0.0 || ^12.0.0-0
-    "@angular/forms": ^11.0.0 || ^12.0.0-0
-  checksum: e7a87aa5dcfb74c28cbda57c05335604c7904ef9d2ea56b9256d0027038595e17bdbdc3c03b5426ff6d3e16203104ac3e6c8b0a595fda7fe53457d4a734734e1
+    "@angular/animations": ^12.0.0 || ^13.0.0-0
+    "@angular/cdk": 12.1.1
+    "@angular/common": ^12.0.0 || ^13.0.0-0
+    "@angular/core": ^12.0.0 || ^13.0.0-0
+    "@angular/forms": ^12.0.0 || ^13.0.0-0
+    rxjs: ^6.5.3
+  checksum: 35aaf9ee0e8a86db67db90928cfaa055bd7d0427c45dc701ca6806eeda87db0d1724908e56fbc490fae8f26f815027c234d64f360e3c172d0cd78edcce9c1e20
   languageName: node
   linkType: hard
 
@@ -9844,14 +9846,14 @@ fsevents@~2.1.2:
   dependencies:
     "@angular-devkit/build-angular": ~12.1.1
     "@angular/animations": ~12.1.1
-    "@angular/cdk": ~11.2.9
+    "@angular/cdk": ~12.1.1
     "@angular/cli": ~12.1.1
     "@angular/common": ~12.1.1
     "@angular/compiler": ~12.1.1
     "@angular/compiler-cli": ~12.1.1
     "@angular/core": ~12.1.1
     "@angular/forms": ~12.1.1
-    "@angular/material": ~11.2.9
+    "@angular/material": ~12.1.1
     "@angular/platform-browser": ~12.1.1
     "@angular/platform-browser-dynamic": ~12.1.1
     "@angular/router": ~12.1.1
