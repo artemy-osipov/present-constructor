@@ -1,5 +1,5 @@
-import { Candy } from 'app/core/models/candy.model'
-import { Present } from 'app/core/models/present.model'
+import { Candy } from 'app/core/api/candy.gateway'
+import { Present } from 'app/core/api/present.gateway'
 
 export class Mock {
   candies: Candy[] = []
@@ -25,26 +25,26 @@ export class Mock {
   }
 
   newPresent(id: number): Present {
-    return new Present({
-      id: id,
+    return {
+      id: id.toString(),
       name: 'some name ' + id,
       price: 123.32,
-      date: new Date(),
+      date: new Date().toString(),
       items: [
         {
-          candy: this.candies[this.randomInt(0, this.candies.length)],
+          candyId: this.candies[this.randomInt(0, this.candies.length)].id,
           count: 1,
         },
         {
-          candy: this.candies[this.randomInt(0, this.candies.length)],
+          candyId: this.candies[this.randomInt(0, this.candies.length)].id,
           count: 3,
         },
         {
-          candy: this.candies[this.randomInt(0, this.candies.length)],
+          candyId: this.candies[this.randomInt(0, this.candies.length)].id,
           count: 10,
         },
       ],
-    })
+    }
   }
 
   randomInt(min: number, max: number) {
