@@ -12209,7 +12209,7 @@ typescript@^3.3.3333:
 
 "typescript@patch:typescript@4.1.5#builtin<compat/typescript>, typescript@patch:typescript@~4.1.5#builtin<compat/typescript>":
   version: 4.1.5
-  resolution: "typescript@patch:typescript@npm%3A4.1.5#builtin<compat/typescript>::version=4.1.5&hash=a45b0e"
+  resolution: "typescript@patch:typescript@npm%3A4.1.5#builtin<compat/typescript>::version=4.1.5&hash=ddfc1b"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
@@ -12219,7 +12219,7 @@ typescript@^3.3.3333:
 
 "typescript@patch:typescript@^3.3.3333#builtin<compat/typescript>":
   version: 3.9.7
-  resolution: "typescript@patch:typescript@npm%3A3.9.7#builtin<compat/typescript>::version=3.9.7&hash=a45b0e"
+  resolution: "typescript@patch:typescript@npm%3A3.9.7#builtin<compat/typescript>::version=3.9.7&hash=ddfc1b"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
