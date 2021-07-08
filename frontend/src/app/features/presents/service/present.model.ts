@@ -30,8 +30,12 @@ export class Present {
   }
 
   get cost(): number {
-    return this.items
-      .map((i) => i.candy.price * i.count)
-      .reduce((a, b) => a + b, 0)
+    return presentCost(this.items)
   }
+}
+
+export function presentCost(items: PresentItem[]): number {
+  return items
+    .map((i) => i.candy.price * i.count)
+    .reduce((a, b) => a + b, 0)
 }

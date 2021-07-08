@@ -4,17 +4,17 @@ import { Observable } from 'rxjs'
 
 import { environment } from 'environments/environment'
 
-export interface PresentItem {
-  candyId: string
-  count: number
-}
-
 export interface Present {
   id: string
   name: string
   price: number
   date: string
   items: PresentItem[]
+}
+
+export interface PresentItem {
+  candyId: string
+  count: number
 }
 
 export type NewPresentRequest = Omit<Present, 'id' | 'date'>
@@ -41,11 +41,11 @@ export class PresentGateway {
     return this.http.delete(this.presentResource + id)
   }
 
-  publicReportLocation(id: string) {
-    return this.presentResource + id + '/public-report'
+  publicReportLocation(id: string): string {
+    return `${this.presentResource}${id}/public-report`
   }
 
-  privateReportLocation(id: string) {
-    return this.presentResource + id + '/private-report'
+  privateReportLocation(id: string): string {
+    return `${this.presentResource}${id}/private-report`
   }
 }
