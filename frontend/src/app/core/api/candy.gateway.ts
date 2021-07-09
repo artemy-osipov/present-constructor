@@ -20,7 +20,7 @@ export interface Filter {
 
 @Injectable({ providedIn: 'root' })
 export class CandyGateway {
-  private candyResource = environment.apiUrl + 'api/candies/'
+  private candyResource = `${environment.apiUrl}api/candies/`
 
   constructor(private http: HttpClient) {}
 
@@ -37,7 +37,7 @@ export class CandyGateway {
     if (filter) {
       params.set('ids', filter.ids.join(','))
     }
-    return this.http.get<Candy[]>(this.candyResource, { params: params })
+    return this.http.get<Candy[]>(this.candyResource, { params })
   }
 
   update(candy: Candy): Observable<undefined> {

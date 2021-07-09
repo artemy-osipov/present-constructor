@@ -11,6 +11,7 @@ interface Link {
 })
 export class HeaderComponent {
   menuOpened = false
+
   links: Link[] = [
     { route: '/about', text: 'Справка' },
     { route: '/candies', text: 'Конфеты' },

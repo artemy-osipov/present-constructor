@@ -17,7 +17,9 @@ export class PresentService {
   ) {}
 
   getPresent(id: string): Observable<Present> {
-    return this.presentGateway.get(id).pipe(switchMap(p => this.fetchCandies(p)))
+    return this.presentGateway
+      .get(id)
+      .pipe(switchMap((p) => this.fetchCandies(p)))
   }
 
   private fetchCandies(present: PresentDTO): Observable<Present> {

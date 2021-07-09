@@ -4,8 +4,8 @@ import { Observable } from 'rxjs'
 import { filter } from 'rxjs/operators'
 
 import { Candy } from 'app/core/api/candy.gateway'
-import { CandyState, CandyStore } from './candy.store'
 import { nonNullable } from 'app/core/utils'
+import { CandyState, CandyStore } from './candy.store'
 
 @Injectable()
 export class CandyQuery extends QueryEntity<CandyState, Candy> {

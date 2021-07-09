@@ -16,7 +16,9 @@ const routes: Routes = [
   {
     path: 'presents',
     loadChildren: () =>
-      import('./features/presents/presents.module').then((m) => m.PresentsModule),
+      import('./features/presents/presents.module').then(
+        (m) => m.PresentsModule
+      ),
   },
 ]
 

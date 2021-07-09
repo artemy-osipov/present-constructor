@@ -16,8 +16,11 @@
       },
       "extends": [
         "plugin:@angular-eslint/recommended",
-        "plugin:@angular-eslint/template/process-inline-templates"
+        "plugin:@angular-eslint/template/process-inline-templates",
+        "airbnb-typescript/base",
+        "prettier"
       ],
+      "plugins": ["prettier"],
       "rules": {
         "@angular-eslint/directive-selector": [
           "error",
@@ -34,6 +37,15 @@
             "prefix": "app",
             "style": "kebab-case"
           }
+        ],
+        "import/prefer-default-export": "off",
+        "prettier/prettier": "error",
+        "class-methods-use-this": "off",
+        "no-param-reassign": [
+          "error",
+          {
+            "props": false
+          }
         ]
       }
     },
@@ -42,9 +54,13 @@
         "*.html"
       ],
       "extends": [
-        "plugin:@angular-eslint/template/recommended"
+        "plugin:@angular-eslint/template/recommended",
+        "prettier"
       ],
-      "rules": {}
+      "plugins": ["prettier"],
+      "rules": {
+        "prettier/prettier": "error"
+      }
     }
   ]
 }

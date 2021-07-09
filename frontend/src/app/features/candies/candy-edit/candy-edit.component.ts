@@ -16,6 +16,7 @@ import { NumberValidators, StringValidators } from 'app/core/utils'
 })
 export class CandyEditComponent implements OnInit {
   form: FormGroup
+
   editedCandy$: Observable<Candy> = this.candyQuery.candy(this.candyId)
 
   get candyId(): string {
@@ -69,12 +70,11 @@ export class CandyEditComponent implements OnInit {
           switchMap((candy) => {
             if (this.isEdit) {
               return this.candyService.update(candy)
-            } else {
-              return this.candyService.add(candy)
             }
+            return this.candyService.add(candy)
           })
         )
-        .subscribe((_) => this.router.navigate(['/candies']))
+        .subscribe(() => this.router.navigate(['/candies']))
     }
   }
 
@@ -84,9 +84,9 @@ export class CandyEditComponent implements OnInit {
       .afterClosed()
       .pipe(
         filter(Boolean),
-        switchMap((_) => this.candyService.delete(this.candyId))
+        switchMap(() => this.candyService.delete(this.candyId))
       )
-      .subscribe((_) => this.router.navigate(['/candies']))
+      .subscribe(() => this.router.navigate(['/candies']))
   }
 
   private candyFromForm(): Candy {

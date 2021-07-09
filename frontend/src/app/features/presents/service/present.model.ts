@@ -7,10 +7,17 @@ export interface PresentItem {
   count: number
 }
 
+export function presentCost(items: PresentItem[]): number {
+  return items.map((i) => i.candy.price * i.count).reduce((a, b) => a + b, 0)
+}
+
 export class Present {
   id: string
+
   name: string
+
   price: number
+
   items: PresentItem[] = []
 
   constructor(src: PresentDTO, candies: Candy[]) {
@@ -32,10 +39,4 @@ export class Present {
   get cost(): number {
     return presentCost(this.items)
   }
-}
-
-export function presentCost(items: PresentItem[]): number {
-  return items
-    .map((i) => i.candy.price * i.count)
-    .reduce((a, b) => a + b, 0)
 }

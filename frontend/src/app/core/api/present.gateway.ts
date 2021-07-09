@@ -21,7 +21,7 @@ export type NewPresentRequest = Omit<Present, 'id' | 'date'>
 
 @Injectable({ providedIn: 'root' })
 export class PresentGateway {
-  presentResource = environment.apiUrl + 'api/presents/'
+  presentResource = `${environment.apiUrl}api/presents/`
 
   constructor(private http: HttpClient) {}
 

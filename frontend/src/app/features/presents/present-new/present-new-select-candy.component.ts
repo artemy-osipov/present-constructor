@@ -10,10 +10,13 @@ import { CandyGateway, Candy } from 'app/core/api/candy.gateway'
 export class PresentNewSelectCandyComponent {
   @Input()
   selectedCandies: Candy[] = []
+
   @Output()
   selected = new EventEmitter<Candy>()
+
   @Output()
   unselected = new EventEmitter<Candy>()
+
   candies$: Observable<Candy[]> = this.candyGateway.list()
 
   constructor(private candyGateway: CandyGateway) {}

@@ -42,8 +42,8 @@ export class PresentDetailComponent {
       .afterClosed()
       .pipe(
         filter(Boolean),
-        switchMap((_) => this.presentGateway.delete(this.presentId))
+        switchMap(() => this.presentGateway.delete(this.presentId))
       )
-      .subscribe((_) => this.router.navigate(['/presents']))
+      .subscribe(() => this.router.navigate(['/presents']))
   }
 }

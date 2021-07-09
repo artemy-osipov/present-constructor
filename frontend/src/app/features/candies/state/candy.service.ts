@@ -33,10 +33,10 @@ export class CandyService {
   update(candy: Candy): Observable<unknown> {
     return this.gateway
       .update(candy)
-      .pipe(tap((_) => this.store.update(candy.id, candy)))
+      .pipe(tap(() => this.store.update(candy.id, candy)))
   }
 
   delete(id: Candy['id']): Observable<unknown> {
-    return this.gateway.delete(id).pipe(tap((_) => this.store.remove(id)))
+    return this.gateway.delete(id).pipe(tap(() => this.store.remove(id)))
   }
 }

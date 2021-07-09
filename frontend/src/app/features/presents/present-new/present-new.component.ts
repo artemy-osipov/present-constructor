@@ -3,10 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router'
 
 import { Candy } from 'app/core/api/candy.gateway'
-import {
-  PresentGateway,
-  NewPresentRequest,
-} from 'app/core/api/present.gateway'
+import { PresentGateway, NewPresentRequest } from 'app/core/api/present.gateway'
 import {
   Present,
   PresentItem,
@@ -20,6 +17,7 @@ import { NumberValidators, StringValidators } from 'app/core/utils'
 })
 export class PresentNewComponent implements OnInit {
   form: FormGroup
+
   successAdd = false
 
   get sourceId(): string {
@@ -88,9 +86,9 @@ export class PresentNewComponent implements OnInit {
   }
 
   removeItem(candy: Candy) {
-    const index = this.itemsForm.controls.findIndex((item) => {
-      return item.value.candyId === candy.id
-    })
+    const index = this.itemsForm.controls.findIndex(
+      (item) => item.value.candyId === candy.id
+    )
 
     this.itemsForm.removeAt(index)
   }
@@ -112,6 +110,8 @@ export class PresentNewComponent implements OnInit {
 
   private notifyAdd() {
     this.successAdd = true
-    setTimeout(() => (this.successAdd = false), 5000)
+    setTimeout(() => {
+      this.successAdd = false
+    }, 5000)
   }
 }

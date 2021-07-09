@@ -10,8 +10,8 @@ import {
 import { Observable, of } from 'rxjs'
 import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators'
 
-import { Mock } from './mock.data'
 import { ID } from '@datorama/akita'
+import { Mock } from './mock.data'
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
@@ -24,35 +24,21 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     const { url, method, body } = request
     const self = this
 
-    return of(null)
-      .pipe(mergeMap(handleRoute))
-      .pipe(materialize())
-      .pipe(delay(500))
-      .pipe(dematerialize())
+    function ok(content?: any) {
+      return of(new HttpResponse({ status: 200, body: content }))
+    }
 
-    function handleRoute() {
-      switch (true) {
-        case url.endsWith('/api/candies/') && method === 'GET':
-          return getCandies()
-        case url.match(/\/api\/candies\/[\w-]+$/) && method === 'GET':
-          return getCandyById()
-        case url.endsWith('/api/candies/') && method === 'POST':
-          return addCandy()
-        case url.match(/\/api\/candies\/[\w-]+$/) && method === 'PUT':
-          return updateCandy()
-        case url.match(/\/api\/candies\/[\w-]+$/) && method === 'DELETE':
-          return deleteCandy()
-        case url.endsWith('/api/presents/') && method === 'GET':
-          return getPresents()
-        case url.match(/\/api\/presents\/[\w-]+$/) && method === 'GET':
-          return getPresentById()
-        case url.endsWith('/api/presents/') && method === 'POST':
-          return addPresent()
-        case url.match(/\/api\/presents\/[\w-]+$/) && method === 'DELETE':
-          return deletePresent()
-        default:
-          return next.handle(request)
-      }
+    function added(id: ID) {
+      return of(new HttpResponse({ status: 201, body: id }))
+    }
+
+    function empty() {
+      return of(new HttpResponse({ status: 404 }))
+    }
+
+    function idFromUrl() {
+      const urlParts = url.split('/')
+      return urlParts[urlParts.length - 1]
     }
 
     function getCandies() {
@@ -64,9 +50,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
       if (candy) {
         return ok(candy)
-      } else {
-        return empty()
       }
+      return empty()
     }
 
     function addCandy() {
@@ -93,9 +78,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
       if (present) {
         return ok(present)
-      } else {
-        return empty()
       }
+      return empty()
     }
 
     function addPresent() {
@@ -108,22 +92,36 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       return ok()
     }
 
-    function ok(content?: any) {
-      return of(new HttpResponse({ status: 200, body: content }))
+    function handleRoute() {
+      switch (true) {
+        case url.endsWith('/api/candies/') && method === 'GET':
+          return getCandies()
+        case url.match(/\/api\/candies\/[\w-]+$/) && method === 'GET':
+          return getCandyById()
+        case url.endsWith('/api/candies/') && method === 'POST':
+          return addCandy()
+        case url.match(/\/api\/candies\/[\w-]+$/) && method === 'PUT':
+          return updateCandy()
+        case url.match(/\/api\/candies\/[\w-]+$/) && method === 'DELETE':
+          return deleteCandy()
+        case url.endsWith('/api/presents/') && method === 'GET':
+          return getPresents()
+        case url.match(/\/api\/presents\/[\w-]+$/) && method === 'GET':
+          return getPresentById()
+        case url.endsWith('/api/presents/') && method === 'POST':
+          return addPresent()
+        case url.match(/\/api\/presents\/[\w-]+$/) && method === 'DELETE':
+          return deletePresent()
+        default:
+          return next.handle(request)
+      }
     }
 
-    function added(id: ID) {
-      return of(new HttpResponse({ status: 201, body: id }))
-    }
-
-    function empty() {
-      return of(new HttpResponse({ status: 404 }))
-    }
-
-    function idFromUrl() {
-      const urlParts = url.split('/')
-      return urlParts[urlParts.length - 1]
-    }
+    return of(null)
+      .pipe(mergeMap(handleRoute))
+      .pipe(materialize())
+      .pipe(delay(500))
+      .pipe(dematerialize())
   }
 }
 
