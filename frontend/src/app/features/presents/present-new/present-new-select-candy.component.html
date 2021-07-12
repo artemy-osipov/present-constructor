@@ -1,6 +1,6 @@
 <h1 class="title mt-5">Выбор конфет</h1>
 
-<table class="table is-striped is-hoverable is-fullwidth">
+<table class="is-hidden-mobile table is-striped is-hoverable is-fullwidth">
   <thead>
     <tr>
       <th>Название</th>
@@ -12,7 +12,7 @@
 
   <tbody>
     <tr
-      *ngFor="let candy of candies$ | async; index as i"
+      *ngFor="let candy of candies$ | async"
       [class.has-background-primary]="isSelected(candy)"
     >
       <td>{{ candy.name }}</td>
@@ -27,3 +27,25 @@
     </tr>
   </tbody>
 </table>
+
+<div class="is-hidden-tablet columns is-multiline">
+  <div class="column" *ngFor="let candy of candies$ | async">
+    <div class="card" [class.has-background-primary]="isSelected(candy)">
+      <header class="card-header">
+        <p class="card-header-title">{{ candy.name }}</p>
+      </header>
+      <div class="card-content">
+        <div class="content">
+          <p><strong>Производитель: </strong>{{ candy.firm }}</p>
+          <p><strong>Цена: </strong>{{ candy.price | price }}</p>
+        </div>
+      </div>
+      <footer class="card-footer">
+        <app-present-item-control class="card-footer-item"
+          [currentCount]="items.get(candy.id)?.count || 0"
+          (newCount)="onItemChange(candy, $event)"
+        ></app-present-item-control>
+      </footer>
+    </div>
+  </div>
+</div>
