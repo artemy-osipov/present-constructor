@@ -1,85 +1,79 @@
-<div class="columns">
-  <div class="column is-two-fifths">
-    <h1 class="title">Новый подарок</h1>
+<h1 class="title">Новый подарок</h1>
 
-    <div *ngIf="successAdd" class="notification is-primary">Добавлено</div>
+<div *ngIf="successAdd" class="notification is-primary">Добавлено</div>
 
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <div class="field">
-        <label class="label">Название</label>
-        <div class="control">
-          <input class="input" formControlName="name" appFormControl />
-        </div>
-      </div>
-      <div class="field">
-        <label class="label">Цена</label>
-        <div class="control">
-          <input
-            class="input"
-            type="number"
-            placeholder="Пример: 123.12"
-            formControlName="price"
-            appFormControl
-          />
-        </div>
-      </div>
-      <div class="field">
-        <div class="control">
-          <button type="submit" class="button is-primary">
-            <span class="icon">
-              <fa-icon icon="plus"></fa-icon>
-            </span>
-            <span>Добавить</span>
-          </button>
-        </div>
-      </div>
-      <div class="field">
-        <label class="label">Состав</label>
-        <table formArrayName="items" class="table" appFormControl>
-          <tbody>
-            <tr>
-              <td colspan="3">Количество</td>
-              <td>{{ itemsForm.controls.length }}</td>
-            </tr>
-            <tr>
-              <td colspan="3">Себестоимость</td>
-              <td>{{ present.cost | price }}</td>
-            </tr>
-            <tr>
-              <th>Название</th>
-              <th>Производитель</th>
-              <th>Цена</th>
-              <th>Кол-во</th>
-            </tr>
-
-            <tr
-              *ngFor="let item of itemsForm.controls; let i = index"
-              [formGroupName]="i"
-            >
-              <td>{{ item.value.candy.name }}</td>
-              <td>{{ item.value.candy.firm }}</td>
-              <td>{{ item.value.candy.price | price }}</td>
-              <td>
-                <input
-                  type="number"
-                  min="1"
-                  class="form-control"
-                  formControlName="count"
-                  appFormControl
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </form>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="field">
+    <label class="label">Название</label>
+    <div class="control">
+      <input class="input" formControlName="name" appFormControl />
+    </div>
   </div>
-
-  <div class="column">
-    <app-present-new-select-candy
-      [selectedCandies]="selectedCandies"
-      (selected)="addItem($event)"
-      (unselected)="removeItem($event)"
-    ></app-present-new-select-candy>
+  <div class="field">
+    <label class="label">Цена</label>
+    <div class="control">
+      <input
+        class="input"
+        type="number"
+        placeholder="Пример: 123.12"
+        formControlName="price"
+        appFormControl
+      />
+    </div>
   </div>
-</div>
+  <div class="field">
+    <div class="control">
+      <button type="submit" class="button is-primary">
+        <span class="icon">
+          <fa-icon icon="plus"></fa-icon>
+        </span>
+        <span>Добавить</span>
+      </button>
+    </div>
+  </div>
+  <div class="field">
+    <label class="label">Себестоимость</label>
+    <div class="control">
+      {{ present.cost | price }}
+    </div>
+  </div>
+  <div class="field">
+    <label class="label">Состав</label>
+
+    <details formArrayName="items" appFormControl>
+      <summary>Позиций: {{ itemsForm.controls.length }}</summary>
+      <table class="table is-fullwidth">
+        <tbody>
+          <tr>
+            <th>Название</th>
+            <th>Производитель</th>
+            <th>Цена</th>
+            <th>Кол-во</th>
+          </tr>
+
+          <tr
+            *ngFor="let item of itemsForm.controls; let i = index"
+            [formGroupName]="i"
+          >
+            <td>{{ item.value.candy.name }}</td>
+            <td>{{ item.value.candy.firm }}</td>
+            <td>{{ item.value.candy.price | price }}</td>
+            <td>
+              <app-present-item-control
+                [currentCount]="item.value.count"
+                (newCount)="
+                  onItemCountChange({ candy: item.value.candy, count: $event })
+                "
+              ></app-present-item-control>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </details>
+  </div>
+</form>
+
+<app-present-new-select-candy
+  [selectedItems]="selectedItems"
+  (changedCount)="onItemCountChange($event)"
+></app-present-new-select-candy>

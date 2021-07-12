@@ -28,8 +28,12 @@ export class PresentNewComponent implements OnInit {
     return this.form.get('items') as FormArray
   }
 
+  get selectedItems(): PresentItem[] {
+    return this.itemsForm.value as PresentItem[]
+  }
+
   get selectedCandies(): Candy[] {
-    return (this.itemsForm.value as PresentItem[]).map((i) => i.candy)
+    return this.selectedItems.map((i) => i.candy)
   }
 
   get present(): Present {
@@ -61,27 +65,42 @@ export class PresentNewComponent implements OnInit {
       this.presentService
         .getPresent(this.sourceId)
         .subscribe((present) =>
-          present.items.forEach((item) => this.addItem(item.candy, item.count))
+          present.items.forEach((item) => this.upsertItem(item))
         )
     }
   }
 
-  addItem(candy: Candy, count?: number) {
-    this.itemsForm.push(this.buildItemForm(candy, count || 1))
+  onItemCountChange(item: PresentItem) {
+    if (item.count <= 0) {
+      this.removeItem(item.candy)
+    } else {
+      this.upsertItem(item)
+    }
   }
 
-  private buildItemForm(candy: Candy, count: number) {
+  upsertItem(item: PresentItem) {
+    const index = this.itemsForm.controls.findIndex(
+      (i) => i.value.candyId === item.candy.id
+    )
+    if (index !== -1) {
+      this.itemsForm.controls[index].patchValue({count: item.count})
+    } else {
+      this.itemsForm.push(this.buildItemForm(item))
+    }
+  }
+
+  private buildItemForm(item: PresentItem) {
     return this.fb.group({
       count: [
-        count,
+        item.count,
         [
           Validators.required,
           Validators.min(1),
           NumberValidators.maxFractionLength(0),
         ],
       ],
-      candyId: candy.id,
-      candy: this.fb.group(candy),
+      candyId: item.candy.id,
+      candy: this.fb.group(item.candy),
     })
   }
 

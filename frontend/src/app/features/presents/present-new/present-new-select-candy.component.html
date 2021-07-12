@@ -6,18 +6,24 @@
       <th>Название</th>
       <th>Производитель</th>
       <th>Цена</th>
+      <th></th>
     </tr>
   </thead>
 
   <tbody>
     <tr
-      *ngFor="let candy of candies$ | async"
-      (click)="select(candy)"
+      *ngFor="let candy of candies$ | async; index as i"
       [class.has-background-primary]="isSelected(candy)"
     >
       <td>{{ candy.name }}</td>
       <td>{{ candy.firm }}</td>
       <td>{{ candy.price | price }}</td>
+      <td>
+        <app-present-item-control
+          [currentCount]="items.get(candy.id)?.count || 0"
+          (newCount)="onItemChange(candy, $event)"
+        ></app-present-item-control>
+      </td>
     </tr>
   </tbody>
 </table>

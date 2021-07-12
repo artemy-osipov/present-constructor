@@ -7,4 +7,8 @@ export interface CandyState extends EntityState<Candy, Candy['id']> {}
 
 @Injectable()
 @StoreConfig({ name: 'candies' })
-export class CandyStore extends EntityStore<CandyState, Candy> {}
+export class CandyStore extends EntityStore<CandyState, Candy> {
+  constructor() {
+    super()
+  }
+}
