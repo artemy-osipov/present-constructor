@@ -32,12 +32,12 @@
   <div class="column" *ngFor="let candy of candies$ | async">
     <div class="card" [class.has-background-primary]="isSelected(candy)">
       <header class="card-header">
-        <p class="card-header-title">{{ candy.name }}</p>
+        <div class="card-header-title">{{ candy.name }}</div>
       </header>
       <div class="card-content">
         <div class="content">
-          <p><strong>Производитель: </strong>{{ candy.firm }}</p>
-          <p><strong>Цена: </strong>{{ candy.price | price }}</p>
+          <div><strong>Производитель: </strong>{{ candy.firm }}</div>
+          <div><strong>Цена: </strong>{{ candy.price | price }}</div>
         </div>
       </div>
       <footer class="card-footer">

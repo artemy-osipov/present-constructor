@@ -37,12 +37,12 @@
     <a [routerLink]="['/presents', present.id]">
       <div class="card">
         <header class="card-header">
-          <p class="card-header-title">{{ present.name }}</p>
+          <div class="card-header-title">{{ present.name }}</div>
         </header>
         <div class="card-content">
           <div class="content">
-            <p><strong>Цена: </strong>{{ present.price | price }}</p>
-            <p><strong>Позиций: </strong>{{ present.items.length }}</p>
+            <div><strong>Цена: </strong>{{ present.price | price }}</div>
+            <div><strong>Позиций: </strong>{{ present.items.length }}</div>
           </div>
         </div>
       </div>

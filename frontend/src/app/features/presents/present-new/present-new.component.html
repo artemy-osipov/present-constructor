@@ -80,12 +80,12 @@
         <div class="column" *ngFor="let item of itemsForm.controls">
           <div class="card">
             <header class="card-header">
-              <p class="card-header-title">{{ item.value.candy.name }}</p>
+              <div class="card-header-title">{{ item.value.candy.name }}</div>
             </header>
             <div class="card-content">
               <div class="content">
-                <p><strong>Производитель: </strong>{{ item.value.candy.firm }}</p>
-                <p><strong>Цена: </strong>{{ item.value.candy.price | price }}</p>
+                <div><strong>Производитель: </strong>{{ item.value.candy.firm }}</div>
+                <div><strong>Цена: </strong>{{ item.value.candy.price | price }}</div>
               </div>
             </div>
             <footer class="card-footer">
