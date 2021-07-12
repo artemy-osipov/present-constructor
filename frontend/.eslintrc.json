@@ -46,7 +46,8 @@
           {
             "props": false
           }
-        ]
+        ],
+        "@typescript-eslint/no-useless-constructor": "off"
       }
     },
     {

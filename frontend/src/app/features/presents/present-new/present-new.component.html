@@ -40,8 +40,16 @@
   <div class="field">
     <label class="label">Состав</label>
 
-    <details formArrayName="items" appFormControl>
-      <summary>Позиций: {{ itemsForm.controls.length }}</summary>
+    <mat-expansion-panel
+      formArrayName="items"
+      appFormControl
+      [disabled]="itemsForm.controls.length === 0"
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Позиций: {{ itemsForm.controls.length }}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
       <table class="table is-fullwidth">
         <tbody>
           <tr>
@@ -69,7 +77,7 @@
           </tr>
         </tbody>
       </table>
-    </details>
+    </mat-expansion-panel>
   </div>
 </form>
 

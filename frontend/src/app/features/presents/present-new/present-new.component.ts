@@ -83,7 +83,7 @@ export class PresentNewComponent implements OnInit {
       (i) => i.value.candyId === item.candy.id
     )
     if (index !== -1) {
-      this.itemsForm.controls[index].patchValue({count: item.count})
+      this.itemsForm.controls[index].patchValue({ count: item.count })
     } else {
       this.itemsForm.push(this.buildItemForm(item))
     }

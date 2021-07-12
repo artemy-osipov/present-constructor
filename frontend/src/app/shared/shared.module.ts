@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core'
 import { ReactiveFormsModule } from '@angular/forms'
 
 import { MatDialogModule } from '@angular/material/dialog'
+import { MatExpansionModule } from '@angular/material/expansion'
 import { FontModule } from './font.module'
 import { LinkBorderComponent } from './components/link-border/link-border.component'
 import { ValidationErrorComponent } from './validation/validation-error.component'
@@ -18,13 +19,14 @@ import { PricePipe } from './pipes/price.pipe'
     ValidationDirective,
     ValidationErrorComponent,
   ],
-  imports: [CommonModule, FontModule, MatDialogModule],
+  imports: [CommonModule, FontModule, MatDialogModule, MatExpansionModule],
   exports: [
     // vendor
     CommonModule,
     ReactiveFormsModule,
     // material
     MatDialogModule,
+    MatExpansionModule,
     // local
     FontModule,
     ConfirmationDeleteComponent,
