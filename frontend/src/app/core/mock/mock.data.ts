@@ -11,7 +11,7 @@ export type MockData = {
 export class Mock {
   data: MockData = {
     candies: [],
-    presents: []
+    presents: [],
   }
 
   get candies(): Candy[] {
@@ -26,10 +26,10 @@ export class Mock {
     if (typeof environment.mock === 'object' && environment.mock !== null) {
       this.data = environment.mock
     } else {
-      for (let index = 0; index < 41; index++) {
+      for (let index = 0; index < 41; index += 1) {
         this.data.candies.push(this.newCandy(index))
       }
-      for (let index = 0; index < 11; index++) {
+      for (let index = 0; index < 11; index += 1) {
         this.data.presents.push(this.newPresent(index))
       }
     }
@@ -38,8 +38,8 @@ export class Mock {
   newCandy(id: number): Candy {
     return {
       id: id.toString(),
-      name: 'some name ' + id,
-      firm: 'some firm ' + id,
+      name: `some name ${id}`,
+      firm: `some firm ${id}`,
       price: 123.32,
       order: id,
     }
@@ -48,7 +48,7 @@ export class Mock {
   newPresent(id: number): Present {
     return {
       id: id.toString(),
-      name: 'some name ' + id,
+      name: `some name ${id}`,
       price: 123.32,
       date: new Date().toString(),
       items: [
@@ -69,17 +69,14 @@ export class Mock {
   }
 
   randomInt(min: number, max: number) {
-    min = Math.ceil(min)
-    max = Math.floor(max)
     return Math.floor(Math.random() * (max - min)) + min
   }
 
   uuid(): string {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (
-      c
-    ) {
-      var r = (Math.random() * 16) | 0,
-        v = c == 'x' ? r : (r & 0x3) | 0x8
+    /* eslint no-bitwise: "off" */
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+      const r = (Math.random() * 16) | 0
+      const v = c === 'x' ? r : (r & 0x3) | 0x8
       return v.toString(16)
     })
   }
