@@ -41,7 +41,8 @@
         </div>
       </div>
       <footer class="card-footer">
-        <app-present-item-control class="card-footer-item"
+        <app-present-item-control
+          class="card-footer-item"
           [currentCount]="items.get(candy.id)?.count || 0"
           (newCount)="onItemChange(candy, $event)"
         ></app-present-item-control>

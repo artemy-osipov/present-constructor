@@ -7,9 +7,6 @@ export function toMap<T, K>(xs: T[], keyExtractor: (x: T) => K): Map<K, T> {
 }
 
 export function isScrolledIntoView(el: HTMLElement): boolean {
-  var rect = el.getBoundingClientRect()
-  var elemTop = rect.top
-  var elemBottom = rect.bottom
-
-  return elemTop >= 0 && elemBottom <= window.innerHeight
+  const rect = el.getBoundingClientRect()
+  return rect.top >= 0 && rect.bottom <= window.innerHeight
 }

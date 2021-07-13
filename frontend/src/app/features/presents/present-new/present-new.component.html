@@ -21,7 +21,7 @@
       />
     </div>
   </div>
-  <div class="field">
+  <div #saveButton class="field">
     <div class="control">
       <button type="submit" class="button is-primary">
         <span class="icon">
@@ -31,7 +31,7 @@
       </button>
     </div>
   </div>
-  <div #costField class="field">
+  <div class="field">
     <label class="label">Себестоимость</label>
     <div class="control">
       {{ present.cost | price }}
@@ -113,5 +113,5 @@
 
 <app-scroll-nav
   [message]="'Себестоимость: ' + (present.cost | price)"
-  [scrollElement]="costField"
+  [scrollElement]="saveButton"
 ></app-scroll-nav>

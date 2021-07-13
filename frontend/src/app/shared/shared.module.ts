@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common'
 import { NgModule } from '@angular/core'
 import { ReactiveFormsModule } from '@angular/forms'
 
+import { ScrollingModule } from '@angular/cdk/scrolling'
 import { MatDialogModule } from '@angular/material/dialog'
 import { MatExpansionModule } from '@angular/material/expansion'
 import { FontModule } from './font.module'
@@ -21,7 +22,13 @@ import { PricePipe } from './pipes/price.pipe'
     ValidationDirective,
     ValidationErrorComponent,
   ],
-  imports: [CommonModule, FontModule, MatDialogModule, MatExpansionModule],
+  imports: [
+    CommonModule,
+    FontModule,
+    MatDialogModule,
+    MatExpansionModule,
+    ScrollingModule,
+  ],
   exports: [
     // vendor
     CommonModule,
@@ -29,6 +36,7 @@ import { PricePipe } from './pipes/price.pipe'
     // material
     MatDialogModule,
     MatExpansionModule,
+    ScrollingModule,
     // local
     FontModule,
     ConfirmationDeleteComponent,
