@@ -1,0 +1,18 @@
+# compiled output
+/dist
+/tmp
+/out-tsc
+
+# dependencies
+/node_modules
+
+/.yarn/*
+/.pnp.*
+!frontend/.yarn/releases
+!frontend/.yarn/plugins
+
+# IDE - VSCode
+.vscode
+
+# local src
+src/environments/environment.mock.ts

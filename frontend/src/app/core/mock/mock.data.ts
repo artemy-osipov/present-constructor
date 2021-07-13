@@ -1,16 +1,37 @@
 import { Candy } from 'app/core/api/candy.gateway'
 import { Present } from 'app/core/api/present.gateway'
 
+import { environment } from 'environments/environment'
+
+export type MockData = {
+  candies: Candy[]
+  presents: Present[]
+}
+
 export class Mock {
-  candies: Candy[] = []
-  presents: Present[] = []
+  data: MockData = {
+    candies: [],
+    presents: []
+  }
+
+  get candies(): Candy[] {
+    return this.data.candies
+  }
+
+  get presents(): Present[] {
+    return this.data.presents
+  }
 
   constructor() {
-    for (let index = 0; index < 41; index++) {
-      this.candies.push(this.newCandy(index))
-    }
-    for (let index = 0; index < 11; index++) {
-      this.presents.push(this.newPresent(index))
+    if (typeof environment.mock === 'object' && environment.mock !== null) {
+      this.data = environment.mock
+    } else {
+      for (let index = 0; index < 41; index++) {
+        this.data.candies.push(this.newCandy(index))
+      }
+      for (let index = 0; index < 11; index++) {
+        this.data.presents.push(this.newPresent(index))
+      }
     }
   }
 
@@ -79,7 +100,7 @@ export class Mock {
   }
 
   deleteCandy(id: Candy['id']) {
-    this.candies = this.candies.filter((x) => x.id !== id)
+    this.data.candies = this.candies.filter((x) => x.id !== id)
   }
 
   getPresent(id: Present['id']): Present | undefined {
@@ -93,6 +114,6 @@ export class Mock {
   }
 
   deletePresent(id: Present['id']) {
-    this.presents = this.presents.filter((x) => x.id !== id)
+    this.data.presents = this.presents.filter((x) => x.id !== id)
   }
 }
