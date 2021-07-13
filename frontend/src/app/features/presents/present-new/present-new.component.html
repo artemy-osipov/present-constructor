@@ -31,7 +31,7 @@
       </button>
     </div>
   </div>
-  <div class="field">
+  <div #costField class="field">
     <label class="label">Себестоимость</label>
     <div class="control">
       {{ present.cost | price }}
@@ -59,9 +59,7 @@
             <th>Кол-во</th>
           </tr>
 
-          <tr
-            *ngFor="let item of itemsForm.controls"
-          >
+          <tr *ngFor="let item of itemsForm.controls">
             <td>{{ item.value.candy.name }}</td>
             <td>{{ item.value.candy.firm }}</td>
             <td>{{ item.value.candy.price | price }}</td>
@@ -84,12 +82,17 @@
             </header>
             <div class="card-content">
               <div class="content">
-                <div><strong>Производитель: </strong>{{ item.value.candy.firm }}</div>
-                <div><strong>Цена: </strong>{{ item.value.candy.price | price }}</div>
+                <div>
+                  <strong>Производитель: </strong>{{ item.value.candy.firm }}
+                </div>
+                <div>
+                  <strong>Цена: </strong>{{ item.value.candy.price | price }}
+                </div>
               </div>
             </div>
             <footer class="card-footer">
-              <app-present-item-control class="card-footer-item"
+              <app-present-item-control
+                class="card-footer-item"
                 [currentCount]="item.value.count"
                 (newCount)="
                   onItemCountChange({ candy: item.value.candy, count: $event })
@@ -107,3 +110,8 @@
   [selectedItems]="selectedItems"
   (changedCount)="onItemCountChange($event)"
 ></app-present-new-select-candy>
+
+<app-scroll-nav
+  [message]="'Себестоимость: ' + (present.cost | price)"
+  [scrollElement]="costField"
+></app-scroll-nav>
