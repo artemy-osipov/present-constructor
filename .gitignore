@@ -1,15 +1,3 @@
 *.iml
-.idea
-.env
 .DS_Store
 Thumbs.db
-
-backend/.idea
-backend/.classpath
-backend/.gradle
-backend/.gradletasknamecache
-backend/.project
-backend/.settings
-backend/bin
-backend/build
-backend/out
