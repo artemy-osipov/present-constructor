@@ -1,17 +1,4 @@
 {
   "semi": false,
-  "overrides": [
-    {
-      "files": "*.html",
-      "options": {
-        "parser": "html"
-      }
-    },
-    {
-      "files": "*.component.html",
-      "options": {
-        "parser": "angular"
-      }
-    }
-  ]
+  "singleQuote": true
 }
