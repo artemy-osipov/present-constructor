@@ -5,8 +5,8 @@
   import { presentRepository } from '$lib/data/present.repository'
 
   export const load: Load = async ({ url }) => {
-    const sourcePresentId = url.searchParams.get('source')
-    if (browser && sourcePresentId) {
+    const sourcePresentId = browser && url.searchParams.get('source')
+    if (sourcePresentId) {
       await Promise.all([presentRepository.fetch(), candyRepository.fetch()])
       const source = await firstValueFrom(
         presentRepository.present(sourcePresentId)
