@@ -6,7 +6,7 @@ export type NewPresentRequest = Omit<Present, 'id' | 'date'>
 const presentResource = `${API_URL}/api/presents`
 
 class PresentGateway {
-  async add(req: NewPresentRequest): Promise<Present> {
+  async add(req: NewPresentRequest): Promise<Present['id']> {
     const resp = await fetch(presentResource, {
       method: 'POST',
       headers: {
@@ -17,7 +17,7 @@ class PresentGateway {
     return resp.json()
   }
 
-  async get(id: string): Promise<Present> {
+  async get(id: Present['id']): Promise<Present> {
     const resp = await fetch(`${presentResource}/${id}`)
     return resp.json()
   }
@@ -27,7 +27,7 @@ class PresentGateway {
     return resp.json()
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: Present['id']): Promise<void> {
     await fetch(`${presentResource}/${id}`, {
       method: 'DELETE',
     })

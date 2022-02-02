@@ -10,7 +10,7 @@ export interface Filter {
 const candyResource = `${API_URL}/api/candies`
 
 class CandyGateway {
-  async add(req: NewCandyRequest): Promise<Candy> {
+  async add(req: NewCandyRequest): Promise<Candy['id']> {
     const resp = await fetch(candyResource, {
       method: 'POST',
       headers: {
@@ -21,7 +21,7 @@ class CandyGateway {
     return resp.json()
   }
 
-  async get(id: string): Promise<Candy> {
+  async get(id: Candy['id']): Promise<Candy> {
     const resp = await fetch(`${candyResource}/${id}`)
     return resp.json()
   }
@@ -45,7 +45,7 @@ class CandyGateway {
     })
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: Candy['id']): Promise<void> {
     await fetch(`${candyResource}/${id}`, {
       method: 'DELETE',
     })

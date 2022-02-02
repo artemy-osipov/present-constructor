@@ -72,7 +72,8 @@ class CandyRepository {
   }
 
   async add(req: NewCandyRequest): Promise<Candy> {
-    const candy = await candyGateway.add(req)
+    const candyId = await candyGateway.add(req)
+    const candy = await candyGateway.get(candyId)
     store.update(upsertEntities(candy))
     return candy
   }

@@ -58,7 +58,8 @@ class PresentRepository {
   }
 
   async add(req: NewPresentRequest): Promise<Present> {
-    const present = await presentGateway.add(req)
+    const presentId = await presentGateway.add(req)
+    const present = await presentGateway.get(presentId)
     store.update(upsertEntities(present))
     return present
   }
