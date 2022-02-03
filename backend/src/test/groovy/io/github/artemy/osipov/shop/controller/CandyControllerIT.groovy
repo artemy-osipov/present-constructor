@@ -1,98 +1,105 @@
 package io.github.artemy.osipov.shop.controller
 
-
+import groovy.transform.CompileStatic
+import io.github.artemy.osipov.shop.exception.EntityNotFoundException
+import io.github.artemy.osipov.shop.service.candy.Candy
+import io.github.artemy.osipov.shop.service.candy.CandyCommandHandler
+import io.github.artemy.osipov.shop.service.candy.CandyRepository
+import io.github.artemy.osipov.shop.service.candy.HideCandyCommand
+import io.github.artemy.osipov.shop.service.candy.UpdateCandyCommand
+import io.github.artemy.osipov.shop.testdata.CandyTestData
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
-import io.github.artemy.osipov.present.exception.EntityNotFoundException
 
-import static org.hamcrest.CoreMatchers.notNullValue
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize
+import static io.github.artemy.osipov.shop.testdata.CandyTestData.CANDY_ID
+import static io.github.artemy.osipov.shop.utils.JsonUtils.toJson
+import static io.github.artemy.osipov.shop.utils.UuidUtils.newUUID
+import static org.hamcrest.Matchers.aMapWithSize
+import static org.hamcrest.Matchers.notNullValue
 import static org.mockito.ArgumentMatchers.any
 import static org.mockito.Mockito.doThrow
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
-import static io.github.artemy.osipov.present.utils.JsonUtils.toJson
-import static io.github.artemy.osipov.present.utils.UuidUtils.newUUID
 
-@WebMvcTest(CandyController.class)
+@WebMvcTest(CandyController)
+@CompileStatic
 class CandyControllerIT {
 
     @MockBean
-    private io.github.artemy.osipov.shop.service.candy.CandyCommandHandler commandHandler
+    CandyCommandHandler commandHandler
+
+    @MockBean
+    CandyRepository repository
 
     @Autowired
-    private MockMvc mockMvc
+    MockMvc mockMvc
 
-    private io.github.artemy.osipov.shop.controller.dto.DEditCandy getUpdateDTO() {
-        io.github.artemy.osipov.shop.controller.dto.DEditCandy dto = new io.github.artemy.osipov.shop.controller.dto.DEditCandy()
-        dto.setName("name")
-        dto.setFirm("firm")
-        dto.setPrice(BigDecimal.valueOf(4.2))
-        dto.setOrder(51D)
-
-        return dto
+    @Test
+    void 'should add candy with valid data'() {
+        mockMvc.perform(post('/api/candies')
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(CandyTestData.REST.updateDTO())))
+                .andExpect(status().isOk())
+                .andExpect(content().string(notNullValue()))
     }
 
     @Test
-    void addCandyWithValidEntityShouldReturnLocation() throws Exception {
-        mockMvc.perform(post("/api/candies")
+    void 'should not add candy with invalid data'() {
+        mockMvc.perform(post('/api/candies')
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(getUpdateDTO())))
-                .andExpect(status().isCreated())
-                .andExpect(header().string("Location", notNullValue()))
-    }
-
-    @Test
-    void addCandyWithNotValidEntityShouldReturnErrors() throws Exception {
-        mockMvc.perform(post("/api/candies")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{}"))
+                .content('{}'))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath('$.fieldErrors', hasSize(4)))
+                .andExpect(jsonPath('$.details', aMapWithSize(4)))
     }
 
     @Test
-    void editCandyWithValidEntityShouldReturn2xx() throws Exception {
-        mockMvc.perform(put("/api/candies/{id}", newUUID())
+    void 'should edit candy with valid data'() {
+        mockMvc.perform(put('/api/candies/{id}', CANDY_ID)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(getUpdateDTO())))
+                .content(toJson(CandyTestData.REST.updateDTO())))
                 .andExpect(status().isNoContent())
     }
 
     @Test
-    void editCandyWithNotValidEntityShouldReturnErrors() throws Exception {
-        mockMvc.perform(put("/api/candies/{id}", newUUID())
+    void 'should not edit candy with invalid data'() {
+        mockMvc.perform(put('/api/candies/{id}', CANDY_ID)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{}"))
+                .content('{}'))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath('$.fieldErrors', hasSize(4)))
+                .andExpect(jsonPath('$.details', aMapWithSize(4)))
     }
 
     @Test
-    void editCandyWithNonExistentIdShouldReturn404() throws Exception {
-        doThrow(new EntityNotFoundException()).when(commandHandler).on(any(io.github.artemy.osipov.shop.service.candy.UpdateCandyCommand.class))
+    void 'should not edit nonexistent candy'() {
+        def unknownId = newUUID()
+        doThrow(new EntityNotFoundException(Candy, unknownId))
+                .when(commandHandler)
+                .on(any(UpdateCandyCommand))
 
-        mockMvc.perform(put("/api/candies/{id}", newUUID())
+        mockMvc.perform(put('/api/candies/{id}', unknownId)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(getUpdateDTO())))
+                .content(toJson(CandyTestData.REST.updateDTO())))
                 .andExpect(status().isNotFound())
     }
 
     @Test
-    void removeCandyWithValidIdShouldReturn2xx() throws Exception {
-        mockMvc.perform(delete("/api/candies/{id}", newUUID()))
+    void 'should remove candy'() {
+        mockMvc.perform(delete('/api/candies/{id}', CANDY_ID))
                 .andExpect(status().isNoContent())
     }
 
     @Test
-    void removeCandyWithNonExistentIdShouldReturn404() throws Exception {
-        doThrow(new EntityNotFoundException()).when(commandHandler).on(any(io.github.artemy.osipov.shop.service.candy.HideCandyCommand.class))
+    void 'should not remove unknown candy'() {
+        def unknownId = newUUID()
+        doThrow(new EntityNotFoundException(Candy, unknownId))
+                .when(commandHandler)
+                .on(any(HideCandyCommand))
 
-        mockMvc.perform(delete("/api/candies/{id}", newUUID()))
+        mockMvc.perform(delete('/api/candies/{id}', unknownId))
                 .andExpect(status().isNotFound())
     }
 }

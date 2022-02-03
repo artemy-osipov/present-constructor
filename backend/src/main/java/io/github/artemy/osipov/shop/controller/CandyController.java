@@ -38,7 +38,7 @@ public class CandyController {
     private final CandyCommandHandler commandHandler;
 
     @GetMapping(value = "/{id}")
-    public DCandy findCandy(@PathVariable("id") UUID id) {
+    public DCandy getCandy(@PathVariable("id") UUID id) {
         return repository.findById(id)
                 .map(converter::toDCandy)
                 .orElseThrow(() -> new EntityNotFoundException(Candy.class, id));

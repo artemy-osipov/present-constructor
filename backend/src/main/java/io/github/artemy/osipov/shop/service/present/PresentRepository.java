@@ -4,5 +4,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.UUID;
 
-public interface PresentRepository extends MongoRepository<PresentModel, UUID> {
+public interface PresentRepository extends MongoRepository<Present, UUID> {
 }

@@ -1,83 +1,75 @@
 package io.github.artemy.osipov.shop.controller
 
+import groovy.transform.CompileStatic
+import io.github.artemy.osipov.shop.exception.EntityNotFoundException
+import io.github.artemy.osipov.shop.service.present.Present
+import io.github.artemy.osipov.shop.service.present.PresentCommandHandler
+import io.github.artemy.osipov.shop.service.present.PresentRepository
+import io.github.artemy.osipov.shop.service.present.RemovePresentCommand
+import io.github.artemy.osipov.shop.testdata.PresentTestData
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
-import io.github.artemy.osipov.present.exception.EntityNotFoundException
-import io.github.artemy.osipov.present.service.present.PresentCommandHandler
-import io.github.artemy.osipov.present.service.present.RemovePresentCommand
 
-import static org.hamcrest.CoreMatchers.notNullValue
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize
+import static io.github.artemy.osipov.shop.testdata.PresentTestData.PRESENT_ID
+import static io.github.artemy.osipov.shop.utils.JsonUtils.toJson
+import static io.github.artemy.osipov.shop.utils.UuidUtils.newUUID
+import static org.hamcrest.Matchers.aMapWithSize
+import static org.hamcrest.Matchers.notNullValue
 import static org.mockito.Mockito.any
 import static org.mockito.Mockito.doThrow
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
-import static io.github.artemy.osipov.present.utils.JsonUtils.toJson
-import static io.github.artemy.osipov.present.utils.UuidUtils.newUUID
 
+@CompileStatic
 @WebMvcTest(PresentController.class)
 class PresentControllerIT {
 
     @MockBean
-    private PresentCommandHandler commandHandler;
+    PresentCommandHandler commandHandler
+
+    @MockBean
+    PresentRepository presentRepository
 
     @Autowired
-    private MockMvc mockMvc;
-
-//    private DAddPresent getUpdateDTO() {
-//        DAddPresent dto = new DAddPresent();
-//        dto.setName('name');
-//        dto.setPrice(BigDecimal.valueOf(4.2));
-//
-//        DPresentItem item1 = new DPresentItem();
-//        item1.setCandy(new EntityDTO());
-//        item1.getCandy().setId(newUUID());
-//        item1.setCount(2);
-//
-//        DPresentItem item2 = new DPresentItem();
-//        item2.setCandy(new EntityDTO());
-//        item2.getCandy().setId(newUUID());
-//        item2.setCount(6);
-//
-//        dto.setItems(asList(item1, item2));
-//
-//        return dto;
-//    }
+    MockMvc mockMvc
 
     @Test
-    void addPresentWithValidEntityShouldReturnLocation() throws Exception {
+    void 'should add present with valid data'() {
         mockMvc.perform(post('/api/presents')
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(getUpdateDTO())))
-                .andExpect(status().isCreated())
-                .andExpect(header().string('Location', notNullValue()));
+                .content(toJson(PresentTestData.REST.addDTO())))
+                .andExpect(status().isOk())
+                .andExpect(content().string(notNullValue()))
     }
 
     @Test
-    void addPresentWithNotValidEntityShouldReturnErrors() throws Exception {
+    void 'should not add present with invalid data'() throws Exception {
         mockMvc.perform(post('/api/presents')
                 .contentType(MediaType.APPLICATION_JSON)
                 .content('{}'))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath('$.fieldErrors', hasSize(3)));
+                .andExpect(jsonPath('$.details', aMapWithSize(3)))
     }
 
     @Test
-    void removePresentShouldReturn2xx() throws Exception {
-        mockMvc.perform(delete('/api/presents/{id}', newUUID()))
-                .andExpect(status().isNoContent());
+    void 'should remove present'() throws Exception {
+        mockMvc.perform(delete('/api/presents/{id}', PRESENT_ID))
+                .andExpect(status().isNoContent())
     }
 
     @Test
-    void removePresentWithNonexistentIdShouldReturn404() throws Exception {
-        doThrow(new EntityNotFoundException()).when(commandHandler).on(any(RemovePresentCommand.class));
+    void 'should not remove unknown present'() throws Exception {
+        def unknownId = newUUID()
+        doThrow(new EntityNotFoundException(Present, unknownId))
+                .when(commandHandler)
+                .on(any(RemovePresentCommand))
 
-        mockMvc.perform(delete('/api/presents/{id}', newUUID()))
-                .andExpect(status().isNotFound());
+        mockMvc.perform(delete('/api/presents/{id}', unknownId))
+                .andExpect(status().isNotFound())
     }
 }

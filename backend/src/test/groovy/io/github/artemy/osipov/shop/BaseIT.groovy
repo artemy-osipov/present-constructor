@@ -1,4 +1,4 @@
 package io.github.artemy.osipov.shop
 
-class BaseIT {
+abstract class BaseIT {
 }

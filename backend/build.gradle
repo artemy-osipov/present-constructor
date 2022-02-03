@@ -10,10 +10,27 @@ plugins {
 group = 'io.github.artemy.osipov.shop'
 version = '1.5.0-SNAPSHOT'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jib {
+    to {
+        image = "ir2sora/${project.name}"
+        tags = [project.version]
+    }
+    container {
+        ports = ['8080']
+    }
 }
 
 repositories {
@@ -39,23 +56,5 @@ dependencies {
 
     testImplementation 'org.codehaus.groovy:groovy'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
-}
-
-compileJava {
-    options.compilerArgs = ['-Xlint:all']
-}
-
-test {
-    useJUnitPlatform()
-}
-
-jib {
-    to {
-        image = "ir2sora/${project.name}"
-        tags = [project.version]
-    }
-    container {
-        ports = ['8080']
-    }
+    testImplementation 'org.docx4j:docx4j-JAXB-ReferenceImpl:11.3.2'
 }

@@ -5,8 +5,8 @@ import io.github.artemy.osipov.shop.controller.dto.DAddPresent;
 import io.github.artemy.osipov.shop.controller.dto.DPresent;
 import io.github.artemy.osipov.shop.exception.EntityNotFoundException;
 import io.github.artemy.osipov.shop.service.present.CreatePresentCommand;
+import io.github.artemy.osipov.shop.service.present.Present;
 import io.github.artemy.osipov.shop.service.present.PresentCommandHandler;
-import io.github.artemy.osipov.shop.service.present.PresentModel;
 import io.github.artemy.osipov.shop.service.present.PresentRepository;
 import io.github.artemy.osipov.shop.service.present.RemovePresentCommand;
 import lombok.RequiredArgsConstructor;
@@ -37,12 +37,10 @@ public class PresentController {
     private final PresentCommandHandler commandHandler;
 
     @GetMapping(value = "/{id}")
-    public DPresent findPresent(@PathVariable("id") UUID id) {
+    public DPresent getPresent(@PathVariable("id") UUID id) {
         return repository.findById(id)
                 .map(converter::toDPresent)
-                .orElseThrow(() ->
-                        new EntityNotFoundException(PresentModel.class, id)
-                );
+                .orElseThrow(() -> new EntityNotFoundException(Present.class, id));
     }
 
     @GetMapping
@@ -65,9 +63,9 @@ public class PresentController {
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> removePresent(@PathVariable("id") UUID id) {
-        RemovePresentCommand command = new RemovePresentCommand(id);
-
-        commandHandler.on(command);
+        commandHandler.on(
+                new RemovePresentCommand(id)
+        );
 
         return ResponseEntity.noContent()
                 .build();

@@ -1,72 +1,74 @@
 package io.github.artemy.osipov.shop.controller
 
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import io.github.artemy.osipov.shop.service.candy.CandyCommandHandler
+import io.github.artemy.osipov.shop.service.candy.CandyRepository
+import io.github.artemy.osipov.shop.testdata.CandyTestData
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.test.web.servlet.MockMvc
 
-import static java.util.Arrays.asList;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.doReturn;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static io.github.artemy.osipov.present.utils.UuidUtils.newUUID;
+import static io.github.artemy.osipov.shop.utils.UuidUtils.newUUID
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize
+import static org.mockito.Mockito.any
+import static org.mockito.Mockito.doReturn
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-@ExtendWith(SpringExtension.class)
-//@WebMvcTest(CandyQueryController.class)
-@Disabled
+@WebMvcTest(CandyController)
 class CandyQueryControllerIT {
 
-//    @MockBean
-//    private CandyQueryRepository repository;
+    @MockBean
+    CandyCommandHandler commandHandler
+
+    @MockBean
+    CandyRepository repository
 
     @Autowired
-    private MockMvc mockMvc;
-
-//    private CandyQuery getCandy() {
-//        CandyQuery candy = new CandyQuery();
-//        candy.setId(newUUID());
-//        candy.setName('name');
-//        candy.setFirm('firm');
-//        candy.setPrice(BigDecimal.valueOf(4.20));
-//        candy.setOrder(51);
-//
-//        return candy;
-//    }
+    MockMvc mockMvc
 
     @Test
-    void findExistentCandyReturnIt() throws Exception {
-        def candy = getCandy();
-        doReturn(Optional.of(candy)).when(repository).findById(any());
+    void 'should get candy by id'() {
+        def candy = CandyTestData.candy()
+        doReturn(Optional.of(candy))
+                .when(repository)
+                .findById(any())
 
         mockMvc.perform(get('/api/candies/{id}', candy.getId()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath('$.id', equalTo(candy.getId().toString())))
-                .andExpect(jsonPath('$.name', equalTo(candy.getName())))
-                .andExpect(jsonPath('$.firm', equalTo(candy.getFirm())))
-                .andExpect(jsonPath('$.price', equalTo(candy.getPrice().doubleValue())))
-                .andExpect(jsonPath('$.order', equalTo(candy.getOrder())));
+                .andExpect(content().json("""
+                                    {
+                                      "id": "${candy.id}",
+                                      "name": "${candy.name}",
+                                      "firm": "${candy.firm}",
+                                      "price": ${candy.price},
+                                      "order": ${candy.order}
+                                    }"""
+                ))
     }
 
     @Test
-    void findNotExistentCandyShouldReturn404() throws Exception {
-        doReturn(Optional.empty()).when(repository).findById(any());
+    void 'should fail return unknown candy'() {
+        def unknownId = newUUID()
+        doReturn(Optional.empty())
+                .when(repository)
+                .findById(any(UUID))
 
-        mockMvc.perform(get('/api/candies/{id}', newUUID()))
-                .andExpect(status().isNotFound());
+        mockMvc.perform(get('/api/candies/{id}', unknownId))
+                .andExpect(status().isNotFound())
     }
 
     @Test
-    void listCandyShouldReturnArray() throws Exception {
-        doReturn(asList(getCandy(), getCandy())).when(repository).list();
+    void 'should list candies'() {
+        doReturn([CandyTestData.candy(), CandyTestData.candy()])
+                .when(repository)
+                .findAll()
 
         mockMvc.perform(get('/api/candies'))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath('$', hasSize(2)));
+                .andExpect(jsonPath('$', hasSize(2)))
     }
 }

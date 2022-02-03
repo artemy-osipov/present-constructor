@@ -12,7 +12,7 @@ public class PresentCommandHandler {
     private final PresentRepository presentRepository;
 
     public void on(CreatePresentCommand event) {
-        PresentModel present = new PresentModel();
+        Present present = new Present();
         present.setId(event.getId());
         present.setName(event.getName());
         present.setPrice(event.getPrice());

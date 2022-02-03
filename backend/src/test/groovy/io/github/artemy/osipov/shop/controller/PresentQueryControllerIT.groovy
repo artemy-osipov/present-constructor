@@ -1,82 +1,75 @@
-package io.github.artemy.osipov.shop.controller;
+package io.github.artemy.osipov.shop.controller
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import io.github.artemy.osipov.shop.service.present.PresentCommandHandler
+import io.github.artemy.osipov.shop.service.present.PresentRepository
+import io.github.artemy.osipov.shop.testdata.PresentTestData
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.test.web.servlet.MockMvc
 
-import static java.util.Arrays.asList;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static io.github.artemy.osipov.present.utils.UuidUtils.newUUID;
+import static io.github.artemy.osipov.shop.testdata.PresentTestData.PRESENT_ID
+import static io.github.artemy.osipov.shop.utils.UuidUtils.newUUID
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize
+import static org.mockito.Mockito.doReturn
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
-@ExtendWith(SpringExtension.class)
-//@WebMvcTest(value = PresentQueryController.class)
+@WebMvcTest(PresentController)
 class PresentQueryControllerIT {
 
-//    @MockBean
-//    private PresentQueryRepository repository;
+    @MockBean
+    PresentCommandHandler commandHandler
+
+    @MockBean
+    PresentRepository presentRepository
 
     @Autowired
-    private MockMvc mockMvc;
-
-//    private PresentQuery getPresent() {
-//        PresentQuery present = new PresentQuery();
-//        present.setId(newUUID());
-//        present.setName('name');
-//        present.setPrice(BigDecimal.valueOf(4.2));
-//
-//        PresentItemQuery item1 = new PresentItemQuery();
-//        item1.setCandy(new CandyQuery());
-//        item1.getCandy().setId(newUUID());
-//        item1.setCount(2);
-//
-//        PresentItemQuery item2 = new PresentItemQuery();
-//        item2.setCandy(new CandyQuery());
-//        item2.getCandy().setId(newUUID());
-//        item2.setCount(6);
-//
-//        present.setItems(asList(item1, item2));
-//
-//        return present;
-//    }
+    MockMvc mockMvc
 
     @Test
-    void findExistentPresentShouldReturnIt() throws Exception {
-        def present = getPresent();
-        doReturn(Optional.of(present)).when(repository).findById(any());
+    void 'should get present by id'() {
+        def present = PresentTestData.present()
+        doReturn(Optional.of(present))
+                .when(presentRepository)
+                .findById(PRESENT_ID)
 
-        mockMvc.perform(get('/api/presents/{id}', newUUID()))
+        mockMvc.perform(get('/api/presents/{id}', PRESENT_ID))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath('$.id', equalTo(present.getId().toString())))
-                .andExpect(jsonPath('$.name', equalTo(present.getName())))
-                .andExpect(jsonPath('$.price', equalTo(present.getPrice().doubleValue())))
-                .andExpect(jsonPath('$.items[0].candy.id', equalTo(present.getItems().get(0).getCandy().getId().toString())))
-                .andExpect(jsonPath('$.items[0].count', equalTo(present.getItems().get(0).getCount())))
-                .andExpect(jsonPath('$.items[1].candy.id', equalTo(present.getItems().get(1).getCandy().getId().toString())))
-                .andExpect(jsonPath('$.items[1].count', equalTo(present.getItems().get(1).getCount())));
+                .andExpect(content().json("""
+                                    {
+                                      "id": "${present.id}",
+                                      "name": "${present.name}",
+                                      "price": ${present.price},
+                                      "date": "${present.date}",
+                                      "items": [{
+                                        "candyId": "532d5f3b-25e6-4adc-b99a-da74cb5be876",
+                                        "count": 5
+                                      }]
+                                    }"""
+                ))
     }
 
     @Test
-    void findNotExistentPresentReturn404() throws Exception {
-        doReturn(Optional.empty()).when(repository).findById(any());
+    void 'should fail return unknown present'() {
+        def unknownId = newUUID()
+        doReturn(Optional.empty())
+                .when(presentRepository)
+                .findById(unknownId)
 
-        mockMvc.perform(get('/api/presents/{id}', newUUID()))
-                .andExpect(status().isNotFound());
+        mockMvc.perform(get('/api/presents/{id}', unknownId))
+                .andExpect(status().isNotFound())
     }
 
     @Test
-    void listPresentShouldReturnArray() throws Exception {
-        doReturn(asList(getPresent(), getPresent())).when(repository).list();
+    void 'should list presents'() {
+        doReturn([PresentTestData.present(), PresentTestData.present()])
+                .when(presentRepository)
+                .findAll()
 
         mockMvc.perform(get('/api/presents'))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath('$', hasSize(2)));
+                .andExpect(jsonPath('$', hasSize(2)))
     }
 }
