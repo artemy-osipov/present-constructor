@@ -11,6 +11,6 @@ class ReportPresentTest {
 
         BigDecimal cost = present.computeCost()
 
-        assert cost == 5.5
+        assert cost == 21.0
     }
 }

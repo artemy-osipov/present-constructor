@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @WebMvcTest(ReportController)
-class ReportControllerIT {
+class ReportControllerTest {
 
     @MockBean
     ReportService reportService

@@ -1,0 +1,3 @@
+spring:
+  application.name: present-constructor
+  data.mongodb.uri: 'mongodb://localhost/test'

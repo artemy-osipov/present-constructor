@@ -12,21 +12,22 @@ class CandyTestData {
     static Candy candy() {
         new Candy().tap {
             id = CANDY_ID
-            name = 'candy name'
-            firm = 'candy firm'
-            price = 1.1
-            order = 1
+            name = 'name'
+            firm = 'firm'
+            price = 4.2
+            order = 51D
             active = true
         }
     }
 
     static class REST {
         static DEditCandy updateDTO() {
+            def candy = candy()
             new DEditCandy().tap {
-                name = 'name'
-                firm = 'firm'
-                price = BigDecimal.valueOf(4.2D)
-                order = 51D
+                name = candy.name
+                firm = candy.firm
+                price = candy.price
+                order = candy.order
             }
         }
     }

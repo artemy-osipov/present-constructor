@@ -22,7 +22,7 @@ class PresentTestData {
             id = PRESENT_ID
             name = 'some name'
             price = 42.25
-            date = LocalDateTime.now()
+            date = LocalDateTime.of(2022, 1, 10, 14, 25)
             items = [
                     new Present.Item().tap {
                         candyId = CANDY_ID

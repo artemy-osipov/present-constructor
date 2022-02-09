@@ -41,7 +41,7 @@ dependencies {
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springframework.data:spring-data-mongodb'
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
     implementation 'com.fasterxml.uuid:java-uuid-generator:4.0.1'
     implementation 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.document.docx:2.0.3'
     implementation 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.template.freemarker:2.0.3'
@@ -57,4 +57,6 @@ dependencies {
     testImplementation 'org.codehaus.groovy:groovy'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.docx4j:docx4j-JAXB-ReferenceImpl:11.3.2'
+
+    testImplementation 'org.testcontainers:mongodb:1.16.3'
 }

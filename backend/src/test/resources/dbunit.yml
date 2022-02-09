@@ -1,4 +1,0 @@
-cacheConnection: false
-properties:
-  caseSensitiveTableNames: true
-  escapePattern: "\"?\""

@@ -55,7 +55,7 @@ class ReportServiceIT {
 
         assert report.name == REPORT_NAME
         assert tableData(report, 4) == [
-                ['1', 'candy name', 'candy firm', '5']
+                ['1', 'name', 'firm', '5']
         ]
     }
 
@@ -65,7 +65,7 @@ class ReportServiceIT {
 
         assert report.name == REPORT_NAME
         assert tableData(report, 5) == [
-                ['1', 'candy name', 'candy firm', '1.1', '5']
+                ['1', 'name', 'firm', '4.2', '5']
         ]
     }
 
