@@ -24,15 +24,17 @@ async function fetchPresentCandies(present: Present): Promise<Candy[]> {
 
 function createView(present: Present, candies: Candy[]): PresentView {
   const groupedCandies = toMap(candies, 'id')
+  const items: PresentItemView[] = present.items
+    .map(
+      (item) =>
+        <PresentItemView>{
+          candy: groupedCandies.get(item.candyId),
+          count: item.count,
+        }
+    )
+    .sort((a, b) => a.candy.order - b.candy.order)
   return {
     ...present,
-    items:
-      present.items.map(
-        (item) =>
-          <PresentItemView>{
-            candy: groupedCandies.get(item.candyId),
-            count: item.count,
-          }
-      ) || [],
+    items,
   }
 }
