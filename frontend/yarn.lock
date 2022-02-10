@@ -167,9 +167,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sveltejs/kit@npm:^1.0.0-next.262":
-  version: 1.0.0-next.262
-  resolution: "@sveltejs/kit@npm:1.0.0-next.262"
+"@sveltejs/kit@npm:^1.0.0-next.263":
+  version: 1.0.0-next.263
+  resolution: "@sveltejs/kit@npm:1.0.0-next.263"
   dependencies:
     "@sveltejs/vite-plugin-svelte": ^1.0.0-next.32
     sade: ^1.7.4
@@ -178,7 +178,7 @@ __metadata:
     svelte: ^3.44.0
   bin:
     svelte-kit: svelte-kit.js
-  checksum: 2b0e8f88203f2ba6312172c271cb0a668c54c421eebaf48d7a559ea66e459464fdbe1c6d4b349a6449d3d64fbb77ffe2e4bb7d1fc74b69a37e0f21112a06ef9f
+  checksum: 3f9aca565923dbfd1f1259401bc0090c586d1b539e8e6ad2bb14c41ece5b454d76c5cc679c2599e894e67f7f81a218a6254079eaad9a04771d944e2008b56239
   languageName: node
   linkType: hard
 
@@ -2378,7 +2378,7 @@ __metadata:
     "@ngneat/elf-entities": ^3.1.1
     "@ngneat/elf-requests": ^1.1.1
     "@sveltejs/adapter-static": ^1.0.0-next.27
-    "@sveltejs/kit": ^1.0.0-next.262
+    "@sveltejs/kit": ^1.0.0-next.263
     "@typescript-eslint/eslint-plugin": ^5.11.0
     "@typescript-eslint/parser": ^5.11.0
     bulma: ^0.9.3

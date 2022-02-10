@@ -4,4 +4,5 @@ export interface Candy {
   firm: string
   price: number
   order: number
+  active: boolean
 }

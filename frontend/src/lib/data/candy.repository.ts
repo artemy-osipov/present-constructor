@@ -2,9 +2,8 @@ import { createState, Store } from '@ngneat/elf'
 import {
   deleteEntities,
   getEntity,
-  selectAll,
   selectEntity,
-  selectMany,
+  selectManyByPredicate,
   setEntities,
   upsertEntities,
   withEntities,
@@ -31,17 +30,13 @@ const trackRequestsStatus = createRequestsStatusOperator(store)
 
 class CandyRepository {
   candiesPending = store.pipe(selectIsRequestPending('list'))
-  candies: Observable<Candy[]> = store.pipe(
-    selectAll(),
+  activeCandies: Observable<Candy[]> = store.pipe(
+    selectManyByPredicate((c) => c.active),
     map((cs) => cs.sort((a, b) => a.order - b.order))
   )
 
   candy(id: Candy['id']): Observable<Candy | undefined> {
     return store.pipe(selectEntity(id))
-  }
-
-  candiesOfPresent(items: PresentItem[]): Observable<Candy[]> {
-    return store.pipe(selectMany(items.map((i) => i.candyId)))
   }
 
   queryByItems(items: PresentItem[]): Candy[] {

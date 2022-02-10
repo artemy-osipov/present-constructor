@@ -5,7 +5,7 @@
   import { isMobile } from '$lib/utils/responsive.utils'
   import { formatPrice } from '$lib/utils/string.utils'
 
-  let candies = candyRepository.candies
+  let candies = candyRepository.activeCandies
 
   onMount(() => {
     candyRepository.fetch()

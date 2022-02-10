@@ -1,11 +1,7 @@
 import { API_URL } from '$lib/config/environment'
 import type { Candy } from '$lib/data/candy.model'
 
-export type NewCandyRequest = Omit<Candy, 'id'>
-
-export interface Filter {
-  ids?: string[]
-}
+export type NewCandyRequest = Omit<Candy, 'id' | 'active'>
 
 const candyResource = `${API_URL}/api/candies`
 
@@ -26,12 +22,8 @@ class CandyGateway {
     return resp.json()
   }
 
-  async list(filter?: Filter): Promise<Candy[]> {
-    const params = new URLSearchParams()
-    if (filter?.ids) {
-      filter.ids.forEach((id) => params.append('ids', id))
-    }
-    const resp = await fetch(`${candyResource}?${params.toString()}`)
+  async list(): Promise<Candy[]> {
+    const resp = await fetch(candyResource)
     return resp.json()
   }
 

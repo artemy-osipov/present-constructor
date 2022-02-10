@@ -41,6 +41,7 @@ export class Mock {
       firm: `some firm ${id}`,
       price: 123.32,
       order: id,
+      active: true,
     }
   }
 

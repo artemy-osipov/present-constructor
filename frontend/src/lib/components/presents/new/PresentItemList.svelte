@@ -21,7 +21,7 @@
 
   onMount(async () => {
     await candyRepository.fetch()
-    candies = await firstValueFrom(candyRepository.candies)
+    candies = await firstValueFrom(candyRepository.activeCandies)
   })
 
   function onChangeItem(item: PresentItem) {
