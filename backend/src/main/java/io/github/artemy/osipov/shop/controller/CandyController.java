@@ -3,8 +3,6 @@ package io.github.artemy.osipov.shop.controller;
 import io.github.artemy.osipov.shop.controller.converter.DCandyConverter;
 import io.github.artemy.osipov.shop.controller.dto.DCandy;
 import io.github.artemy.osipov.shop.controller.dto.DEditCandy;
-import io.github.artemy.osipov.shop.exception.EntityNotFoundException;
-import io.github.artemy.osipov.shop.service.candy.Candy;
 import io.github.artemy.osipov.shop.service.candy.CandyCommandHandler;
 import io.github.artemy.osipov.shop.service.candy.CandyRepository;
 import io.github.artemy.osipov.shop.service.candy.CreateCandyCommand;
@@ -39,9 +37,9 @@ public class CandyController {
 
     @GetMapping(value = "/{id}")
     public DCandy getCandy(@PathVariable("id") UUID id) {
-        return repository.findById(id)
-                .map(converter::toDCandy)
-                .orElseThrow(() -> new EntityNotFoundException(Candy.class, id));
+        return converter.toDCandy(
+                repository.getById(id)
+        );
     }
 
     @GetMapping

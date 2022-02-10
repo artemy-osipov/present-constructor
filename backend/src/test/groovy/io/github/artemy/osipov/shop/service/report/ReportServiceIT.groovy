@@ -29,9 +29,9 @@ class ReportServiceIT {
 
     @BeforeEach
     void setup() {
-        doReturn(Optional.of(PresentTestData.present()))
+        doReturn(PresentTestData.present())
                 .when(presentRepository)
-                .findById(PRESENT_ID)
+                .getById(PRESENT_ID)
         doReturn([CandyTestData.candy()])
                 .when(candyRepository)
                 .findAllById(any())
@@ -40,9 +40,9 @@ class ReportServiceIT {
     @Test
     void 'should fail generate report by nonexistent present'() {
         def unknownId = newUUID()
-        doReturn(Optional.empty())
+        doThrow(EntityNotFoundException)
                 .when(presentRepository)
-                .findById(unknownId)
+                .getById(unknownId)
 
         assertThrows(EntityNotFoundException) {
             service.generatePrivateReport(unknownId)

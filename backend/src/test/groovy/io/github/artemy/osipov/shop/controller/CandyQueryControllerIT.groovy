@@ -49,7 +49,7 @@ class CandyQueryControllerIT extends BaseIT {
     }
 
     @Test
-    void 'should list candies'() {
+    void 'should list all candies'() {
         mockMvc.perform(get('/api/candies'))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath('$', hasSize(1)))

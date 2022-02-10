@@ -4,7 +4,6 @@ import fr.opensagres.xdocreport.document.IXDocReport;
 import fr.opensagres.xdocreport.document.registry.XDocReportRegistry;
 import fr.opensagres.xdocreport.template.IContext;
 import fr.opensagres.xdocreport.template.TemplateEngineKind;
-import io.github.artemy.osipov.shop.exception.EntityNotFoundException;
 import io.github.artemy.osipov.shop.service.candy.Candy;
 import io.github.artemy.osipov.shop.service.candy.CandyRepository;
 import io.github.artemy.osipov.shop.service.present.Present;
@@ -69,8 +68,7 @@ public class ReportService {
     }
 
     private ReportPresent fetchPresent(UUID id) {
-        Present present = presentRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(Present.class, id));
+        Present present = presentRepository.getById(id);
         Set<UUID> candyIds = present.getItems()
                 .stream()
                 .map(Present.Item::getCandyId)

@@ -3,9 +3,7 @@ package io.github.artemy.osipov.shop.controller;
 import io.github.artemy.osipov.shop.controller.converter.DPresentConverter;
 import io.github.artemy.osipov.shop.controller.dto.DAddPresent;
 import io.github.artemy.osipov.shop.controller.dto.DPresent;
-import io.github.artemy.osipov.shop.exception.EntityNotFoundException;
 import io.github.artemy.osipov.shop.service.present.CreatePresentCommand;
-import io.github.artemy.osipov.shop.service.present.Present;
 import io.github.artemy.osipov.shop.service.present.PresentCommandHandler;
 import io.github.artemy.osipov.shop.service.present.PresentRepository;
 import io.github.artemy.osipov.shop.service.present.RemovePresentCommand;
@@ -38,9 +36,9 @@ public class PresentController {
 
     @GetMapping(value = "/{id}")
     public DPresent getPresent(@PathVariable("id") UUID id) {
-        return repository.findById(id)
-                .map(converter::toDPresent)
-                .orElseThrow(() -> new EntityNotFoundException(Present.class, id));
+        return converter.toDPresent(
+                repository.getById(id)
+        );
     }
 
     @GetMapping
