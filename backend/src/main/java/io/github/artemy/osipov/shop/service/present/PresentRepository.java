@@ -1,7 +1,6 @@
 package io.github.artemy.osipov.shop.service.present;
 
 import io.github.artemy.osipov.shop.exception.EntityNotFoundException;
-import io.github.artemy.osipov.shop.service.candy.Candy;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.UUID;

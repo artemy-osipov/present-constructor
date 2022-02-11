@@ -1,6 +1,7 @@
 plugins {
     id 'java'
-    id 'groovy'
+    id 'org.jetbrains.kotlin.jvm' version '1.6.10'
+    id 'com.bnorm.power.kotlin-power-assert' version '0.11.0'
     id 'org.springframework.boot' version '2.6.3'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'com.google.cloud.tools.jib' version '3.2.0'
@@ -57,6 +58,5 @@ dependencies {
     testImplementation 'org.codehaus.groovy:groovy'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.docx4j:docx4j-JAXB-ReferenceImpl:11.3.2'
-
     testImplementation 'org.testcontainers:mongodb:1.16.3'
 }

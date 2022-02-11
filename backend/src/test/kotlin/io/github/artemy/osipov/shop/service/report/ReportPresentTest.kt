@@ -6,11 +6,11 @@ import org.junit.jupiter.api.Test
 class ReportPresentTest {
 
     @Test
-    void 'should compute cost'() {
-        def present = ReportTestData.reportPresent()
+    fun `should compute cost`() {
+        val present = ReportTestData.reportPresent()
 
-        BigDecimal cost = present.computeCost()
+        val cost = present.computeCost()
 
-        assert cost == 21.0
+        assert(cost.toDouble() == 21.0)
     }
 }

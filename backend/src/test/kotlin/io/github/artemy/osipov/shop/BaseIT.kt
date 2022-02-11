@@ -10,14 +10,16 @@ import org.testcontainers.containers.MongoDBContainer
 @AutoConfigureMockMvc
 abstract class BaseIT {
 
-    static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:4.4.12").tap {
-        start()
-    }
+    companion object {
+        @JvmStatic
+        val mongoDBContainer = MongoDBContainer("mongo:4.4.12").also {
+            it.start()
+        }
 
-    @DynamicPropertySource
-    static void initProperties(DynamicPropertyRegistry registry) {
-        registry.add('spring.data.mongodb.uri') {
-            mongoDBContainer.replicaSetUrl
+        @JvmStatic
+        @DynamicPropertySource
+        fun initProps(registry: DynamicPropertyRegistry) {
+            registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl)
         }
     }
 }
