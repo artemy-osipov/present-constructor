@@ -1,24 +1,16 @@
 plugins {
-    id 'java'
     id 'org.jetbrains.kotlin.jvm' version '1.6.10'
+    id 'org.jetbrains.kotlin.kapt' version '1.6.10'
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.6.10'
     id 'com.bnorm.power.kotlin-power-assert' version '0.11.0'
     id 'org.springframework.boot' version '2.6.3'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'com.google.cloud.tools.jib' version '3.2.0'
-    id 'com.github.ben-manes.versions' version '0.41.0'
+    id 'com.github.ben-manes.versions' version '0.42.0'
 }
 
 group = 'io.github.artemy.osipov.shop'
 version = '1.5.0-SNAPSHOT'
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
-}
-
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-}
 
 test {
     useJUnitPlatform()
@@ -39,7 +31,7 @@ repositories {
 }
 
 dependencies {
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    kapt 'org.springframework.boot:spring-boot-configuration-processor'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
@@ -47,15 +39,14 @@ dependencies {
     implementation 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.document.docx:2.0.3'
     implementation 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.template.freemarker:2.0.3'
 
+    runtimeOnly 'org.jetbrains.kotlin:kotlin-reflect:1.6.10'
+    implementation 'io.github.microutils:kotlin-logging-jvm:2.1.20'
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
+
     def mapstructVersion = '1.4.2.Final'
     implementation "org.mapstruct:mapstruct:$mapstructVersion"
-    annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
+    kapt "org.mapstruct:mapstruct-processor:$mapstructVersion"
 
-    annotationProcessor 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
-    compileOnly 'org.projectlombok:lombok'
-
-    testImplementation 'org.codehaus.groovy:groovy'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.docx4j:docx4j-JAXB-ReferenceImpl:11.3.2'
     testImplementation 'org.testcontainers:mongodb:1.16.3'

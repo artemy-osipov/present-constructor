@@ -1,8 +1,8 @@
 package io.github.artemy.osipov.shop.utils
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 
-private val mapper = ObjectMapper()
+private val mapper = jacksonObjectMapper()
 
 fun toJson(o: Any): String {
     return mapper.writeValueAsString(o)

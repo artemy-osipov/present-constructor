@@ -2,6 +2,7 @@ package io.github.artemy.osipov.shop.service.report
 
 import io.github.artemy.osipov.shop.exception.EntityNotFoundException
 import io.github.artemy.osipov.shop.service.candy.CandyRepository
+import io.github.artemy.osipov.shop.service.present.Present
 import io.github.artemy.osipov.shop.service.present.PresentRepository
 import io.github.artemy.osipov.shop.testdata.CandyTestData
 import io.github.artemy.osipov.shop.testdata.PresentTestData
@@ -16,8 +17,10 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.*
 import java.io.ByteArrayInputStream
+import java.util.*
 
 import javax.xml.bind.JAXBElement
+import kotlin.collections.ArrayList
 
 class ReportServiceIT {
     val presentRepository = mock(PresentRepository::class.java)
@@ -29,9 +32,9 @@ class ReportServiceIT {
 
     @BeforeEach
     fun setup() {
-        doReturn(PresentTestData.present())
+        doReturn(Optional.of(PresentTestData.present()))
                 .`when`(presentRepository)
-                .getById(PRESENT_ID)
+                .findById(PRESENT_ID)
         doReturn(listOf(CandyTestData.candy()))
                 .`when`(candyRepository)
                 .findAllById(any())
@@ -40,9 +43,9 @@ class ReportServiceIT {
     @Test
     fun `should fail generate report by nonexistent present`() {
         val unknownId = newUUID()
-        doThrow(EntityNotFoundException::class.java)
+        doReturn(Optional.empty<Present>())
                 .`when`(presentRepository)
-                .getById(unknownId)
+                .findById(unknownId)
 
         assertThrows<EntityNotFoundException> {
             service.generatePrivateReport(unknownId)
