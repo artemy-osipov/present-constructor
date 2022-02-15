@@ -1,13 +1,14 @@
 package io.github.artemy.osipov.shop.service.present
 
 import org.springframework.stereotype.Service
+import reactor.core.publisher.Mono
 import java.time.LocalDateTime
 
 @Service
 class PresentCommandHandler(
     private val presentRepository: PresentRepository
 ) {
-    fun on(event: CreatePresentCommand) {
+    fun on(event: CreatePresentCommand): Mono<Present> {
         val present = Present(
             id = event.id,
             name = event.name,
@@ -17,10 +18,10 @@ class PresentCommandHandler(
         event.items.forEach { (candyId, count) ->
             present.addItem(candyId, count)
         }
-        presentRepository.save(present)
+        return presentRepository.save(present)
     }
 
-    fun on(event: RemovePresentCommand) {
-        presentRepository.deleteById(event.id)
+    fun on(event: RemovePresentCommand): Mono<Void> {
+        return presentRepository.deleteById(event.id)
     }
 }

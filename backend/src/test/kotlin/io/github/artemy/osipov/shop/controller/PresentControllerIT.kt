@@ -11,68 +11,68 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
-import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.delete
-import org.springframework.test.web.servlet.post
+import org.springframework.test.web.reactive.server.WebTestClient
+import org.springframework.test.web.reactive.server.expectBody
 
 class PresentControllerIT : BaseIT() {
 
     @Autowired
-    lateinit var mockMvc: MockMvc
+    lateinit var webClient: WebTestClient
 
     @Autowired
     lateinit var presentRepository: PresentRepository
 
     @AfterEach
     fun clean() {
-        presentRepository.deleteAll()
+        presentRepository.deleteAll().block()
     }
 
     @Test
     fun `should add present with valid data`() {
-        val result = mockMvc.post("/api/presents") {
-            contentType = MediaType.APPLICATION_JSON
-            content = toJson(PresentTestData.REST.addDTO())
-        }
+        val result = webClient.post()
+            .uri("/api/presents")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(toJson(PresentTestData.REST.addDTO()))
+            .exchange()
 
-        val addedPresent = presentRepository.findAll()[0]
-        result.andExpect {
-            status { isOk() }
-            content { string("\"${addedPresent.id}\"") }
-        }
+        val addedPresent = presentRepository.findAll().blockFirst()
+        result
+            .expectStatus().isOk
+            .expectBody<String>().isEqualTo("\"${addedPresent?.id}\"")
     }
 
     @Test
     fun `should not add present with invalid data`() {
-        mockMvc.post("/api/presents") {
-            contentType = MediaType.APPLICATION_JSON
-            content = "{}"
-        }.andExpect {
-            status { isBadRequest() }
-            jsonPath("$.details", aMapWithSize<Any, Any>(3))
-        }
+        webClient.post()
+            .uri("/api/presents")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue("{}")
+            .exchange()
+            .expectStatus().isBadRequest
+            .expectBody().jsonPath("$.details", aMapWithSize<Any, Any>(3))
     }
 
     @Test
     fun `should remove present`() {
-        presentRepository.save(PresentTestData.present())
+        presentRepository.save(PresentTestData.present()).block()
 
-        mockMvc.delete("/api/presents/{id}", PRESENT_ID)
-                .andExpect {
-                    status { isNoContent() }
-                }
-        assert(presentRepository.count() == 0L)
+        webClient.delete()
+            .uri("/api/presents/{id}", PRESENT_ID)
+            .exchange()
+            .expectStatus().isNoContent
+
+        assert(presentRepository.count().block() == 0L)
     }
 
     @Test
     fun `should not remove unknown present`() {
         val unknownId = newUUID()
 
-        mockMvc.delete("/api/presents/{id}", unknownId)
-                .andExpect {
-                    status { isNoContent() }
-                }
+        webClient.delete()
+            .uri("/api/presents/{id}", unknownId)
+            .exchange()
+            .expectStatus().isNoContent
 
-        assert(presentRepository.count() == 0L)
+        assert(presentRepository.count().block() == 0L)
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import reactor.core.publisher.Mono
 import java.nio.charset.StandardCharsets
 import java.util.*
 
@@ -20,17 +21,15 @@ class ReportController(
     private val reportService: ReportService
 ) {
     @GetMapping("/{id}/public-report")
-    fun publicReport(@PathVariable("id") id: UUID): ResponseEntity<ByteArray> {
-        return toDocumentEntity(
-            reportService.generatePublicReport(id)
-        )
+    fun publicReport(@PathVariable("id") id: UUID): Mono<ResponseEntity<ByteArray>> {
+        return reportService.generatePublicReport(id)
+            .map(this::toDocumentEntity)
     }
 
     @GetMapping("/{id}/private-report")
-    fun privateReport(@PathVariable("id") id: UUID): ResponseEntity<ByteArray> {
-        return toDocumentEntity(
-            reportService.generatePrivateReport(id)
-        )
+    fun privateReport(@PathVariable("id") id: UUID): Mono<ResponseEntity<ByteArray>> {
+        return reportService.generatePrivateReport(id)
+            .map(this::toDocumentEntity)
     }
 
     private fun toDocumentEntity(report: Report): ResponseEntity<ByteArray> {

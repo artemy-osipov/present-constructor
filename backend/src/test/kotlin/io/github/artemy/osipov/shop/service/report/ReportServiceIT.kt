@@ -15,12 +15,15 @@ import org.docx4j.wml.Text
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.mockito.Mockito.*
+import org.mockito.Mockito.any
+import org.mockito.Mockito.doReturn
+import org.mockito.Mockito.mock
+import org.reactivestreams.Publisher
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 import java.io.ByteArrayInputStream
 import java.util.*
-
 import javax.xml.bind.JAXBElement
-import kotlin.collections.ArrayList
 
 class ReportServiceIT {
     val presentRepository = mock(PresentRepository::class.java)
@@ -32,29 +35,30 @@ class ReportServiceIT {
 
     @BeforeEach
     fun setup() {
-        doReturn(Optional.of(PresentTestData.present()))
+        doReturn(Mono.just(PresentTestData.present()))
                 .`when`(presentRepository)
                 .findById(PRESENT_ID)
-        doReturn(listOf(CandyTestData.candy()))
+        @Suppress("UNCHECKED_CAST")
+        doReturn(Flux.just(CandyTestData.candy()))
                 .`when`(candyRepository)
-                .findAllById(any())
+                .findAllById(any(Publisher::class.java as Class<Publisher<UUID>>))
     }
 
     @Test
     fun `should fail generate report by nonexistent present`() {
         val unknownId = newUUID()
-        doReturn(Optional.empty<Present>())
+        doReturn(Mono.empty<Present>())
                 .`when`(presentRepository)
                 .findById(unknownId)
 
         assertThrows<EntityNotFoundException> {
-            service.generatePrivateReport(unknownId)
+            service.generatePrivateReport(unknownId).block()
         }
     }
 
     @Test
     fun `should generate public report`() {
-        val report = service.generatePublicReport(PRESENT_ID)
+        val report = service.generatePublicReport(PRESENT_ID).block()!!
 
         assert(report.name == REPORT_NAME)
         assert(
@@ -66,7 +70,7 @@ class ReportServiceIT {
 
     @Test
     fun `should generate private report`() {
-        val report = service.generatePrivateReport(PRESENT_ID)
+        val report = service.generatePrivateReport(PRESENT_ID).block()!!
 
         assert(report.name == REPORT_NAME)
         assert(
@@ -80,6 +84,7 @@ class ReportServiceIT {
         val docx: MainDocumentPart = WordprocessingMLPackage
                 .load(ByteArrayInputStream(report.content))
                 .mainDocumentPart
+        @Suppress("UNCHECKED_CAST")
         val tableCells: List<String> = docx.getJAXBNodesViaXPath(
                 "//w:document/w:body/w:tbl/w:tr[position()>1]/w:tc/w:p/w:r/w:t",
                 false

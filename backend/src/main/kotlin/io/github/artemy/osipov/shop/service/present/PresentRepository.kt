@@ -1,18 +1,21 @@
 package io.github.artemy.osipov.shop.service.present
 
-import org.springframework.data.mongodb.repository.MongoRepository
-import java.util.UUID
 import io.github.artemy.osipov.shop.exception.EntityNotFoundException
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository
+import reactor.core.publisher.Mono
+import java.util.*
 
-interface PresentRepository : MongoRepository<Present, UUID> {
+interface PresentRepository : ReactiveMongoRepository<Present, UUID> {
 
     companion object {
-        fun PresentRepository.getById(id: UUID): Present {
-            return findById(id).orElseThrow {
-                EntityNotFoundException(
-                    Present::class.java, id
+        fun PresentRepository.getById(id: UUID): Mono<Present> {
+            return findById(id).switchIfEmpty(
+                Mono.error(
+                    EntityNotFoundException(
+                        Present::class.java, id
+                    )
                 )
-            }
+            )
         }
     }
 }

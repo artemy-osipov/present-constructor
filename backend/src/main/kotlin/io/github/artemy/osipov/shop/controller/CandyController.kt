@@ -9,7 +9,7 @@ import io.github.artemy.osipov.shop.service.candy.CandyRepository.Companion.getB
 import io.github.artemy.osipov.shop.service.candy.HideCandyCommand
 import io.github.artemy.osipov.shop.utils.UuidUtils.newUUID
 import org.mapstruct.factory.Mappers
-import org.springframework.http.ResponseEntity
+import org.springframework.http.HttpStatus
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 import java.util.*
-import java.util.stream.Collectors
 
 @RestController
 @RequestMapping("/api/candies")
@@ -31,48 +33,41 @@ class CandyController(
     private val converter = Mappers.getMapper(DCandyConverter::class.java)
 
     @GetMapping("/{id}")
-    fun getCandy(@PathVariable("id") id: UUID): DCandy {
-        return converter.toDCandy(
-            repository.getById(id)
-        )
+    fun getCandy(@PathVariable("id") id: UUID): Mono<DCandy> {
+        return repository.getById(id)
+            .map(converter::toDCandy)
     }
 
     @GetMapping
-    fun listCandy(): Collection<DCandy> {
+    fun listCandy(): Flux<DCandy> {
         return repository.findAll()
-            .stream()
             .map(converter::toDCandy)
-            .collect(Collectors.toList())
     }
 
     @PostMapping
-    fun addCandy(@RequestBody @Validated dto: DEditCandy): ResponseEntity<UUID> {
+    fun addCandy(@RequestBody @Validated dto: DEditCandy): Mono<UUID> {
         val command = converter.toCreateCommand(newUUID(), dto)
-        commandHandler.on(command)
-        return ResponseEntity
-            .ok(command.id)
+        return commandHandler.on(command)
+            .map { command.id }
+
     }
 
     @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     fun editCandy(
         @PathVariable("id") id: UUID,
         @RequestBody @Validated dto: DEditCandy
-    ): ResponseEntity<Void> {
-        commandHandler.on(
+    ): Mono<Void> {
+        return commandHandler.on(
             converter.toUpdateCommand(id, dto)
-        )
-        return ResponseEntity
-            .noContent()
-            .build()
+        ).then()
     }
 
     @DeleteMapping("/{id}")
-    fun removeCandy(@PathVariable("id") id: UUID): ResponseEntity<Void> {
-        commandHandler.on(
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun removeCandy(@PathVariable("id") id: UUID): Mono<Void> {
+        return commandHandler.on(
             HideCandyCommand(id)
-        )
-        return ResponseEntity
-            .noContent()
-            .build()
+        ).then()
     }
 }
