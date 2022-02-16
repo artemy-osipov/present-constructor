@@ -13,7 +13,7 @@ interface CandyRepository : ReactiveMongoRepository<Candy, UUID> {
                 .switchIfEmpty(
                     Mono.error(
                         EntityNotFoundException(
-                            Candy::class.java, id
+                            Candy::class, id
                         )
                     )
                 )

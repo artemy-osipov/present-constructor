@@ -44,15 +44,16 @@ class PresentController(
     }
 
     @PostMapping
-    fun addPresent(@RequestBody @Validated dto: DAddPresent): Mono<UUID> {
+    suspend fun addPresent(@RequestBody @Validated dto: DAddPresent): UUID {
         val command = converter.toCreateCommand(newUUID(), dto)
-        return commandHandler.on(command).map { command.id }
+        commandHandler.on(command)
+        return command.id
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun removePresent(@PathVariable("id") id: UUID): Mono<Void> {
-        return commandHandler.on(
+    suspend fun removePresent(@PathVariable("id") id: UUID) {
+        commandHandler.on(
             RemovePresentCommand(id)
         )
     }

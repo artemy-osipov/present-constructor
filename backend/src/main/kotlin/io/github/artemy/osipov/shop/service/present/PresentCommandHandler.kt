@@ -1,14 +1,15 @@
 package io.github.artemy.osipov.shop.service.present
 
+import kotlinx.coroutines.reactor.awaitSingle
+import kotlinx.coroutines.reactor.awaitSingleOrNull
 import org.springframework.stereotype.Service
-import reactor.core.publisher.Mono
 import java.time.LocalDateTime
 
 @Service
 class PresentCommandHandler(
     private val presentRepository: PresentRepository
 ) {
-    fun on(event: CreatePresentCommand): Mono<Present> {
+    suspend fun on(event: CreatePresentCommand) {
         val present = Present(
             id = event.id,
             name = event.name,
@@ -18,10 +19,10 @@ class PresentCommandHandler(
         event.items.forEach { (candyId, count) ->
             present.addItem(candyId, count)
         }
-        return presentRepository.save(present)
+        presentRepository.save(present).awaitSingle()
     }
 
-    fun on(event: RemovePresentCommand): Mono<Void> {
-        return presentRepository.deleteById(event.id)
+    suspend fun on(event: RemovePresentCommand) {
+        presentRepository.deleteById(event.id).awaitSingleOrNull()
     }
 }

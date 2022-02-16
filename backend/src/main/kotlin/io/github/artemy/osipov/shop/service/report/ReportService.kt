@@ -8,8 +8,8 @@ import io.github.artemy.osipov.shop.service.candy.CandyRepository
 import io.github.artemy.osipov.shop.service.present.Present
 import io.github.artemy.osipov.shop.service.present.PresentRepository
 import io.github.artemy.osipov.shop.service.present.PresentRepository.Companion.getById
+import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.stereotype.Service
-import reactor.core.publisher.Mono
 import java.io.ByteArrayOutputStream
 import java.util.*
 import java.util.stream.Collectors
@@ -23,22 +23,20 @@ class ReportService(
     private val candyRepository: CandyRepository
 ) {
 
-    fun generatePublicReport(presentId: UUID): Mono<Report> {
+    suspend fun generatePublicReport(presentId: UUID): Report {
         return generateReport(presentId, PUBLIC_REPORT_PATH)
     }
 
-    fun generatePrivateReport(presentId: UUID): Mono<Report> {
+    suspend fun generatePrivateReport(presentId: UUID): Report {
         return generateReport(presentId, PRIVATE_REPORT_PATH)
     }
 
-    private fun generateReport(presentId: UUID, templatePath: String): Mono<Report> {
-        return fetchPresent(presentId)
-            .map { present ->
-                Report(
-                    formatReportName(present),
-                    generateReportContent(present, templatePath)
-                )
-            }
+    private suspend fun generateReport(presentId: UUID, templatePath: String): Report {
+        val present = fetchPresent(presentId)
+        return Report(
+            formatReportName(present),
+            generateReportContent(present, templatePath)
+        )
     }
 
     private fun formatReportName(present: ReportPresent): String {
@@ -61,18 +59,14 @@ class ReportService(
         }
     }
 
-    private fun fetchPresent(id: UUID): Mono<ReportPresent> {
-        val present = presentRepository.getById(id)
-        val candyIds = present.flatMapIterable {
-            p -> p.items
+    private suspend fun fetchPresent(id: UUID): ReportPresent {
+        val present =  presentRepository.getById(id).awaitSingle()
+        val candyIds = present.items
             .stream()
             .map(Present.Item::candyId)
             .collect(Collectors.toSet())
-        }
-        val candies = candyRepository.findAllById(candyIds).collectList()
+        val candies = candyRepository.findAllById(candyIds).collectList().awaitSingle()
 
-        return Mono.zip(present, candies) {
-            p, cs -> ReportPresent(p, cs)
-        }
+        return ReportPresent(present, candies)
     }
 }

@@ -54,6 +54,6 @@ dependencies {
     testImplementation 'org.testcontainers:mongodb:1.16.3'
     testImplementation 'io.projectreactor.tools:blockhound-junit-platform:1.0.6.RELEASE'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-debug'
+    testImplementation 'org.mockito.kotlin:mockito-kotlin:4.0.0'
 }

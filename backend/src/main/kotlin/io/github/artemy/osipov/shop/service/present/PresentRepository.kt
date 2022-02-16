@@ -12,7 +12,7 @@ interface PresentRepository : ReactiveMongoRepository<Present, UUID> {
             return findById(id).switchIfEmpty(
                 Mono.error(
                     EntityNotFoundException(
-                        Present::class.java, id
+                        Present::class, id
                     )
                 )
             )

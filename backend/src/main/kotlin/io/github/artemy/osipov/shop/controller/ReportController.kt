@@ -21,15 +21,17 @@ class ReportController(
     private val reportService: ReportService
 ) {
     @GetMapping("/{id}/public-report")
-    fun publicReport(@PathVariable("id") id: UUID): Mono<ResponseEntity<ByteArray>> {
-        return reportService.generatePublicReport(id)
-            .map(this::toDocumentEntity)
+    suspend fun publicReport(@PathVariable("id") id: UUID): ResponseEntity<ByteArray> {
+        return toDocumentEntity(
+            reportService.generatePublicReport(id)
+        )
     }
 
     @GetMapping("/{id}/private-report")
-    fun privateReport(@PathVariable("id") id: UUID): Mono<ResponseEntity<ByteArray>> {
-        return reportService.generatePrivateReport(id)
-            .map(this::toDocumentEntity)
+    suspend fun privateReport(@PathVariable("id") id: UUID): ResponseEntity<ByteArray> {
+        return toDocumentEntity(
+            reportService.generatePrivateReport(id)
+        )
     }
 
     private fun toDocumentEntity(report: Report): ResponseEntity<ByteArray> {

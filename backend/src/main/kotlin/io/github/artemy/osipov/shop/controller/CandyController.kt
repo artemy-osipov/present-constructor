@@ -45,29 +45,28 @@ class CandyController(
     }
 
     @PostMapping
-    fun addCandy(@RequestBody @Validated dto: DEditCandy): Mono<UUID> {
+    suspend fun addCandy(@RequestBody @Validated dto: DEditCandy): UUID {
         val command = converter.toCreateCommand(newUUID(), dto)
-        return commandHandler.on(command)
-            .map { command.id }
-
+        commandHandler.on(command)
+        return command.id
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun editCandy(
+    suspend fun editCandy(
         @PathVariable("id") id: UUID,
         @RequestBody @Validated dto: DEditCandy
-    ): Mono<Void> {
-        return commandHandler.on(
+    ) {
+        commandHandler.on(
             converter.toUpdateCommand(id, dto)
-        ).then()
+        )
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun removeCandy(@PathVariable("id") id: UUID): Mono<Void> {
+    suspend fun removeCandy(@PathVariable("id") id: UUID) {
         return commandHandler.on(
             HideCandyCommand(id)
-        ).then()
+        )
     }
 }

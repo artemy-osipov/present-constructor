@@ -9,6 +9,7 @@ import io.github.artemy.osipov.shop.testdata.PresentTestData
 import io.github.artemy.osipov.shop.testdata.PresentTestData.PRESENT_ID
 import io.github.artemy.osipov.shop.testdata.ReportTestData.REPORT_NAME
 import io.github.artemy.osipov.shop.utils.UuidUtils.newUUID
+import kotlinx.coroutines.runBlocking
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart
 import org.docx4j.wml.Text
@@ -18,7 +19,6 @@ import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.any
 import org.mockito.Mockito.doReturn
 import org.mockito.Mockito.mock
-import org.reactivestreams.Publisher
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import java.io.ByteArrayInputStream
@@ -29,67 +29,68 @@ class ReportServiceIT {
     val presentRepository = mock(PresentRepository::class.java)
     val candyRepository = mock(CandyRepository::class.java)
     val service = ReportService(
-            presentRepository,
-            candyRepository
+        presentRepository,
+        candyRepository
     )
 
     @BeforeEach
     fun setup() {
         doReturn(Mono.just(PresentTestData.present()))
-                .`when`(presentRepository)
-                .findById(PRESENT_ID)
+            .`when`(presentRepository)
+            .findById(PRESENT_ID)
         @Suppress("UNCHECKED_CAST")
         doReturn(Flux.just(CandyTestData.candy()))
-                .`when`(candyRepository)
-                .findAllById(any(Publisher::class.java as Class<Publisher<UUID>>))
+            .`when`(candyRepository)
+            .findAllById(any(Iterable::class.java as Class<Iterable<UUID>>))
     }
 
     @Test
     fun `should fail generate report by nonexistent present`() {
         val unknownId = newUUID()
         doReturn(Mono.empty<Present>())
-                .`when`(presentRepository)
-                .findById(unknownId)
+            .`when`(presentRepository)
+            .findById(unknownId)
 
         assertThrows<EntityNotFoundException> {
-            service.generatePrivateReport(unknownId).block()
+            runBlocking { service.generatePrivateReport(unknownId) }
         }
     }
 
     @Test
     fun `should generate public report`() {
-        val report = service.generatePublicReport(PRESENT_ID).block()!!
+        val report = runBlocking { service.generatePublicReport(PRESENT_ID) }
 
         assert(report.name == REPORT_NAME)
         assert(
-                tableData(report, 4) == listOf(
-                        listOf("1", "name", "firm", "5")
-                )
+            tableData(report, 4) == listOf(
+                listOf("1", "name", "firm", "5")
+            )
         )
     }
 
     @Test
     fun `should generate private report`() {
-        val report = service.generatePrivateReport(PRESENT_ID).block()!!
+        val report = runBlocking { service.generatePrivateReport(PRESENT_ID) }
 
         assert(report.name == REPORT_NAME)
         assert(
-                tableData(report, 5) == listOf(
-                        listOf("1", "name", "firm", "4.2", "5")
-                )
+            tableData(report, 5) == listOf(
+                listOf("1", "name", "firm", "4.2", "5")
+            )
         )
     }
 
     private fun tableData(report: Report, tableWidth: Int): List<List<String>> {
         val docx: MainDocumentPart = WordprocessingMLPackage
-                .load(ByteArrayInputStream(report.content))
-                .mainDocumentPart
+            .load(ByteArrayInputStream(report.content))
+            .mainDocumentPart
+
         @Suppress("UNCHECKED_CAST")
         val tableCells: List<String> = docx.getJAXBNodesViaXPath(
-                "//w:document/w:body/w:tbl/w:tr[position()>1]/w:tc/w:p/w:r/w:t",
-                false
+            "//w:document/w:body/w:tbl/w:tr[position()>1]/w:tc/w:p/w:r/w:t",
+            false
         )
-                .map { (it as JAXBElement<Text>).value.value }
+            .map { (it as JAXBElement<Text>).value.value }
 
         val rows: Int = tableCells.size / tableWidth
         val res = ArrayList<MutableList<String>>(rows)
