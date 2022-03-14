@@ -1,7 +1,7 @@
 import { createState, Store } from '@ngneat/elf'
 import {
   deleteEntities,
-  selectAll,
+  selectAllEntities,
   selectEntity,
   setEntities,
   upsertEntities,
@@ -29,7 +29,7 @@ const trackRequestsStatus = createRequestsStatusOperator(store)
 class PresentRepository {
   presentsPending = store.pipe(selectIsRequestPending('list'))
   presents: Observable<Present[]> = store.pipe(
-    selectAll(),
+    selectAllEntities(),
     map((cs) => cs.sort((a, b) => (a.date < b.date ? -1 : 1)))
   )
 
