@@ -19,7 +19,7 @@ class PresentCommandHandler(
         event.items.forEach { (candyId, count) ->
             present.addItem(candyId, count)
         }
-        presentRepository.save(present).awaitSingle()
+        presentRepository.add(present).awaitSingle()
     }
 
     suspend fun on(event: RemovePresentCommand) {

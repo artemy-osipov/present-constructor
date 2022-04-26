@@ -1,11 +1,12 @@
 package io.github.artemy.osipov.shop.service.candy
 
 import io.github.artemy.osipov.shop.exception.EntityNotFoundException
-import org.springframework.data.mongodb.repository.ReactiveMongoRepository
+import io.github.artemy.osipov.shop.repository.ExtraMethods
+import org.springframework.data.repository.reactive.ReactiveCrudRepository
 import reactor.core.publisher.Mono
 import java.util.*
 
-interface CandyRepository : ReactiveMongoRepository<Candy, UUID> {
+interface CandyRepository : ReactiveCrudRepository<Candy, UUID>, ExtraMethods<Candy> {
 
     companion object {
         fun CandyRepository.getById(id: UUID): Mono<Candy> {

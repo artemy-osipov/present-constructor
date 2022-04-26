@@ -1,3 +1,4 @@
 spring:
   application.name: present-constructor
-  data.mongodb.uri: 'mongodb://localhost/test'
+  r2dbc.url: jdbc:postgresql://localhost:5432/coursedb
+  sql.init.mode: always

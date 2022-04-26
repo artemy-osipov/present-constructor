@@ -16,7 +16,7 @@ class CandyCommandHandler(
             price = event.price,
             order = event.order
         )
-        repository.save(candy).awaitSingle()
+        repository.add(candy).awaitSingle()
     }
 
     suspend fun on(event: UpdateCandyCommand) {

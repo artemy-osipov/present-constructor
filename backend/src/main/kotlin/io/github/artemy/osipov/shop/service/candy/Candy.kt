@@ -1,11 +1,11 @@
 package io.github.artemy.osipov.shop.service.candy
 
 import org.springframework.data.annotation.Id
-import org.springframework.data.mongodb.core.mapping.Document
-import java.util.UUID
+import org.springframework.data.relational.core.mapping.Table
 import java.math.BigDecimal
+import java.util.*
 
-@Document("candies")
+@Table("candies")
 data class Candy(
     @Id
     val id: UUID,

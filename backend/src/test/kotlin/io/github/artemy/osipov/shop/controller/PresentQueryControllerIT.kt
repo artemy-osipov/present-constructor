@@ -1,11 +1,14 @@
 package io.github.artemy.osipov.shop.controller
 
 import io.github.artemy.osipov.shop.BaseIT
+import io.github.artemy.osipov.shop.service.candy.CandyRepository
 import io.github.artemy.osipov.shop.service.present.PresentRepository
+import io.github.artemy.osipov.shop.testdata.CandyTestData
 import io.github.artemy.osipov.shop.testdata.PresentTestData
 import io.github.artemy.osipov.shop.testdata.PresentTestData.PRESENT_ID
 import io.github.artemy.osipov.shop.utils.UuidUtils.newUUID
 import org.hamcrest.Matchers.hasSize
+import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,11 +23,24 @@ class PresentQueryControllerIT : BaseIT() {
     companion object {
         @BeforeAll
         @JvmStatic
-        fun init(@Autowired repository: PresentRepository) {
-            repository.save(PresentTestData.present()).block()
+        fun init(
+            @Autowired candyRepository: CandyRepository,
+            @Autowired presentRepository: PresentRepository
+        ) {
+            candyRepository.add(CandyTestData.candy()).block()
+            presentRepository.add(PresentTestData.present()).block()
+        }
+
+        @AfterAll
+        @JvmStatic
+        fun clean(
+            @Autowired candyRepository: CandyRepository,
+            @Autowired presentRepository: PresentRepository
+        ) {
+            presentRepository.deleteAll().block()
+            candyRepository.deleteAll().block()
         }
     }
-
 
     @Test
     fun `should get present by id`() {

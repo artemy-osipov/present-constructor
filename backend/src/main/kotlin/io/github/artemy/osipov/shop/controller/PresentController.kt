@@ -5,7 +5,6 @@ import io.github.artemy.osipov.shop.controller.dto.DAddPresent
 import io.github.artemy.osipov.shop.controller.dto.DPresent
 import io.github.artemy.osipov.shop.service.present.PresentCommandHandler
 import io.github.artemy.osipov.shop.service.present.PresentRepository
-import io.github.artemy.osipov.shop.service.present.PresentRepository.Companion.getById
 import io.github.artemy.osipov.shop.service.present.RemovePresentCommand
 import io.github.artemy.osipov.shop.utils.UuidUtils.newUUID
 import org.mapstruct.factory.Mappers
@@ -33,7 +32,7 @@ class PresentController(
 
     @GetMapping("/{id}")
     fun getPresent(@PathVariable("id") id: UUID): Mono<DPresent> {
-        return repository.getById(id)
+        return repository.findById(id)
             .map(converter::toDPresent)
     }
 

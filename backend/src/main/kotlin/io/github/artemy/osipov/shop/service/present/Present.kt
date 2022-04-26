@@ -1,12 +1,11 @@
 package io.github.artemy.osipov.shop.service.present
 
 import org.springframework.data.annotation.Id
-import org.springframework.data.mongodb.core.mapping.Document
+import org.springframework.data.relational.core.mapping.Table
 import java.util.UUID
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
-@Document("presents")
 data class Present(
     @Id
     val id: UUID,
@@ -21,6 +20,7 @@ data class Present(
         )
     }
 
+    @Table("present_items")
     data class Item(
         val candyId: UUID,
         var count: Int

@@ -14,7 +14,7 @@ object CandyTestData {
             id = CANDY_ID,
             name = "name",
             firm = "firm",
-            price = BigDecimal("4.2"),
+            price = BigDecimal("4.20"),
             order = 51.0,
             active = true
         )

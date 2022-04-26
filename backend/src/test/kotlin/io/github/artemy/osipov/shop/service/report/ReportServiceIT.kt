@@ -1,21 +1,17 @@
 package io.github.artemy.osipov.shop.service.report
 
-import io.github.artemy.osipov.shop.exception.EntityNotFoundException
 import io.github.artemy.osipov.shop.service.candy.CandyRepository
-import io.github.artemy.osipov.shop.service.present.Present
 import io.github.artemy.osipov.shop.service.present.PresentRepository
 import io.github.artemy.osipov.shop.testdata.CandyTestData
 import io.github.artemy.osipov.shop.testdata.PresentTestData
 import io.github.artemy.osipov.shop.testdata.PresentTestData.PRESENT_ID
 import io.github.artemy.osipov.shop.testdata.ReportTestData.REPORT_NAME
-import io.github.artemy.osipov.shop.utils.UuidUtils.newUUID
 import kotlinx.coroutines.runBlocking
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart
 import org.docx4j.wml.Text
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.any
 import org.mockito.Mockito.doReturn
 import org.mockito.Mockito.mock
@@ -42,18 +38,6 @@ class ReportServiceIT {
         doReturn(Flux.just(CandyTestData.candy()))
             .`when`(candyRepository)
             .findAllById(any(Iterable::class.java as Class<Iterable<UUID>>))
-    }
-
-    @Test
-    fun `should fail generate report by nonexistent present`() {
-        val unknownId = newUUID()
-        doReturn(Mono.empty<Present>())
-            .`when`(presentRepository)
-            .findById(unknownId)
-
-        assertThrows<EntityNotFoundException> {
-            runBlocking { service.generatePrivateReport(unknownId) }
-        }
     }
 
     @Test

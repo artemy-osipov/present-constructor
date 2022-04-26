@@ -1,13 +1,17 @@
 package io.github.artemy.osipov.shop.controller
 
 import io.github.artemy.osipov.shop.BaseIT
+import io.github.artemy.osipov.shop.service.candy.CandyRepository
 import io.github.artemy.osipov.shop.service.present.PresentRepository
+import io.github.artemy.osipov.shop.testdata.CandyTestData
 import io.github.artemy.osipov.shop.testdata.PresentTestData
 import io.github.artemy.osipov.shop.testdata.PresentTestData.PRESENT_ID
 import io.github.artemy.osipov.shop.utils.UuidUtils.newUUID
 import io.github.artemy.osipov.shop.utils.toJson
 import org.hamcrest.collection.IsMapWithSize.aMapWithSize
+import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
@@ -21,6 +25,20 @@ class PresentControllerIT : BaseIT() {
 
     @Autowired
     lateinit var presentRepository: PresentRepository
+
+    companion object {
+        @BeforeAll
+        @JvmStatic
+        fun init(@Autowired repository: CandyRepository) {
+            repository.add(CandyTestData.candy()).block()
+        }
+
+        @AfterAll
+        @JvmStatic
+        fun clean(@Autowired repository: CandyRepository) {
+            repository.deleteAll().block()
+        }
+    }
 
     @AfterEach
     fun clean() {
@@ -54,7 +72,7 @@ class PresentControllerIT : BaseIT() {
 
     @Test
     fun `should remove present`() {
-        presentRepository.save(PresentTestData.present()).block()
+        presentRepository.add(PresentTestData.present()).block()
 
         webClient.delete()
             .uri("/api/presents/{id}", PRESENT_ID)

@@ -7,7 +7,6 @@ import fr.opensagres.xdocreport.template.TemplateEngineKind
 import io.github.artemy.osipov.shop.service.candy.CandyRepository
 import io.github.artemy.osipov.shop.service.present.Present
 import io.github.artemy.osipov.shop.service.present.PresentRepository
-import io.github.artemy.osipov.shop.service.present.PresentRepository.Companion.getById
 import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.stereotype.Service
 import java.io.ByteArrayOutputStream
@@ -60,7 +59,7 @@ class ReportService(
     }
 
     private suspend fun fetchPresent(id: UUID): ReportPresent {
-        val present =  presentRepository.getById(id).awaitSingle()
+        val present =  presentRepository.findById(id).awaitSingle()
         val candyIds = present.items
             .stream()
             .map(Present.Item::candyId)

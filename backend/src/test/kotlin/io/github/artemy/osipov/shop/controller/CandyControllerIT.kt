@@ -54,7 +54,7 @@ class CandyControllerIT : BaseIT() {
 
     @Test
     fun `should edit candy with valid data`() {
-        candyRepository.save(CandyTestData.candy()).block()
+        candyRepository.add(CandyTestData.candy()).block()
         val newName = "new name"
         val request = CandyTestData.REST.updateDTO().apply {
             name = newName
@@ -102,7 +102,7 @@ class CandyControllerIT : BaseIT() {
 
     @Test
     fun `should remove candy`() {
-        candyRepository.save(CandyTestData.candy()).block()
+        candyRepository.add(CandyTestData.candy()).block()
 
         webClient.delete()
             .uri("/api/candies/{id}", CANDY_ID)

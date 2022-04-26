@@ -5,6 +5,7 @@ import io.github.artemy.osipov.shop.service.candy.CandyRepository
 import io.github.artemy.osipov.shop.testdata.CandyTestData
 import io.github.artemy.osipov.shop.utils.UuidUtils.newUUID
 import org.hamcrest.Matchers.hasSize
+import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,10 +20,15 @@ class CandyQueryControllerIT : BaseIT() {
         @BeforeAll
         @JvmStatic
         fun init(@Autowired repository: CandyRepository) {
-            repository.save(CandyTestData.candy()).block()
+            repository.add(CandyTestData.candy()).block()
+        }
+
+        @AfterAll
+        @JvmStatic
+        fun clean(@Autowired repository: CandyRepository) {
+            repository.deleteAll().block()
         }
     }
-
 
     @Test
     fun `should get candy by id`() {
