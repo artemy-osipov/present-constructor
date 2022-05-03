@@ -4,6 +4,7 @@ import io.github.artemy.osipov.shop.BaseIT
 import io.github.artemy.osipov.shop.service.candy.CandyRepository
 import io.github.artemy.osipov.shop.testdata.CandyTestData
 import io.github.artemy.osipov.shop.utils.UuidUtils.newUUID
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.Matchers.hasSize
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
@@ -19,14 +20,14 @@ class CandyQueryControllerIT : BaseIT() {
     companion object {
         @BeforeAll
         @JvmStatic
-        fun init(@Autowired repository: CandyRepository) {
-            repository.add(CandyTestData.candy()).block()
+        fun init(@Autowired repository: CandyRepository) = runTest {
+            repository.add(CandyTestData.candy())
         }
 
         @AfterAll
         @JvmStatic
-        fun clean(@Autowired repository: CandyRepository) {
-            repository.deleteAll().block()
+        fun clean(@Autowired repository: CandyRepository) = runTest {
+            repository.deleteAll()
         }
     }
 

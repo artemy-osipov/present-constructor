@@ -6,43 +6,33 @@ import io.github.artemy.osipov.shop.testdata.CandyTestData
 import io.github.artemy.osipov.shop.testdata.PresentTestData
 import io.github.artemy.osipov.shop.testdata.PresentTestData.PRESENT_ID
 import io.github.artemy.osipov.shop.testdata.ReportTestData.REPORT_NAME
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.test.runTest
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart
 import org.docx4j.wml.Text
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.any
-import org.mockito.Mockito.doReturn
-import org.mockito.Mockito.mock
-import reactor.core.publisher.Flux
-import reactor.core.publisher.Mono
+import org.mockito.Mockito.anyIterable
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
 import java.io.ByteArrayInputStream
-import java.util.*
 import javax.xml.bind.JAXBElement
 
 class ReportServiceIT {
-    val presentRepository = mock(PresentRepository::class.java)
-    val candyRepository = mock(CandyRepository::class.java)
+    val presentRepository = mock<PresentRepository>() {
+        onBlocking { findById(PRESENT_ID) } doReturn PresentTestData.present()
+    }
+    val candyRepository = mock<CandyRepository>() {
+        on { findAllById(anyIterable()) } doReturn listOf(CandyTestData.candy()).asFlow()
+    }
     val service = ReportService(
         presentRepository,
         candyRepository
     )
 
-    @BeforeEach
-    fun setup() {
-        doReturn(Mono.just(PresentTestData.present()))
-            .`when`(presentRepository)
-            .findById(PRESENT_ID)
-        @Suppress("UNCHECKED_CAST")
-        doReturn(Flux.just(CandyTestData.candy()))
-            .`when`(candyRepository)
-            .findAllById(any(Iterable::class.java as Class<Iterable<UUID>>))
-    }
-
     @Test
-    fun `should generate public report`() {
-        val report = runBlocking { service.generatePublicReport(PRESENT_ID) }
+    fun `should generate public report`() = runTest {
+        val report = service.generatePublicReport(PRESENT_ID)
 
         assert(report.name == REPORT_NAME)
         assert(
@@ -53,8 +43,8 @@ class ReportServiceIT {
     }
 
     @Test
-    fun `should generate private report`() {
-        val report = runBlocking { service.generatePrivateReport(PRESENT_ID) }
+    fun `should generate private report`() = runTest {
+        val report = service.generatePrivateReport(PRESENT_ID)
 
         assert(report.name == REPORT_NAME)
         assert(

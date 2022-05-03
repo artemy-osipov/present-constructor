@@ -1,4 +1,9 @@
 spring:
   application.name: present-constructor
-  r2dbc.url: jdbc:postgresql://localhost:5432/coursedb
+  r2dbc:
+    url: jdbc:postgresql://localhost:5432/presents
+    username: test
+    password: test
+    properties:
+      sslMode: verify-full
   sql.init.mode: always

@@ -8,6 +8,8 @@ import io.github.artemy.osipov.shop.testdata.PresentTestData
 import io.github.artemy.osipov.shop.testdata.PresentTestData.PRESENT_ID
 import io.github.artemy.osipov.shop.utils.UuidUtils.newUUID
 import io.github.artemy.osipov.shop.utils.toJson
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.collection.IsMapWithSize.aMapWithSize
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
@@ -29,34 +31,34 @@ class PresentControllerIT : BaseIT() {
     companion object {
         @BeforeAll
         @JvmStatic
-        fun init(@Autowired repository: CandyRepository) {
-            repository.add(CandyTestData.candy()).block()
+        fun init(@Autowired repository: CandyRepository) = runTest {
+            repository.add(CandyTestData.candy())
         }
 
         @AfterAll
         @JvmStatic
-        fun clean(@Autowired repository: CandyRepository) {
-            repository.deleteAll().block()
+        fun clean(@Autowired repository: CandyRepository) = runTest {
+            repository.deleteAll()
         }
     }
 
     @AfterEach
-    fun clean() {
-        presentRepository.deleteAll().block()
+    fun clean() = runTest {
+        presentRepository.deleteAll()
     }
 
     @Test
-    fun `should add present with valid data`() {
+    fun `should add present with valid data`() = runTest {
         val result = webClient.post()
             .uri("/api/presents")
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValue(toJson(PresentTestData.REST.addDTO()))
             .exchange()
 
-        val addedPresent = presentRepository.findAll().blockFirst()
+        val addedPresent = presentRepository.findAll().first()
         result
             .expectStatus().isOk
-            .expectBody<String>().isEqualTo("\"${addedPresent?.id}\"")
+            .expectBody<String>().isEqualTo("\"${addedPresent.id}\"")
     }
 
     @Test
@@ -71,19 +73,19 @@ class PresentControllerIT : BaseIT() {
     }
 
     @Test
-    fun `should remove present`() {
-        presentRepository.add(PresentTestData.present()).block()
+    fun `should remove present`() = runTest {
+        presentRepository.add(PresentTestData.present())
 
         webClient.delete()
             .uri("/api/presents/{id}", PRESENT_ID)
             .exchange()
             .expectStatus().isNoContent
 
-        assert(presentRepository.count().block() == 0L)
+        assert(presentRepository.count() == 0L)
     }
 
     @Test
-    fun `should not remove unknown present`() {
+    fun `should not remove unknown present`() = runTest {
         val unknownId = newUUID()
 
         webClient.delete()
@@ -91,6 +93,6 @@ class PresentControllerIT : BaseIT() {
             .exchange()
             .expectStatus().isNoContent
 
-        assert(presentRepository.count().block() == 0L)
+        assert(presentRepository.count() == 0L)
     }
 }

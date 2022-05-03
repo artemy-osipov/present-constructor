@@ -1,6 +1,11 @@
 package io.github.artemy.osipov.shop.service.present
 
 import io.github.artemy.osipov.shop.exception.EntityNotFoundException
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.reactive.asFlow
+import kotlinx.coroutines.reactive.awaitFirstOrNull
+import kotlinx.coroutines.reactive.awaitLast
+import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.data.annotation.Id
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate
 import org.springframework.data.relational.core.mapping.Table
@@ -8,8 +13,8 @@ import org.springframework.data.relational.core.query.Criteria
 import org.springframework.data.relational.core.query.Query
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.reactive.TransactionalOperator
+import org.springframework.transaction.reactive.executeAndAwait
 import reactor.core.publisher.Flux
-import reactor.core.publisher.Mono
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.util.*
@@ -21,24 +26,18 @@ class PresentRepository(
     private val transactionOperator: TransactionalOperator
 ) {
 
-    fun findById(id: UUID): Mono<Present> {
+    suspend fun findById(id: UUID): Present {
         return entityTemplate.selectOne(
             Query.query(Criteria.where("id").`is`(id)),
             PresentDTO::class.java
         )
             .flatMapMany { aggregatePresent(listOf(it)) }
-            .next()
-            .switchIfEmpty(
-                Mono.error(
-                    EntityNotFoundException(
-                        Present::class, id
-                    )
-                )
-            )
             .`as`(transactionOperator::transactional)
+            .awaitFirstOrNull()
+            ?: throw EntityNotFoundException(Present::class, id)
     }
 
-    fun findAll(): Flux<Present> {
+    fun findAll(): Flow<Present> {
         return entityTemplate.select(
             Query.empty(),
             PresentDTO::class.java
@@ -46,6 +45,7 @@ class PresentRepository(
             .collectList()
             .flatMapMany() { aggregatePresent(it) }
             .`as`(transactionOperator::transactional)
+            .asFlow()
     }
 
     private fun aggregatePresent(presentsDTO: List<PresentDTO>): Flux<Present> {
@@ -64,33 +64,39 @@ class PresentRepository(
         )
     }
 
-    fun add(present: Present): Mono<UUID> {
+    suspend fun add(present: Present): UUID = transactionOperator.executeAndAwait {
         val dto = PresentDTO(present)
-        return entityTemplate.insert(dto)
-            .flatMap { addItems(it.id, present.items) }
-            .`as`(transactionOperator::transactional)
+        val added = entityTemplate.insert(dto).awaitSingle()
+        addItems(added.id, present.items)
+        added.id
+    }!!
+
+    private suspend fun addItems(presentId: UUID, items: List<Present.Item>) {
+        Flux.fromIterable(
+            items.map { ItemDTO(presentId, it) }
+        )
+            .concatMap(entityTemplate::insert)
+            .awaitLast()
     }
 
-    private fun addItems(presentId: UUID, items: List<Present.Item>): Mono<UUID> {
-        val insertItems = items
-            .map { ItemDTO(presentId, it) }
-            .map { entityTemplate.insert(it) }
-        return Mono.zip(insertItems) { presentId }
-    }
-
-    fun deleteById(id: UUID): Mono<Int> {
+    suspend fun deleteById(id: UUID): Int {
         return entityTemplate.delete(
             Query.query(Criteria.where("id").`is`(id)),
             PresentDTO::class.java
-        )
+        ).awaitSingle()
     }
 
-    fun deleteAll(): Mono<Int> {
-        return entityTemplate.delete(PresentDTO::class.java).all()
+    suspend fun deleteAll(): Int {
+        return entityTemplate
+            .delete(PresentDTO::class.java)
+            .all()
+            .awaitSingle()
     }
 
-    fun count(): Mono<Long> {
-        return entityTemplate.count(Query.empty(), PresentDTO::class.java)
+    suspend fun count(): Long {
+        return entityTemplate
+            .count(Query.empty(), PresentDTO::class.java)
+            .awaitSingle()
     }
 
     private fun buildPresent(presentDTO: PresentDTO, itemsDTO: List<ItemDTO>): Present {

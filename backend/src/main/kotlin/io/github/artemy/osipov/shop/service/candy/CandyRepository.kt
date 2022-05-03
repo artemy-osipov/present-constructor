@@ -2,22 +2,15 @@ package io.github.artemy.osipov.shop.service.candy
 
 import io.github.artemy.osipov.shop.exception.EntityNotFoundException
 import io.github.artemy.osipov.shop.repository.ExtraMethods
-import org.springframework.data.repository.reactive.ReactiveCrudRepository
-import reactor.core.publisher.Mono
+import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 import java.util.*
 
-interface CandyRepository : ReactiveCrudRepository<Candy, UUID>, ExtraMethods<Candy> {
+interface CandyRepository : CoroutineCrudRepository<Candy, UUID>, ExtraMethods<Candy> {
 
     companion object {
-        fun CandyRepository.getById(id: UUID): Mono<Candy> {
+        suspend fun CandyRepository.getById(id: UUID): Candy {
             return findById(id)
-                .switchIfEmpty(
-                    Mono.error(
-                        EntityNotFoundException(
-                            Candy::class, id
-                        )
-                    )
-                )
+                ?: throw EntityNotFoundException(Candy::class, id)
         }
     }
 }

@@ -16,23 +16,23 @@ class CandyCommandHandler(
             price = event.price,
             order = event.order
         )
-        repository.add(candy).awaitSingle()
+        repository.add(candy)
     }
 
     suspend fun on(event: UpdateCandyCommand) {
-        val candy = repository.getById(event.id).awaitSingle()
+        val candy = repository.getById(event.id)
         candy.apply {
             name = event.name
             firm = event.firm
             price = event.price
             order = event.order
         }
-        repository.save(candy).awaitSingle()
+        repository.save(candy)
     }
 
     suspend fun on(event: HideCandyCommand) {
-        val candy = repository.getById(event.id).awaitSingle()
+        val candy = repository.getById(event.id)
         candy.hide()
-        repository.save(candy).awaitSingle()
+        repository.save(candy)
     }
 }

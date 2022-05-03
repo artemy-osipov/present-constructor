@@ -7,6 +7,8 @@ import io.github.artemy.osipov.shop.service.present.PresentCommandHandler
 import io.github.artemy.osipov.shop.service.present.PresentRepository
 import io.github.artemy.osipov.shop.service.present.RemovePresentCommand
 import io.github.artemy.osipov.shop.utils.UuidUtils.newUUID
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import org.mapstruct.factory.Mappers
 import org.springframework.http.HttpStatus
 import org.springframework.validation.annotation.Validated
@@ -18,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
-import reactor.core.publisher.Flux
-import reactor.core.publisher.Mono
 import java.util.*
 
 @RestController
@@ -31,13 +31,14 @@ class PresentController(
     private val converter = Mappers.getMapper(DPresentConverter::class.java)
 
     @GetMapping("/{id}")
-    fun getPresent(@PathVariable("id") id: UUID): Mono<DPresent> {
-        return repository.findById(id)
-            .map(converter::toDPresent)
+    suspend fun getPresent(@PathVariable("id") id: UUID): DPresent {
+        return converter.toDPresent(
+            repository.findById(id)
+        )
     }
 
     @GetMapping
-    fun listPresent(): Flux<DPresent> {
+    fun listPresent(): Flow<DPresent> {
         return repository.findAll()
             .map(converter::toDPresent)
     }

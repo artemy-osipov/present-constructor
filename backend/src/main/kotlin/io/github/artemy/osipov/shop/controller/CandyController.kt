@@ -8,6 +8,8 @@ import io.github.artemy.osipov.shop.service.candy.CandyRepository
 import io.github.artemy.osipov.shop.service.candy.CandyRepository.Companion.getById
 import io.github.artemy.osipov.shop.service.candy.HideCandyCommand
 import io.github.artemy.osipov.shop.utils.UuidUtils.newUUID
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import org.mapstruct.factory.Mappers
 import org.springframework.http.HttpStatus
 import org.springframework.validation.annotation.Validated
@@ -20,8 +22,6 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
-import reactor.core.publisher.Flux
-import reactor.core.publisher.Mono
 import java.util.*
 
 @RestController
@@ -33,13 +33,14 @@ class CandyController(
     private val converter = Mappers.getMapper(DCandyConverter::class.java)
 
     @GetMapping("/{id}")
-    fun getCandy(@PathVariable("id") id: UUID): Mono<DCandy> {
-        return repository.getById(id)
-            .map(converter::toDCandy)
+    suspend fun getCandy(@PathVariable("id") id: UUID): DCandy {
+        return converter.toDCandy(
+            repository.getById(id)
+        )
     }
 
     @GetMapping
-    fun listCandy(): Flux<DCandy> {
+    fun listCandy(): Flow<DCandy> {
         return repository.findAll()
             .map(converter::toDCandy)
     }

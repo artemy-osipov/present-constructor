@@ -6,6 +6,8 @@ import io.github.artemy.osipov.shop.testdata.CandyTestData
 import io.github.artemy.osipov.shop.testdata.CandyTestData.CANDY_ID
 import io.github.artemy.osipov.shop.utils.UuidUtils.newUUID
 import io.github.artemy.osipov.shop.utils.toJson
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.Matchers.aMapWithSize
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
@@ -23,22 +25,22 @@ class CandyControllerIT : BaseIT() {
     lateinit var candyRepository: CandyRepository
 
     @AfterEach
-    fun clean() {
-        candyRepository.deleteAll().block()
+    fun clean() = runTest {
+        candyRepository.deleteAll()
     }
 
     @Test
-    fun `should add candy with valid data`() {
+    fun `should add candy with valid data`() = runTest {
         val result = webClient.post()
             .uri("/api/candies")
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValue(toJson(CandyTestData.REST.updateDTO()))
             .exchange()
 
-        val addedCandy = candyRepository.findAll().blockFirst()
+        val addedCandy = candyRepository.findAll().first()
         result
             .expectStatus().isOk
-            .expectBody<String>().isEqualTo("\"${addedCandy?.id}\"")
+            .expectBody<String>().isEqualTo("\"${addedCandy.id}\"")
     }
 
     @Test
@@ -53,8 +55,8 @@ class CandyControllerIT : BaseIT() {
     }
 
     @Test
-    fun `should edit candy with valid data`() {
-        candyRepository.add(CandyTestData.candy()).block()
+    fun `should edit candy with valid data`() = runTest {
+        candyRepository.add(CandyTestData.candy())
         val newName = "new name"
         val request = CandyTestData.REST.updateDTO().apply {
             name = newName
@@ -67,7 +69,7 @@ class CandyControllerIT : BaseIT() {
             .exchange()
             .expectStatus().isNoContent
 
-        val updatedCandy = candyRepository.findById(CANDY_ID).block()
+        val updatedCandy = candyRepository.findById(CANDY_ID)
         assert(
             updatedCandy == CandyTestData.candy().apply {
                 name = newName
@@ -87,7 +89,7 @@ class CandyControllerIT : BaseIT() {
     }
 
     @Test
-    fun `should not edit nonexistent candy`() {
+    fun `should not edit nonexistent candy`() = runTest {
         val unknownId = newUUID()
 
         webClient.put()
@@ -97,24 +99,24 @@ class CandyControllerIT : BaseIT() {
             .exchange()
             .expectStatus().isNotFound
 
-        assert(candyRepository.count().block() == 0L)
+        assert(candyRepository.count() == 0L)
     }
 
     @Test
-    fun `should remove candy`() {
-        candyRepository.add(CandyTestData.candy()).block()
+    fun `should remove candy`() = runTest {
+        candyRepository.add(CandyTestData.candy())
 
         webClient.delete()
             .uri("/api/candies/{id}", CANDY_ID)
             .exchange()
             .expectStatus().isNoContent
 
-        val hiddenCandy = candyRepository.findById(CANDY_ID).block()
+        val hiddenCandy = candyRepository.findById(CANDY_ID)
         assert(hiddenCandy?.active == false)
     }
 
     @Test
-    fun `should not remove unknown candy`() {
+    fun `should not remove unknown candy`() = runTest {
         val unknownId = newUUID()
 
         webClient.delete()
@@ -122,6 +124,6 @@ class CandyControllerIT : BaseIT() {
             .exchange()
             .expectStatus().isNotFound
 
-        assert(candyRepository.count().block() == 0L)
+        assert(candyRepository.count() == 0L)
     }
 }

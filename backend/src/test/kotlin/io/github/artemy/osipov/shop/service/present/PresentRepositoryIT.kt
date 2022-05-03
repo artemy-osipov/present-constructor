@@ -5,6 +5,8 @@ import io.github.artemy.osipov.shop.service.candy.CandyRepository
 import io.github.artemy.osipov.shop.testdata.CandyTestData
 import io.github.artemy.osipov.shop.testdata.PresentTestData
 import io.github.artemy.osipov.shop.utils.UuidUtils
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
@@ -19,28 +21,28 @@ internal class PresentRepositoryIT : BaseIT() {
     companion object {
         @BeforeAll
         @JvmStatic
-        fun init(@Autowired repository: CandyRepository) {
-            repository.add(CandyTestData.candy()).block()
+        fun init(@Autowired repository: CandyRepository) = runTest {
+            repository.add(CandyTestData.candy())
         }
 
         @AfterAll
         @JvmStatic
-        fun clean(@Autowired repository: CandyRepository) {
-            repository.deleteAll().block()
+        fun clean(@Autowired repository: CandyRepository) = runTest {
+            repository.deleteAll()
         }
     }
 
     @AfterEach
-    fun clean() {
-        repository.deleteAll().block()
+    fun clean() = runTest {
+        repository.deleteAll()
     }
 
     @Test
-    fun `should find present by id`() {
+    fun `should find present by id`() = runTest {
         val present = PresentTestData.present()
-        repository.add(present).block()
+        repository.add(present)
 
-        val fromDB = repository.findById(present.id).block()
+        val fromDB = repository.findById(present.id)
 
         assert(
             present == fromDB
@@ -48,11 +50,11 @@ internal class PresentRepositoryIT : BaseIT() {
     }
 
     @Test
-    fun `should list all presents`() {
+    fun `should list all presents`() = runTest {
         val present = PresentTestData.present()
-        repository.add(present).block()
+        repository.add(present)
 
-        val fromDB = repository.findAll().collectList().block()
+        val fromDB = repository.findAll().toList()
 
         assert(
             listOf(present) == fromDB
@@ -60,10 +62,10 @@ internal class PresentRepositoryIT : BaseIT() {
     }
 
     @Test
-    fun `should add and return count`() {
-        repository.add(PresentTestData.present()).block()
+    fun `should add and return count`() = runTest {
+        repository.add(PresentTestData.present())
 
-        val count = repository.count().block()
+        val count = repository.count()
 
         assert(
             count == 1L
@@ -71,12 +73,12 @@ internal class PresentRepositoryIT : BaseIT() {
     }
 
     @Test
-    fun `should not delete by unknown id`() {
+    fun `should not delete by unknown id`() = runTest {
         val present = PresentTestData.present()
-        repository.add(present).block()
+        repository.add(present)
 
-        val deletes = repository.deleteById(UuidUtils.newUUID()).block()
-        val count = repository.count().block()
+        val deletes = repository.deleteById(UuidUtils.newUUID())
+        val count = repository.count()
 
         assert(
             deletes == 0
@@ -87,12 +89,12 @@ internal class PresentRepositoryIT : BaseIT() {
     }
 
     @Test
-    fun `should delete by id`() {
+    fun `should delete by id`() = runTest {
         val present = PresentTestData.present()
-        repository.add(present).block()
+        repository.add(present)
 
-        val deletes = repository.deleteById(present.id).block()
-        val count = repository.count().block()
+        val deletes = repository.deleteById(present.id)
+        val count = repository.count()
 
         assert(
             deletes == 1
@@ -103,11 +105,11 @@ internal class PresentRepositoryIT : BaseIT() {
     }
 
     @Test
-    fun `should delete all entities`() {
-        repository.add(PresentTestData.present()).block()
+    fun `should delete all entities`() = runTest {
+        repository.add(PresentTestData.present())
 
-        val deletes = repository.deleteAll().block()
-        val count = repository.count().block()
+        val deletes = repository.deleteAll()
+        val count = repository.count()
 
         assert(
             deletes == 1

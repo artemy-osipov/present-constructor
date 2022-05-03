@@ -1,7 +1,5 @@
 package io.github.artemy.osipov.shop.service.present
 
-import kotlinx.coroutines.reactor.awaitSingle
-import kotlinx.coroutines.reactor.awaitSingleOrNull
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
@@ -19,10 +17,10 @@ class PresentCommandHandler(
         event.items.forEach { (candyId, count) ->
             present.addItem(candyId, count)
         }
-        presentRepository.add(present).awaitSingle()
+        presentRepository.add(present)
     }
 
     suspend fun on(event: RemovePresentCommand) {
-        presentRepository.deleteById(event.id).awaitSingleOrNull()
+        presentRepository.deleteById(event.id)
     }
 }
