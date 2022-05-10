@@ -1,7 +1,7 @@
 spring:
   application.name: present-constructor
   r2dbc:
-    url: jdbc:postgresql://localhost:5432/presents
+    url: r2dbc:postgresql://localhost:5432/presents
     username: test
     password: test
     properties:

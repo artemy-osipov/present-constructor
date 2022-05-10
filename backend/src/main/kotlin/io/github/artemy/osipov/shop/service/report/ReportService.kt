@@ -13,28 +13,35 @@ import java.io.ByteArrayOutputStream
 import java.util.*
 import java.util.stream.Collectors
 
-private const val PUBLIC_REPORT_PATH = "templates/publicReport.docx"
-private const val PRIVATE_REPORT_PATH = "templates/privateReport.docx"
+private fun createXDocReport(templatePath: String): IXDocReport {
+    ReportService::class.java.classLoader.getResourceAsStream(templatePath).use {
+        return XDocReportRegistry
+            .getRegistry()
+            .loadReport(it, templatePath, TemplateEngineKind.Freemarker)
+    }
+}
+
+private val privateReport: IXDocReport = createXDocReport("templates/privateReport.docx")
+private val publicReport: IXDocReport = createXDocReport("templates/publicReport.docx")
 
 @Service
 class ReportService(
     private val presentRepository: PresentRepository,
     private val candyRepository: CandyRepository
 ) {
-
     suspend fun generatePublicReport(presentId: UUID): Report {
-        return generateReport(presentId, PUBLIC_REPORT_PATH)
+        return generateReport(presentId, publicReport)
     }
 
     suspend fun generatePrivateReport(presentId: UUID): Report {
-        return generateReport(presentId, PRIVATE_REPORT_PATH)
+        return generateReport(presentId, privateReport)
     }
 
-    private suspend fun generateReport(presentId: UUID, templatePath: String): Report {
+    private suspend fun generateReport(presentId: UUID, report: IXDocReport): Report {
         val present = fetchPresent(presentId)
         return Report(
             formatReportName(present),
-            generateReportContent(present, templatePath)
+            generateReportContent(present, report)
         )
     }
 
@@ -42,24 +49,19 @@ class ReportService(
         return "${present.name} ${present.price} RUB.docx"
     }
 
-    private fun generateReportContent(present: ReportPresent, templateName: String): ByteArray {
-        javaClass.classLoader.getResourceAsStream(templateName).use {
-            val report: IXDocReport = XDocReportRegistry.getRegistry()
-                .loadReport(it, templateName, TemplateEngineKind.Freemarker)
+    private fun generateReportContent(present: ReportPresent, report: IXDocReport): ByteArray {
+        val context: IContext = report.createContext()
+        context.put("present", present)
+        context.put("costPrice", present.computeCost())
 
-            val context: IContext = report.createContext()
-            context.put("present", present)
-            context.put("costPrice", present.computeCost())
+        val bout = ByteArrayOutputStream()
+        report.process(context, bout)
 
-            val bout = ByteArrayOutputStream()
-            report.process(context, bout)
-
-            return bout.toByteArray()
-        }
+        return bout.toByteArray()
     }
 
     private suspend fun fetchPresent(id: UUID): ReportPresent {
-        val present =  presentRepository.findById(id)
+        val present = presentRepository.findById(id)
         val candyIds = present.items
             .stream()
             .map(Present.Item::candyId)

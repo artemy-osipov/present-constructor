@@ -28,6 +28,9 @@ abstract class BaseIT {
             registry.add("spring.r2dbc.password") {
                 cockroachDBContainer.password
             }
+            registry.add("spring.r2dbc.properties.sslMode") {
+                "disable"
+            }
         }
     }
 }

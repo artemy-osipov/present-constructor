@@ -77,12 +77,9 @@ internal class PresentRepositoryIT : BaseIT() {
         val present = PresentTestData.present()
         repository.add(present)
 
-        val deletes = repository.deleteById(UuidUtils.newUUID())
+        repository.deleteById(UuidUtils.newUUID())
         val count = repository.count()
 
-        assert(
-            deletes == 0
-        )
         assert(
             count == 1L
         )
@@ -93,12 +90,9 @@ internal class PresentRepositoryIT : BaseIT() {
         val present = PresentTestData.present()
         repository.add(present)
 
-        val deletes = repository.deleteById(present.id)
+        repository.deleteById(present.id)
         val count = repository.count()
 
-        assert(
-            deletes == 1
-        )
         assert(
             count == 0L
         )
@@ -108,12 +102,9 @@ internal class PresentRepositoryIT : BaseIT() {
     fun `should delete all entities`() = runTest {
         repository.add(PresentTestData.present())
 
-        val deletes = repository.deleteAll()
+        repository.deleteAll()
         val count = repository.count()
 
-        assert(
-            deletes == 1
-        )
         assert(
             count == 0L
         )

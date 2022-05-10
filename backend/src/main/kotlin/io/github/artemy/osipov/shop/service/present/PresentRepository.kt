@@ -1,16 +1,15 @@
 package io.github.artemy.osipov.shop.service.present
 
 import io.github.artemy.osipov.shop.exception.EntityNotFoundException
+import io.github.artemy.osipov.shop.repository.ExtraMethods
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.reactive.asFlow
 import kotlinx.coroutines.reactive.awaitFirstOrNull
-import kotlinx.coroutines.reactive.awaitLast
-import kotlinx.coroutines.reactor.awaitSingle
+import kotlinx.coroutines.reactor.asFlux
 import org.springframework.data.annotation.Id
-import org.springframework.data.r2dbc.core.R2dbcEntityTemplate
 import org.springframework.data.relational.core.mapping.Table
-import org.springframework.data.relational.core.query.Criteria
-import org.springframework.data.relational.core.query.Query
+import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.reactive.TransactionalOperator
 import org.springframework.transaction.reactive.executeAndAwait
@@ -18,32 +17,25 @@ import reactor.core.publisher.Flux
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.util.*
-import kotlin.collections.List
 
 @Repository
 class PresentRepository(
-    private val entityTemplate: R2dbcEntityTemplate,
+    private val presentDTORepository: PresentDTORepository,
+    private val presentItemDTORepository: PresentItemDTORepository,
     private val transactionOperator: TransactionalOperator
 ) {
 
-    suspend fun findById(id: UUID): Present {
-        return entityTemplate.selectOne(
-            Query.query(Criteria.where("id").`is`(id)),
-            PresentDTO::class.java
-        )
-            .flatMapMany { aggregatePresent(listOf(it)) }
-            .`as`(transactionOperator::transactional)
-            .awaitFirstOrNull()
+    suspend fun findById(id: UUID): Present = transactionOperator.executeAndAwait {
+        val present = presentDTORepository.findById(id)
             ?: throw EntityNotFoundException(Present::class, id)
-    }
+        aggregatePresent(listOf(present)).awaitFirstOrNull()
+    }!!
 
     fun findAll(): Flow<Present> {
-        return entityTemplate.select(
-            Query.empty(),
-            PresentDTO::class.java
-        )
+        return presentDTORepository.findAll()
+            .asFlux()
             .collectList()
-            .flatMapMany() { aggregatePresent(it) }
+            .flatMapMany { aggregatePresent(it) }
             .`as`(transactionOperator::transactional)
             .asFlow()
     }
@@ -58,45 +50,32 @@ class PresentRepository(
 
     private fun findItems(presentsDTO: List<PresentDTO>): Flux<ItemDTO> {
         val presentIds = presentsDTO.map { it.id }.toSet()
-        return entityTemplate.select(
-            Query.query(Criteria.where("present_id").`in`(presentIds)),
-            ItemDTO::class.java
-        )
+        return presentItemDTORepository.findByPresentIdIn(presentIds).asFlux()
     }
 
     suspend fun add(present: Present): UUID = transactionOperator.executeAndAwait {
         val dto = PresentDTO(present)
-        val added = entityTemplate.insert(dto).awaitSingle()
+        val added = presentDTORepository.add(dto)
         addItems(added.id, present.items)
         added.id
     }!!
 
     private suspend fun addItems(presentId: UUID, items: List<Present.Item>) {
-        Flux.fromIterable(
+        presentItemDTORepository.saveAll(
             items.map { ItemDTO(presentId, it) }
-        )
-            .concatMap(entityTemplate::insert)
-            .awaitLast()
+        ).collect()
     }
 
-    suspend fun deleteById(id: UUID): Int {
-        return entityTemplate.delete(
-            Query.query(Criteria.where("id").`is`(id)),
-            PresentDTO::class.java
-        ).awaitSingle()
+    suspend fun deleteById(id: UUID) {
+        presentDTORepository.deleteById(id)
     }
 
-    suspend fun deleteAll(): Int {
-        return entityTemplate
-            .delete(PresentDTO::class.java)
-            .all()
-            .awaitSingle()
+    suspend fun deleteAll() {
+        return presentDTORepository.deleteAll()
     }
 
     suspend fun count(): Long {
-        return entityTemplate
-            .count(Query.empty(), PresentDTO::class.java)
-            .awaitSingle()
+        return presentDTORepository.count()
     }
 
     private fun buildPresent(presentDTO: PresentDTO, itemsDTO: List<ItemDTO>): Present {
@@ -110,8 +89,14 @@ class PresentRepository(
     }
 }
 
+interface PresentDTORepository : CoroutineCrudRepository<PresentDTO, UUID>, ExtraMethods<PresentDTO>
+
+interface PresentItemDTORepository : CoroutineCrudRepository<ItemDTO, UUID>, ExtraMethods<ItemDTO> {
+    fun findByPresentIdIn(ids: Collection<UUID>): Flow<ItemDTO>
+}
+
 @Table("presents")
-private data class PresentDTO(
+data class PresentDTO(
     @Id
     val id: UUID,
     var name: String,
@@ -122,7 +107,7 @@ private data class PresentDTO(
 }
 
 @Table("present_items")
-private data class ItemDTO(
+data class ItemDTO(
     val presentId: UUID,
     val candyId: UUID,
     var count: Int

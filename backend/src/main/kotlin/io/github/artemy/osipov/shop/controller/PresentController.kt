@@ -9,7 +9,6 @@ import io.github.artemy.osipov.shop.service.present.RemovePresentCommand
 import io.github.artemy.osipov.shop.utils.UuidUtils.newUUID
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import org.mapstruct.factory.Mappers
 import org.springframework.http.HttpStatus
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -26,9 +25,9 @@ import java.util.*
 @RequestMapping("/api/presents")
 class PresentController(
     private val repository: PresentRepository,
-    private val commandHandler: PresentCommandHandler
+    private val commandHandler: PresentCommandHandler,
+    private val converter: DPresentConverter
 ) {
-    private val converter = Mappers.getMapper(DPresentConverter::class.java)
 
     @GetMapping("/{id}")
     suspend fun getPresent(@PathVariable("id") id: UUID): DPresent {

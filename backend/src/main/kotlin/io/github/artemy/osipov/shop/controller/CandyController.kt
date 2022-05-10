@@ -10,7 +10,6 @@ import io.github.artemy.osipov.shop.service.candy.HideCandyCommand
 import io.github.artemy.osipov.shop.utils.UuidUtils.newUUID
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import org.mapstruct.factory.Mappers
 import org.springframework.http.HttpStatus
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -28,9 +27,9 @@ import java.util.*
 @RequestMapping("/api/candies")
 class CandyController(
     private val repository: CandyRepository,
-    private val commandHandler: CandyCommandHandler
+    private val commandHandler: CandyCommandHandler,
+    private val converter: DCandyConverter
 ) {
-    private val converter = Mappers.getMapper(DCandyConverter::class.java)
 
     @GetMapping("/{id}")
     suspend fun getCandy(@PathVariable("id") id: UUID): DCandy {
