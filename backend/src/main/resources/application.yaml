@@ -6,4 +6,3 @@ spring:
     password: test
     properties:
       sslMode: verify-full
-  sql.init.mode: always

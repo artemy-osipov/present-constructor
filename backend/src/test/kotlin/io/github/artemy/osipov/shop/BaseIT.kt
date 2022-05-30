@@ -31,6 +31,9 @@ abstract class BaseIT {
             registry.add("spring.r2dbc.properties.sslMode") {
                 "disable"
             }
+            registry.add("spring.sql.init.mode") {
+                "always"
+            }
         }
     }
 }
