@@ -15,9 +15,8 @@ import {
   updateRequestStatus,
   withRequestsStatus,
 } from '@ngneat/elf-requests'
-import { filter, firstValueFrom, from, map, Observable, tap } from 'rxjs'
-import { candyGateway } from '$lib/api/candy.api'
-import type { NewCandyRequest } from '$lib/api/candy.api'
+import { filter, firstValueFrom, from, map, type Observable, tap } from 'rxjs'
+import { candyGateway, type NewCandyRequest } from '$lib/api/candy.api'
 import type { Candy } from './candy.model'
 import type { PresentItem } from './present.model'
 

@@ -17,8 +17,9 @@ export const handlers = [
       ctx.json(mock.getCandy(id as string))
     )
   }),
-  rest.post('/mocks/api/candies', (req, res, ctx) => {
-    const newId = mock.addCandy(req.body as Candy)
+  rest.post('/mocks/api/candies', async (req, res, ctx) => {
+    const candy: Candy = await req.json()
+    const newId = mock.addCandy(candy)
     return res(ctx.delay(1000), ctx.status(200), ctx.json(newId))
   }),
   rest.put('/mocks/api/candies/:id', (_, res, ctx) => {
@@ -38,8 +39,9 @@ export const handlers = [
       ctx.json(mock.getPresent(id as string))
     )
   }),
-  rest.post('/mocks/api/presents', (req, res, ctx) => {
-    const newId = mock.addPresent(req.body as Present)
+  rest.post('/mocks/api/presents', async (req, res, ctx) => {
+    const present: Present = await req.json()
+    const newId = mock.addPresent(present)
     return res(ctx.delay(1000), ctx.status(200), ctx.json(newId))
   }),
   rest.delete('/mocks/api/presents/:id', (_, res, ctx) => {

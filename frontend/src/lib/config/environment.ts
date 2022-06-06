@@ -1,14 +1,11 @@
-import { browser, dev } from '$app/env'
+import { browser, dev } from '$app/environment'
 
-export const USE_MOCKS: boolean =
-  dev &&
-  import.meta.env.VITE_API_URL === undefined &&
-  env('API_URL') === undefined
-export const API_URL: string = USE_MOCKS
-  ? 'mocks'
-  : (import.meta.env.VITE_API_URL || env('API_URL')) + ''
+export const development = dev || import.meta.env.VITE_DEV
 
-if (dev) {
+export const USE_MOCKS: boolean = development && env('API_URL') === undefined
+export const API_URL: string = USE_MOCKS ? 'mocks' : env('API_URL') + ''
+
+if (development) {
   console.log('USE_MOCKS ' + USE_MOCKS)
   console.log('API_URL ' + API_URL)
 }

@@ -12,12 +12,12 @@
 </script>
 
 <!-- svelte-ignore a11y-missing-attribute -->
-<a class="button link-to-top" on:click={scrollToTop}>
+<a class="button link-to-top" on:click|preventDefault={scrollToTop}>
   <FaAngleUp />
 </a>
 
 <!-- svelte-ignore a11y-missing-attribute -->
-<a class="button link-to-down" on:click={scrollToBottom}>
+<a class="button link-to-down" on:click|preventDefault={scrollToBottom}>
   <FaAngleDown />
 </a>
 

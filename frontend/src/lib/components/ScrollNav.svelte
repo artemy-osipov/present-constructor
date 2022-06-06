@@ -1,5 +1,6 @@
 <script lang="ts">
   import FaEye from 'svelte-icons/fa/FaEye.svelte'
+  import { browser } from '$app/environment'
 
   export let message: string
   export let anchorElement: HTMLElement
@@ -7,10 +8,12 @@
   let scrollY: number
   let visible = false
   $: scrollY, (visible = anchorElement && !isScrolledIntoView(anchorElement))
-  $: if (visible) {
-    document.body.classList.add('has-navbar-fixed-bottom')
-  } else {
-    document.body.classList.remove('has-navbar-fixed-bottom')
+  $: if (browser) {
+    if (visible) {
+      document.body.classList.add('has-navbar-fixed-bottom')
+    } else {
+      document.body.classList.remove('has-navbar-fixed-bottom')
+    }
   }
 
   function isScrolledIntoView(el: HTMLElement): boolean {
@@ -36,7 +39,10 @@
           <div class="field is-grouped">
             <p class="control">
               <!-- svelte-ignore a11y-missing-attribute -->
-              <a class="button is-primary" on:click={scrollToAnchor}>
+              <a
+                class="button is-primary"
+                on:click|preventDefault={scrollToAnchor}
+              >
                 <span class="icon">
                   <FaEye />
                 </span>

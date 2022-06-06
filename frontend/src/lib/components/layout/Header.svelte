@@ -34,7 +34,7 @@
     <a
       role="button"
       class="navbar-burger"
-      on:click={toggleMenu}
+      on:click|preventDefault={toggleMenu}
       class:is-active={menuOpened}
     >
       {#each links as _}
