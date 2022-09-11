@@ -4,8 +4,8 @@
   import PresentList from '$lib/components/presents/PresentList.svelte'
   import LinkBorder from '$lib/components/LinkBorder.svelte'
 
-  function gotoNewPresentPage() {
-    goto('/presents/new')
+  async function gotoNewPresentPage() {
+    await goto('/presents/new')
   }
 </script>
 

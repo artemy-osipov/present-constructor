@@ -17,14 +17,15 @@
   }
 
   async function onAdd() {
+    $form.touched = true
     if ($form.valid) {
       await candyRepository.add(data)
-      goto('/candies')
+      await goto('/candies')
     }
   }
 </script>
 
-<form use:form>
+<form use:form on:submit|preventDefault={onAdd}>
   <h1 class="title">Новая конфета</h1>
 
   <CandyEditFields {form} {data} />

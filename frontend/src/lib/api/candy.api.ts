@@ -1,5 +1,6 @@
 import { API_URL } from '$lib/config/environment'
 import type { Candy } from '$lib/data/candy.model'
+import { handleError } from '$lib/utils/fetch.utils'
 
 export type NewCandyRequest = Omit<Candy, 'id' | 'active'>
 
@@ -13,17 +14,17 @@ class CandyGateway {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(req),
-    })
+    }).then(handleError)
     return resp.json()
   }
 
   async get(id: Candy['id']): Promise<Candy> {
-    const resp = await fetch(`${candyResource}/${id}`)
+    const resp = await fetch(`${candyResource}/${id}`).then(handleError)
     return resp.json()
   }
 
   async list(): Promise<Candy[]> {
-    const resp = await fetch(candyResource)
+    const resp = await fetch(candyResource).then(handleError)
     return resp.json()
   }
 
@@ -34,13 +35,13 @@ class CandyGateway {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(candy),
-    })
+    }).then(handleError)
   }
 
   async delete(id: Candy['id']): Promise<void> {
     await fetch(`${candyResource}/${id}`, {
       method: 'DELETE',
-    })
+    }).then(handleError)
   }
 }
 

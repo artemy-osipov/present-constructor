@@ -1,6 +1,5 @@
 <script lang="ts">
   import FaEye from 'svelte-icons/fa/FaEye.svelte'
-  import { browser } from '$app/environment'
 
   export let message: string
   export let anchorElement: HTMLElement
@@ -8,13 +7,6 @@
   let scrollY: number
   let visible = false
   $: scrollY, (visible = anchorElement && !isScrolledIntoView(anchorElement))
-  $: if (browser) {
-    if (visible) {
-      document.body.classList.add('has-navbar-fixed-bottom')
-    } else {
-      document.body.classList.remove('has-navbar-fixed-bottom')
-    }
-  }
 
   function isScrolledIntoView(el: HTMLElement): boolean {
     const rect = el.getBoundingClientRect()

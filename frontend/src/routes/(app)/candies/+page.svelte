@@ -4,8 +4,8 @@
   import CandyList from '$lib/components/candy/CandyList.svelte'
   import LinkBorder from '$lib/components/LinkBorder.svelte'
 
-  function gotoNewCandyPage() {
-    goto('/candies/new')
+  async function gotoNewCandyPage() {
+    await goto('/candies/new')
   }
 </script>
 

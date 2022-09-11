@@ -1,11 +1,23 @@
 import { rest } from 'msw'
 import type { Candy } from '$lib/data/candy.model'
-import { Mock } from './data'
 import type { Present } from '$lib/data/present.model'
+import { Mock } from './data'
 
 const mock = new Mock()
 
 export const handlers = [
+  rest.post('/mocks/auth/login', async (req, res, ctx) => {
+    const success = req.headers.get('Authorization') === 'Basic :test'
+    return res(
+      ctx.delay(1000),
+      ctx.status(success ? 200 : 401),
+      ctx.cookie('X-AUTH-TOKEN', '321')
+    )
+  }),
+  rest.post('/mocks/auth/refresh', async (req, res, ctx) => {
+    const hasToken = req.cookies['X-AUTH-TOKEN'] !== undefined
+    return res(ctx.delay(1000), ctx.status(hasToken ? 200 : 401))
+  }),
   rest.get('/mocks/api/candies', (_, res, ctx) => {
     return res(ctx.delay(1000), ctx.status(200), ctx.json(mock.candies))
   }),
@@ -29,7 +41,7 @@ export const handlers = [
     return res(ctx.delay(1000), ctx.status(200))
   }),
   rest.get('/mocks/api/presents', (_, res, ctx) => {
-    return res(ctx.delay(1000), ctx.status(200), ctx.json(mock.presents))
+    return res(ctx.delay(1000), ctx.status(401), ctx.json(mock.presents))
   }),
   rest.get('/mocks/api/presents/:id', (req, res, ctx) => {
     const { id } = req.params

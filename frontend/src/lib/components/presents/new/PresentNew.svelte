@@ -66,8 +66,8 @@
   }
 
   async function onSave() {
+    $form.touched = true
     if (!$form.valid || emptyItems) {
-      $form.touched = true
       return
     }
     await presentRepository.add(data)
@@ -83,7 +83,7 @@
   <div class="notification is-primary">Добавлено</div>
 {/if}
 
-<form use:form>
+<form use:form on:submit|preventDefault={onSave}>
   <div class="field">
     <label class="label" for="name">Название</label>
     <div class="control">

@@ -15,7 +15,7 @@
       case 'maxLength':
         return `Превышает максимальную длину (${details})`
       default:
-        return `${type}-${details}`
+        return '' + details
     }
   }
 </script>

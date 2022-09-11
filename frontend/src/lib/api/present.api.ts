@@ -1,5 +1,6 @@
 import { API_URL } from '$lib/config/environment'
 import type { Present } from '$lib/data/present.model'
+import { handleError } from '$lib/utils/fetch.utils'
 
 export type NewPresentRequest = Omit<Present, 'id' | 'date'>
 
@@ -13,24 +14,24 @@ class PresentGateway {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(req),
-    })
+    }).then(handleError)
     return resp.json()
   }
 
   async get(id: Present['id']): Promise<Present> {
-    const resp = await fetch(`${presentResource}/${id}`)
+    const resp = await fetch(`${presentResource}/${id}`).then(handleError)
     return resp.json()
   }
 
   async list(): Promise<Present[]> {
-    const resp = await fetch(presentResource)
+    const resp = await fetch(presentResource).then(handleError)
     return resp.json()
   }
 
   async delete(id: Present['id']): Promise<void> {
     await fetch(`${presentResource}/${id}`, {
       method: 'DELETE',
-    })
+    }).then(handleError)
   }
 
   publicReportLocation(id: string): string {

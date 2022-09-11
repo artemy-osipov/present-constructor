@@ -20,19 +20,20 @@
   let deleteModalActive: boolean
 
   async function onSave() {
+    $form.touched = true
     if ($form.valid) {
       await candyRepository.update(data)
-      goto('/candies')
+      await goto('/candies')
     }
   }
 
   async function onDelete() {
     await candyRepository.delete(candy.id)
-    goto('/candies')
+    await goto('/candies')
   }
 </script>
 
-<form use:form>
+<form use:form on:submit|preventDefault={onSave}>
   <h1 class="title">
     {candy.name}
   </h1>

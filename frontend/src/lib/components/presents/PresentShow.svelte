@@ -15,13 +15,13 @@
 
   let deleteModalActive = false
 
-  function gotoNewPresentPage() {
-    goto(`/presents/new?source=${present.id}`)
+  async function gotoNewPresentPage() {
+    await goto(`/presents/new?source=${present.id}`)
   }
 
   async function onDelete() {
     await presentRepository.delete(present.id)
-    goto('/presents')
+    await goto('/presents')
   }
 </script>
 
