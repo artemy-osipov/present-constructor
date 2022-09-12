@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { createEventDispatcher, onMount } from 'svelte'
-  import { firstValueFrom } from 'rxjs'
-  import type { Candy } from '$lib/data/candy.model'
-  import type { PresentItem } from '$lib/data/present.model'
+  import type { Candy } from '$lib/candy/candy.model'
+  import { candyRepository } from '$lib/candy/candy.repository'
+  import type { PresentItem } from '$lib/present/present.model'
   import { toMap } from '$lib/utils/collection.utils'
   import { isMobile } from '$lib/utils/responsive.utils'
   import { formatPrice } from '$lib/utils/string.utils'
+  import { firstValueFrom } from 'rxjs'
+  import { createEventDispatcher, onMount } from 'svelte'
   import PresentItemCount from './PresentItemCount.svelte'
-  import { candyRepository } from '$lib/data/candy.repository'
 
   export let items: PresentItem[]
   export let highlightSelected = false

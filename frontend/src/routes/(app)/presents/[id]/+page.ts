@@ -1,7 +1,7 @@
-import type { PageLoad } from './$types'
 import { browser } from '$app/environment'
-import { fetchPresentView } from '$lib/data/present-view.service'
-import type { PresentView } from '$lib/data/present.model'
+import { fetchPresentView } from '$lib/present/present-view.service'
+import type { PresentView } from '$lib/present/present.model'
+import type { PageLoad } from './$types'
 
 export const load: PageLoad = async ({ params, parent }) => {
   let present: PresentView | undefined

@@ -1,6 +1,6 @@
 import { API_URL } from '$lib/config/environment'
-import type { Present } from '$lib/data/present.model'
 import { handleError } from '$lib/utils/fetch.utils'
+import type { Present } from './present.model'
 
 export type NewPresentRequest = Omit<Present, 'id' | 'date'>
 

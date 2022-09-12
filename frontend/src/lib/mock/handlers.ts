@@ -1,6 +1,6 @@
+import type { Candy } from '$lib/candy/candy.model'
+import type { Present } from '$lib/present/present.model'
 import { rest } from 'msw'
-import type { Candy } from '$lib/data/candy.model'
-import type { Present } from '$lib/data/present.model'
 import { Mock } from './data'
 
 const mock = new Mock()

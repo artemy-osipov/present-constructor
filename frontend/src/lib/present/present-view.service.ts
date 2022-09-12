@@ -1,9 +1,9 @@
-import { firstValueFrom } from 'rxjs'
+import type { Candy } from '$lib/candy/candy.model'
+import { candyRepository } from '$lib/candy/candy.repository'
 import { toMap } from '$lib/utils/collection.utils'
-import type { Candy } from './candy.model'
+import { firstValueFrom } from 'rxjs'
 import type { Present, PresentItemView, PresentView } from './present.model'
 import { presentRepository } from './present.repository'
-import { candyRepository } from './candy.repository'
 
 export async function fetchPresentView(
   id: Present['id']

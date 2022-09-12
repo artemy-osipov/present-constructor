@@ -1,21 +1,24 @@
 <script lang="ts">
-  import { maxLength, required, useForm, validators } from 'svelte-use-form'
-  import FaPlus from 'svelte-icons/fa/FaPlus.svelte'
-  import { onMount } from 'svelte'
+  import { candyRepository } from '$lib/candy/candy.repository'
   import CollapsibleCard from '$lib/components/CollapsibleCard.svelte'
   import ErrorHint from '$lib/components/ErrorHint.svelte'
   import FieldError from '$lib/components/FieldError.svelte'
   import ScrollNav from '$lib/components/ScrollNav.svelte'
-  import { costByItems } from '$lib/data/present.model'
-  import type { Present, PresentItem } from '$lib/data/present.model'
-  import { candyRepository } from '$lib/data/candy.repository'
-  import { formatPrice } from '$lib/utils/string.utils'
-  import type { NewPresentRequest } from '$lib/api/present.api'
+  import type { NewPresentRequest } from '$lib/present/present.api'
+  import {
+    costByItems,
+    type Present,
+    type PresentItem,
+  } from '$lib/present/present.model'
+  import { presentRepository } from '$lib/present/present.repository'
   import { toMap } from '$lib/utils/collection.utils'
   import { maxFractionLength, min } from '$lib/utils/number.validators'
-  import { presentRepository } from '$lib/data/present.repository'
-  import SelectCandy from './SelectCandy.svelte'
+  import { formatPrice } from '$lib/utils/string.utils'
+  import { onMount } from 'svelte'
+  import FaPlus from 'svelte-icons/fa/FaPlus.svelte'
+  import { maxLength, required, useForm, validators } from 'svelte-use-form'
   import PresentItemList from './PresentItemList.svelte'
+  import SelectCandy from './SelectCandy.svelte'
 
   export let source: Present | undefined
 

@@ -3,9 +3,9 @@
   import { useForm } from 'svelte-use-form'
 
   import { goto } from '$app/navigation'
-  import { candyRepository } from '$lib/data/candy.repository'
+  import type { NewCandyRequest } from '$lib/candy/candy.api'
+  import { candyRepository } from '$lib/candy/candy.repository'
   import { isMobile } from '$lib/utils/responsive.utils'
-  import type { NewCandyRequest } from '$lib/api/candy.api'
   import CandyEditFields from './CandyEditFields.svelte'
 
   const form = useForm()

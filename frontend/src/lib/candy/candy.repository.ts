@@ -16,9 +16,9 @@ import {
   withRequestsStatus,
 } from '@ngneat/elf-requests'
 import { filter, firstValueFrom, from, map, type Observable, tap } from 'rxjs'
-import { candyGateway, type NewCandyRequest } from '$lib/api/candy.api'
+import type { PresentItem } from '$lib/present/present.model'
+import { candyGateway, type NewCandyRequest } from './candy.api'
 import type { Candy } from './candy.model'
-import type { PresentItem } from './present.model'
 
 const { state, config } = createState(
   withEntities<Candy>(),

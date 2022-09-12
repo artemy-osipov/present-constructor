@@ -1,15 +1,14 @@
 <script lang="ts">
-  import FaFile from 'svelte-icons/fa/FaFile.svelte'
-  import FaCopy from 'svelte-icons/fa/FaCopy.svelte'
-  import FaTrash from 'svelte-icons/fa/FaTrash.svelte'
   import { goto } from '$app/navigation'
-  import { costByItemsView } from '$lib/data/present.model'
-  import type { PresentView } from '$lib/data/present.model'
-  import { formatPrice } from '$lib/utils/string.utils'
-  import { presentRepository } from '$lib/data/present.repository'
   import ModalDelete from '$lib/components/ModalDelete.svelte'
-  import { presentGateway } from '$lib/api/present.api'
+  import { presentGateway } from '$lib/present/present.api'
+  import { costByItemsView, type PresentView } from '$lib/present/present.model'
+  import { presentRepository } from '$lib/present/present.repository'
   import { isMobile } from '$lib/utils/responsive.utils'
+  import { formatPrice } from '$lib/utils/string.utils'
+  import FaCopy from 'svelte-icons/fa/FaCopy.svelte'
+  import FaFile from 'svelte-icons/fa/FaFile.svelte'
+  import FaTrash from 'svelte-icons/fa/FaTrash.svelte'
 
   export let present: PresentView
 

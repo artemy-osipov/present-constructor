@@ -1,8 +1,8 @@
-import type { PageLoad } from './$types'
-import { firstValueFrom } from 'rxjs'
 import { browser } from '$app/environment'
-import { candyRepository } from '$lib/data/candy.repository'
-import type { Candy } from '$lib/data/candy.model'
+import type { Candy } from '$lib/candy/candy.model'
+import { candyRepository } from '$lib/candy/candy.repository'
+import { firstValueFrom } from 'rxjs'
+import type { PageLoad } from './$types'
 
 export const load: PageLoad = async ({ params, parent }) => {
   let candy: Candy | undefined

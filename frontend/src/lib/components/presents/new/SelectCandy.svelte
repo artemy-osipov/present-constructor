@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { PresentItem } from '$lib/data/present.model'
+  import type { PresentItem } from '$lib/present/present.model'
   import PresentItemList from './PresentItemList.svelte'
 
   export let items: PresentItem[]

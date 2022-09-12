@@ -14,8 +14,8 @@ import {
   updateRequestStatus,
   withRequestsStatus,
 } from '@ngneat/elf-requests'
-import { filter, firstValueFrom, from, map, type Observable, tap } from 'rxjs'
-import { presentGateway, type NewPresentRequest } from '$lib/api/present.api'
+import { filter, firstValueFrom, from, map, tap, type Observable } from 'rxjs'
+import { presentGateway, type NewPresentRequest } from './present.api'
 import type { Present } from './present.model'
 
 const { state, config } = createState(

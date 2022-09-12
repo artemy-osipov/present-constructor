@@ -4,10 +4,10 @@
   import { useForm } from 'svelte-use-form'
 
   import { goto } from '$app/navigation'
-  import { candyRepository } from '$lib/data/candy.repository'
-  import type { Candy } from '$lib/data/candy.model'
-  import { isMobile } from '$lib/utils/responsive.utils'
+  import type { Candy } from '$lib/candy/candy.model'
+  import { candyRepository } from '$lib/candy/candy.repository'
   import ModalDelete from '$lib/components/ModalDelete.svelte'
+  import { isMobile } from '$lib/utils/responsive.utils'
   import CandyEditFields from './CandyEditFields.svelte'
 
   export let candy: Candy

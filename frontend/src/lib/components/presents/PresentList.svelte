@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
-  import FaEye from 'svelte-icons/fa/FaEye.svelte'
-  import { presentRepository } from '$lib/data/present.repository'
+  import { presentRepository } from '$lib/present/present.repository'
   import { isMobile } from '$lib/utils/responsive.utils'
   import { formatPrice } from '$lib/utils/string.utils'
+  import { onMount } from 'svelte'
+  import FaEye from 'svelte-icons/fa/FaEye.svelte'
 
   let presents = presentRepository.presents
 

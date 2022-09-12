@@ -1,6 +1,6 @@
 import { API_URL } from '$lib/config/environment'
-import type { Candy } from '$lib/data/candy.model'
 import { handleError } from '$lib/utils/fetch.utils'
+import type { Candy } from './candy.model'
 
 export type NewCandyRequest = Omit<Candy, 'id' | 'active'>
 

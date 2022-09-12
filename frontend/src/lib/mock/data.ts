@@ -1,5 +1,5 @@
-import type { Candy } from '$lib/data/candy.model'
-import type { Present } from '$lib/data/present.model'
+import type { Candy } from '$lib/candy/candy.model'
+import type { Present } from '$lib/present/present.model'
 
 export type MockData = {
   candies: Candy[]

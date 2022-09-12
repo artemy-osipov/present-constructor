@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
-  import FaEye from 'svelte-icons/fa/FaEye.svelte'
-  import { candyRepository } from '$lib/data/candy.repository'
+  import { candyRepository } from '$lib/candy/candy.repository'
   import { isMobile } from '$lib/utils/responsive.utils'
   import { formatPrice } from '$lib/utils/string.utils'
+  import { onMount } from 'svelte'
+  import FaEye from 'svelte-icons/fa/FaEye.svelte'
 
   let candies = candyRepository.activeCandies
 

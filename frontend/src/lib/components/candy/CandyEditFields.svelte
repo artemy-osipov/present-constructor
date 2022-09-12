@@ -1,9 +1,9 @@
 <script lang="ts">
   import { maxLength, required, useForm, validators } from 'svelte-use-form'
 
+  import type { Candy } from '$lib/candy/candy.model'
   import FieldError from '$lib/components/FieldError.svelte'
   import { maxFractionLength, min } from '$lib/utils/number.validators'
-  import type { Candy } from '$lib/data/candy.model'
 
   export let form: ReturnType<typeof useForm>
   export let data: Partial<Candy>

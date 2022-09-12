@@ -1,5 +1,5 @@
+import type { Candy } from '$lib/candy/candy.model'
 import { toMap } from '$lib/utils/collection.utils'
-import type { Candy } from './candy.model'
 
 export interface Present {
   id: string
