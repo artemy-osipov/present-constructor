@@ -22,26 +22,19 @@
 
 {#if visible}
   <nav class="navbar is-transparent is-fixed-bottom">
-    <div class="navbar-menu is-active">
+    <div class="navbar-menu is-active mr-0">
       <div class="navbar-end">
         <div class="navbar-item">
           {message}
         </div>
         <div class="navbar-item">
-          <div class="field is-grouped">
-            <p class="control">
-              <!-- svelte-ignore a11y-missing-attribute -->
-              <a
-                class="button is-primary"
-                on:click|preventDefault={scrollToAnchor}
-              >
-                <span class="icon">
-                  <FaEye />
-                </span>
-                <span>Подробнее</span>
-              </a>
-            </p>
-          </div>
+          <!-- svelte-ignore a11y-missing-attribute -->
+          <a class="button is-primary" on:click|preventDefault={scrollToAnchor}>
+            <span class="icon">
+              <FaEye />
+            </span>
+            <span>Подробнее</span>
+          </a>
         </div>
       </div>
     </div>

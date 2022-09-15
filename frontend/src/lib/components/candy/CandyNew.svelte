@@ -9,6 +9,7 @@
   import CandyEditFields from './CandyEditFields.svelte'
 
   const form = useForm()
+  let processing = false
   const data: NewCandyRequest = {
     name: '',
     firm: '',
@@ -19,6 +20,7 @@
   async function onAdd() {
     $form.touched = true
     if ($form.valid) {
+      processing = true
       await candyRepository.add(data)
       await goto('/candies')
     }
@@ -35,6 +37,7 @@
       type="button"
       class="button is-primary"
       class:is-fullwidth={$isMobile}
+      class:is-loading={processing}
       on:click={onAdd}
     >
       <span class="icon">

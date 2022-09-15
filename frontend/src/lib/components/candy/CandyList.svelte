@@ -4,15 +4,19 @@
   import { formatPrice } from '$lib/utils/string.utils'
   import { onMount } from 'svelte'
   import FaEye from 'svelte-icons/fa/FaEye.svelte'
+  import Loader from '../Loader.svelte'
 
-  let candies = candyRepository.activeCandies
+  const candies = candyRepository.activeCandies
+  const loading = candyRepository.listPending
 
   onMount(() => {
     candyRepository.fetch()
   })
 </script>
 
-{#if $isMobile}
+{#if $loading}
+  <Loader />
+{:else if $isMobile}
   <div class="columns is-multiline">
     {#each $candies as candy (candy.id)}
       <div class="column">

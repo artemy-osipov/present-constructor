@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Candy } from '$lib/candy/candy.model'
   import { candyRepository } from '$lib/candy/candy.repository'
+  import Loader from '$lib/components/Loader.svelte'
   import type { PresentItem } from '$lib/present/present.model'
   import { toMap } from '$lib/utils/collection.utils'
   import { isMobile } from '$lib/utils/responsive.utils'
@@ -17,6 +18,7 @@
   const dispatch = createEventDispatcher<Events>()
 
   let candies: Candy[] = []
+  const loading = candyRepository.listPending
   $: itemMap = toMap(items, 'candyId')
 
   onMount(async () => {
@@ -29,7 +31,9 @@
   }
 </script>
 
-{#if $isMobile}
+{#if $loading}
+  <Loader />
+{:else if $isMobile}
   <div class="columns is-multiline">
     {#each candies as candy (candy.id)}
       {#if !skipEmpty || itemMap.has(candy.id)}

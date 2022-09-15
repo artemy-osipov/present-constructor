@@ -4,6 +4,7 @@
   import ErrorHint from '$lib/components/ErrorHint.svelte'
   import FieldError from '$lib/components/FieldError.svelte'
   import ScrollNav from '$lib/components/ScrollNav.svelte'
+  import { notificationStore } from '$lib/notification/notification.store'
   import type { NewPresentRequest } from '$lib/present/present.api'
   import {
     costByItems,
@@ -33,7 +34,7 @@
   }
 
   const form = useForm()
-  let added = false
+  let processing = false
   let saveButtonElement: HTMLElement
   let cost: number
   $: cost = costByItems(data.items, candyRepository.queryByItems(data.items))
@@ -73,18 +74,20 @@
     if (!$form.valid || emptyItems) {
       return
     }
+    processing = true
     await presentRepository.add(data)
+    processing = false
+    notificationStore.addInfo(`Добавлен подарок: ${data.name}`)
+    resetForm()
+  }
+
+  function resetForm() {
     data = initData()
-    added = true
-    setTimeout(() => (added = false), 3000)
+    $form.touched = false
   }
 </script>
 
 <h1 class="title">Новый подарок</h1>
-
-{#if added}
-  <div class="notification is-primary">Добавлено</div>
-{/if}
 
 <form use:form on:submit|preventDefault={onSave}>
   <div class="field">
@@ -118,6 +121,7 @@
       <button
         type="button"
         class="button is-primary"
+        class:is-loading={processing}
         on:click={onSave}
         bind:this={saveButtonElement}
       >

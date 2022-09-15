@@ -5,16 +5,18 @@
   import { login } from '$lib/auth/auth'
   import FieldError from '$lib/components/FieldError.svelte'
 
-  const form = useForm()
-
   export let redirectURL: string
+  const form = useForm()
+  let processing = false
 
   async function onLogin() {
     $form.touched = true
     if ($form.valid) {
+      processing = true
       if (await login($form.values.password)) {
         await goto(redirectURL)
       }
+      processing = false
       $form.password.errors['invalid'] = 'Неверный пароль'
     }
   }
@@ -38,7 +40,12 @@
     <FieldError field={$form.password} />
   </div>
   <div class="field">
-    <button type="button" class="button is-success" on:click={onLogin}>
+    <button
+      type="button"
+      class="button is-success"
+      class:is-loading={processing}
+      on:click={onLogin}
+    >
       Войти
     </button>
   </div>

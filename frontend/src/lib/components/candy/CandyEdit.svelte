@@ -13,6 +13,7 @@
   export let candy: Candy
 
   const form = useForm()
+  let processing = false
   const data: Candy = {
     ...candy,
   }
@@ -22,6 +23,7 @@
   async function onSave() {
     $form.touched = true
     if ($form.valid) {
+      processing = true
       await candyRepository.update(data)
       await goto('/candies')
     }
@@ -45,6 +47,7 @@
       type="button"
       class="button is-primary"
       class:is-fullwidth={$isMobile}
+      class:is-loading={processing}
       on:click={onSave}
     >
       <span class="icon">

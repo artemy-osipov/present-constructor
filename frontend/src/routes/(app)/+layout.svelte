@@ -1,9 +1,11 @@
 <script lang="ts">
   import Header from '$lib/components/layout/Header.svelte'
+  import Notifications from '$lib/components/notifications/Notifications.svelte'
 </script>
 
 <div class="body">
   <Header />
+  <Notifications />
 
   <section class="section">
     <div class="container">

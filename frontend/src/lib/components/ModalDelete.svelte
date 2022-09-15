@@ -3,7 +3,15 @@
   import FaTrash from 'svelte-icons/fa/FaTrash.svelte'
 
   export let active = false
-  export let onDelete: () => void
+  export let onDelete: () => Promise<void>
+  let processing = false
+
+  async function onExecute() {
+    processing = true
+    await onDelete()
+    processing = false
+    closeModal()
+  }
 
   function closeModal() {
     active = false
@@ -20,7 +28,12 @@
 
       <div class="field is-grouped">
         <div class="control">
-          <button type="button" class="button is-primary" on:click={onDelete}>
+          <button
+            type="button"
+            class="button is-primary"
+            class:is-loading={processing}
+            on:click={onExecute}
+          >
             <span class="icon">
               <FaTrash />
             </span>

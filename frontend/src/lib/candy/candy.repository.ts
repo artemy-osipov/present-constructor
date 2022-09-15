@@ -1,4 +1,5 @@
-import { createState, Store } from '@ngneat/elf'
+import type { PresentItem } from '$lib/present/present.model'
+import { createStore } from '@ngneat/elf'
 import {
   deleteEntities,
   getEntity,
@@ -15,20 +16,19 @@ import {
   updateRequestStatus,
   withRequestsStatus,
 } from '@ngneat/elf-requests'
-import { filter, firstValueFrom, from, map, type Observable, tap } from 'rxjs'
-import type { PresentItem } from '$lib/present/present.model'
+import { filter, firstValueFrom, from, map, tap, type Observable } from 'rxjs'
 import { candyGateway, type NewCandyRequest } from './candy.api'
 import type { Candy } from './candy.model'
 
-const { state, config } = createState(
+const store = createStore(
+  { name: 'candies' },
   withEntities<Candy>(),
   withRequestsStatus<'list'>()
 )
-const store = new Store({ name: 'candies', state, config })
 const trackRequestsStatus = createRequestsStatusOperator(store)
 
 class CandyRepository {
-  candiesPending = store.pipe(selectIsRequestPending('list'))
+  listPending = store.pipe(selectIsRequestPending('list'))
   activeCandies: Observable<Candy[]> = store.pipe(
     selectManyByPredicate((c) => c.active),
     map((cs) => cs.sort((a, b) => a.order - b.order))
@@ -48,9 +48,7 @@ class CandyRepository {
   async fetch(): Promise<void> {
     const loadingState = store.query(getRequestStatus('list'))
     if (loadingState.value === 'pending') {
-      await firstValueFrom(
-        this.candiesPending.pipe(filter((pending) => !pending))
-      )
+      await firstValueFrom(this.listPending.pipe(filter((pending) => !pending)))
     } else if (loadingState.value !== 'success') {
       await firstValueFrom(
         from(candyGateway.list()).pipe(

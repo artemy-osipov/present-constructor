@@ -41,7 +41,7 @@ export const handlers = [
     return res(ctx.delay(1000), ctx.status(200))
   }),
   rest.get('/mocks/api/presents', (_, res, ctx) => {
-    return res(ctx.delay(1000), ctx.status(401), ctx.json(mock.presents))
+    return res(ctx.delay(1000), ctx.status(200), ctx.json(mock.presents))
   }),
   rest.get('/mocks/api/presents/:id', (req, res, ctx) => {
     const { id } = req.params

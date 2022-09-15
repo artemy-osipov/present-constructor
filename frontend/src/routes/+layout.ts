@@ -1,21 +1,20 @@
-import type { LayoutLoad } from './$types'
 import { browser } from '$app/environment'
-import { ENABLE_AUTH, USE_MOCKS } from '$lib/config/environment'
-import { initialize, initialized } from '$lib/app.store'
-import { firstValueFrom } from 'rxjs'
 import { guardPage } from '$lib/auth/auth'
+import { ENABLE_AUTH, USE_MOCKS } from '$lib/config/environment'
+import type { LayoutLoad } from './$types'
+
+let initialized = false
 
 export const load: LayoutLoad = async ({ url }) => {
   if (browser) {
-    if (USE_MOCKS && !(await firstValueFrom(initialized))) {
+    if (!initialized && USE_MOCKS) {
       await initMocks()
     }
     if (ENABLE_AUTH) {
       await guardPage(url.pathname)
     }
-    initialize()
+    initialized = true
   }
-  return {}
 }
 
 async function initMocks() {
