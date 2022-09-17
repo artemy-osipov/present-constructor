@@ -36,7 +36,7 @@ class NotificationStore {
       id: crypto.randomUUID(),
     }
     store.update(addEntities(notification))
-    setTimeout(() => this.delete(notification), 5000)
+    setTimeout(() => this.delete(notification), 10000)
     return notification
   }
 

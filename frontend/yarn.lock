@@ -361,6 +361,85 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sentry/browser@npm:7.13.0":
+  version: 7.13.0
+  resolution: "@sentry/browser@npm:7.13.0"
+  dependencies:
+    "@sentry/core": 7.13.0
+    "@sentry/types": 7.13.0
+    "@sentry/utils": 7.13.0
+    tslib: ^1.9.3
+  checksum: 693cc983330cd6eaee2354ee33d42166072eab35ef632ed9bcaafe9649c977c6996674647076025af9b5e83a40e002b2f405c65ae5c950c8f39decaeecb07098
+  languageName: node
+  linkType: hard
+
+"@sentry/core@npm:7.13.0":
+  version: 7.13.0
+  resolution: "@sentry/core@npm:7.13.0"
+  dependencies:
+    "@sentry/hub": 7.13.0
+    "@sentry/types": 7.13.0
+    "@sentry/utils": 7.13.0
+    tslib: ^1.9.3
+  checksum: 8fd5b0eab630a54ea1beec1b3fe7deb388e95ca3312c1f0eaffa32090882ca7792287b5e7d157fc1c408a0ec1bfb769ac45a77a5385068dcd8fc6f3e6949f8a1
+  languageName: node
+  linkType: hard
+
+"@sentry/hub@npm:7.13.0":
+  version: 7.13.0
+  resolution: "@sentry/hub@npm:7.13.0"
+  dependencies:
+    "@sentry/types": 7.13.0
+    "@sentry/utils": 7.13.0
+    tslib: ^1.9.3
+  checksum: 690f1eecd4d9f0a87ca4344b551b990df234ec7197b21175293fb713f917c6171ed44f35042af5b83a0bae5e0963a520490bfd905d48bd040a2f2532247e04d6
+  languageName: node
+  linkType: hard
+
+"@sentry/svelte@npm:^7.13.0":
+  version: 7.13.0
+  resolution: "@sentry/svelte@npm:7.13.0"
+  dependencies:
+    "@sentry/browser": 7.13.0
+    "@sentry/types": 7.13.0
+    "@sentry/utils": 7.13.0
+    magic-string: ^0.26.2
+    tslib: ^1.9.3
+  peerDependencies:
+    svelte: 3.x
+  checksum: 0762f1795e7856fee1a38f7261e7a07b68a374c6bb0574c04e021d5ced4af46551d4ec008c85a52371041ba11ef4b49f09569777af2b402a4c1233d02f268b9c
+  languageName: node
+  linkType: hard
+
+"@sentry/tracing@npm:^7.13.0":
+  version: 7.13.0
+  resolution: "@sentry/tracing@npm:7.13.0"
+  dependencies:
+    "@sentry/hub": 7.13.0
+    "@sentry/types": 7.13.0
+    "@sentry/utils": 7.13.0
+    tslib: ^1.9.3
+  checksum: 4d51a166b74799a85bfef9e5027147bec2ef977bd50e820773a8d9a8f6f2658c97b40ce67501f7a3f1406d30da64f38454d903fdf98e81d4da30b70fc63aca27
+  languageName: node
+  linkType: hard
+
+"@sentry/types@npm:7.13.0":
+  version: 7.13.0
+  resolution: "@sentry/types@npm:7.13.0"
+  checksum: 8bd94d1cf735af61a3cea77e7e925e487dc84b925fa1e1a0aa9a566096e5d99d3bb72c6ea2f03c20d7894824f35edbb8b25352b3a1c78e62729a77a93a1abf71
+  languageName: node
+  linkType: hard
+
+"@sentry/utils@npm:7.13.0":
+  version: 7.13.0
+  resolution: "@sentry/utils@npm:7.13.0"
+  dependencies:
+    "@sentry/types": 7.13.0
+    tslib: ^1.9.3
+  checksum: e655e2bd444c9f8aedac4bc52e9a75bf74ef0086ffb1b9efc9cf6670aab9b0deca45e9d7c808e7d19e51ff4b40bcd178b6c5b2ea55e8cfb81da630db6b75bfe2
+  languageName: node
+  linkType: hard
+
 "@sveltejs/adapter-static@npm:^1.0.0-next.43":
   version: 1.0.0-next.43
   resolution: "@sveltejs/adapter-static@npm:1.0.0-next.43"
@@ -368,11 +447,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sveltejs/kit@npm:^1.0.0-next.483":
-  version: 1.0.0-next.483
-  resolution: "@sveltejs/kit@npm:1.0.0-next.483"
+"@sveltejs/kit@npm:^1.0.0-next.484":
+  version: 1.0.0-next.484
+  resolution: "@sveltejs/kit@npm:1.0.0-next.484"
   dependencies:
     "@sveltejs/vite-plugin-svelte": ^1.0.5
+    "@types/cookie": ^0.5.1
     cookie: ^0.5.0
     devalue: ^3.1.2
     kleur: ^4.1.4
@@ -389,7 +469,7 @@ __metadata:
     vite: ^3.1.0
   bin:
     svelte-kit: svelte-kit.js
-  checksum: 2c715fcd44f318a3564f574451229b451f848940385fd3b081d9518050cc2e13da8db8f3092e93db47c1632a4c1766e4066a65b7224e050f6a7a602c0518a5a7
+  checksum: 0c264597074b1cc62b0c14c28a3662abc8850fe2b8566ec251236ef0cc75e5df1802029c102bfb1aab1a7cdd969c93bff97a24bf6669db8c6fdc5815f51cd668
   languageName: node
   linkType: hard
 
@@ -443,6 +523,13 @@ __metadata:
   version: 0.4.1
   resolution: "@types/cookie@npm:0.4.1"
   checksum: 3275534ed69a76c68eb1a77d547d75f99fedc80befb75a3d1d03662fb08d697e6f8b1274e12af1a74c6896071b11510631ba891f64d30c78528d0ec45a9c1a18
+  languageName: node
+  linkType: hard
+
+"@types/cookie@npm:^0.5.1":
+  version: 0.5.1
+  resolution: "@types/cookie@npm:0.5.1"
+  checksum: 9a8d60fc84797122bc399d6bd330fe5780dc7aab032321de705049ea925339f74658bfa418de483a625d51858770efef58df633ff2e20f1bdf7fbd74a52847e2
   languageName: node
   linkType: hard
 
@@ -3752,8 +3839,10 @@ __metadata:
     "@ngneat/elf": ^2.1.0
     "@ngneat/elf-entities": ^4.4.2
     "@ngneat/elf-requests": ^1.1.4
+    "@sentry/svelte": ^7.13.0
+    "@sentry/tracing": ^7.13.0
     "@sveltejs/adapter-static": ^1.0.0-next.43
-    "@sveltejs/kit": ^1.0.0-next.483
+    "@sveltejs/kit": ^1.0.0-next.484
     "@typescript-eslint/eslint-plugin": ^5.37.0
     "@typescript-eslint/parser": ^5.37.0
     bulma: ^0.9.4
@@ -3772,7 +3861,7 @@ __metadata:
     svelte-use-form: ^2.4.3
     tslib: ^2.4.0
     typescript: ^4.8.3
-    vite: ^3.1.1
+    vite: ^3.1.2
   languageName: unknown
   linkType: soft
 
@@ -4561,7 +4650,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^1.8.1":
+"tslib@npm:^1.8.1, tslib@npm:^1.9.3":
   version: 1.14.1
   resolution: "tslib@npm:1.14.1"
   checksum: dbe628ef87f66691d5d2959b3e41b9ca0045c3ee3c7c7b906cc1e328b39f199bb1ad9e671c39025bd56122ac57dfbf7385a94843b1cc07c60a4db74795829acd
@@ -4750,9 +4839,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^3.1.1":
-  version: 3.1.1
-  resolution: "vite@npm:3.1.1"
+"vite@npm:^3.1.2":
+  version: 3.1.2
+  resolution: "vite@npm:3.1.2"
   dependencies:
     esbuild: ^0.15.6
     fsevents: ~2.3.2
@@ -4778,7 +4867,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: a7f402e1b07d62dc46254d3b38b24b0174e77318900fb72a9623d38b58217ab93f79a3b10594368d64f08d1e080e50e0f07b171202c6141de8b1be1144ada011
+  checksum: 90f645853f53efaddfa216eaf42ed93afe6b43f849889a7716ef9c04623b9ae244f391ed17ed0c41189422060cad5e78eb17583ac5a3759988f54b7412e18cb7
   languageName: node
   linkType: hard
 
