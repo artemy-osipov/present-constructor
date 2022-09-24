@@ -6,3 +6,5 @@ spring:
     password: test
     properties:
       sslMode: verify-full
+
+sentry.dsn: ''
