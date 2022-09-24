@@ -1,12 +1,11 @@
 package io.github.artemy.osipov.shop.utils
 
-import com.fasterxml.uuid.Generators
+import com.github.f4b6a3.ulid.UlidCreator
 import java.util.UUID
 
 object UuidUtils {
-    private val generator = Generators.timeBasedGenerator()
 
     fun newUUID(): UUID {
-        return generator.generate()
+        return UlidCreator.getUlid().toUuid()
     }
 }

@@ -28,14 +28,6 @@ import org.springframework.nativex.hint.TypeHint
 )
 @TypeHint(
     types = [
-        java.util.Collection::class,
-        java.time.LocalDateTime::class,
-        Array<java.time.Instant>::class,
-        Array<java.time.ZonedDateTime>::class
-    ]
-)
-@TypeHint(
-    types = [
         ReportPresent::class,
         ReportPresent.Item::class
     ],
