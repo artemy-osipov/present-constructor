@@ -4,7 +4,7 @@ import type { Present } from './present.model'
 
 export type NewPresentRequest = Omit<Present, 'id' | 'date'>
 
-const presentResource = `${API_URL}/api/presents`
+const presentResource = `${API_URL}/presents`
 
 class PresentGateway {
   async add(req: NewPresentRequest): Promise<Present['id']> {

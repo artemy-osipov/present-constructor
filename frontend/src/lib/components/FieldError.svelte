@@ -10,7 +10,7 @@
         return 'Обязательно для заполнения'
       case 'min':
         return `Меньше допустимого (${details})`
-      case 'maxFractionLength':
+      case 'numberFormat':
         return 'Неверный формат'
       case 'maxLength':
         return `Превышает максимальную длину (${details})`

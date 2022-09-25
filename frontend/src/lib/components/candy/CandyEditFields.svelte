@@ -3,7 +3,7 @@
 
   import type { Candy } from '$lib/candy/candy.model'
   import FieldError from '$lib/components/FieldError.svelte'
-  import { maxFractionLength, min } from '$lib/utils/number.validators'
+  import { min, numberFormat } from '$lib/utils/number.validators'
 
   export let form: ReturnType<typeof useForm>
   export let data: Partial<Candy>
@@ -44,7 +44,7 @@
       placeholder="Пример: 123.12"
       name="price"
       bind:value={data.price}
-      use:validators={[required, min(1), maxFractionLength(2)]}
+      use:validators={[required, min(1), numberFormat(6, 2)]}
     />
   </div>
   <FieldError field={$form.price} />
@@ -59,7 +59,7 @@
       placeholder="Пример: 123.1"
       name="order"
       bind:value={data.order}
-      use:validators={[required]}
+      use:validators={[required, numberFormat(4, 2)]}
     />
   </div>
   <FieldError field={$form.order} />

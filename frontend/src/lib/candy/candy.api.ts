@@ -4,7 +4,7 @@ import type { Candy } from './candy.model'
 
 export type NewCandyRequest = Omit<Candy, 'id' | 'active'>
 
-const candyResource = `${API_URL}/api/candies`
+const candyResource = `${API_URL}/candies`
 
 class CandyGateway {
   async add(req: NewCandyRequest): Promise<Candy['id']> {

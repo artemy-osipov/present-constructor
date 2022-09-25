@@ -1,20 +1,20 @@
-import { API_URL } from '$lib/config/environment'
-
-const resource = `${API_URL}/auth`
+import { AUTH_URL } from '$lib/config/environment'
+import { Buffer } from 'buffer'
 
 class AuthGateway {
   async login(password: string): Promise<boolean> {
-    const resp = await fetch(`${resource}/login`, {
+    const token = Buffer.from(':' + password).toString('base64')
+    const resp = await fetch(`${AUTH_URL}/login`, {
       method: 'POST',
       headers: {
-        Authorization: `Basic :${password}`,
+        Authorization: `Basic ${token}`,
       },
     })
     return resp.ok
   }
 
   async refresh(): Promise<boolean> {
-    const resp = await fetch(`${resource}/refresh`, {
+    const resp = await fetch(`${AUTH_URL}/refresh`, {
       method: 'POST',
     })
     return resp.ok

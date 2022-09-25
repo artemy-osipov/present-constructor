@@ -45,7 +45,8 @@ class CandyQueryControllerIT : BaseIT() {
                                  "name": "${candy.name}",
                                  "firm": "${candy.firm}",
                                  "price": ${candy.price},
-                                 "order": ${candy.order}
+                                 "order": ${candy.order},
+                                 "active": ${candy.active}
                                }""")
     }
 

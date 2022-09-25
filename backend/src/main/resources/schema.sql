@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS "candies" (
     "name" VARCHAR(255) NOT NULL,
     "firm" VARCHAR(255) NOT NULL,
     "price" NUMERIC(8, 2) NOT NULL,
-    "order" REAL NOT NULL,
+    "order" NUMERIC(6, 2) NOT NULL,
     "active" BOOLEAN NOT NULL
 );
 

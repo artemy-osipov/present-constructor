@@ -1,7 +1,7 @@
 import { redirect } from '@sveltejs/kit'
 import { authGateway } from './auth.api'
 
-const publicRoutes = ['/about', '/login']
+const publicRoutes = ['/', '/about', '/login']
 
 let isLoggedIn = false
 let refreshScheduler: NodeJS.Timer | undefined

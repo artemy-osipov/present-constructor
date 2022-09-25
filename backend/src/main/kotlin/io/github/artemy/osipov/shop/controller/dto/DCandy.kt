@@ -8,5 +8,6 @@ class DCandy(
     var name: String,
     var firm: String,
     var price: BigDecimal,
-    var order: Double
+    var order: Double,
+    var active: Boolean
 )

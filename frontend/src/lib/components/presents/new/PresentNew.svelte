@@ -13,7 +13,7 @@
   } from '$lib/present/present.model'
   import { presentRepository } from '$lib/present/present.repository'
   import { toMap } from '$lib/utils/collection.utils'
-  import { maxFractionLength, min } from '$lib/utils/number.validators'
+  import { min, numberFormat } from '$lib/utils/number.validators'
   import { formatPrice } from '$lib/utils/string.utils'
   import { onMount } from 'svelte'
   import FaPlus from 'svelte-icons/fa/FaPlus.svelte'
@@ -111,7 +111,7 @@
         placeholder="Пример: 123.12"
         name="price"
         bind:value={data.price}
-        use:validators={[required, min(1), maxFractionLength(2)]}
+        use:validators={[required, min(1), numberFormat(6, 2)]}
       />
     </div>
     <FieldError field={$form.price} />
