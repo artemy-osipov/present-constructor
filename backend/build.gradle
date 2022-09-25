@@ -18,7 +18,7 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
     }
 }
 
-tasks.withType(Test).all {
+tasks.withType(Test).configureEach {
     jvmArgs += ["-XX:+AllowRedefinitionToAddDeleteMethods"]
 }
 
