@@ -2,7 +2,7 @@ import { API_URL } from '$lib/config/environment'
 import { handleError } from '$lib/utils/fetch.utils'
 import type { Present } from './present.model'
 
-export type NewPresentRequest = Omit<Present, 'id' | 'date'>
+export type NewPresentRequest = Omit<Present, 'id' | 'createDate'>
 
 const presentResource = `${API_URL}/presents`
 

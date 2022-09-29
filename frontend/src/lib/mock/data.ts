@@ -40,6 +40,7 @@ export class Mock {
       name: `some name ${id}`,
       firm: `some firm ${id}`,
       price: 123.32,
+      grams: 10.5,
       order: id,
       active: true,
     }
@@ -50,7 +51,7 @@ export class Mock {
       id: id.toString(),
       name: `some name ${id}`,
       price: 123.32,
-      date: new Date().toString(),
+      createDate: new Date().toString(),
       items: [
         {
           candyId: this.candies[1].id,

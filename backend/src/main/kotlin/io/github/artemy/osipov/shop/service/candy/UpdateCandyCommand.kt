@@ -8,5 +8,6 @@ data class UpdateCandyCommand(
     val name: String,
     val firm: String,
     val price: BigDecimal,
-    val order: Double
+    val grams: BigDecimal?,
+    val order: BigDecimal
 )

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Candy } from '$lib/candy/candy.model'
+  import { formatView, type Candy } from '$lib/candy/candy.model'
   import { candyRepository } from '$lib/candy/candy.repository'
   import CandyCard from '$lib/components/candy/CandyCard.svelte'
   import Loader from '$lib/components/Loader.svelte'
@@ -81,7 +81,7 @@
             class:has-background-primary={highlightSelected &&
               itemMap.has(candy.id)}
           >
-            <td>{candy.name}</td>
+            <td>{formatView(candy)}</td>
             <td>{candy.firm}</td>
             <td>{formatPrice(candy.price)}</td>
             <td>

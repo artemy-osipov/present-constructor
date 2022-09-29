@@ -1,5 +1,6 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
+  import { formatView } from '$lib/candy/candy.model'
   import CandyCard from '$lib/components/candy/CandyCard.svelte'
   import ModalDelete from '$lib/components/ModalDelete.svelte'
   import { presentGateway } from '$lib/present/present.api'
@@ -46,6 +47,7 @@
   <a
     class="button is-link"
     class:is-fullwidth={$isMobile}
+    rel="external"
     href={presentGateway.privateReportLocation(present.id)}
   >
     <span class="icon">
@@ -56,6 +58,7 @@
   <a
     class="button is-link"
     class:is-fullwidth={$isMobile}
+    rel="external"
     href={presentGateway.publicReportLocation(present.id)}
   >
     <span class="icon">
@@ -119,7 +122,7 @@
       <tbody>
         {#each present.items as item (item.candy.id)}
           <tr>
-            <td>{item.candy.name}</td>
+            <td>{formatView(item.candy)}</td>
             <td>{item.candy.firm}</td>
             <td>{formatPrice(item.candy.price)}</td>
             <td>{item.count}</td>

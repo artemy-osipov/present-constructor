@@ -1,7 +1,6 @@
 package io.github.artemy.osipov.shop.service.candy
 
 import io.github.artemy.osipov.shop.service.candy.CandyRepository.Companion.getById
-import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.stereotype.Service
 
 @Service
@@ -14,6 +13,7 @@ class CandyCommandHandler(
             name = event.name,
             firm = event.firm,
             price = event.price,
+            grams = event.grams,
             order = event.order
         )
         repository.add(candy)
@@ -25,6 +25,7 @@ class CandyCommandHandler(
             name = event.name
             firm = event.firm
             price = event.price
+            grams = event.grams
             order = event.order
         }
         repository.save(candy)

@@ -1,7 +1,7 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.7.10'
-    id 'org.jetbrains.kotlin.kapt' version '1.7.10'
-    id 'org.jetbrains.kotlin.plugin.spring' version '1.7.10'
+    id 'org.jetbrains.kotlin.jvm' version '1.7.20'
+    id 'org.jetbrains.kotlin.kapt' version '1.7.20'
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.7.20'
     id 'com.bnorm.power.kotlin-power-assert' version '0.12.0'
     id 'org.springframework.boot' version '2.7.0'
     id 'org.springframework.experimental.aot' version '0.12.0'
@@ -57,7 +57,7 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.docx4j:docx4j-JAXB-ReferenceImpl:11.3.2'
-    testImplementation 'org.testcontainers:cockroachdb:1.17.3'
+    testImplementation 'org.testcontainers:cockroachdb:1.17.4'
     testImplementation 'org.postgresql:postgresql'
     testImplementation 'io.projectreactor.tools:blockhound-junit-platform:1.0.6.RELEASE'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'

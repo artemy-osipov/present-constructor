@@ -29,7 +29,7 @@ class PresentRepository {
   listPending = store.pipe(selectIsRequestPending('list'))
   presents: Observable<Present[]> = store.pipe(
     selectAllEntities(),
-    map((cs) => cs.sort((a, b) => (a.date < b.date ? -1 : 1)))
+    map((cs) => cs.sort((a, b) => (a.createDate < b.createDate ? -1 : 1)))
   )
 
   present(id: Present['id']): Observable<Present | undefined> {

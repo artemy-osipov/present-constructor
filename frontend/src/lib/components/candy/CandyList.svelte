@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { formatView } from '$lib/candy/candy.model'
   import { candyRepository } from '$lib/candy/candy.repository'
   import Loader from '$lib/components/Loader.svelte'
   import { isMobile } from '$lib/utils/responsive.utils'
@@ -41,7 +42,7 @@
     <tbody>
       {#each $candies as candy (candy.id)}
         <tr>
-          <td>{candy.name}</td>
+          <td>{formatView(candy)}</td>
           <td>{candy.firm}</td>
           <td>{formatPrice(candy.price)}</td>
           <td>{candy.order}</td>

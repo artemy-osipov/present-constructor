@@ -12,7 +12,7 @@ class PresentCommandHandler(
             id = event.id,
             name = event.name,
             price = event.price,
-            date = LocalDateTime.now()
+            createDate = LocalDateTime.now()
         )
         event.items.forEach { (candyId, count) ->
             present.addItem(candyId, count)

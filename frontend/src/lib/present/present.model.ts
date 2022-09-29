@@ -5,7 +5,7 @@ export interface Present {
   id: string
   name: string
   price: number
-  date: string
+  createDate: string
   items: PresentItem[]
 }
 

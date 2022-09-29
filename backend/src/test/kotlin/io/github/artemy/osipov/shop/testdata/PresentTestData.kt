@@ -17,7 +17,7 @@ object PresentTestData {
             id = PRESENT_ID,
             name = "name",
             price = BigDecimal("42.25"),
-            date = LocalDateTime.of(2022, 1, 10, 14, 25),
+            createDate = LocalDateTime.of(2022, 1, 10, 14, 25),
             items = mutableListOf(
                 Present.Item(
                     candyId = CANDY_ID,

@@ -11,7 +11,7 @@ data class Present(
     val id: UUID,
     var name: String,
     var price: BigDecimal,
-    var date: LocalDateTime,
+    var createDate: LocalDateTime,
     val items: MutableList<Item> = mutableListOf()
 ) {
     fun addItem(candyId: UUID, count: Int) {

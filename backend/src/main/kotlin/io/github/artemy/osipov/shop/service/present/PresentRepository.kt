@@ -83,7 +83,7 @@ class PresentRepository(
             presentDTO.id,
             presentDTO.name,
             presentDTO.price,
-            presentDTO.date,
+            presentDTO.createDate,
             itemsDTO.map { Present.Item(it.candyId, it.count) }.toMutableList()
         )
     }
@@ -101,9 +101,9 @@ data class PresentDTO(
     val id: UUID,
     var name: String,
     var price: BigDecimal,
-    var date: LocalDateTime
+    var createDate: LocalDateTime
 ) {
-    constructor(present: Present) : this(present.id, present.name, present.price, present.date)
+    constructor(present: Present) : this(present.id, present.name, present.price, present.createDate)
 }
 
 @Table("present_items")

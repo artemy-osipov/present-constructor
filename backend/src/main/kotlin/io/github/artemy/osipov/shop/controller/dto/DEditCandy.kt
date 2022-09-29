@@ -17,10 +17,16 @@ data class DEditCandy(
 
     @field:NotNull
     @field:Min(1)
-    @field:Digits(integer = 5, fraction = 2)
+    @field:Digits(integer = 6, fraction = 2)
     var price: BigDecimal?,
 
     @field:NotNull
     @field:Min(1)
-    var order: Double?
+    @field:Digits(integer = 6, fraction = 2)
+    var grams: BigDecimal?,
+
+    @field:NotNull
+    @field:Min(1)
+    @field:Digits(integer = 4, fraction = 2)
+    var order: BigDecimal?
 )

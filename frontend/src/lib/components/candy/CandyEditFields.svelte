@@ -51,6 +51,21 @@
 </div>
 
 <div class="field">
+  <label class="label" for="price">Грамовка</label>
+  <div class="control">
+    <input
+      type="number"
+      class="input"
+      placeholder="Пример: 10.5"
+      name="grams"
+      bind:value={data.grams}
+      use:validators={[min(0.5), numberFormat(6, 2)]}
+    />
+  </div>
+  <FieldError field={$form.grams} />
+</div>
+
+<div class="field">
   <label class="label" for="order">Порядок</label>
   <div class="control">
     <input

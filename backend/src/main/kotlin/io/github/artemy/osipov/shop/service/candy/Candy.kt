@@ -12,7 +12,8 @@ data class Candy(
     var name: String,
     var firm: String,
     var price: BigDecimal,
-    var order: Double,
+    var grams: BigDecimal?,
+    var order: BigDecimal,
     var active: Boolean = true
 ) {
     fun hide() {

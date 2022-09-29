@@ -57,7 +57,7 @@ class PresentQueryControllerIT : BaseIT() {
                                   "id": "${present.id}",
                                   "name": "${present.name}",
                                   "price": ${present.price},
-                                  "date": "${present.date.format(DateTimeFormatter.ISO_DATE_TIME)}",
+                                  "createDate": "${present.createDate.format(DateTimeFormatter.ISO_DATE_TIME)}",
                                   "items": [{
                                       "candyId": "532d5f3b-25e6-4adc-b99a-da74cb5be876",
                                       "count": 5

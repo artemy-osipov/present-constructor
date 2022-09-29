@@ -15,7 +15,8 @@ object CandyTestData {
             name = "name",
             firm = "firm",
             price = BigDecimal("4.20"),
-            order = 51.0,
+            grams = BigDecimal("12.50"),
+            order = BigDecimal("51.00"),
             active = true
         )
     }
@@ -27,6 +28,7 @@ object CandyTestData {
                 name = candy.name,
                 firm = candy.firm,
                 price = candy.price,
+                grams = candy.grams,
                 order = candy.order
             )
         }

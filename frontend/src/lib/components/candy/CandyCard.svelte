@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Candy } from '$lib/candy/candy.model'
+  import { formatView, type Candy } from '$lib/candy/candy.model'
   import { formatPrice } from '$lib/utils/string.utils'
   import FaAngleDown from 'svelte-icons/fa/FaAngleDown.svelte'
   import FaAngleUp from 'svelte-icons/fa/FaAngleUp.svelte'
@@ -14,7 +14,7 @@
   $: expanded, (view = formatTitle())
 
   function formatTitle(): string[] {
-    let title = [candy.name]
+    let title = [formatView(candy)]
     if (!expanded) {
       if (count > 0) {
         title.push(`${formatPrice(candy.price)} X ${count} шт.`)

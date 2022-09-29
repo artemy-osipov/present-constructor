@@ -8,6 +8,6 @@ data class DPresent(
     var id: UUID,
     var name: String,
     var price: BigDecimal,
-    var date: LocalDateTime,
+    var createDate: LocalDateTime,
     var items: List<DPresentItem>
 )
