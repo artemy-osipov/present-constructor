@@ -162,6 +162,6 @@
 />
 
 <ScrollNav
-  message={'Себестоимость: ' + formatPrice(cost)}
+  message={`Себестоимость: ${formatPrice(cost)}, Позиций: ${data.items.length}`}
   anchorElement={saveButtonElement}
 />

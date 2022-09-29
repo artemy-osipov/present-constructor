@@ -1,5 +1,6 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
+  import CandyCard from '$lib/components/candy/CandyCard.svelte'
   import ModalDelete from '$lib/components/ModalDelete.svelte'
   import { presentGateway } from '$lib/present/present.api'
   import { costByItemsView, type PresentView } from '$lib/present/present.model'
@@ -95,18 +96,12 @@
     <div class="columns is-multiline">
       {#each present.items as item (item.candy.id)}
         <div class="column">
-          <div class="card">
-            <header class="card-header">
-              <p class="card-header-title">{item.candy.name}</p>
-            </header>
-            <div class="card-content">
-              <div class="content">
-                <p><strong>Производитель: </strong>{item.candy.firm}</p>
-                <p><strong>Цена: </strong>{formatPrice(item.candy.price)}</p>
-                <p><strong>Количество: </strong>{item.count}</p>
-              </div>
-            </div>
-          </div>
+          <CandyCard
+            candy={item.candy}
+            count={item.count}
+            expanded={false}
+            allowToggle={true}
+          />
         </div>
       {/each}
     </div>

@@ -21,7 +21,7 @@
     <p class="card-header-title">
       <slot name="title" />
     </p>
-    <button class="card-header-icon" aria-label="more options">
+    <button type="button" class="card-header-icon">
       <span class="icon">
         {#if !disabled}
           {#if expanded}

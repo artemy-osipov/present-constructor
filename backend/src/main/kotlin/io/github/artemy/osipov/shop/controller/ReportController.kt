@@ -37,7 +37,6 @@ class ReportController(
         val headers = HttpHeaders().apply {
             contentType =
                 MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
-            setContentDispositionFormData("attachment", report.name)
             contentDisposition = ContentDisposition.builder("form-data")
                 .name("attachment")
                 .filename(report.name, StandardCharsets.UTF_8)

@@ -16,7 +16,7 @@ export const handlers = [
     )
   }),
   rest.post(`${AUTH_URL}/refresh`, async (req, res, ctx) => {
-    const hasToken = req.cookies['X-AUTH-TOKEN'] !== undefined
+    const hasToken: boolean = req.cookies['X-AUTH-TOKEN'] !== undefined
     return res(ctx.delay(1000), ctx.status(hasToken ? 200 : 401))
   }),
   rest.get(`${API_URL}/candies`, (_, res, ctx) => {

@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Candy } from '$lib/candy/candy.model'
   import { candyRepository } from '$lib/candy/candy.repository'
+  import CandyCard from '$lib/components/candy/CandyCard.svelte'
   import Loader from '$lib/components/Loader.svelte'
   import type { PresentItem } from '$lib/present/present.model'
   import { toMap } from '$lib/utils/collection.utils'
@@ -38,21 +39,16 @@
     {#each candies as candy (candy.id)}
       {#if !skipEmpty || itemMap.has(candy.id)}
         <div class="column">
-          <div
-            class="card"
-            class:has-background-primary={highlightSelected &&
-              itemMap.has(candy.id)}
+          <CandyCard
+            class={(highlightSelected &&
+              itemMap.has(candy.id) &&
+              'has-background-primary') ||
+              ''}
+            {candy}
+            expanded={false}
+            allowToggle={true}
           >
-            <header class="card-header">
-              <div class="card-header-title">{candy.name}</div>
-            </header>
-            <div class="card-content">
-              <div class="content">
-                <div><strong>Производитель: </strong>{candy.firm}</div>
-                <div><strong>Цена: </strong>{formatPrice(candy.price)}</div>
-              </div>
-            </div>
-            <footer class="card-footer card-footer-item">
+            <div slot="footer">
               <PresentItemCount
                 count={itemMap.get(candy.id)?.count || 0}
                 on:newValue={(event) =>
@@ -61,8 +57,8 @@
                     count: event.detail,
                   })}
               />
-            </footer>
-          </div>
+            </div>
+          </CandyCard>
         </div>
       {/if}
     {/each}

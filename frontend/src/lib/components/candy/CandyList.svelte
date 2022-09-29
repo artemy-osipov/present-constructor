@@ -1,10 +1,11 @@
 <script lang="ts">
   import { candyRepository } from '$lib/candy/candy.repository'
+  import Loader from '$lib/components/Loader.svelte'
   import { isMobile } from '$lib/utils/responsive.utils'
   import { formatPrice } from '$lib/utils/string.utils'
   import { onMount } from 'svelte'
   import FaEye from 'svelte-icons/fa/FaEye.svelte'
-  import Loader from '../Loader.svelte'
+  import CandyCard from './CandyCard.svelte'
 
   const candies = candyRepository.activeCandies
   const loading = candyRepository.listPending
@@ -21,17 +22,7 @@
     {#each $candies as candy (candy.id)}
       <div class="column">
         <a href="/candies/{candy.id}">
-          <div class="card">
-            <header class="card-header">
-              <div class="card-header-title">{candy.name}</div>
-            </header>
-            <div class="card-content">
-              <div class="content">
-                <div><strong>Производитель: </strong>{candy.firm}</div>
-                <div><strong>Цена: </strong>{formatPrice(candy.price)}</div>
-              </div>
-            </div>
-          </div>
+          <CandyCard {candy} />
         </a>
       </div>
     {/each}
