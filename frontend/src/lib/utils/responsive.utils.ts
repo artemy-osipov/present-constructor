@@ -12,10 +12,20 @@ export const isMobile = readable(
       set(evt.matches)
     }
 
-    mobileMediaQuery?.addEventListener('change', handleMobileQuery)
+    if (mobileMediaQuery?.addEventListener) {
+      mobileMediaQuery.addEventListener('change', handleMobileQuery)
+    } else {
+      // TODO: use legacy mode https://github.com/sveltejs/kit/issues/12
+      mobileMediaQuery?.addListener(handleMobileQuery)
+    }
 
     return function stop() {
-      mobileMediaQuery?.removeEventListener('change', handleMobileQuery)
+      if (mobileMediaQuery?.removeEventListener) {
+        mobileMediaQuery.removeEventListener('change', handleMobileQuery)
+      } else {
+        // TODO: use legacy mode https://github.com/sveltejs/kit/issues/12
+        mobileMediaQuery?.removeListener(handleMobileQuery)
+      }
     }
   }
 )
