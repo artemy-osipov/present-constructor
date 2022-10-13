@@ -31,6 +31,7 @@
       <img src="presents.svg" width="30" height="30" alt="logo" />
     </a>
     <!-- svelte-ignore a11y-missing-attribute -->
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
     <a
       role="button"
       class="navbar-burger"

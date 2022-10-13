@@ -31,6 +31,7 @@
 </script>
 
 <div class="card {$$props.class || ''}">
+  <!-- svelte-ignore a11y-click-events-have-key-events -->
   <header
     class="card-header"
     on:click={(allowToggle && toggleExpand) || undefined}

@@ -12,11 +12,13 @@
 </script>
 
 <!-- svelte-ignore a11y-missing-attribute -->
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <a class="button link-to-top" on:click|preventDefault={scrollToTop}>
   <FaAngleUp />
 </a>
 
 <!-- svelte-ignore a11y-missing-attribute -->
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <a class="button link-to-down" on:click|preventDefault={scrollToBottom}>
   <FaAngleDown />
 </a>
