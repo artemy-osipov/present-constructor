@@ -6,6 +6,7 @@ import io.github.artemy.osipov.shop.testdata.CandyTestData
 import io.github.artemy.osipov.shop.testdata.PresentTestData
 import io.github.artemy.osipov.shop.testdata.PresentTestData.PRESENT_ID
 import io.github.artemy.osipov.shop.testdata.ReportTestData.REPORT_NAME
+import jakarta.xml.bind.JAXBElement
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.test.runTest
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
@@ -16,7 +17,6 @@ import org.mockito.Mockito.anyIterable
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import java.io.ByteArrayInputStream
-import javax.xml.bind.JAXBElement
 
 class ReportServiceIT {
     val presentRepository = mock<PresentRepository>() {

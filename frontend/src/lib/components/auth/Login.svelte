@@ -6,7 +6,7 @@
   import FieldError from '$lib/components/FieldError.svelte'
 
   export let redirectURL: string
-  const form = useForm()
+  const form = useForm({ password: {} })
   let processing = false
 
   async function onLogin() {

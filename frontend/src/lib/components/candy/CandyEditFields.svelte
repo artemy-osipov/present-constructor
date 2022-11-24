@@ -5,7 +5,7 @@
   import FieldError from '$lib/components/FieldError.svelte'
   import { min, numberFormat } from '$lib/utils/number.validators'
 
-  export let form: ReturnType<typeof useForm>
+  export let form: ReturnType<typeof useForm<''>>
   export let data: Partial<Candy>
 </script>
 

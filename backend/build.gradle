@@ -1,63 +1,51 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.7.20'
-    id 'org.jetbrains.kotlin.kapt' version '1.7.20'
-    id 'org.jetbrains.kotlin.plugin.spring' version '1.7.20'
+    id 'org.jetbrains.kotlin.jvm' version '1.7.21'
+    id 'org.jetbrains.kotlin.kapt' version '1.7.21'
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.7.21'
     id 'com.bnorm.power.kotlin-power-assert' version '0.12.0'
-    id 'org.springframework.boot' version '2.7.0'
-    id 'org.springframework.experimental.aot' version '0.12.0'
-    id 'com.github.ben-manes.versions' version '0.42.0'
+    id 'org.springframework.boot' version '3.0.0'
+    id 'org.graalvm.buildtools.native' version '0.9.18'
+    id 'com.github.ben-manes.versions' version '0.44.0'
     id 'com.adarshr.test-logger' version '3.2.0'
 }
 
 group = 'io.github.artemy.osipov.shop'
 version = '1.5.0-SNAPSHOT'
 
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17
-    }
-}
-
-tasks.withType(Test).configureEach {
-    jvmArgs += ["-XX:+AllowRedefinitionToAddDeleteMethods"]
-}
-
-repositories {
-    mavenCentral()
-    maven { url 'https://repo.spring.io/release' }
-}
-
 dependencies {
-    kapt enforcedPlatform(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
-    implementation enforcedPlatform(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
+    kapt enforcedPlatform(SpringBootPlugin.BOM_COORDINATES)
+    implementation enforcedPlatform(SpringBootPlugin.BOM_COORDINATES)
 
     kapt 'org.springframework.boot:spring-boot-configuration-processor'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-    implementation 'io.sentry:sentry-spring-boot-starter:6.4.2'
-    implementation 'io.sentry:sentry-logback:6.4.2'
+    implementation 'io.sentry:sentry-spring-boot-starter-jakarta:6.8.0'
+    implementation 'io.sentry:sentry-logback:6.8.0'
 
     implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
     implementation 'org.postgresql:r2dbc-postgresql'
 
-    implementation 'com.github.f4b6a3:ulid-creator:5.0.2'
+    implementation 'com.github.f4b6a3:ulid-creator:5.1.0'
     implementation 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.document.docx:2.0.4'
     implementation 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.template.freemarker:2.0.4'
 
-    implementation 'io.github.microutils:kotlin-logging-jvm:2.1.23'
+    implementation 'io.github.microutils:kotlin-logging-jvm:3.0.4'
     implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-reactor'
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1'
 
     implementation 'io.projectreactor:reactor-tools'
 
-    def mapstructVersion = '1.5.2.Final'
+    def mapstructVersion = '1.5.3.Final'
     implementation "org.mapstruct:mapstruct:$mapstructVersion"
     kapt "org.mapstruct:mapstruct-processor:$mapstructVersion"
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.docx4j:docx4j-JAXB-ReferenceImpl:11.3.2'
-    testImplementation 'org.testcontainers:cockroachdb:1.17.4'
+    testImplementation 'org.docx4j:docx4j-JAXB-ReferenceImpl:11.4.8'
+    testImplementation 'org.testcontainers:cockroachdb:1.17.6'
     testImplementation 'org.postgresql:postgresql'
     testImplementation 'io.projectreactor.tools:blockhound-junit-platform:1.0.6.RELEASE'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -71,6 +59,23 @@ test {
 }
 
 bootBuildImage {
-    builder = "paketobuildpacks/builder:tiny"
-    environment = ["BP_NATIVE_IMAGE" : "true"]
+    environment.putAll([
+            "BP_NATIVE_IMAGE_BUILD_ARGUMENTS": "--initialize-at-build-time=ch.qos.logback,org.apache.logging --initialize-at-run-time=io.netty"
+    ])
+}
+
+graalvmNative {
+    metadataRepository {
+        enabled = true
+    }
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17
+    }
+}
+
+tasks.withType(Test).configureEach {
+    jvmArgs += ["-XX:+AllowRedefinitionToAddDeleteMethods"]
 }
