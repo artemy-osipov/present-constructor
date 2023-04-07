@@ -34,6 +34,7 @@
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <a
       role="button"
+      tabindex="0"
       class="navbar-burger"
       on:click|preventDefault={toggleMenu}
       class:is-active={menuOpened}
