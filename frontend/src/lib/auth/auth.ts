@@ -4,7 +4,7 @@ import { authGateway } from './auth.api'
 const publicRoutes = ['/', '/about', '/login']
 
 let isLoggedIn = false
-let refreshScheduler: NodeJS.Timer | undefined
+let refreshScheduler: NodeJS.Timeout | undefined
 
 export async function guardPage(pathname: string) {
   if (isLoggedIn || publicRoutes.includes(pathname)) {

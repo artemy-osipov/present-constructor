@@ -39,6 +39,7 @@
       on:click|preventDefault={toggleMenu}
       class:is-active={menuOpened}
     >
+    <!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
       {#each links as _}
         <span />
       {/each}

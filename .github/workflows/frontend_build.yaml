@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - develop
   pull_request:
 
 defaults:
@@ -15,13 +14,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
         with:
-          node-version: "16"
-          cache: "yarn"
+          node-version: '20'
+          cache: 'yarn'
           cache-dependency-path: frontend/yarn.lock
       - run: yarn install --immutable
-      - run: yarn run lint
-      - run: yarn run check
-      - run: yarn run build
+      - run: yarn run checkAll

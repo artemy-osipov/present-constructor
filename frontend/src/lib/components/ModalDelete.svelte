@@ -20,6 +20,7 @@
 
 <div class="modal" class:is-active={active}>
   <!-- svelte-ignore a11y-click-events-have-key-events -->
+  <!-- svelte-ignore a11y-no-static-element-interactions -->
   <div class="modal-background" on:click={closeModal} />
   <div class="modal-content">
     <div class="box">

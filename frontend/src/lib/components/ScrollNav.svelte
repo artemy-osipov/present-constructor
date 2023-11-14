@@ -30,6 +30,7 @@
         <div class="navbar-item">
           <!-- svelte-ignore a11y-missing-attribute -->
           <!-- svelte-ignore a11y-click-events-have-key-events -->
+          <!-- svelte-ignore a11y-no-static-element-interactions -->
           <a class="button is-primary" on:click|preventDefault={scrollToAnchor}>
             <span class="icon">
               <FaEye />

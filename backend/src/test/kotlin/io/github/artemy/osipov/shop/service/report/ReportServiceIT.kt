@@ -13,16 +13,18 @@ import org.docx4j.openpackaging.packages.WordprocessingMLPackage
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart
 import org.docx4j.wml.Text
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.condition.DisabledInNativeImage
 import org.mockito.Mockito.anyIterable
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import java.io.ByteArrayInputStream
 
+@DisabledInNativeImage
 class ReportServiceIT {
-    val presentRepository = mock<PresentRepository>() {
+    val presentRepository = mock<PresentRepository> {
         onBlocking { findById(PRESENT_ID) } doReturn PresentTestData.present()
     }
-    val candyRepository = mock<CandyRepository>() {
+    val candyRepository = mock<CandyRepository> {
         on { findAllById(anyIterable()) } doReturn listOf(CandyTestData.candy()).asFlow()
     }
     val service = ReportService(

@@ -18,6 +18,7 @@
 
 <div class="card">
   <!-- svelte-ignore a11y-click-events-have-key-events -->
+  <!-- svelte-ignore a11y-no-static-element-interactions -->
   <header class="card-header" class:disabled on:click={toggle}>
     <p class="card-header-title">
       <slot name="title" />

@@ -1,5 +1,6 @@
 package io.github.artemy.osipov.shop
 
+import fr.opensagres.xdocreport.document.registry.XDocReportRegistry
 import io.github.artemy.osipov.shop.utils.UuidUtils
 import org.springframework.validation.beanvalidation.LocaleContextMessageInterpolator
 import reactor.blockhound.BlockHound
@@ -11,5 +12,6 @@ class CustomBlockHoundIntegration : BlockHoundIntegration {
         builder
             .allowBlockingCallsInside(UuidUtils::class.qualifiedName, "newUUID")
             .allowBlockingCallsInside(LocaleContextMessageInterpolator::class.qualifiedName, "interpolate")
+            .allowBlockingCallsInside(XDocReportRegistry::class.qualifiedName, "loadReport")
     }
 }

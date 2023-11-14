@@ -7,7 +7,9 @@ import fr.opensagres.xdocreport.template.TemplateEngineKind
 import io.github.artemy.osipov.shop.service.candy.CandyRepository
 import io.github.artemy.osipov.shop.service.present.Present
 import io.github.artemy.osipov.shop.service.present.PresentRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.withContext
 import org.springframework.stereotype.Service
 import java.io.ByteArrayOutputStream
 import java.util.*
@@ -49,16 +51,17 @@ class ReportService(
         return "${present.name} ${present.price} RUB.docx"
     }
 
-    private fun generateReportContent(present: ReportPresent, report: IXDocReport): ByteArray {
-        val context: IContext = report.createContext()
-        context.put("present", present)
-        context.put("costPrice", present.computeCost())
+    private suspend fun generateReportContent(present: ReportPresent, report: IXDocReport): ByteArray =
+        withContext(Dispatchers.IO) {
+            val context: IContext = report.createContext()
+            context.put("present", present)
+            context.put("costPrice", present.computeCost())
 
-        val bout = ByteArrayOutputStream()
-        report.process(context, bout)
+            val bout = ByteArrayOutputStream()
+            report.process(context, bout)
 
-        return bout.toByteArray()
-    }
+            bout.toByteArray()
+        }
 
     private suspend fun fetchPresent(id: UUID): ReportPresent {
         val present = presentRepository.findById(id)

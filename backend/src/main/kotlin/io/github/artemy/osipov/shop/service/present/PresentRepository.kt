@@ -58,7 +58,7 @@ class PresentRepository(
         val added = presentDTORepository.add(dto)
         addItems(added.id, present.items)
         added.id
-    }!!
+    }
 
     private suspend fun addItems(presentId: UUID, items: List<Present.Item>) {
         presentItemDTORepository.saveAll(
