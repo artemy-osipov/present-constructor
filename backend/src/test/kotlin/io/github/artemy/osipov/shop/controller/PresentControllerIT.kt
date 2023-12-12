@@ -3,9 +3,9 @@ package io.github.artemy.osipov.shop.controller
 import io.github.artemy.osipov.shop.BaseIT
 import io.github.artemy.osipov.shop.service.candy.CandyRepository
 import io.github.artemy.osipov.shop.service.present.PresentRepository
-import io.github.artemy.osipov.shop.testdata.CandyTestData
-import io.github.artemy.osipov.shop.testdata.PresentTestData
-import io.github.artemy.osipov.shop.testdata.PresentTestData.PRESENT_ID
+import io.github.artemy.osipov.shop.testdata.CandyTD
+import io.github.artemy.osipov.shop.testdata.PresentTD
+import io.github.artemy.osipov.shop.testdata.PresentTD.PRESENT_ID
 import io.github.artemy.osipov.shop.utils.UuidUtils.newUUID
 import io.github.artemy.osipov.shop.utils.toJson
 import kotlinx.coroutines.flow.first
@@ -32,7 +32,7 @@ class PresentControllerIT : BaseIT() {
         @BeforeAll
         @JvmStatic
         fun init(@Autowired repository: CandyRepository) = runTest {
-            repository.add(CandyTestData.candy())
+            repository.add(CandyTD.candy())
         }
 
         @AfterAll
@@ -52,7 +52,7 @@ class PresentControllerIT : BaseIT() {
         val result = webClient.post()
             .uri("/api/presents")
             .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(toJson(PresentTestData.REST.addDTO()))
+            .bodyValue(toJson(PresentTD.REST.addDTO()))
             .exchange()
 
         val addedPresent = presentRepository.findAll().first()
@@ -74,7 +74,7 @@ class PresentControllerIT : BaseIT() {
 
     @Test
     fun `should remove present`() = runTest {
-        presentRepository.add(PresentTestData.present())
+        presentRepository.add(PresentTD.present())
 
         webClient.delete()
             .uri("/api/presents/{id}", PRESENT_ID)

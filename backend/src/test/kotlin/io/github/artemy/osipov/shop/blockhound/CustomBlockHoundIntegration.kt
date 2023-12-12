@@ -1,4 +1,4 @@
-package io.github.artemy.osipov.shop
+package io.github.artemy.osipov.shop.blockhound
 
 import fr.opensagres.xdocreport.document.registry.XDocReportRegistry
 import io.github.artemy.osipov.shop.utils.UuidUtils

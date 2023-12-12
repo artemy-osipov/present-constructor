@@ -1,4 +1,4 @@
-package io.github.artemy.osipov.shop
+package io.github.artemy.osipov.shop.blockhound
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows

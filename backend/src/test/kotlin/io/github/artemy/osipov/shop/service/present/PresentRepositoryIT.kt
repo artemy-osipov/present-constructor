@@ -2,8 +2,8 @@ package io.github.artemy.osipov.shop.service.present
 
 import io.github.artemy.osipov.shop.BaseIT
 import io.github.artemy.osipov.shop.service.candy.CandyRepository
-import io.github.artemy.osipov.shop.testdata.CandyTestData
-import io.github.artemy.osipov.shop.testdata.PresentTestData
+import io.github.artemy.osipov.shop.testdata.CandyTD
+import io.github.artemy.osipov.shop.testdata.PresentTD
 import io.github.artemy.osipov.shop.utils.UuidUtils
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
@@ -22,7 +22,7 @@ internal class PresentRepositoryIT : BaseIT() {
         @BeforeAll
         @JvmStatic
         fun init(@Autowired repository: CandyRepository) = runTest {
-            repository.add(CandyTestData.candy())
+            repository.add(CandyTD.candy())
         }
 
         @AfterAll
@@ -39,7 +39,7 @@ internal class PresentRepositoryIT : BaseIT() {
 
     @Test
     fun `should find present by id`() = runTest {
-        val present = PresentTestData.present()
+        val present = PresentTD.present()
         repository.add(present)
 
         val fromDB = repository.findById(present.id)
@@ -51,7 +51,7 @@ internal class PresentRepositoryIT : BaseIT() {
 
     @Test
     fun `should list all presents`() = runTest {
-        val present = PresentTestData.present()
+        val present = PresentTD.present()
         repository.add(present)
 
         val fromDB = repository.findAll().toList()
@@ -63,7 +63,7 @@ internal class PresentRepositoryIT : BaseIT() {
 
     @Test
     fun `should add and return count`() = runTest {
-        repository.add(PresentTestData.present())
+        repository.add(PresentTD.present())
 
         val count = repository.count()
 
@@ -74,7 +74,7 @@ internal class PresentRepositoryIT : BaseIT() {
 
     @Test
     fun `should not delete by unknown id`() = runTest {
-        val present = PresentTestData.present()
+        val present = PresentTD.present()
         repository.add(present)
 
         repository.deleteById(UuidUtils.newUUID())
@@ -87,7 +87,7 @@ internal class PresentRepositoryIT : BaseIT() {
 
     @Test
     fun `should delete by id`() = runTest {
-        val present = PresentTestData.present()
+        val present = PresentTD.present()
         repository.add(present)
 
         repository.deleteById(present.id)
@@ -100,7 +100,7 @@ internal class PresentRepositoryIT : BaseIT() {
 
     @Test
     fun `should delete all entities`() = runTest {
-        repository.add(PresentTestData.present())
+        repository.add(PresentTD.present())
 
         repository.deleteAll()
         val count = repository.count()

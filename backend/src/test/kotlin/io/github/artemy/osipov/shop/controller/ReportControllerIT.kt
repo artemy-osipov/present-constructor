@@ -5,9 +5,9 @@ import fr.opensagres.xdocreport.document.docx.DocxUtils
 import io.github.artemy.osipov.shop.BaseIT
 import io.github.artemy.osipov.shop.service.candy.CandyRepository
 import io.github.artemy.osipov.shop.service.present.PresentRepository
-import io.github.artemy.osipov.shop.testdata.CandyTestData
-import io.github.artemy.osipov.shop.testdata.PresentTestData
-import io.github.artemy.osipov.shop.testdata.PresentTestData.PRESENT_ID
+import io.github.artemy.osipov.shop.testdata.CandyTD
+import io.github.artemy.osipov.shop.testdata.PresentTD
+import io.github.artemy.osipov.shop.testdata.PresentTD.PRESENT_ID
 import io.github.artemy.osipov.shop.utils.UuidUtils.newUUID
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.AfterAll
@@ -32,8 +32,8 @@ class ReportControllerIT : BaseIT() {
             @Autowired candyRepository: CandyRepository,
             @Autowired presentRepository: PresentRepository
         ) = runTest {
-            candyRepository.add(CandyTestData.candy())
-            presentRepository.add(PresentTestData.present())
+            candyRepository.add(CandyTD.candy())
+            presentRepository.add(PresentTD.present())
         }
 
         @AfterAll

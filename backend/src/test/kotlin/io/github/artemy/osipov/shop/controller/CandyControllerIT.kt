@@ -2,8 +2,8 @@ package io.github.artemy.osipov.shop.controller
 
 import io.github.artemy.osipov.shop.BaseIT
 import io.github.artemy.osipov.shop.service.candy.CandyRepository
-import io.github.artemy.osipov.shop.testdata.CandyTestData
-import io.github.artemy.osipov.shop.testdata.CandyTestData.CANDY_ID
+import io.github.artemy.osipov.shop.testdata.CandyTD
+import io.github.artemy.osipov.shop.testdata.CandyTD.CANDY_ID
 import io.github.artemy.osipov.shop.utils.UuidUtils.newUUID
 import io.github.artemy.osipov.shop.utils.toJson
 import kotlinx.coroutines.flow.first
@@ -34,7 +34,7 @@ class CandyControllerIT : BaseIT() {
         val result = webClient.post()
             .uri("/api/candies")
             .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(toJson(CandyTestData.REST.updateDTO()))
+            .bodyValue(toJson(CandyTD.REST.updateDTO()))
             .exchange()
 
         val addedCandy = candyRepository.findAll().first()
@@ -56,9 +56,9 @@ class CandyControllerIT : BaseIT() {
 
     @Test
     fun `should edit candy with valid data`() = runTest {
-        candyRepository.add(CandyTestData.candy())
+        candyRepository.add(CandyTD.candy())
         val newName = "new name"
-        val request = CandyTestData.REST.updateDTO().apply {
+        val request = CandyTD.REST.updateDTO().apply {
             name = newName
         }
 
@@ -71,7 +71,7 @@ class CandyControllerIT : BaseIT() {
 
         val updatedCandy = candyRepository.findById(CANDY_ID)
         assert(
-            updatedCandy == CandyTestData.candy().apply {
+            updatedCandy == CandyTD.candy().apply {
                 name = newName
             }
         )
@@ -95,7 +95,7 @@ class CandyControllerIT : BaseIT() {
         webClient.put()
             .uri("/api/candies/{id}", unknownId)
             .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(toJson(CandyTestData.REST.updateDTO()))
+            .bodyValue(toJson(CandyTD.REST.updateDTO()))
             .exchange()
             .expectStatus().isNotFound
 
@@ -104,7 +104,7 @@ class CandyControllerIT : BaseIT() {
 
     @Test
     fun `should remove candy`() = runTest {
-        candyRepository.add(CandyTestData.candy())
+        candyRepository.add(CandyTD.candy())
 
         webClient.delete()
             .uri("/api/candies/{id}", CANDY_ID)

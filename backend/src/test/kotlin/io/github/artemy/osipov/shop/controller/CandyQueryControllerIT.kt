@@ -2,7 +2,7 @@ package io.github.artemy.osipov.shop.controller
 
 import io.github.artemy.osipov.shop.BaseIT
 import io.github.artemy.osipov.shop.service.candy.CandyRepository
-import io.github.artemy.osipov.shop.testdata.CandyTestData
+import io.github.artemy.osipov.shop.testdata.CandyTD
 import io.github.artemy.osipov.shop.utils.UuidUtils.newUUID
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.Matchers.hasSize
@@ -21,7 +21,7 @@ class CandyQueryControllerIT : BaseIT() {
         @BeforeAll
         @JvmStatic
         fun init(@Autowired repository: CandyRepository) = runTest {
-            repository.add(CandyTestData.candy())
+            repository.add(CandyTD.candy())
         }
 
         @AfterAll
@@ -33,7 +33,7 @@ class CandyQueryControllerIT : BaseIT() {
 
     @Test
     fun `should get candy by id`() {
-        val candy = CandyTestData.candy()
+        val candy = CandyTD.candy()
 
         webClient.get()
             .uri("/api/candies/{id}", candy.id)

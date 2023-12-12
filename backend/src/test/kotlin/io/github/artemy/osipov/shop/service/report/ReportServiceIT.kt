@@ -2,10 +2,10 @@ package io.github.artemy.osipov.shop.service.report
 
 import io.github.artemy.osipov.shop.service.candy.CandyRepository
 import io.github.artemy.osipov.shop.service.present.PresentRepository
-import io.github.artemy.osipov.shop.testdata.CandyTestData
-import io.github.artemy.osipov.shop.testdata.PresentTestData
-import io.github.artemy.osipov.shop.testdata.PresentTestData.PRESENT_ID
-import io.github.artemy.osipov.shop.testdata.ReportTestData.REPORT_NAME
+import io.github.artemy.osipov.shop.testdata.CandyTD
+import io.github.artemy.osipov.shop.testdata.PresentTD
+import io.github.artemy.osipov.shop.testdata.PresentTD.PRESENT_ID
+import io.github.artemy.osipov.shop.testdata.ReportTD.REPORT_NAME
 import jakarta.xml.bind.JAXBElement
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.test.runTest
@@ -22,10 +22,10 @@ import java.io.ByteArrayInputStream
 @DisabledInNativeImage
 class ReportServiceIT {
     val presentRepository = mock<PresentRepository> {
-        onBlocking { findById(PRESENT_ID) } doReturn PresentTestData.present()
+        onBlocking { findById(PRESENT_ID) } doReturn PresentTD.present()
     }
     val candyRepository = mock<CandyRepository> {
-        on { findAllById(anyIterable()) } doReturn listOf(CandyTestData.candy()).asFlow()
+        on { findAllById(anyIterable()) } doReturn listOf(CandyTD.candy()).asFlow()
     }
     val service = ReportService(
         presentRepository,

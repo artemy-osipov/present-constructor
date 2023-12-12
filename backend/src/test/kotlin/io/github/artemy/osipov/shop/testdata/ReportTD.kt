@@ -3,7 +3,7 @@ package io.github.artemy.osipov.shop.testdata
 import io.github.artemy.osipov.shop.service.report.Report
 import io.github.artemy.osipov.shop.service.report.ReportPresent
 
-object ReportTestData {
+object ReportTD {
 
     val REPORT_NAME = "name 42.25 RUB.docx"
 
@@ -13,8 +13,8 @@ object ReportTestData {
 
     fun reportPresent(): ReportPresent {
         return ReportPresent(
-                PresentTestData.present(),
-                listOf(CandyTestData.candy())
+                PresentTD.present(),
+                listOf(CandyTD.candy())
         )
     }
 }

@@ -4,4 +4,4 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = 'present-constructor-backend'
+rootProject.name = "present-constructor-backend"

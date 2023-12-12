@@ -3,12 +3,12 @@ package io.github.artemy.osipov.shop.testdata
 import io.github.artemy.osipov.shop.controller.dto.DAddPresent
 import io.github.artemy.osipov.shop.controller.dto.DPresentItem
 import io.github.artemy.osipov.shop.service.present.Present
-import io.github.artemy.osipov.shop.testdata.CandyTestData.CANDY_ID
+import io.github.artemy.osipov.shop.testdata.CandyTD.CANDY_ID
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.util.*
 
-object PresentTestData {
+object PresentTD {
 
     val PRESENT_ID: UUID = UUID.fromString("89a83839-5a67-41a4-9d8f-be2035b2f58a")
 

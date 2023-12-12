@@ -5,7 +5,7 @@ import io.github.artemy.osipov.shop.service.candy.Candy
 import java.math.BigDecimal
 import java.util.*
 
-object CandyTestData {
+object CandyTD {
 
     val CANDY_ID: UUID = UUID.fromString("532d5f3b-25e6-4adc-b99a-da74cb5be876")
 

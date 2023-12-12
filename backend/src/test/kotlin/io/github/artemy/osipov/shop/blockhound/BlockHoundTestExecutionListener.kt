@@ -1,4 +1,4 @@
-package io.github.artemy.osipov.shop
+package io.github.artemy.osipov.shop.blockhound
 
 import org.junit.platform.launcher.TestExecutionListener
 import org.junit.platform.launcher.TestPlan

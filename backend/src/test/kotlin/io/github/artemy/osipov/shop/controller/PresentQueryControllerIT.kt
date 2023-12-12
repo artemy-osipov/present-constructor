@@ -3,9 +3,9 @@ package io.github.artemy.osipov.shop.controller
 import io.github.artemy.osipov.shop.BaseIT
 import io.github.artemy.osipov.shop.service.candy.CandyRepository
 import io.github.artemy.osipov.shop.service.present.PresentRepository
-import io.github.artemy.osipov.shop.testdata.CandyTestData
-import io.github.artemy.osipov.shop.testdata.PresentTestData
-import io.github.artemy.osipov.shop.testdata.PresentTestData.PRESENT_ID
+import io.github.artemy.osipov.shop.testdata.CandyTD
+import io.github.artemy.osipov.shop.testdata.PresentTD
+import io.github.artemy.osipov.shop.testdata.PresentTD.PRESENT_ID
 import io.github.artemy.osipov.shop.utils.UuidUtils.newUUID
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.Matchers.hasSize
@@ -28,8 +28,8 @@ class PresentQueryControllerIT : BaseIT() {
             @Autowired candyRepository: CandyRepository,
             @Autowired presentRepository: PresentRepository
         ) = runTest {
-            candyRepository.add(CandyTestData.candy())
-            presentRepository.add(PresentTestData.present())
+            candyRepository.add(CandyTD.candy())
+            presentRepository.add(PresentTD.present())
         }
 
         @AfterAll
@@ -45,7 +45,7 @@ class PresentQueryControllerIT : BaseIT() {
 
     @Test
     fun `should get present by id`() {
-        val present = PresentTestData.present()
+        val present = PresentTD.present()
 
         webClient.get()
             .uri("/api/presents/{id}", PRESENT_ID)
